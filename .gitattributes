@@ -1,0 +1,5 @@
+static/img/blog/**/*.png !text !filter !merge !diff
+static/img/blog/**/*.jpg !text !filter !merge !diff
+static/img/blog/**/*.jpeg !text !filter !merge !diff
+static/img/blog/**/*.gif !text !filter !merge !diff
+static/img/blog/**/*.webp !text !filter !merge !diff
