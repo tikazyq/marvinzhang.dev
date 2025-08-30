@@ -1,0 +1,172 @@
+# CI/CD in Action: How to use Microsoft's GitHub Actions in a right way?
+
+## Introduction
+
+**[GitHub Actions](https://docs.github.com/en/actions)** is the official **CI/CD** workflow service provided by GitHub. It is aimed at making it easy for open-source project contributors to manage operational maintenance, and enable open-source communities to embrace cloud-native **DevOps**. GitHub Actions is integrated into most of my open-source projects including [Crawlab](https://github.com/crawlab-team/crawlab) and [ArtiPub](https://github.com/crawlab-team/artipub). As a contributor, I think GitHub Actions is not only easy to use, but also free (which is the most important). Therefore, I hope this article will allow open-source project contributors who are not familiar with GitHub Actions, to really get ideas on how to utilize it and make an impact.
+
+## Starting from documentation
+
+For those who are not familiar with GitHub Actions, it is strongly recommended that you read [the official documentation](https://docs.github.com/en/actions) first, where you can find [Introduction Video](https://youtu.be/cP0I9w2coGU), [Quick Start](https://docs.github.com/en/actions/quickstart), [Examples](https://docs.github.com/en/actions/examples), concepts, how it works, etc. If you read through the docs, you can easily do GitHub DevOps with your own experience in CI/CD. References of all codes in this article can be found on the official documentation,
+
+![GitHub Actions Docs](https://codao.crawlab.cn/images/2022-10-14-025012.png)
+
+## Ideas
+
+Let's first figure out what we would like to implement, i.e. using GitHub Actions to run a web crawler to get daily ranking from [GitHub Trending](https://github.com/trending).
+
+Steps of implementation:
+
+1. Upload crawler code to GitHub repo.
+2. Create and commit a GitHub Actions workflow.
+3. Trigger the GitHub Actions workflow to run the crawler.
+4. Check out the status of crawling tasks.
+
+## Crawler code
+
+Now we can start coding!
+
+Let's first upload the code to GitHub repo. As our topic today is focused on GitHub Actions, we are not going to dig deep into the code details.
+
+The code is as below:
+
+```python
+# main.py
+import requests
+from bs4 import BeautifulSoup
+
+
+def main():
+    res = requests.get('https://github.com/trending')
+    sel = BeautifulSoup(res.content)
+    rows = sel.select('article.Box-row')
+    for row in rows:
+        repo_name = '/'.join(map(lambda x: x.strip(), row.select('h1 a')[0].text.strip().split('/')))
+        description = row.select('p')[0].text.strip()
+        stars = row.select('a.Link--muted')[0].text.strip()
+        print(f'{repo_name} ({stars} stars): {description}')
+
+
+if __name__ == '__main__':
+    main()
+```
+
+## The first workflow
+
+We can click on the **Actions** tab in the GitHub repo page.
+
+![GitHub Actions Repo Page](https://codao.crawlab.cn/images/2022-10-14-004737.png)
+
+Then you can see the welcome page as above, which indicates there is no workflows in your repo yet. You may also find there are some introductions as well as popular template workflows, where you can click the `Configure` button to create a new workflow.
+
+We can search the keyword `Python`, then we can find a workflow that runs Python programs. Let's use it.
+
+![Python Application Workflow](https://codao.crawlab.cn/images/2022-10-14-005218.png)
+
+After clicking the `Configure` button, you will enter the page as below.
+
+![Create Workflow](https://codao.crawlab.cn/images/2022-10-14-005350.png)
+
+A GitHub Actions workflow is actually a **`YAML` configuration file**, similar to popular concepts like `PaaS`, `IaaS`, cloud-native applications, which automate configurations through codes.
+
+There is already some default workflow code, and we can slightly modify it.
+
+```yaml
+name: GitHub Trending Crawler
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        cd 2022-10/github-actions-python
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Run
+      run: |
+        cd 2022-10/github-actions-python
+        python main.py
+```
+
+Click the `Commit` button on the web UI, and you can find that the workflow configuration file  `github-trending-crawler.yml` is generated on the directory  `.github/workflows` .
+
+Overall, the workflow above has done several things:
+
+1. Checkout the repo's code
+2. Set up Python environment
+3. Install dependencies
+4. Run the program
+
+## View task status
+
+As you submit the workflow commit, a CI/CD task will **automatically be triggered** given the default triggering conditions.
+
+```yaml
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+```
+
+It means the workflow will be auto-triggered once we push commits or create pull requests.
+
+Now if go to the `Actions` tab to check out the running status, you can find a list of workflow runs.
+
+![GitHub Actions Executions](https://codao.crawlab.cn/images/2022-10-14-013733.png)
+
+Let's click the latest one and click the `build` job, you can see relevant logs. Now click to expand the details of the step `Run`.
+
+![GitHub Actions Logs](https://codao.crawlab.cn/images/2022-10-14-013913.png)
+
+As you can see, the top repos on GitHub Trending are already printed out in the logs, as expected. The only thing left is to validate if it is in line with the actual ranking.
+
+![GitHub Trending](https://codao.crawlab.cn/images/2022-10-14-014113.png)
+
+The content on the page is exactly the same as the output results are exactly. That's awesome, all done!
+
+## Scheduled workflow
+
+How can we run crawlers without **schedules**? And here we are, GitHub Actions supports that just fine. Let's add it with pleasure.
+
+Open the edit panel of the created workflow, and add some code in the trigger part as below.
+
+```yaml
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron:  '0 * * * *'
+```
+
+The cron expression `0 * * * *` means triggering at 0 every hour. For those who are unfamiliar with cron expression, please refer to  [Cron Guru](https://crontab.guru/).
+
+After the edit is committed, we can see the hourly executions of the **crawler's scheduled tasks**.
+
+## Conclusion
+
+We introduced how to use GitHub Actions workflows to deploy a simple web crawling schedule task, with techniques as below.
+
+1. GitHub repo
+2. GitHub Actions workflows, including scheduled triggering
+3. Python crawler development, including dependencies [requests](https://pypi.org/project/requests/) and [bs4](https://pypi.org/project/bs4/)
+
+The code of the whole project is on GitHub: https://github.com/tikazyq/codao-code/tree/main/2022-10/go-task-scheduler
