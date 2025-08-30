@@ -1,0 +1,64 @@
+---
+title: "Talking Algorithm: Exploration of Intelligent Web Crawlers"
+date: 2023/3/25
+description: "> \"If I had asked people what they wanted, they would have said faster horses\" -- Henry Ford"
+tag: algorithm
+author: Marvin Zhang
+---
+
+# Talking Algorithm: Exploration of Intelligent Web Crawlers
+
+## Introduction
+
+> "If I had asked people what they wanted, they would have said faster horses" -- Henry Ford
+
+Today is the era of artificial intelligence. Whether it is ChatGPT or the various intelligent applications that follow, many people see the upcoming sci-fi world that was almost unimaginable a few years ago. However, in the field of reptiles, artificial intelligence does not seem to be involved too much. It is true that crawlers, as an "ancient" technology, have created many technical industries such as search engines, news aggregation, and data analysis in the past 20 years, but we have not seen obvious technological breakthroughs yet: crawler engineers still mainly rely on technologies such as XPath and reverse engineering to automatically obtain web data. However, with the development of artificial intelligence and machine learning, crawler technology can theoretically achieve "automatic driving". This article will introduce the current status and possible future development direction of the so-called **intelligent crawler** (intelligent, automated data extraction crawler technology) from multiple perspectives.
+
+## Current Web Crawling Technology
+
+A web crawler is an automated program used to obtain data from the Internet or other computer networks. They usually use automated scraping techniques to automatically visit the website and collect, parse and store information on the website. This information can be structured or unstructured data.
+
+Crawler technology in the traditional sense mainly includes the following modules or systems:
+
+1. **Network request** : initiate an HTTP request to a website or web page to obtain data such as HTML;
+2. **Web page parsing** : parse HTML to form a structured tree structure, and obtain target data through XPath or CSS Selector;
+3. **Data storage** : store the parsed structured data, which can be in the form of a database or a file;
+4. **URL management** : manage the URL list to be crawled and the URL list that has been crawled, such as URL resolution and request for paging or list pages.
+
+![web crawling system](https://codao.crawlab.cn/images/2023-03-25-061834.png)
+
+The above is the basic crawler technology modules. For a large crawler system, it is also necessary to have the necessary modules for the production environment such as task scheduling, error management, and log management. The author's crawler management platform [Crawlab ](https://www.crawlab.cn)is a crawler management platform for enterprise-level production environments. In addition, for some anti-crawling measures, such as verification code or IP blocking, additional modules are usually required, such as verification code identification, IP proxy, etc.
+
+However, at present, the development of crawler programs is mainly focused on webpage parsing, which consumes a lot of manpower. Although HTML needs to be parsed into the webpage data, the layout, format, style, and content of different websites are different, so each website and webpage needs separate parsing logic, which greatly increases the cost of manual coding. Although some general-purpose crawlers such as search engine crawlers do not need to write too much parsing logic, such crawlers usually cannot focus on data extraction of specific topics. Therefore, in order to reduce the cost of manual writing, it is best to automatically extract web page data without writing or writing a small amount of parsing logic, which is the main goal of intelligent crawlers.
+
+## Known Implementations
+
+It is not easy to implement intelligent web page extraction, but there are already some attempts to develop intelligent crawlers. Among them, [GNE (GeneralNewsExtractor)](https://github.com/GeneralNewsExtractor/GeneralNewsExtractor) developed by Kingname is an open source implementation of webpage text extraction, based on [text and punctuation density extraction algorithms](https://kns.cnki.net/KCMS/detail/detail.aspx?dbcode=CJFQ&dbname=CJFDLAST2019&filename=GWDZ201908029&v=MDY4MTRxVHJXTTFGckNVUkxPZmJ1Wm5GQ2poVXJyQklqclBkTEc0SDlqTXA0OUhiWVI4ZVgxTHV4WVM3RGgxVDM=). [GerapyAutoExtractor ](https://github.com/Gerapy/GerapyAutoExtractor)developed by Cui Qingcai implemented webpage list page recognition based on [list cluster and SVM algorithm](https://cuiqingcai.com/9531.html). [Octoparse](https://www.octoparse.com/), a commercial client software, has developed an automatic list recognition module. [Diffbot](https://www.diffbot.com/) is an API-based intelligent web page recognition platform, with a very high recognition accuracy rate, claiming to be 99%. Known smart crawler implementations are currently based mainly on the HTML structure and content of web pages, such as GNE and GerapyAutoExtractor. For commercial software such as Octopus and Diffbot, we cannot know the specific implementation method.
+
+## Explore List Page Recognition
+
+Now the accuracy of text recognition is very high, and there are many technical implementations and applications. Here we mainly focus on the identification of list pages, which is the web page parsing work of many crawlers.
+
+We can infer from experience how to automatically identify desired content. Humans are visual animals. When we see a web page with a list of articles, we will immediately recognize the list of articles without any surprises, as shown in the figure below. But how exactly do we recognize it? In fact, we naturally group the article list items of the same category into one category. So, we'll quickly realize that this is actually a list page. Of course, why are these list items similar? We can see that the child elements in these lists are also similar, so it's natural to tie them together. The individual sub-elements add up to a single list item, which our brains automatically group them together. This is the process of listing page recognition.
+
+<img src="https://codao.crawlab.cn/images/2023-03-25-062942.png" style="width:640px" />
+
+Based on such an analysis, it is actually very easy to think of the clustering algorithm in machine learning. All we need to do is to extract the characteristics of each node on the webpage, and then use the clustering algorithm to filter out the nodes of the same category. Of course, the feature selection here needs to be considered. Instead of simply looking at a single node of HTML, we need to associate it with other nodes to extract features, so that we can get some nodes of different categories. Then, we can filter out the desired list page according to the overall information of the node cluster.
+
+Of course, it is not an easy task to actually implement such an algorithm with code. It is necessary to model and vectorize each node of HTML, and build a tree-like graph based on them. This is very tedious thing. Fortunately, the author has used sklearn, networkx and other libraries to implement a basic list page recognition system [Webspot](https://github.com/crawlab-team/webspot), which can automatically recognize list elements on a list page, and can visually display the recognition results, as shown in the figure below.
+
+![Webspot](https://codao.crawlab.cn/images/2023-03-25-063054.png)
+
+For most listings, Webspot's ability to identify is good. Although it is not as accurate as Diffbot, it can still be accurately identified for pages that are not very complicated.
+
+So, why invent a new wheel when there is already a list page identification solution like Diffbot? One of the most important reasons is that commercial and high-accuracy software such as Diffbot cannot directly provide reusable extraction rules such as XPath and CSS Selector. Extraction rules for automatic identification are all we need. Then, by integrating into open source crawlers such as Scrapy and Colly, the cost of data capture can be greatly reduced. This is also a feature that Webspot can currently bring to users. It is not only able to identify list page elements and corresponding fields, but also provide extraction rules, as shown in the figure below.
+
+![Webspot Fields](https://codao.crawlab.cn/images/2023-03-25-054928.png)
+
+With such an extraction rule, data can be automatically extracted from similar web pages only by automatic identification once.
+
+Currently, Webspot is still in the early stages of development, and there should be more new features and algorithm development and optimization in the future.
+
+## Future Development
+
+Intelligent crawlers are equivalent to autopilot on web pages, allowing crawlers to obtain the desired data or information as required without too many manual operations. This is an ideal technology for many data demanders and crawler engineers. However, intelligent crawlers are not yet mature at present, and the existing implementations and technologies are relatively simple. In the future, technologies such as deep learning and reinforcement learning may be used to improve the recognition ability of intelligent crawlers. In addition, the combination of graph theory and artificial intelligence, along with visual technology, may allow intelligent crawlers to achieve breakthroughs in accuracy. The author will continue to explore on intelligent crawlers through the Webspot project to solve the cost problem of data extraction. Those who are interested in the development of intelligent crawlers please feel free to contact me on GitHub "tikazyq".
