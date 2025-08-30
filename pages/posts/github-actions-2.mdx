@@ -1,0 +1,204 @@
+---
+title: 实战 CI/CD：利用 GitHub Actions 管理大型开源项目的自动化构建
+date: 2022/10/21
+description: 前不久在关于 CI/CD 文章《实战 CI/CD：微软加持的 GitHub Actions，怎么用才香？》中简单介绍了一下 GitHub 的官方 CI/CD 工作流服务 GitHub Actions，用一个实际的 Python 项目例...
+tag: devops
+author: Marvin Zhang
+---
+
+# 实战 CI/CD：利用 GitHub Actions 管理大型开源项目的自动化构建
+
+## 引子
+
+前不久在关于 CI/CD 文章[《实战 CI/CD：微软加持的 GitHub Actions，怎么用才香？》](https://mp.weixin.qq.com/s?__biz=Mzg5NTU2MzA5MQ==&mid=2247484424&idx=1&sn=88f0fd9497e9dac4c10973aa779aab50&chksm=c00f2034f778a922b29dd3cf70dde8a0856a4118965928c3de9937e9030607905c4f52b0dd47&token=1630648601&lang=zh_CN#rd)中简单介绍了一下 GitHub 的官方 CI/CD 工作流服务 [GitHub Actions](https://docs.github.com/en/actions)，用一个实际的 Python 项目例子做了演示。不过，这部分内容相对较初级，而对于一些**大型项目**来说，我们可能需要更复杂的工作流。而这篇文章的主要目的是帮助开发者们熟悉软件开发中的工程化部分。
+
+本篇文章以实际的大型项目为例，介绍一下笔者的开源项目 **[Crawlab](https://github.com/crawlab-team/crawlab)** 在 GitHub Actions 中的 CI/CD 应用。对 Crawlab 不熟悉的读者，可以参考一下[官网](https://www.crawlab.cn)或[官方文档](https://docs.crawlab.cn/)，简单来说，Crawlab 就是能帮助提高数据采集效率的爬虫管理平台。
+
+## 整体 CI/CD 架构
+
+Crawlab 新版本 v0.6 将不少通用的模块进行了拆分，因此整个项目由多个子项目依赖组成，例如主项目 [crawlab](https://github.com/crawlab-team/crawlab) 依赖于前端 [crawlab-ui](https://github.com/crawlab-team/crawlab-ui) 和后端 [crawlab-core](https://github.com/crawlab-team/crawlab-core)。这样切分成多个子项目之后，各个模块**耦合性降低**，**可维护性增加**。
+
+以下是 Crawlab 的整体 CI/CD 架构示意图。
+
+![Crawlab CI/CD](https://codao.crawlab.cn/images/2022-10-21-025257.png)
+
+可以看到，整个 Crawlab 项目的构建流程还是有些繁琐。给用户拉取部署的最终镜像 [crawlabteam/crawlab](https://hub.docker.com/crawlabteam/crawlab) 依赖于主仓库，而主仓库依赖于前后端、基础镜像、插件镜像，它们来自于各自的代码仓库，也依赖了更上游的核心代码仓库。这里简化了核心前后端代码背后所依赖的模块。
+
+## 前端构建
+
+我们先从前端部分开始。
+
+前端代码仓库 crawlab-ui 是以 NPM 库来分发的。先看一下其 CI/CD 工作流配置。
+
+```yaml
+name: Publish to NPM registry
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  release:
+    types: [ created ]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.22.7'
+          registry-url: https://registry.npmjs.com/
+      - name: Get version
+        run: echo "TAG_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: yarn install
+      - name: Build
+        run: yarn run build
+        env:
+          TAG_VERSION: ${{env.TAG_VERSION}}
+      - if: ${{ github.event_name == 'release' }}
+        name: Publish npm
+        run: npm publish --registry ${REGISTRY}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
+          TAG_VERSION: ${{env.TAG_VERSION}}
+          REGISTRY: https://registry.npmjs.com/
+```
+
+在这个工作流中有几个重要部分。
+
+1. 搭建 Node.js 环境 `uses: actions/setup-node@v2`，设置了 Node.js 版本 `node-version: '12.22.7'`
+2. 安装依赖 `run: yarn install`
+3. 构建包 `yarn run build`
+4. 发布库到 NPM 公共空间 `npm publish --registry ${REGISTRY}`
+
+关于发布到 NPM 公共空间所用到的令牌为 `${{secrets.NPM_PUBLISH_TOKEN}}`。这是一个 GitHub **密钥**（Secret），安全起见是不公开的，由代码仓库管理者设置的。
+
+这个设置好之后，每当在 crawlab-ui 中提交并推送代码之后，就会**自动触发** GitHub Actions 构建了，如下图。
+
+![Workflows](https://codao.crawlab.cn/images/2022-10-21-033449.png)
+
+咱们几乎不用再管理 NPM 发布的事情了，一切都是自动化完成的，完美！
+
+## 基础镜像构建
+
+下面我们再看看另一个相对特殊的工作流，基础镜像构建。这个镜像的仓库在 [docker-base-images](https://github.com/crawlab-team/docker-base-images) 里。
+
+因为每一次新的基础镜像发布都需要被集成到最终的镜像中，我们需要让其构建完之后让 crawlab 再构建一次。下面我们看看是如何配置的。
+
+```yaml
+name: Docker crawlab-base
+
+on:
+  push:
+    branches: [ main ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [ crawlab-base ]
+
+env:
+  IMAGE_PATH: crawlab-base
+  IMAGE_NAME: crawlabteam/crawlab-base
+
+jobs:
+
+  build:
+    name: Build Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v18.7
+
+      - name: Check matched
+        run: |
+          # check changed files
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ $file =~ ^\.github/workflows/.* ]]; then
+              echo "file ${file} is matched"
+              echo "is_matched=1" >> $GITHUB_ENV
+              exit 0
+            fi
+            if [[ $file =~ ^${IMAGE_PATH}/.* ]]; then
+              echo "file ${file} is matched"
+              echo "is_matched=1" >> $GITHUB_ENV
+              exit 0
+            fi
+          done
+          
+          # force trigger
+          if [[ ${{ inputs.forceTrigger }} == true ]]; then
+              echo "is_matched=1" >> $GITHUB_ENV
+              exit 0
+          fi
+
+      - name: Build image
+        if: ${{ env.is_matched == '1' }}
+        run: |
+          cd $IMAGE_PATH
+          docker build . --file Dockerfile --tag image
+
+      - name: Log into registry
+        if: ${{ env.is_matched == '1' }}
+        run: echo ${{ secrets.DOCKER_PASSWORD}} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Push image
+        if: ${{ env.is_matched == '1' }}
+        run: |
+          IMAGE_ID=$IMAGE_NAME
+          
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "main" ] && VERSION=latest
+          
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          
+          docker tag image $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+          
+          if [[ $VERSION == "latest" ]]; then
+            docker tag image $IMAGE_ID:main
+            docker push $IMAGE_ID:main
+          fi
+
+      - name: Trigger other workflows
+        if: ${{ env.is_matched == '1' }}
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
+          repository: crawlab-team/crawlab
+          event-type: docker-crawlab
+```
+
+可以看到在配置文件中最后一步 `name: Trigger other workflows`，通过 `peter-evans/repository-dispatch@v2` 这个 Action **触发了另一个仓库 crawlab-team/crawlab 的 Action**。也就是说，如果我们修改了基础镜像代码并提交代码到 GitHub 仓库之后，基础镜像会自动构建，并在构建完成之后自动触发最终仓库构建完整镜像。
+
+这太棒了！我们无需再人工做什么操作，只需要坐下来喝杯咖啡等待构建完成。
+
+## 总结
+
+今天我们介绍了大型开源项目 Crawlab 在 GitHub Actions 上面的自动化构建流程和整体架构，可以看出 GitHub Actions 对大型项目的支持还是相对比较全面的。用到的技术如下：
+
+1. 自动触发构建
+2. 发布到 NPM 公共空间
+3. 仓库密钥设置
+4. 触发其他仓库的工作流
+
+整个代码仓库都在 Crawlab 的 GitHub 仓库中，并且是公开可见的。
+
+## 社区
+
+如果您对笔者的文章感兴趣，可以加笔者微信 tikazyq1 并注明 "码之道"，笔者会将你拉入 "码之道" 交流群。
+
+本篇文章英文版同步发布在 [dev.to](https://dev.to/tikazyq/cicd-in-action-manage-auto-builds-of-large-open-source-projects-with-github-actions-3lcn)，技术分享无国界，欢迎大佬们指点。

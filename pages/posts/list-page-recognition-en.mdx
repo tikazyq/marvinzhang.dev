@@ -1,0 +1,345 @@
+---
+title: "Web Crawler in Action: How to use Webspot to implement automatic recognition and data extraction of list web pages"
+date: 2023/4/8
+description: Using web crawling programs to extract list web pages is a one of those common web data extraction tasks. For enginee...
+tag: algorithm
+author: Marvin Zhang
+---
+
+# Web Crawler in Action: How to use Webspot to implement automatic recognition and data extraction of list web pages
+
+## Introduction
+
+Using web crawling programs to extract list web pages is a one of those common web data extraction tasks. For engineers to write web crawlers, how to efficiently code and generate extraction rules is quite necessary, otherwise most of the time can be wasted on writing CSS selectors and XPath data extraction rules of web crawling programs. In light of this issue, this article will introduce an example of using open source tool [Webspot](https://github.com/crawlab-team/webspot) to automatically recognize and extract data of list web pages.
+
+## Webspot
+
+Webspot is an open source project aimed at automating web page data extraction. Currently, it supports recognition and crawling rules extraction of list pages and pagination. In addition, it provides a web UI interface for users to visually view the identified results, and allows developers to use APIs to obtain recognition results.
+
+Installation of Webspot is quite easy, you can refer to [the official documentation](https://github.com/crawlab-team/webspot) for the installation tutorial with Docker and Docker Compose. Execute the commands below to install and start Webspot.
+
+```bash
+# clone git repo
+git clone https://github.com/crawlab-team/webspot
+
+# start docker containers
+docker-compose up -d
+```
+
+Wait for it to start up, which might take half a minute to initialize the application.
+
+After the initialization, we can visit the web page http://localhost:9999, and should be able to see the user interface below, which means it has started successfully.
+
+![Webspot 初始化界面](https://codao.crawlab.cn/images/2023-04-08-102439.png)
+
+Now, we can create a new request for page recognition. Click "New Request" and enter https://quotes.toscrape.com. Then click "Submit". Wait for a while and we should be able to see the page below.
+
+![Webspot 列表页识别](https://codao.crawlab.cn/images/2023-04-08-102534.png)
+
+## Use API to auto extract data
+
+We are now using Python to call the API of Webspot to auto extract data.
+
+The whole process is as below.
+
+1. Call the Webspot API to obtain the extraction rules for list pages and pagination. The extraction rules are CSS Selectors.
+
+2. Define the retrieval target based on the extraction rules of the list page, that is, each item and its corresponding field on the list page.
+
+3. Determine the target for crawling the next page based on the extraction rules of pagination, and let the crawler automatically crawl the data of the next page.
+
+#### Call API
+
+Calling the API is very simple, just pass the URL to be recognized into the body. The code is as follows.
+
+```python
+import requests
+from bs4 import BeautifulSoup
+from pprint import pprint
+
+# API endpoint
+api_endpoint = 'http://localhost:9999/api'
+
+# url to extract
+url = 'https://quotes.toscrape.com'
+
+# call API to recognize list page and pagination elements
+res = requests.post(f'{api_endpoint}/requests', json={
+    'url': 'https://quotes.toscrape.com'
+})
+results = res.json()
+pprint(results)
+```
+
+Running the code above in Python Console can obtain the recognition result data similar to the following.
+
+```python
+{...
+ 'method': 'request',
+ 'no_async': True,
+ 'results': {'pagination': [{'detector': 'pagination',
+                             'name': 'Next',
+                             'score': 1.0,
+                             'scores': {'score': 1.0},
+                             'selectors': {'next': {'attribute': None,
+                                                    'name': 'pagination',
+                                                    'node_id': 120,
+                                                    'selector': 'li.next > a',
+                                                    'type': 'css'}}}],
+...
+             'plain_list': [{...
+             									'fields': [{'attribute': '',
+                                         'name': 'Field_text_1',
+                                         'node_id': None,
+                                         'selector': 'div.quote > span.text',
+                                         'type': 'text'},
+                                         ...],
+             							...}],
+						},
+...}
+```
+
+The recognition results include CSS Selectors for list pages and pagination, as well as the corresponding fields for each item on the list page.
+
+#### List page and fields extraction logics
+
+Next, we will write the logic for extracting list pages and fields.
+
+First, we can obtain list page selectors and fields through `results`.
+
+```python
+# list result
+list_result = results['results']['plain_list'][0]
+
+# list items selector
+list_items_selector = list_result['selectors']['full_items']['selector']
+print(list_items_selector)
+
+# fields
+fields = list_result['fields']
+print(fields)
+```
+
+Then, we can write the logic for parsing list page items.
+
+```python
+def get_data(soup: BeautifulSoup) -> list:
+    # data
+    data = []
+
+    # items
+    items_elements = soup.select(list_items_selector)
+    for el in items_elements:
+        # row data
+        row = {}
+
+        # iterate fields
+        for f in fields:
+            # field name
+            field_name = f['name']
+
+            # field element
+            field_element = el.select_one(f['selector'])
+
+            # skip if field element not found
+            if not field_element:
+                continue
+
+            # add field value to row
+            if f['type'] == 'text':
+                row[field_name] = field_element.text
+            else:
+                row[field_name] = field_element.attrs.get(f['attribute'])
+
+        # add row to data
+        data.append(row)
+
+    return data
+```
+
+In the function `get_data` in the above code, we pass a `BeautifulSoup` instance as parameter, and use `list_items_selectors` and `fields` to parse and obtain the list data which is then returned the function caller.
+
+#### Request list page and pagination logics
+
+Then, we need to write the logics of requesting list pages and pagination, that is, to request a given URL and parse its pagination, then call the function above `get_data`.
+
+We need to first obtain the pagination's CSS Selector.
+
+```python
+# pagination next selector
+next_selector = results['results']['pagination'][0]['selectors']['next']['selector']
+print(next_selector)
+```
+
+Then, we write crawler logic, which continuously crawls data from website list pages.
+
+```python
+def crawl(url: str) -> list:
+    # all data to crawl
+    all_data = []
+
+    while True:
+        print(f'requesting {url}')
+
+        # request url
+        res = requests.get(url)
+
+        # beautiful soup of html
+        soup = BeautifulSoup(res.content)
+
+        # add parsed data
+        data = get_data(soup)
+        all_data += data
+
+        # pagination next element
+        next_el = soup.select_one(next_selector)
+
+        # end if pagination next element not found
+        if not next_el:
+            break
+
+				# url of next page
+        url = urljoin(url, next_el.attrs.get('href'))
+
+    return all_data
+```
+
+So we have completed all the coding parts.
+
+#### Putting them all together
+
+The following is the complete code for the entire crawl logic.
+
+```python
+from urllib.parse import urljoin
+
+import requests
+from bs4 import BeautifulSoup
+from pprint import pprint
+
+
+def get_data(soup: BeautifulSoup) -> list:
+    # data
+    data = []
+
+    # items
+    items_elements = soup.select(list_items_selector)
+    for el in items_elements:
+        # row data
+        row = {}
+
+        # iterate fields
+        for f in fields:
+            # field name
+            field_name = f['name']
+
+            # field element
+            field_element = el.select_one(f['selector'])
+
+            # skip if field element not found
+            if not field_element:
+                continue
+
+            # add field value to row
+            if f['type'] == 'text':
+                row[field_name] = field_element.text
+            else:
+                row[field_name] = field_element.attrs.get(f['attribute'])
+
+        # add row to data
+        data.append(row)
+
+    return data
+
+
+def crawl(url: str) -> list:
+    # all data to crawl
+    all_data = []
+
+    while True:
+        print(f'requesting {url}')
+
+        # request url
+        res = requests.get(url)
+
+        # beautiful soup of html
+        soup = BeautifulSoup(res.content)
+
+        # add parsed data
+        data = get_data(soup)
+        all_data += data
+
+        # pagination next element
+        next_el = soup.select_one(next_selector)
+
+        # end if pagination next element not found
+        if not next_el:
+            break
+
+        # url of next page
+        url = urljoin(url, next_el.attrs.get('href'))
+
+    return all_data
+
+
+if __name__ == '__main__':
+    # API endpoint
+    api_endpoint = 'http://localhost:9999/api'
+
+    # url to extract
+    url = 'https://quotes.toscrape.com'
+
+    # call API to recognize list page and pagination elements
+    res = requests.post(f'{api_endpoint}/requests', json={
+        'url': 'https://quotes.toscrape.com'
+    })
+    results = res.json()
+    pprint(results)
+
+    # list result
+    list_result = results['results']['plain_list'][0]
+
+    # list items selector
+    list_items_selector = list_result['selectors']['full_items']['selector']
+    print(list_items_selector)
+
+    # fields
+    fields = list_result['fields']
+    print(fields)
+
+    # pagination next selector
+    next_selector = results['results']['pagination'][0]['selectors']['next']['selector']
+    print(next_selector)
+
+    # start crawling
+    all_data = crawl(url)
+
+    # print crawled results
+    pprint(all_data[:50])
+```
+
+Run the code and we can obtain the following result data.
+
+```text
+[{'Field_link_url_6': '/author/Albert-Einstein',
+  'Field_link_url_8': '/tag/change/page/1/',
+  'Field_text_1': '“The world as we have created it is a process of our '
+                  'thinking. It cannot be changed without changing our '
+                  'thinking.”',
+  'Field_text_2': '“The world as we have created it is a process of our '
+                  'thinking. It cannot be changed without changing our '
+                  'thinking.”',
+  'Field_text_3': '\n'
+                  '            Tags:\n'
+                  '            \n'
+                  'change\n'
+                  'deep-thoughts\n'
+                  'thinking\n'
+                  'world\n',
+  'Field_text_4': 'Albert Einstein',
+  'Field_text_5': '(about)',
+  'Field_text_7': 'change'},
+  ...
+```
+
+Now, we have achieved the crawling task of automatically extracting lists using Webspot. In this way, there is no need to explicitly define CSS Selectors or XPaths. Just call the Webspot API and we can obtain the list page data.
