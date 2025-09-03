@@ -28,7 +28,7 @@ Marvin Zhang's personal website and blog built with [Nextra](https://nextra.site
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 
 ### Installation
@@ -110,4 +110,3 @@ This blog is set up to accommodate articles migrated from previous content sourc
 ## 📄 License
 
 MIT License - see LICENSE file for details.
->>>>>>> 82e3264fd55b7f5dd4472f3d095fe3c97ae15a97
