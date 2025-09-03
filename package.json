@@ -12,13 +12,14 @@
   "dependencies": {
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
-    "next": "^14.0.0",
-    "nextra": "^2.13.0",
-    "nextra-theme-blog": "^2.13.0",
+    "next": "^15.5.2",
+    "nextra": "^4.4.0",
+    "nextra-theme-blog": "^4.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
