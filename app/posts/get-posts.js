@@ -4,14 +4,13 @@ import { getPageMap } from 'nextra/page-map'
 export async function getPosts() {
   const list = await getPageMap('/posts');
   const route = '/posts';
-  console.log(list);
   const { directories } = normalizePages({
     list,
     route,
   })
   return directories
     .filter(post => post.name !== 'index')
-    .sort((a, b) => (b.frontMatter ? new Date(b.frontMatter.date) : 0) - (a.frontMatter ? new Date(a.frontMatter.date) : 0))
+    .sort((a, b) => new Date(b.frontMatter.date) - new Date(a.frontMatter.date))
 }
  
 export async function getTags() {
