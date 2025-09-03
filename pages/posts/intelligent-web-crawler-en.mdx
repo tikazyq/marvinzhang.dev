@@ -41,7 +41,7 @@ Now the accuracy of text recognition is very high, and there are many technical 
 
 We can infer from experience how to automatically identify desired content. Humans are visual animals. When we see a web page with a list of articles, we will immediately recognize the list of articles without any surprises, as shown in the figure below. But how exactly do we recognize it? In fact, we naturally group the article list items of the same category into one category. So, we'll quickly realize that this is actually a list page. Of course, why are these list items similar? We can see that the child elements in these lists are also similar, so it's natural to tie them together. The individual sub-elements add up to a single list item, which our brains automatically group them together. This is the process of listing page recognition.
 
-<img src="https://codao.crawlab.cn/images/2023-03-25-062942.png" style="width:640px" />
+![](https://codao.crawlab.cn/images/2023-03-25-051730.png)
 
 Based on such an analysis, it is actually very easy to think of the clustering algorithm in machine learning. All we need to do is to extract the characteristics of each node on the webpage, and then use the clustering algorithm to filter out the nodes of the same category. Of course, the feature selection here needs to be considered. Instead of simply looking at a single node of HTML, we need to associate it with other nodes to extract features, so that we can get some nodes of different categories. Then, we can filter out the desired list page according to the overall information of the node cluster.
 
