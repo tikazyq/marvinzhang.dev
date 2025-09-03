@@ -1,3 +1,6 @@
+import { useRouter } from 'next/router'
+import LanguageSwitcher from './components/LanguageSwitcher'
+
 const YEAR = new Date().getFullYear()
 
 export default {
@@ -25,6 +28,10 @@ export default {
     {
       url: 'https://github.com/tikazyq',
       name: 'GitHub'
+    },
+    {
+      component: <LanguageSwitcher />,
+      key: 'language-switcher'
     }
   ]
 }
