@@ -1,0 +1,41 @@
+---
+slug: 2022-11-20-untitled-article
+title: Untitled Article
+authors: [marvin]
+tags: ["da"]
+date: 2022-11-20
+---
+
+
+```mermaid
+flowchart TB
+    ctrb[Central Bank]
+    comb[Commercial Banks]
+    %% cmp_a[Company A]
+    %% cmp_b[Company B]
+    %% cmp[Companies]
+    ind[Individuals]
+
+    subgraph b_sys[Banking System]
+        direction TB
+        ctrb <--Issue/Repurchase--> comb
+    end
+
+    subgraph mkt[Market]
+        direction TB
+        
+        subgraph cmp[Companies]
+        	direction TB
+        	up_cmp[Upstream Company]
+        	down_cmp[Downstream Company]
+        	
+        	up_cmp <--Supply/Consume--> down_cmp
+        end
+        
+        cmp <--Sell/Buy--> ind
+        cmp <--Pay/Work--> ind
+    end
+
+    comb <--Lend/Repay--> cmp & ind
+```
+
