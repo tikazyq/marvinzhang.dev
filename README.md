@@ -1,28 +1,16 @@
 # marvinzhang.dev
 
-Marvin Zhang's personal website and blog built with [Nextra](https://nextra.site/).
+Marvin Zhang's personal website and blog built with [Docusaurus](https://docusaurus.io/).
 
 ## 🚀 Features
 
-- **Modern Blog**: Built with Nextra blog theme
+- **Modern Blog**: Built with Docusaurus blog theme
 - **MDX Support**: Write content in Markdown with React components
 - **Responsive Design**: Mobile-friendly and accessible
 - **SEO Optimized**: Proper meta tags and structured data
 - **Dark Mode**: Built-in dark mode support
-- **Fast Performance**: Powered by Next.js
-
-## 📁 Project Structure
-
-```
-├── pages/
-│   ├── index.mdx              # Homepage
-│   ├── about.mdx              # About page
-│   └── posts/                 # Blog posts
-│       └── *.mdx              # Individual blog posts
-├── theme.config.jsx           # Nextra theme configuration
-├── next.config.js             # Next.js configuration
-└── package.json               # Dependencies and scripts
-```
+- **Fast Performance**: Powered by Docusaurus
+- **Internationalization**: Support for English and Chinese content
 
 ## 🛠️ Development
 
@@ -54,20 +42,20 @@ npm run build
 ### Start Production Server
 
 ```bash
-npm start
+npm run serve
 ```
 
 ## ✍️ Writing Blog Posts
 
-Create a new `.mdx` file in the `pages/posts/` directory with frontmatter:
+Create a new `.mdx` file in the `blog/` directory with frontmatter:
 
 ```yaml
 ---
+slug: my-post-slug
 title: Your Post Title
-date: YYYY/M/D
-description: Brief description of the post
-tag: comma, separated, tags
-author: Author Name
+authors: [marvin]
+tags: ["tag1", "tag2"]
+date: YYYY-MM-DD
 ---
 
 # Your content here
@@ -75,36 +63,34 @@ author: Author Name
 Your blog post content in Markdown format.
 ```
 
+For Chinese posts, create files in the `i18n/zh/docusaurus-plugin-content-blog/` directory.
+
 ## 🎨 Customization
 
 ### Theme Configuration
 
-Edit `theme.config.jsx` to customize:
-- Footer content
+Edit `docusaurus.config.ts` to customize:
+- Site metadata
 - Navigation links
-- Meta tags
-- Dark mode settings
+- Footer content
+- Internationalization settings
 
 ### Styling
 
-The blog uses Nextra's built-in styling. For custom styles:
-1. Create a `styles/` directory
-2. Add CSS files and import them in your pages
+The blog uses Docusaurus's built-in styling. For custom styles:
+1. Edit `src/css/custom.css`
+2. Add custom CSS classes and styles
 
-## 📝 Migration Notes
+## 🌐 Internationalization
 
-This blog is set up to accommodate articles migrated from previous content sources. The structure supports:
-
-- Multiple blog posts with proper categorization
-- SEO-friendly URLs
-- Tag-based organization
-- Author attribution
-- Date-based sorting
+The site supports both English and Chinese:
+- English posts go in the `blog/` directory
+- Chinese posts go in the `i18n/zh/docusaurus-plugin-content-blog/` directory
+- Use the language switcher to toggle between languages
 
 ## 🔗 Links
 
-- [Nextra Documentation](https://nextra.site/)
-- [Next.js Documentation](https://nextjs.org/docs)
+- [Docusaurus Documentation](https://docusaurus.io/)
 - [GitHub Repository](https://github.com/tikazyq/marvinzhang.dev)
 
 ## 📄 License
