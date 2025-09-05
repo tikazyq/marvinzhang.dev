@@ -1,0 +1,105 @@
+---
+slug: openai-function-calls-langchain-zh
+title: "实战 AI: Langchain 库中的 OpenAI 函数调用 API"
+authors: ["marvin"]
+tags: ["ai"]
+date: 2023-10-18
+---
+
+
+
+# 实战 AI: Langchain 库中的 OpenAI 函数调用 API
+
+## 引言
+
+在探索人工智能领域时，我们常常需要利用现有的 API 来实现特定的功能。近日，在研究 Langchain 库时，我发现了一个很有趣的功能：利用 OpenAI 的**函数调用 API** 在一个链中执行特定操作。这不仅展示了如何从 ChatOpenAI 获取结构化输出，还展示了如何创建和执行函数链。这个功能为我们提供了一种新的可能性，使得在一个链中执行多个函数成为可能。通过这种方式，我们能够根据特定的输入，获得**结构化**的输出，从而为后续的操作提供更**准确**的数据。
+
+## LangChain OpenAI 函数
+
+首先，我们需要了解如何从 ChatOpenAI 获取结构化的输出。在 Langchain 库中，有一个 `create_structured_output_chain` 函数，它可以接受一个 Pydantic 类或 JsonSchema 作为结构化输出的格式。通过这种方式，我们可以**强制模型返回特定结构的输出**，从而方便后续的处理。
+
+例如，我们可以创建一个 `Person` 类，用于描述一个人的基本信息：
+
+```python
+from langchain.pydantic_v1 import BaseModel, Field   
+
+class Person(BaseModel):  
+    """Identifying information about a person."""  
+
+    name: str = Field(..., description="The person's name")  
+    age: int = Field(..., description="The person's age")  
+    fav_food: Optional[str] = Field(None, description="The person's favorite food")  
+```
+
+然后，我们可以创建一个链来处理特定的输入，并尝试从中提取结构化的信息。例如，我们可以创建以下链来处理输入 “Sally is 13”：
+
+```python
+llm = ChatOpenAI(model="gpt-4", temperature=0)  
+prompt = ChatPromptTemplate.from_messages(  
+    [  
+        ("system", "You are a world class algorithm for extracting information in structured formats."),  
+        ("human", "Use the given format to extract information from the following input: {input}"),  
+        ("human", "Tip: Make sure to answer in the correct format"),  
+    ]  
+)  
+
+chain = create_structured_output_chain(Person, llm, prompt, verbose=True)  
+chain.run("Sally is 13")  
+```
+
+运行结果如下：
+
+```python
+Person(name='Sally', age=13, fav_food='Unknown')  
+```
+
+这样，我们就成功地从文本中提取了结构化的信息。通过类似的方式，我们还可以处理更复杂的输入，例如包含多个人信息的文本。此外，我们还可以使用 JsonSchema 来指定所需的结构，而不是 Pydantic 类。
+
+注意，在上面的例子中，类和字段的描述（Description）非常重要，这决定了大模型判断的输出内容。
+
+## 实现文本翻译
+
+在 Langchain 库中，`create_structured_output_chain` 函数为我们提供了一种简洁的方法来处理特定任务，并获得结构化的输出。例如，我们可以利用这个功能来实现文本翻译。首先，我们需要定义一个 Pydantic 模型来描述翻译的输出结构，如下：
+
+```python
+from langchain.pydantic_v1 import BaseModel, Field
+
+class Translation(BaseModel):
+    translation: str = Field(..., description="Translated text")
+```
+
+接下来，我们初始化 `ChatOpenAI` 模型，并创建一个翻译提示模板：
+
+```python
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+
+llm = ChatOpenAI(model="gpt-4", temperature=0)
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a translation model capable of translating English text to Chinese."),
+    ("human", "Translate the following text: {input}")
+])
+```
+
+最后，我们利用 `create_structured_output_chain` 函数创建一个函数链，并运行该链来翻译指定的文本：
+
+```python
+from langchain.chains.openai_functions import create_structured_output_chain
+
+chain = create_structured_output_chain(Translation, llm, prompt, verbose=True)
+
+result = chain.run("Hello, how are you?")
+
+print(result)
+```
+
+这样，我们获得了翻译结果，还保证了输出的结构化，可以为下游操作提供便利。
+
+## 结论
+
+通过上述示例，我们可以看到 Langchain 通过 `create_structured_output_chain` 函数，为我们提供了一种有效的方式来实现特定任务的**结构化**输出。这种方法不仅使代码更加简洁，也大大提高了我们处理和提取结构化信息的效率。随着 AI 技术的不断发展，结构化输出将在数据处理、信息提取和自然语言处理等多个领域发挥重要作用。我相信，Langchain 的这种功能会得到广泛的应用，为开发者和研究者们提供更多便利。
+
+## 社区
+
+如果您对笔者的文章感兴趣，可以加笔者微信 tikazyq1 并注明 "码之道"，笔者会将你拉入 "码之道" 交流群。
