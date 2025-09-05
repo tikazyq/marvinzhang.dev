@@ -1,0 +1,75 @@
+# 实战 AI：使用Langchain构建高效的知识问答系统
+
+## 引言
+
+知识问答系统（KQA）是自然语言处理领域的核心技术之一，它能够帮助用户从大量数据中快速准确地检索到所需信息。知识问答系统成为了帮助个人和企业快速获取、筛选和处理信息的重要工具。它们在很多领域都发挥着重要作用，例如在线客服、智能助手、数据分析和决策支持等。
+
+Langchain不仅提供了构建基本问答系统的必要模块，还支持更为复杂和高级的问答场景。例如，它可以处理结构化数据和代码，使得我们能够针对数据库或代码库进行问答。这极大地扩展了知识问答系统的应用范围，使其能够适应更多复杂的实际需求。本篇文章将通过一个简单的实战例子，介绍如何使用Langchain构建基本的知识问答系统。
+
+![flow.jpeg](https://python.langchain.com/assets/images/qa_flow-9fbd91de9282eb806bda1c6db501ecec.jpeg)
+
+## 实战
+
+下面，我们将通过实战例子手把手介绍如何使用Langchain搭建知识问答系统。
+
+### 1. 文档加载和预处理
+构建知识问答系统的第一步是加载和预处理文档。Langchain提供了`WebBaseLoader`模块，可以帮助我们轻松加载文档：
+```python
+from langchain.document_loaders import WebBaseLoader
+
+# 加载文档
+loader = WebBaseLoader("https://lilianweng.github.io/posts/2023-06-23-agent/")
+documents = loader.load()
+```
+加载文档后，我们需要对文档进行预处理，以便后续处理。`RecursiveCharacterTextSplitter`模块可以帮助我们将文档切割成小块，便于处理：
+```python
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+# 文档切割
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+texts = text_splitter.split_documents(documents)
+```
+
+### 2. 文本嵌入
+文本嵌入是将文本转换为向量的过程，它是自然语言处理的基础。Langchain提供了`OpenAIEmbeddings`模块，可以帮助我们快速实现文本嵌入：
+```python
+from langchain.embeddings import OpenAIEmbeddings
+
+# 创建嵌入
+embeddings = OpenAIEmbeddings()
+```
+
+### 3. 构建向量存储库
+向量存储库是存储文档嵌入的地方。通过`Chroma`模块，我们可以方便地创建和管理向量存储库：
+```python
+from langchain.vectorstores import Chroma
+
+# 构建向量存储库
+docsearch = Chroma.from_documents(texts, embeddings)
+```
+
+### 4. 构建检索QA链
+检索QA链是知识问答系统的核心，它负责处理用户的查询，并从向量存储库中检索相关文档：
+```python
+from langchain.chains import RetrievalQA
+from langchain.llms import OpenAI
+
+# 构建检索QA链
+qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=docsearch.as_retriever())
+```
+
+### 5. 查询执行和结果获取
+最后，我们可以执行用户的查询，并从系统中获取答案：
+```python
+# 执行查询
+query = "What is Task Decomposition?"
+answer = qa.run(query)
+```
+
+## 总结
+
+通过Langchain库，我们快速搭建出了一个基础的知识问答系统。不仅如此，Langchain还提供了丰富的模块和功能，使得开发者可以根据项目的需求定制问答系统。例如，我们可以使用不同的文档加载器、文本切割器和向量存储库，来适应不同类型和规模的数据。此外，Langchain还支持多种检索和问答模式，如Retrieval-augmented Generation (RAG)模式，使得我们能够构建出更为高级和复杂的知识问答系统。
+
+## 社区
+
+如果您对笔者的文章感兴趣，可以加笔者微信 tikazyq1 并注明 "码之道"，笔者会将你拉入 "码之道" 交流群。

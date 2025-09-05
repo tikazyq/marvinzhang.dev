@@ -1,0 +1,267 @@
+# Golang in Action: How to quickly implement a minimal task scheduling system
+
+## Introduction
+
+*Task Scheduling* is one of the most important features in software systems, which literally means assigning and executing long tasks or scripts according to certain specifications. In the web crawler management platform [Crawlab](https://github.com/crawlab-team/crawlab), task scheduling serves as a core module, which you may wonder how to build it from scratch. This article will introduce you how to build a simple but useful task scheduler with Go.
+
+## Idea
+
+Let's focus on what we need for the task scheduling system.
+
+- User Interface: API
+- Scheduler: Cron
+- Execute Tasks: Executor
+
+Below is the basic process.
+
+![image-20221003094216157](https://codao.crawlab.cn/images/2022-10-03-014216.png)
+
+We can use HTTP API to create scheduled tasks, and the executor will execute scripts periodically based on their specifications.
+
+## Action
+
+### User Interface
+
+Let's first create a basic structure. Now create a file `main.go` under the root directory, and enter the content below. `gin` is a popular API engine written in Go.
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"os"
+)
+
+func main() {
+	// api engine
+	app := gin.New()
+
+	// api routes
+	app.GET("/jobs", GetJobs)
+	app.POST("/jobs", AddJob)
+	app.DELETE("/jobs", DeleteJob)
+
+	// run api on port 9092
+  if err := app.Run(":9092"); err != nil {
+		_, err = fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+```
+
+Then create the file `api.go` with content as below. Please note there is no implementation here, but placeholders instead.
+
+```go
+package main
+
+import "github.com/gin-gonic/gin"
+
+func GetJobs(c *gin.Context) {
+	// TODO: implementation here
+}
+
+func AddJob(c *gin.Context) {
+	// TODO: implementation here
+}
+
+func DeleteJob(c *gin.Context) {
+	// TODO: implementation here
+}
+
+```
+
+### Schedule Tasks
+
+Now let's implement the core of task scheduler, *cron job*. We will be using [robfig/cron](https://github.com/robfig/cron), a reputable cron library written in Go.
+
+Now create a new file `cron.go` with content as below. The variable `Cron` is the instance initiated from the class in `robfig/cron`. 
+
+```go
+package main
+
+import "github.com/robfig/cron"
+
+func init() {
+	// start to run
+	Cron.Run()
+}
+
+// Cron create a new cron.Cron instance
+var Cron = cron.New()
+
+```
+
+After the task scheduler instance is created, we can now fill the core code in the placeholders created previously. 
+
+Again in `api.go`, let's add the core code.
+
+```go
+package main
+
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron/v3"
+	"net/http"
+	"strconv"
+)
+
+func GetJobs(c *gin.Context) {
+	// return a list of cron job entries
+	var results []map[string]interface{}
+	for _, e := range Cron.Entries() {
+		results = append(results, map[string]interface{}{
+			"id":   e.ID,
+			"next": e.Next,
+		})
+	}
+	c.JSON(http.StatusOK, Cron.Entries())
+}
+
+func AddJob(c *gin.Context) {
+	// post JSON payload
+	var payload struct {
+		Cron string `json:"cron"`
+		Exec string `json:"exec"`
+	}
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	// add cron job
+	eid, err := Cron.AddFunc(payload.Cron, func() {
+    // TODO: implementation here
+	})
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, map[string]interface{}{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.AbortWithStatusJSON(http.StatusOK, map[string]interface{}{
+		"id": eid,
+	})
+}
+
+func DeleteJob(c *gin.Context) {
+	// cron job entry id
+	id := c.Param("id")
+	eid, err := strconv.Atoi(id)
+	if err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	// remove cron job
+	Cron.Remove(cron.EntryID(eid))
+
+	c.AbortWithStatus(http.StatusOK)
+}
+
+```
+
+In the code blocks, we have implemented the most logics. The only remaining part is the actual execution logic in the secon parameter in `Cron.AddFunc` in the function `AddJob`.
+
+### Execute Task
+
+Now let's implement the task execution logic. First we create a new file `exec.go` with content below. Here we have used the built-in Golang library `os/exec` to execute any shell commands.
+
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+	"os/exec"
+	"strings"
+)
+
+func ExecuteTask(execCmd string) {
+	// execute command string parts, delimited by space
+	execParts := strings.Split(execCmd, " ")
+
+	// executable name
+	execName := execParts[0]
+
+	// execute command parameters
+	execParams := strings.Join(execParts[1:], " ")
+
+	// execute command instance
+	cmd := exec.Command(execName, execParams)
+
+	// run execute command instance
+	if err := cmd.Run(); err != nil {
+		_, err = fmt.Fprintln(os.Stderr, err)
+		fmt.Println(err.Error())
+	}
+}
+
+```
+
+Very well. Now we can put this part into the previous placeholder.
+
+```go
+...
+	// add cron job
+	eid, _ := Cron.AddFunc(payload.Cron, func() {
+		ExecuteTask(payload.Exec)
+	})
+...
+```
+
+### Final Results
+
+Okay, all done! Now we can play around this minimal task scheduler.
+
+Open a command prompt and enter `go run .`, then the API engine starts.
+
+```
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:   export GIN_MODE=release
+ - using code:  gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /jobs                     --> main.GetJobs (1 handlers)
+[GIN-debug] POST   /jobs                     --> main.AddJob (1 handlers)
+[GIN-debug] DELETE /jobs/:id                 --> main.DeleteJob (1 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :9092
+
+```
+
+Now open another command prompt, enter `curl -X POST -d '{"cron":"* * * * *","exec":"touch /tmp/hello.txt"}' http://localhost:9092/jobs`, and get results as below, meaning a created schedule task with ID as 1 and updating `/tmp/hello.txt` every minute.
+
+```
+{"id":1}
+```
+
+Then enter the command `curl http://localhost:9092/jobs` in this prompt.
+
+```
+[{"id":1,"next":"2022-10-03T12:46:00+08:00"}]
+```
+
+This means the next execution is after 1 minute.
+
+Wait for a minute and execute `ls -l /tmp/hello.txt` to get the results below.
+
+```
+-rw-r--r--  1 marvzhang  wheel     0B Oct  3 12:46 /tmp/hello.txt
+```
+
+Well done, that means it works perfectly!
+
+## Conclusion
+
+This article introduced a way to develop a minimal task scheduling system with a simple combination of a few libraries in Golang. 
+
+Core libraries:
+
+- [gin](https://github.com/gin-gonic/gin)
+- [robfig/cron](https://github.com/robfig/cron)
+- os/exec
+
+The code of the whole project is on GitHub: https://github.com/tikazyq/codao-code/tree/main/2022-10/go-task-scheduler
