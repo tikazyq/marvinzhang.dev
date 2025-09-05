@@ -3,7 +3,6 @@
   "outputDirectory": "build",
   "installCommand": "pnpm install",
   "framework": "other",
-  "functions": {},
   "headers": [
     {
       "source": "/static/(.*)",
