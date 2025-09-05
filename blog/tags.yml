@@ -1,19 +1,39 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+ai:
+  label: AI
+  permalink: /ai
+  description: Artificial Intelligence and machine learning
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+algorithm:
+  label: Algorithm
+  permalink: /algorithm
+  description: Algorithms and computational methods
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+architecture:
+  label: Architecture
+  permalink: /architecture
+  description: Software architecture and system design
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+backend:
+  label: Backend
+  permalink: /backend
+  description: Backend development and server-side technologies
+
+crawlab:
+  label: Crawlab
+  permalink: /crawlab
+  description: Crawlab web scraping platform
+
+da:
+  label: Data Analytics
+  permalink: /data-analytics
+  description: Data analysis and data science
+
+devops:
+  label: DevOps
+  permalink: /devops
+  description: Development operations and CI/CD
+
+project-management:
+  label: Project Management
+  permalink: /project-management
+  description: Agile methodologies and project management
