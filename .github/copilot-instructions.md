@@ -103,5 +103,6 @@ pnpm run typecheck
 - Vercel automatically deploys from main branch
 - Build uses `pnpm run build` and outputs to `build/` directory
 - Static files cached aggressively via headers configuration
+- Adhoc scripts or files should be put in `./tmp` folder
 
 When working on this codebase, always use pnpm commands and be mindful of the bilingual content structure requiring parallel file management.
