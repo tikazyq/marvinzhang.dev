@@ -1,0 +1,39 @@
+---
+slug: basic-statistics-data-analysis
+title: "Talking Data: Some Basic yet Useful Statistics in Data Analysis"
+authors: ["marvin"]
+tags: ["da"]
+date: 2022-11-04
+---
+
+
+
+# Talking Data: Some Basic yet Useful Statistics in Data Analysis
+
+## Introduction
+
+> "All models are wrong, but some are useful."--George Box
+
+For many people, data analysis is familiar but inaccessible. Data rookies think that fancy dashboards look cool. Operational managers think that time-series charts can help them make business decisions. Programmers think that data analysis is nothing more than fetching the data of target fields from the database according to certain requirements. These views are all correct, but incomplete. The really useful data analysis is not only to present charts and numbers, but also to fully combine data insights with the business knowledge, which is meaningful to add values to the business. Understanding some basic statistics knowledge is helpful to discover insights.
+
+## Unreliable Averages
+
+We can often see that many data reports display daily, weekly, or monthly averages, such as the daily average sales of the current month, the monthly average number of visits last year, and so on. The statistics of the average value will be helpful for some specific situations, such as the time of getting up every morning, and the offset of hitting the target. But more often, you are likely to be skeptical about the average value, because it fluctuates up and down quite a lot, and the fluctuation range is not small. The root cause here comes from the **Non Linear Distribution** in the real world. The distribution of websites' response time, number of web page visits, and stock trend is non-linear. In these non-linear distributions, the average value fails because there are a large number of **outliers** that cause the average value to be seriously **skewed**. As shown in the figure below, for normal distribution or gaussian distribution, it is linear, so the average value is at the peak in the middle; But for gamma distribution, given that it is a nonlinear, its average value seriously deviates from its peak, and when there are more outliers, its average value will further deviate from its central position.
+
+![Gaussian and Gamma Distributions](https://tva1.sinaimg.cn/large/008vxvgGly1h7vitc7gvfj31d60ow40o.jpg)
+
+Therefore, for these non-linear distributions, the average value is not a reasonable indicator, but we can use **median** instead to describe its overall distribution. There are many tools to deal with non-linear distributions, one of which is the **Box Plot**. As shown in the figure below, the two distributions are abstracted into a box and several lines, where the box center line is the median, and the edges are first-quartile and third-quartile lines. In this way, it is not necessary to do too much complicated analysis to quickly get a general idea about the distribution.
+
+![Box Plot](https://tva1.sinaimg.cn/large/008vxvgGly1h7vj9t68rqj30wa0nymy2.jpg)
+
+## Correlation Analysis
+
+**Correlation** is a very interesting feature in data analysis. Many correlation analysis can help data analysts find many interesting insights, but it also has many pitfalls: the story of beer and diaper reflects a large number of correlated incidents but without causal relationships, which is resulted by accumulation of contingency; The analysis result of the bullet position of the Allied aircraft in World War II is actually a classic example of the **survivorship bias**; Financial news is filled with a lot of "wise opinions after the fact" about the fluctuation of stock prices, such as something like "The Dow Jones Index fell 0.5% due to the pressure of the Federal Reserve to raise interest rates", which is seemingly professional but ultimately useless. Therefore, veteran data analysts will address to new analysts that they must find out **Causal Relationship**, not just the correlation.
+
+There are many tools to calculate the correlation, among which I personally often use the **Pearson Correlation Coefficient**, which can calculate both positive and negative correlations. It is very intuitive and easy to use. In addition, the **Scatter Plot** is used to visually reflect the correlation, which can play a significant role in bivariate analysis. You can see a scatter plot with linear correlation line as below.
+
+![Scatter Plot](https://tva1.sinaimg.cn/large/008vxvgGly1h7vk6j5lozj30vm0ns75k.jpg)
+
+## Conclusion
+
+There are a lot of complex statistical knowledge involved in data analysis. This article only introduces the analysis skills that are commonly used but easily neglected in daily work, including pitfalls of the average value, correlation analysis, etc. Among them, we briefly mentioned some statistical concepts in the real world, such as nonlinear distribution and outliers; For correlation analysis, in addition to introducing Pearson correlation coefficient, the importance of causality was also emphasized. Of course, data analysis in the real world needs to be undertaken with more caution, because things behind the real data are often complex systems and processes. Part of the responsibility of data analysts is to find out the relationships and influencing factors, so as to provide more reliable data support business decision makers. This is why data analysts who have worked for many years do not use many cool techniques, but instead they prefer simple and effective tools to draw reliable conclusions on the premise of fully understanding the business background.

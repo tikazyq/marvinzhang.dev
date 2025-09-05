@@ -1,0 +1,57 @@
+---
+slug: crawlab-v062-release-zh
+title: "爬虫管理平台 Crawlab v0.6.2 正式发布"
+authors: ["marvin"]
+tags: ["crawlab"]
+date: 2023-06-17
+---
+
+
+
+# 爬虫管理平台 Crawlab v0.6.2 正式发布
+
+## 概览
+
+Crawlab v0.6.2 是 Crawlab v0.6.x 的最新迭代版本，带来了一系列改进，包括问题修复、功能优化以及环境变量功能的增强。
+
+## 更新日志
+
+### 问题修复
+
+- [意外数据库连接](https://github.com/crawlab-team/crawlab-core/commit/db72bfcb7dca8daa3723cfa045bf49ecdb12e68f)
+- [任务执行命令不生效](https://github.com/crawlab-team/crawlab-core/commit/8b7ee0560c7b938bac332b19e5df594d04da16c8)
+- [任务重启执行命令不一致](https://github.com/crawlab-team/crawlab-core/commit/193fcc36d89b105e329330cd9cfab445c3fb33f3)
+- [任务队列不一致问题](https://github.com/crawlab-team/crawlab-core/commit/0a348c82c8d13d6702ca8ace3b2fa10f65f39fae)
+- [无法更新Cron表达式](https://github.com/crawlab-team/crawlab-core/commit/3fd8f8abda3e8d86f9cd24a9208761397ee6afb2)
+- [节点禁用后仍然运行任务](https://github.com/crawlab-team/crawlab-core/commit/d687e0e13b46c9e65f509113d83c579ee6f3c97a)
+- [未返回任务ID](https://github.com/crawlab-team/crawlab-core/commit/ed5e9f0d01819c8b04a50bb6330ced1247594152)
+- [无法下载JSON数据](https://github.com/crawlab-team/crawlab-core/commit/d72d932578b349e2858cb4d3309196fc27dc67af)
+- [无法启动SeaweedFS](https://github.com/crawlab-team/crawlab-core/commit/3f9dc67dbf924932a5b02966b90ca71be86a931a)
+- [任务MaxRunners设置错误](https://github.com/crawlab-team/crawlab-core/commit/d45536ec1a7c1698dbbfa8a5f99c0dd440b68dcd)
+- [去重不生效](https://github.com/crawlab-team/crawlab-core/commit/e5b1fb5bfa09336c19875c8bd09d28e2e700a698)
+- [长日志导致任务卡住](https://github.com/crawlab-team/crawlab-core/commit/68a112d4f5d6f3d95e84c5ad1435818c01267bfb)
+- [无法监控数据源状态](https://github.com/crawlab-team/crawlab-core/commit/9c40ef47ddb3abc429ea32956522801cd46a0980)
+- [Git拉取错误](https://github.com/crawlab-team/crawlab-core/commit/ed9c36918bbda10dfb9eb9a55235d1c04141a7b9)
+- [当爬虫不存在时应用崩溃问题](https://github.com/crawlab-team/crawlab-core/commit/cf59917a496a836153cc618d8ea20b8d55659089)
+- [数据集问题](https://github.com/crawlab-team/crawlab-ui/commit/a4065bf58d3faadd94e17764bbee8a4df012748f)
+
+### 功能优化
+
+- [默认显示最新列表数据](https://github.com/crawlab-team/crawlab-core/commit/51c21cace45837b16ccc157ec969a29b80e9015e)
+- [任务完成后关闭Runner](https://github.com/crawlab-team/crawlab-core/commit/c6356d35266072eddb544b4ca6bacc0726c358c7)
+- [批量写入日志](https://github.com/crawlab-team/crawlab-core/commit/84bf0f08af416061f7b37cd61c686d4e867fc963)
+- [配置日志TTL](https://github.com/crawlab-team/crawlab-core/commit/13c372f3d0af4e00ec9addf6cb4fa30f26e4d418)
+- [更多数据源](https://github.com/crawlab-team/crawlab-core/commit/c916e80449d2d9f59e2379a2489ee8b322730efb)
+- [环境变量](https://github.com/crawlab-team/crawlab-core/commit/d1650221a32232068475cd5bb235943c3a6337b6)
+- [删除不必要按钮](https://github.com/crawlab-team/crawlab-ui/commit/43aab3b3d3d52dd8c81fba24e9070fda70f7f5dc)
+
+## 社区
+
+如果您觉得 [Crawlab](https://github.com/crawlab-team/crawlab) 对您的日常开发或公司有帮助，欢迎在 Github 上进行 star，以及，如果遇到任何问题，请随时在 Github 上提 issue。另外，欢迎您对 [Crawlab](https://github.com/crawlab-team/crawlab) 做开发贡献。同时，您也可以加微信 tikazyq1 加入 Crawlab 技术交流群，在技术开发和部署使用上与其他开发者进行交流讨论。
+
+## 参考
+
+- 官网: https://www.crawlab.cn
+- 文档: https://docs.crawlab.cn
+- GitHub: https://github.com/crawlab-team/crawlab
+- Demo: https://demo.crawlab.cn/

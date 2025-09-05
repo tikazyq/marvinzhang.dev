@@ -1,0 +1,202 @@
+---
+slug: github-actions-large-projects
+title: "CI/CD in Action: Manage auto builds of large open-source projects with GitHub Actions?"
+authors: ["marvin"]
+tags: ["devops"]
+date: 2022-10-21
+---
+
+
+
+# CI/CD in Action: Manage auto builds of large open-source projects with GitHub Actions?
+
+## Introduction
+
+In the previous article about *[CI/CD in Action: How to use Microsoft's GitHub Actions in a right way?](https://dev.to/tikazyq/cicd-in-action-how-to-use-microsofts-github-actions-in-a-right-way-4g89)*, we introduced how to use GitHub Actions workflows with a practical Python project. However, this is quite simple and not comprehensive enough for **large projects**. 
+
+This article introduces practical CI/CD applications with GitHub Actions of my open-source project **[Crawlab](https://github.com/crawlab-team/crawlab)**. For those who are not familiar with Crawlab, you can refer to the [official site](https://www.crawlab.cn) or [documentation](https://docs.crawlab.cn). In short, Crawlab is a web crawler management platform for efficient data collection.
+
+## Overall CI/CD Architecture
+
+The new version of Crawlab v0.6 split general functionalities into separated modules, so that the whole project is consisted of a few dependent sub-projects. For example, the main project [crawlab](https://github.com/crawlab-team/crawlab) depends on the front-end project [crawlab-ui](https://github.com/crawlab-team/crawlab-ui) and back-end project [crawlab-core](https://github.com/crawlab-team/crawlab-core). Higher **decoupling** and **maintainability** are the benefits.
+
+Below is the diagram of the overall CI/CD architecture.
+
+![Crawlab CI/CD](https://codao.crawlab.cn/images/2022-10-21-025257.png)
+
+The building process of the whole Crawlab project is a little bit trivial. The ultimate deliverable or the Docker image [crawlabteam/crawlab](https://hub.docker.com/crawlabteam/crawlab) depends on the main repository, which depends on the sub-projects of front-end, back-end, base images and plugins. They are come from their own repos, which again depend on upstream core-module repos. Here we have simplified the dependencies of front-end and back-end modules. 
+
+## Front-End Building
+
+We start with the front-end part.
+
+The front-end repo crawlab-ui is distributed through NPM. Let's take a look at the CI/CD workflow.
+
+```yaml
+name: Publish to NPM registry
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  release:
+    types: [ created ]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.22.7'
+          registry-url: https://registry.npmjs.com/
+      - name: Get version
+        run: echo "TAG_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: yarn install
+      - name: Build
+        run: yarn run build
+        env:
+          TAG_VERSION: ${{env.TAG_VERSION}}
+      - if: ${{ github.event_name == 'release' }}
+        name: Publish npm
+        run: npm publish --registry ${REGISTRY}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
+          TAG_VERSION: ${{env.TAG_VERSION}}
+          REGISTRY: https://registry.npmjs.com/
+```
+
+There are some important parts:
+
+1. Set up Node.js environment `uses: actions/setup-node@v2` and its version `node-version: '12.22.7'`
+2. Install dependencies `run: yarn install`
+3. Build the package `yarn run build`
+4. Publish the package to NPM registry `npm publish --registry ${REGISTRY}`
+
+The token for publishing NPM package is  `${{secrets.NPM_PUBLISH_TOKEN}}`, which is a GitHub **secret** configured by the repo owner, and private to the public for security reasons.
+
+After the workflow is set up, a GitHub Actions workflow job will be **automatically triggered** once any code commit is push to crawlab-ui.
+
+![image-20221021113449174](https://codao.crawlab.cn/images/2022-10-21-033449.png)
+
+We barely need to take care of anything for NPM package publishing, because it is fully automated. Awesome!
+
+## Base Image Building
+
+Let's see another special workflow: base image building. The GitHub repo is [docker-base-images](https://github.com/crawlab-team/docker-base-images).
+
+As the new published base image needs to be integrated into the final Docker image, we need to re-trigger a workflow job in crawlab once it is built. Let's see how this workflow is configured.
+
+```yaml
+name: Docker crawlab-base
+
+on:
+  push:
+    branches: [ main ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [ crawlab-base ]
+
+env:
+  IMAGE_PATH: crawlab-base
+  IMAGE_NAME: crawlabteam/crawlab-base
+
+jobs:
+
+  build:
+    name: Build Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v18.7
+
+      - name: Check matched
+        run: |
+          # check changed files
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ $file =~ ^\.github/workflows/.* ]]; then
+              echo "file ${file} is matched"
+              echo "is_matched=1" >> $GITHUB_ENV
+              exit 0
+            fi
+            if [[ $file =~ ^${IMAGE_PATH}/.* ]]; then
+              echo "file ${file} is matched"
+              echo "is_matched=1" >> $GITHUB_ENV
+              exit 0
+            fi
+          done
+          
+          # force trigger
+          if [[ ${{ inputs.forceTrigger }} == true ]]; then
+              echo "is_matched=1" >> $GITHUB_ENV
+              exit 0
+          fi
+
+      - name: Build image
+        if: ${{ env.is_matched == '1' }}
+        run: |
+          cd $IMAGE_PATH
+          docker build . --file Dockerfile --tag image
+
+      - name: Log into registry
+        if: ${{ env.is_matched == '1' }}
+        run: echo ${{ secrets.DOCKER_PASSWORD}} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Push image
+        if: ${{ env.is_matched == '1' }}
+        run: |
+          IMAGE_ID=$IMAGE_NAME
+          
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "main" ] && VERSION=latest
+          
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          
+          docker tag image $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+          
+          if [[ $VERSION == "latest" ]]; then
+            docker tag image $IMAGE_ID:main
+            docker push $IMAGE_ID:main
+          fi
+
+      - name: Trigger other workflows
+        if: ${{ env.is_matched == '1' }}
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
+          repository: crawlab-team/crawlab
+          event-type: docker-crawlab
+```
+
+As you can see in the workflow, the last step  `name: Trigger other workflows` will **trigger another GitHub Actions workflow job in another GitHub repo** crawlab-team/crawlab through `peter-evans/repository-dispatch@v2`, a re-usable action. That means, if we make modifications in the base image code and push the commits, the base image will be built automatically before it triggers another workflow job in the repo crawlab to build the final image.
+
+This is so great! We can sit down and take a coffee, waiting for the job to finish, instead of doing any manual work.
+
+## Conclusion
+
+Today we introduced the use of GitHub Actions in the large open-source project Crawlab along with its automatic building process and overall CI/CD architecture. Overall, GitHub Actions supports the CI/CD integration of large projects quite well. 
+
+Techniques used:
+
+1. Automatic triggers to build
+2. Publish NPM packages
+3. Repo secrets
+4. Trigger workflows in other repos
+
+The code of the whole project is in the repos of Crawlab on GitHub and publicly available.
