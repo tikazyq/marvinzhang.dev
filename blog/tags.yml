@@ -3,9 +3,19 @@ ai:
   permalink: /ai
   description: Artificial Intelligence and machine learning
 
+agile:
+  label: Agile
+  permalink: /agile
+  description: Agile development methodology
+
 algorithm:
   label: Algorithm
   permalink: /algorithm
+  description: Algorithms and computational methods
+
+algorithms:
+  label: Algorithms
+  permalink: /algorithms
   description: Algorithms and computational methods
 
 architecture:
@@ -18,14 +28,29 @@ backend:
   permalink: /backend
   description: Backend development and server-side technologies
 
+blog:
+  label: Blog
+  permalink: /blog
+  description: General blog posts
+
 crawlab:
   label: Crawlab
   permalink: /crawlab
   description: Crawlab web scraping platform
 
+csharp:
+  label: C#
+  permalink: /csharp
+  description: C# programming language
+
 da:
   label: Data Analytics
   permalink: /data-analytics
+  description: Data analysis and data science
+
+data-analysis:
+  label: Data Analysis
+  permalink: /data-analysis
   description: Data analysis and data science
 
 devops:
@@ -33,7 +58,62 @@ devops:
   permalink: /devops
   description: Development operations and CI/CD
 
+distributed-systems:
+  label: Distributed Systems
+  permalink: /distributed-systems
+  description: Distributed computing and system architecture
+
+frontend:
+  label: Frontend
+  permalink: /frontend
+  description: Frontend development and user interfaces
+
+github:
+  label: GitHub
+  permalink: /github
+  description: GitHub platform and version control
+
+golang:
+  label: Go
+  permalink: /golang
+  description: Go programming language
+
+javascript:
+  label: JavaScript
+  permalink: /javascript
+  description: JavaScript programming language
+
+machine-learning:
+  label: Machine Learning
+  permalink: /machine-learning
+  description: Machine learning and AI techniques
+
 project-management:
   label: Project Management
   permalink: /project-management
   description: Agile methodologies and project management
+
+react:
+  label: React
+  permalink: /react
+  description: React framework and library
+
+testing:
+  label: Testing
+  permalink: /testing
+  description: Software testing and quality assurance
+
+translation-needed:
+  label: Translation Needed
+  permalink: /translation-needed
+  description: Articles that need English translation
+
+typescript:
+  label: TypeScript
+  permalink: /typescript
+  description: TypeScript programming language
+
+vue:
+  label: Vue
+  permalink: /vue
+  description: Vue.js framework

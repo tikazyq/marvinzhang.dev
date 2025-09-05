@@ -3,9 +3,19 @@ ai:
   permalink: /ai
   description: 人工智能和机器学习
 
+agile:
+  label: 敏捷
+  permalink: /agile
+  description: 敏捷开发方法论
+
 algorithm:
   label: 算法
   permalink: /algorithm
+  description: 算法和计算方法
+
+algorithms:
+  label: 算法
+  permalink: /algorithms
   description: 算法和计算方法
 
 architecture:
@@ -18,14 +28,29 @@ backend:
   permalink: /backend
   description: 后端开发和服务端技术
 
+blog:
+  label: 博客
+  permalink: /blog
+  description: 一般博客文章
+
 crawlab:
   label: Crawlab
   permalink: /crawlab
   description: Crawlab 网络爬虫平台
 
+csharp:
+  label: C#
+  permalink: /csharp
+  description: C# 编程语言
+
 da:
   label: 数据分析
   permalink: /data-analytics
+  description: 数据分析和数据科学
+
+data-analysis:
+  label: 数据分析
+  permalink: /data-analysis
   description: 数据分析和数据科学
 
 devops:
@@ -33,7 +58,57 @@ devops:
   permalink: /devops
   description: 开发运维和持续集成
 
+distributed-systems:
+  label: 分布式系统
+  permalink: /distributed-systems
+  description: 分布式计算和系统架构
+
+frontend:
+  label: 前端
+  permalink: /frontend
+  description: 前端开发和用户界面
+
+github:
+  label: GitHub
+  permalink: /github
+  description: GitHub 平台和版本控制
+
+golang:
+  label: Go
+  permalink: /golang
+  description: Go 编程语言
+
+javascript:
+  label: JavaScript
+  permalink: /javascript
+  description: JavaScript 编程语言
+
+machine-learning:
+  label: 机器学习
+  permalink: /machine-learning
+  description: 机器学习和人工智能技术
+
 project-management:
   label: 项目管理
   permalink: /project-management
   description: 敏捷方法论和项目管理
+
+react:
+  label: React
+  permalink: /react
+  description: React 框架和库
+
+testing:
+  label: 测试
+  permalink: /testing
+  description: 软件测试和质量保证
+
+typescript:
+  label: TypeScript
+  permalink: /typescript
+  description: TypeScript 编程语言
+
+vue:
+  label: Vue
+  permalink: /vue
+  description: Vue.js 框架

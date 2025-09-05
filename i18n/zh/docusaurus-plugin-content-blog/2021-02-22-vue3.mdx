@@ -1,0 +1,516 @@
+---
+slug: vue3
+title: TS 加持的 Vue 3，如何帮你轻松构建企业级前端应用
+authors:
+  - marvin
+tags:
+  - frontend
+  - backend
+  - javascript
+  - typescript
+  - project-management
+date: '2021-02-22'
+---
+## 前言
+
+> 工欲善其事，必先利其器 --《论语》
+
+在如今被三大框架支配的前端领域，已经很少有人不知道 Vue 了。2014 年，前 Google 工程师[尤雨溪](https://baike.baidu.com/item/%E5%B0%A4%E9%9B%A8%E6%BA%AA/2281470)发布了所谓的渐进式（Progressive）前端应用框架 Vue，其简化的模版绑定和组件化思想给当时还是 jQuery 时代的前端领域产生了积极而深远的影响。Vue 的诞生，造福了那些不习惯 TS 或 JSX 语法的前端开发者。而且，Vue 较低的学习门槛，也让初学者非常容易上手。这也是为什么 Vue 能在短时间内迅速推广的重要原因。从 State of JS 的调查中可以看到，Vue 的知名度接近 100%，而且整体用户满意度也比较高。
+
+![stateofjs-vue](http://codao.crawlab.cn/images/2021-02-23-031511.png)
+
+Vue 既强大又易学，这是不是意味着 Vue 是一个完美框架呢？很遗憾，答案是否定的。虽然 Vue 的上手门槛不高，灵活易用，但是这种优势同时也成为了一把双刃剑，为构建大型项目带来了一定的局限性。很多用 Vue 2 开发过大型项目的前端工程师对 Vue 是又爱又恨。不过，随着 [Vue 3](https://www.vue3js.cn/docs/zh/) 的发布，这些开发大型项目时凸显出来的劣势得到了有效解决，这让 Vue 框架变得非常全能，真正具备了跟 "前端框架一哥" [React](https://reactjs.org) 一争高下的潜力。Vue 3 究竟带来了什么重要的新特性呢？本篇文章将对此进行详细介绍。
+
+## Vue 概览
+
+Vue 是前 Google 工程师尤雨溪于 2013 年开发、2014 年发布的前端框架。关于 Vue 的具体定义，这里摘抄 Vue 官网里的介绍。
+
+> Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的**渐进式框架**。与其它大型框架不同的是，Vue 被设计为可以自底向上逐层应用。Vue 的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合。另一方面，当与[现代化的工具链](https://cn.vuejs.org/v2/guide/single-file-components.html)以及各种[支持类库](https://github.com/vuejs/awesome-vue#libraries--plugins)结合使用时，Vue 也完全能够为复杂的单页应用提供驱动。
+
+#### 渐进式框架
+
+很多人可能不理解渐进式框架（Progressive Framework）的含义。这里简单解释一下。**渐进**主要是针对项目开发过程来说的。传统的软件项目开发通常是瀑布流式（Waterfall）的，也就是说，软件设计开发任务通常有明确的时间线，任务与任务之间有明确的依赖关系，这意味着项目的不确定性容忍度（Intolerance to Uncertainty）比较低。这种开发模式在现代日趋复杂而快速变化的商业情景已经显得比较过时了，因为很多时候需求是不确定的，这会给项目带来很大的风险。
+
+![vue-progressive](http://codao.crawlab.cn/images/2021-02-24-025842.png)
+
+而渐进式框架或渐进式开发模式则可以解决这种问题。以 Vue 为例：项目开始时，功能要求简单，可以用一些比较简单的 API；当项目逐渐开发，一些公共组件需要抽象出来，因此用到了 Vue 的组件化功能；当项目变得非常大的时候，可以引用 Vue Router 或者 Vuex 等模块来进一步工程化前端系统。看到了么，这样一来，开发流程变得非常敏捷，不用提前设计整个系统，只用按需开发，因此可以快速开发产品原型以及扩展到生产系统。
+
+#### 框架特性
+
+Vue 是利用模版语法来渲染页面的，这也称做**声明式渲染**。Vue 好上手的重要原因也是因为这个，因为它符合了前端开发者的习惯。例如下面这个例子。
+
+```html
+<div id="app">
+  {`{{message}}`}
+</div>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello Vue!'
+    }
+  })
+</script>
+```
+
+可以看到，`el` 指定 Vue 实例绑定的元素，`data` 中的 `message` 与 DOM 元素的内容进行绑定。只需要操控 JS 中的数据，HTML  内容也会随之改变。
+
+另外，Vue 将 HTML、CSS、JS 全部整合在同一个文件 `.vue` 中，以**组件化应用构建**的方式来组织代码，从语法特性上鼓励 "高内聚、低耦合" 的设计理念，让代码组织变得更加合理，提升了可读性与逻辑性。下面是一个官方网站给出的基础 `.vue` 文件例子。
+
+```html
+<template>
+  <p>{`{{ greeting }}`} World!</p>
+</template>
+
+<script>
+  module.exports = {
+    data: function () {
+      return {
+        greeting: 'Hello'
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  p {
+		font-size: 2em;
+    text-align: center;
+  }
+</style>
+```
+
+组件的骨架（HTML）、样式（CSS）和数据或操作（JS）都在同一个地方，开发者需要思考如何将整个系统拆分成更小的子模块，或者组件。这对于构建大型项目是非常有帮助的。
+
+![vue-component](http://codao.crawlab.cn/images/2021-02-24-024346.png)
+
+其实，除了上述两个特点，Vue 还有很多其他的实用特性，但限于篇幅的原因，我们这里不详细解释了。感兴趣的读者可以去[官方网站深入了解。
+
+#### 框架缺点
+
+没有什么东西是完美的，Vue 同样如此。当 Vue 的知名度和用户量不断增加时，一些前端开发者开始抱怨 Vue 的灵活性太高导致构建大型项目时缺少约束，从而容易产生大量 bug。甚至使用 Vue 生态圈里的状态管理系统 [Vuex](https://vuex.vuejs.org/) 也无法有效解决。关于 Vue 是否适合大型项目的问题，网上有不少争论，甚至尤大本人都亲自上知乎参与了讨论（[吃瓜传送门](https://www.zhihu.com/question/36898014/answer/69490539)）。
+
+客观来讲，Vue 虽然具有较低的上手门槛，但这并不意味着 Vue 不适合开发大型项目。然而，我们也必须承认大型项目通常要求较高的稳定性和可维护性，而 Vue 框架较高的灵活性以及缺少足够的约束让其容易被经验不足的前端开发者所滥用，从而产生臭不可闻的、难以直视的 "屎山" 代码。其实，代码可维护性并不强制要求较低的灵活性与自由度，只是这种自由可能会对项目的整体稳定带来风险。
+
+![terrible-code](http://codao.crawlab.cn/images/2021-02-24-035557.png)
+
+Vue 作者尤雨溪其实很早就注意到这个问题，因此才会打算从底层重构 Vue，让其更好的支持 [TypeScript](https://www.typescriptlang.org/)。这就是 2020 年 9 月发布的 Vue 3。
+
+## Vue 3 新特性
+
+Vue 3 有很多实用的新特性，包括[TS 支持](https://www.vue3js.cn/docs/zh/guide/typescript-support.html)、[组合式 API](https://www.vue3js.cn/docs/zh/guide/composition-api-introduction.html) 以及 [Teleport](https://www.vue3js.cn/docs/zh/guide/teleport.html) 等等。本文不是关于 Vue 3 的参考文，因此不会介绍其中全部的新特性，我们只会关注其中比较重要的特性，尤其是能加强代码约束的 TypeScript（简称 TS）。
+
+#### TS 支持
+
+技术上来说，TS 支持并不是 Vue 3 的新特性，因为 Vue 2 版本就已经能够支持 TS 了。但 Vue 2 版本的 TS 支持，是通过 [vue-class-component](https://github.com/vuejs/vue-class-component) 这种蹩脚的装饰器方式来实现的。笔者对 "蹩脚" 这个评价深有体会，因为笔者曾经迁移过 Vue 2 版本的生产环境项目，最后发现收益并不高：语法有很大的不同，花了大量时间来重构，发现只提升了一些代码的规范性，但是代码整体变得更臃肿了，可读性变得更差。
+
+而在 Vue 3 中，TS 是原生支持的，因为 Vue 3 本身就是用 TS 编写的，TS 成为了 Vue 3 中的 "一等公民"。TS 支持在我看来是 Vue 3 中最重要的特性，特别是对构建大型前端项目来说。为什么说它重要？因为 TS 有效的解决了前端工程化和规模化的问题，它在代码规范和设计模式上极大的提高代码质量，进而增强系统的可靠性、稳定性和可维护性。关于 TS 的重要性，笔者在该公众号前一篇文章[《为什么说 TypeScript 是开发大型前端项目的必备语言》](https://mp.weixin.qq.com/s?ver=2909&signature=jEK1UPxA8qNm1OpfQbcRGoEqiebLKJ5BAzStSd3baCIif1RB9-JUZbbtJ1EtrZPJt3XYkBEE8QjFGee1ZRdT78*Rf52jotNRYuxTyo3ISaCWYU2imPe2UOpGOJvucEDy&new=1)已经做了详细介绍，感兴趣的读者可以继续深入阅读一下。
+
+Vue 3 定义了很多 TS 接口（Interface）和类型（Type），帮助开发者定义和约束各个变量、方法、类的种类。下面就是一个非常基础的例子。
+
+```typescript
+import { defineComponent } from 'vue'
+
+// 定义 Book 接口
+interface Book {
+  title: string
+  author: string
+  year: number
+}
+
+// defineComponent 定义组件类型
+const Component = defineComponent({
+  data() {
+    return {
+      book: {
+        title: 'Vue 3 Guide',
+        author: 'Vue Team',
+        year: 2020
+      } as Book // as Book 是一个断言
+    }
+  }
+})
+```
+
+上述代码通过 `defineComponent` 定义了组件类型，而在 `data` 里定义了内部变量 `book`，这个是通过接口 `Book` 来定义的。因此，其他组件在引用该组件时，就能够自动推断出该组件的类型、内部变量类型，等等。如果引用方与被引用方的任何一个接口、变量类型不一致，TS 就会抛错，让你可以提前规避很多错误。
+
+虽然 Vue 3 在传统定义 Vue 实例方式中（Options API）能够很好的支持 TS，但是我们更推荐用 TS 配合另一种新的方式来定义 Vue 实例，也就是接下来要介绍的组合式 API（Compositional API）。
+
+#### 组合式 API
+
+组合式 API 的诞生是来自于大型项目中无法优雅而有效地复用大量组件的问题。如果你已经了解 Vue，你或许应该知道之前版本的 Vue 实例中包含很多固定的 API，包括 `data`、`computed`、`methods` 等。这种定义方式有个比较突出的问题：它将 Vue 实例中的功能按照类型的不同分别固定在不同的 API 中，而没有根据实际的功能来划分，这将导致一个复杂组件中的代码变得非常散乱，就像如下这张图一样。
+
+![vue-complex-component](http://codao.crawlab.cn/images/2021-02-24-065017.png)
+
+在这个 "科学怪人" 式的传统组件中，同一种颜色的代码负责同一种功能，但它们却根据不同类型分散在不同的区域，这将导致初次接触该组件的开发人员难以快速理解整个组件的功能和逻辑。而组合式 API 则允许开发者将组件中相关的功能和变量聚合在一个地方，在外部按需引用，从而避免了传统方式的逻辑散乱问题。
+
+在 Vue 3 的组合式 API 中，所有功能和逻辑只需要定义在 `setup` 这个方法中。`setup` 接受属性 `props` 和上下文 `context` 两个参数，并在方法内部定义所需要的变量和方法，返回值是包含公共变量和方法的对象，它们可以供其他组件和模块使用。传统 Vue 实例的大部分 API，例如 `data`、`computed`、`methods` 等，都可以在 `setup` 中定义。下面是官网关于组合式 API 的例子。
+
+```typescript
+// src/components/UserRepositories.vue
+import { toRefs } from 'vue'
+import useUserRepositories from '@/composables/useUserRepositories'
+import useRepositoryNameSearch from '@/composables/useRepositoryNameSearch'
+import useRepositoryFilters from '@/composables/useRepositoryFilters'
+
+export default {
+  // 引用子组件
+  components: { RepositoriesFilters, RepositoriesSortBy, RepositoriesList },
+  // 属性
+  props: {
+    user: { type: String }
+  },
+  setup(props) {
+    // 解构属性，如果直接在 setup 中引用，必须要加 toRefs
+    const { user } = toRefs(props)
+
+    // 获取 repository 相关公共方法，在其他模块中定义
+    const { repositories, getUserRepositories } = useUserRepositories(user)
+
+    // 搜索 repository 相关公共方法，在其他模块中定义
+    const {
+      searchQuery,
+      repositoriesMatchingSearchQuery
+    } = useRepositoryNameSearch(repositories)
+
+    // 过滤 repository 相关公共方法，在其他模块中定义
+    const {
+      filters,
+      updateFilters,
+      filteredRepositories
+    } = useRepositoryFilters(repositoriesMatchingSearchQuery)
+
+    return {
+      // 因为我们并不关心未经过滤的仓库
+      // 我们可以在 `repositories` 名称下暴露过滤后的结果
+      repositories: filteredRepositories,
+      getUserRepositories,
+      searchQuery,
+      filters,
+      updateFilters
+    }
+  }
+}
+```
+
+在这个例子中，该组件需要的变量或方法全部在其他模块定义了，并通过 `useXXX` 的函数暴露给外部组件，而且还可以被其他组件重复使用。这样看上去是不是更清爽了呢？
+
+你可能会思考怎么写 `useXXX` 这种函数。其实非常简单，下面就是一个例子。
+
+```typescript
+// src/composables/useUserRepositories.js
+
+import { fetchUserRepositories } from '@/api/repositories'
+import { ref, onMounted, watch } from 'vue'
+
+export default function useUserRepositories(user) {
+  // 内部列表变量
+  const repositories = ref([])
+  
+  // 获取列表方法
+  const getUserRepositories = async () => {
+    repositories.value = await fetchUserRepositories(user.value)
+  }
+
+  // 初次获取列表，挂载后执行，相当于传统组件中的 mounted
+  onMounted(getUserRepositories)
+  
+  // 监听 user 并根据变化来获取最新列表，相当于传统组件中的 watch
+  watch(user, getUserRepositories)
+
+  // 返回公共变量和方法
+  return {
+    repositories,
+    getUserRepositories
+  }
+}
+```
+
+传统组件中的一些 API，例如 `mounted` 和 `watch`，已经成为了按需引用的函数，功能跟之前一模一样。而之前的 `data`、`computed`、`methods` 变成 `setup` 函数中的内部变量，并根据是否返回来决定是否暴露给外部。
+
+需要注意的是，Vue 3 中引入了[响应式 API](https://www.vue3js.cn/docs/zh/api/refs-api.html) 的概念，之前的变量都需要根据需要用不同的响应式 API 来定义。其具体原理不深入介绍了，感兴趣的读者可以到[官方文档](https://www.vue3js.cn/docs/zh/api/refs-api.html)继续深入学习。
+
+#### 其他新特性
+
+Vue 3 还有其他一些新特性，限于篇幅原因就不详细介绍了。这里只列出一些比较实用的新特性及其简单介绍。
+
+- [Teleport](https://www.vue3js.cn/docs/zh/guide/teleport.html) - 适用于 Modal、Popover 等需要挂载在全局 DOM 元素中的组件
+- [片段](https://www.vue3js.cn/docs/zh/guide/migration/fragments.html) - 组件支持多个根节点
+- [触发组件选项](https://www.vue3js.cn/docs/zh/guide/component-custom-events.html) - 关于事件的相关 API 变更
+
+全部变更列表，请参考[官方文档（英文）](https://v3.vuejs.org/guide/migration/introduction.html#breaking-changes)。
+
+## 大型项目实战
+
+前面介绍了这么多理论知识，对于前端工程师来说可能还不够，要在工作中让所学知识发挥作用，还必须要用到项目实践中，特别是大型项目。因此，这个小节将着重介绍如何用 Vue 3 来构建企业级项目。本小节将用笔者的一个 [Github 仓库](https://github.com/crawlab-team/crawlab-frontend) 作为演示，讲解如何用 Vue 3 构建大型前端项目。
+
+这个仓库是笔者的一个开源项目 [Crawlab](https://github.com/crawlab-team/crawlab) 的下一个版本 v0.6 的前端部分。它目前还处于开发中的状态，并不是成品；不过代码组织结构已经成型，作为演示来说已经足够。之前的版本是用 Vue 2 写的，用的是传统 Vue API。这个 Vue 3 版本将使用 TS 和组合式 API 来完成重构和迁移，然后在此基础上加入更多实用的功能。对该前端项目感兴趣的读者可以访问该 Github 仓库了解代码细节，同时也非常欢迎大家跟我讨论任何相关问题，包括不合理或需要优化的地方。
+
+仓库地址: [https://github.com/crawlab-team/crawlab-frontend](https://github.com/crawlab-team/crawlab-frontend)
+
+#### 项目结构
+
+该项目的代码组织结构如下。其中忽略了一些不重要的文件或目录。
+
+```bash
+.
+├── public							// 公共资源
+├── src									// 源代码目录
+│   ├── assets					// 静态资源
+│   ├── components			// 组件
+│   ├── constants				// 常量
+│   ├── i18n						// 国际化
+│   ├── interfaces			// TS 类型声明
+│   ├── layouts					// 布局
+│   ├── router					// 路由
+│   ├── services				// 服务
+│   ├── store						// 状态管理
+│   ├── styles					// CSS/SCSS 样式
+│   ├── test						// 测试
+│   ├── utils						// 辅助方法
+│   ├── views						// 页面
+│   ├── App.vue					// 主应用
+│   ├── main.ts					// 主入口
+│   └── shims-vue.d.ts	// 兼容 Vue 声明文件
+├── .eslintrc.js				// ESLint 配置文件
+├── .eslintignore				// ESLint Ignore 文件
+├── babel.config.js			// Babel 编译配置文件
+├── jest.config.ts			// 单元测试配置文件
+├── package.json				// 项目配置文件
+└── tsconfig.json				// TS 配置文件
+```
+
+可以看到，这个前端项目有非常多的子模块，包括组件、布局、状态管理等等。在 `src` 目录中有十多个子目录，也就是十多个模块，这还不包括各个模块下的子目录，因此模块非常多，结构也非常复杂。这是一个典型的大型前端项目的项目结构。企业级项目，例如 ERP、CRM、ITSM 或其他后台管理系统，大部分都有很多功能模块以及清晰的项目结构。这些模块各司其职，相互协作，共同构成了整个前端应用。
+
+其实这种项目结构并不只适用于 Vue，其他框架的项目例如 React、Angular 都可以是类似的。
+
+#### TS 类型声明
+
+TS 几乎是现代大型前端项目的标配，其强大的类型系统可以规避大型项目中很多常见的错误和风险。关于 TS 为何适用于大型项目，笔者在[前一篇文章](https://mp.weixin.qq.com/s?ver=2909&signature=jEK1UPxA8qNm1OpfQbcRGoEqiebLKJ5BAzStSd3baCIif1RB9-JUZbbtJ1EtrZPJt3XYkBEE8QjFGee1ZRdT78*Rf52jotNRYuxTyo3ISaCWYU2imPe2UOpGOJvucEDy&new=1)中已经做了详细阐述。因此，我们在这个前端项目中也采用了 TS 来做类型系统。
+
+在前面的项目结构中，我们在 `src/interfaces` 目录中声明 TS 类型。类型声明文件用 `<name>.d.ts` 来表示，`name` 表示是跟这个模块相关的类型声明。例如，在 `src/interfaces/layout/TabsView.d.ts` 这个文件中，我们定义了跟 `TabsView` 这个布局组件相关的类型，内容如下。
+
+```typescript
+interface Tab {
+  id?: number;
+  path: string;
+  dragging?: boolean;
+}
+```
+
+更复杂的例子是状态管理的类型声明文件，例如 `src/interfaces/store/spider.d.ts`，这是 Vue 中状态管理库 [Vuex](https://vuex.vuejs.org/) 的其中一个模块声明文件，内容如下。
+
+```typescript
+// 引入第三方类型
+import {GetterTree, Module, MutationTree} from 'vuex';
+
+// 如果引入了第三方类型，需要显式做全局声明
+declare global {
+  // 继承 Vuex 的基础类型 Module
+  interface SpiderStoreModule extends Module<SpiderStoreState, RootStoreState> {
+    getters: SpiderStoreGetters;
+    mutations: SpiderStoreMutations;
+  }
+
+  // 状态类型
+  // NavItem 为自定义类型
+  interface SpiderStoreState {
+    sidebarCollapsed: boolean;
+    actionsCollapsed: boolean;
+    tabs: NavItem[];
+  }
+
+  // Getters
+  // StoreGetter 为自定义基础类型
+  interface SpiderStoreGetters extends GetterTree<SpiderStoreState, RootStoreState> {
+    tabName: StoreGetter<SpiderStoreState, RootStoreState, SpiderTabName>;
+  }
+
+  // Mutations
+  // StoreMutation 为自定义基础类型
+  interface SpiderStoreMutations extends MutationTree<SpiderStoreState> {
+    setSidebarCollapsed: StoreMutation<SpiderStoreState, boolean>;
+    setActionsCollapsed: StoreMutation<SpiderStoreState, boolean>;
+  }
+}
+```
+
+其中，尖括号 `<...>` 里的内容是 TS 中的泛型，这能大幅度提高类型的通用性，通常用作基础类型。
+
+下面是引用 TS 类型的例子 `src/store/modules/spider.ts`。
+
+```typescript
+import router from '@/router';
+
+export default {
+  namespaced: true,
+  state: {
+    sidebarCollapsed: false,
+    actionsCollapsed: false,
+    tabs: [
+      {id: 'overview', title: 'Overview'},
+      {id: 'files', title: 'Files'},
+      {id: 'tasks', title: 'Tasks'},
+      {id: 'settings', title: 'Settings'},
+    ],
+  },
+  getters: {
+    tabName: () => {
+      const arr = router.currentRoute.value.path.split('/');
+      if (arr.length < 3) return null;
+      return arr[3];
+    }
+  },
+  mutations: {
+    setSidebarCollapsed: (state: SpiderStoreState, value: boolean) => {
+      state.sidebarCollapsed = value;
+    },
+    setActionsCollapsed: (state: SpiderStoreState, value: boolean) => {
+      state.actionsCollapsed = value;
+    },
+  },
+  actions: {}
+} as SpiderStoreModule;
+```
+
+这里用了 `as SpiderStoreModule` 的断言，TS 静态检测器会自动将 `SpiderStoreModule` 中的元素推断出来，并与实际的变量做比对。如果出现了不一致，就会抛错。
+
+#### 组件化
+
+组件化是现代前端项目的主流，在 Vue 3 中也不例外。Vue 3 的组件化跟 Vue 2 比较类似，都是用 Vue 实例来定义各类组件。在这个前端项目中，组件被分类成了不同种类，同一种类的放在一个文件夹中，如下。
+
+```bash
+.
+└── src
+		└── components
+    		├── button				// 按钮
+    		├── context-menu	// 右键菜单
+    		├── drag					// 拖拽
+    		├── file					// 文件
+    		├── icon					// Icon
+    		├── nav						// 导航
+    		├── table					// 表格
+    		└── ...
+```
+
+组件文件为 `<ComponentName>.vue` 定义，如下是其中一个关于右键菜单的例子 `src/components/context-menu/ContextMenu.vue`。
+
+```html
+<template>
+  <el-popover
+      :placement="placement"
+      :show-arrow="false"
+      :visible="visible"
+      popper-class="context-menu"
+      trigger="manual"
+  >
+    <template #default>
+      <slot name="default"></slot>
+    </template>
+    <template #reference>
+      <div v-click-outside="onClickOutside">
+        <slot name="reference"></slot>
+      </div>
+    </template>
+  </el-popover>
+</template>
+
+<script lang="ts">
+import {defineComponent} from 'vue';
+import {ClickOutside} from 'element-plus/lib/directives';
+
+// 定义属性
+export const contextMenuDefaultProps = {
+  visible: {
+    type: Boolean,
+    default: false,
+  },
+  placement: {
+    type: String,
+    default: 'right-start',
+  },
+};
+
+// 定义触发事件
+export const contextMenuDefaultEmits = [
+  'hide',
+];
+
+// 定义组件
+export default defineComponent({
+  // 组件名称
+  name: 'ContextMenu',
+  
+  // 引用外部指令
+  directives: {
+    ClickOutside,
+  },
+  
+  // 触发事件
+  emits: contextMenuDefaultEmits,
+  
+  // 属性
+  props: contextMenuDefaultProps,
+  
+  // 组合式 API
+  setup(props, {emit}) {
+    // 点击事件函数
+    const onClickOutside = () => {
+      emit('hide');
+    };
+
+    // 返回公共对象
+    return {
+      onClickOutside,
+    };
+  },
+});
+</script>
+```
+
+你可能会有疑虑：这里似乎没用到 TS 中的类型系统啊。其实这只是一个非常简单的组件，包含完整 TS 特性的组件例子可以参考下面这个组件。
+
+`src/file/FileEditor.vue`: [https://github.com/crawlab-team/crawlab-frontend/blob/main/src/components/file/FileEditor.vue](https://github.com/crawlab-team/crawlab-frontend/blob/main/src/components/file/FileEditor.vue)
+
+#### 其他
+
+限于篇幅原因，本文不会详细介绍其他所有模块。这里只简单列举一下。
+
+- UI 框架（UI Framework）- 用了 [Element+](https://element-plus.gitee.io/) 作为 UI 框架
+- 布局（Layouts）- 基础布局 `BasicLayout` 定义了顶部、侧边栏、底部等元素
+- 状态管理（State Management）- 相当于全局数据管理系统
+- 路由（Routing）- 页面路由配置
+- 国际化（Internationalization）- 多语言配置
+- 样式（Styles）- 利用 SCSS 定义了全局样式以及样式变量等
+- 服务（Services）- 包括与后端 API 的交互函数
+- 常量（Constants）
+- 辅助方法（Utilities）
+
+## 如何学习 Vue 3
+
+关于 Vue 3 的学习途径，其实首先应该是**阅读[官方文档](https://www.vue3js.cn/docs/zh/)**，了解 Vue 3 的基础概念、高阶原理以及如何工程化等等。作者尤雨溪已经在文档中非常详细的介绍了关于 Vue 的各个方面，图文并茂、深入浅出的讲解了关于 Vue 3 的概念和知识。总之 Vue 3 的文档对于初学者来说非常友好。如果你对英文比较熟悉，推荐直接阅读[英文官方文档](https://vue3js.cn/docs/)，其中内容一般是最新的。
+
+除开阅读官方文档以外，笔者还推荐**阅读优秀的 Vue 3 开源项目**，例如 [Element+](https://github.com/element-plus/element-plus)、[Ant Design Vue](https://github.com/vueComponent/ant-design-vue)、[Vue-Admin-Beautiful](https://github.com/chuzhixin/vue-admin-beautiful)，Github 上有很多优秀的 Vue 3 项目，阅读它们的源码可以帮助你熟悉如何使用 Vue 3，以及构建大型项目的代码组织方式。
+
+当然，自己动手**用 Vue 3 实践一个前端项目**能够帮助你深入理解 Vue 3 的原理和开发方式，特别是将 Vue 3 的新特性用在工作项目中。笔者在了解了 Vue 3 的基础语法和新特性之后，将所学知识运用在了自己的开源项目中，边学边做，就非常快速的掌握了 Vue 3 的核心知识。
+
+## 总结
+
+这篇文章主要介绍了 Vue 3 在大型前端项目中的优势，尤其是新特性 TS 支持和组合式 API，能够大幅增强代码的可读性和可维护性。这让本身就上手容易的 Vue 框架变得如虎添翼，使其能够胜任大型前端项目的设计和开发。对 TS 的原生支持，能够让 Vue 3 的项目代码能够具有良好的可预测性。而组合式 API，能够将散乱的代码逻辑变得更有秩序。这些都有助于增强 Vue 3 前端项目的健壮性，从而让前端人员更容易编写出稳定而可维护的代码。另外，本文还通过笔者的一个开发中的前端项目（Crawlab Frontend），来演示如何利用 Vue 3 开发企业级前端项目，并展示了相关的项目结构、TS 类型声明以及组件化，等等。
+
+比较资深的前端工程师可能会对 Vue 3 的新特性不屑一顾，因为所谓的 TS 支持和组合式 API 都在其他知名框架以其他名字被率先引入，例如 React 的 React Hooks，Vue 3 似乎只是借鉴了过去。但是，这种观点非常不可取。在技术面前，任何方案都没有高低贵贱，只有合不合适。就像相亲一样，只有合适的，才是最好的。尤雨溪也承认，AngularJS 和 React 都有很多优秀的技术，Vue 也借鉴了一部分。但你绝不能因此而宣判它是抄袭。就像 C# 跟 Java 语法和特性类似，但你肯定无法证明 C# 是抄袭的 Java（其实 C# 相较于 Java 有很多优秀特性，例如隐式类型推断，这也是笔者比较喜欢 C# 的原因之一）。Vue 的成功，绝对不是偶然性的，它的易用性和相对丰富的文档资源，让初学者能够快速上手，这对于前端开发者来说是福音。我们做技术的应该对新技术抱有包容心，能够辩证而理性的看待问题，这样才不致于变得偏激从而走火入魔。
+
+![php-best](http://codao.crawlab.cn/images/2021-02-24-144559.jpg)
+
+## 参考
+
+- Vue 3 官方文档: https://www.vue3js.cn/docs/zh/
+- TypeScript 官方文档: https://www.typescriptlang.org/docs 
+- Crawlab: https://github.com/crawlab-team/crawlab
+- Crawlab Frontend: https://github.com/crawlab-team/crawlab-frontend
+
+- [《为什么说 TypeScript 是开发大型前端项目的必备语言》](https://mp.weixin.qq.com/s?ver=2909&signature=jEK1UPxA8qNm1OpfQbcRGoEqiebLKJ5BAzStSd3baCIif1RB9-JUZbbtJ1EtrZPJt3XYkBEE8QjFGee1ZRdT78*Rf52jotNRYuxTyo3ISaCWYU2imPe2UOpGOJvucEDy&new=1)
+
+## 社区
+
+如果您对笔者的文章感兴趣，可以加笔者微信 tikazyq1 并注明 "码之道"，笔者会将你拉入 "码之道" 交流群。
