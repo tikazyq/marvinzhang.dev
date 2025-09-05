@@ -1,0 +1,48 @@
+---
+slug: 2022-10-30-talking-data-why-data-governance-is-so-important-i
+title: "Talking Data: Why data governance is so important in digital transformation?"
+authors: [marvin]
+tags: ["da"]
+date: 2022-10-30
+---
+
+
+# Talking Data: Why data governance is so important in digital transformation?
+
+## Introduction
+
+> *"Organisms are living upon negentropy."*--*What is Life?* --by Erwin Schrödinger
+
+In today's Internet era, data is an important asset for enterprises. We generate data all the time: every time we open a mobile app, place an order online, or even drive through traffic lights, data will be generated. Data is everywhere. This is especially true in enterprises. With so much raw data and increasingly mature data analysis technology, entrepreneurs are excited, because this is the gold mine piled up for companies. However, things are not as simple as imagined. It is not easy to extract valuable treasures from these messy so-called "gold mines" that look like garbage dumps. In my previous article [Talking Data: What do we need for engaging data analytics?](https://dev.to/tikazyq/talking-data-what-do-we-need-for-engaging-data-analytics-3g9k), the concept of **Data Governance** was mentioned. This article will introduce how data governance creates value in the chaos of enterprise data from the perspective of enterprise data management.
+
+## Isolated Data Island
+
+Large and medium-sized enterprises (generally more than 100 people with multiple departments) will encounter the problem of management chaos while their business grows fast. The sales department has its own sales statistics, typically in the form of large and scattered Excel files; The IT department manages the inventory systems by themselves; The HR department maintains an entire personnel statistics list. This situation will lead to many headaches: the boss often complains that he or she can only receive management reports every week; Managers looked at the up and down data in the report, doubting the data integrity; employees work overtime to sort out the data for the reports, but they are often questioned about data quality. Sounds familiar? These are very common issues in companies. The direct cause is the so-called **Isolated Data Island** problem.
+
+![Isolated Data Island](https://codao.crawlab.cn/images/2022-10-30-020740.png)
+
+The main reason for isolated data island issues is that data from various departments or teams is **disconnected**. Many times, because of the rapid growth of business, some teams need to quickly set up a data system, but are incapable of developing it in time, so they can only use Excel or some fast and effective data entry tools to ensure the efficiency of business operations. With the growth of business, these *hacking* workarounds continue to derive new internal processes, and bottlenecks will gradually emerge after reaching a certain scale, especially when integration with other departments or external systems is required.
+
+When bosses become aware of the isolated data island issue and decide to make a change, they will find it difficult to move forward most of the time. This is because they have many problems to solve, such as:
+
+- **Format and Standard**: The monthly sales data of the marketing department may be stored in various Excel files, while the product department is stored in the SQL Server database.
+- **Statistical Caliber**: The minimum statistical caliber of the accounting and financial department is by month, but the marketing department is by a single order.
+- **Association**: The marketing department uses the order number, while the product department uses the database order ID.
+- **Scale**: Thousands of Excel files with different formats are difficult to be efficiently processed.
+
+## Data Governance
+
+The so-called data governance is actually to solve the problem of data islands through data integration tools. As shown in the figure below, the data governance team need to integrate, clean, transform, and store the business data of each department in the Data Warehouse, which will eventually be used by the entire organization. Through data governance and data warehouse, data islands of various business departments will be connected. After some sort of **association** and **integration** of the data, various data sources can generate many **insights**. For example, the marketing team will be surprised to find that their main customers rarely use APP!
+
+![Data Governance](https://codao.crawlab.cn/images/2022-10-30-021016.png)
+
+However, the above figure is a simplified process. In the real world, data governance in a large company or organization will be **more complex**, which normally involve organizational, cultural, political, business nature and other factors. This is why many large and medium-sized enterprises, especially those accustomed to traditional Excel reports, will encounter **obstacles** in digital transformation.
+
+For the data governance team, the key to success is not the technology, but the familiarity and understanding of **business process** and **enterprise culture**. There are ready-made tools and techniques for data cleaning and data transformation, but business processes and corporate culture are often quite subtle. This requires the data governance team to have good **communication skills** and **business knowledge**. The success of data governance requires not only practical tools and technologies, but also **wisdom** in dealing with various business teams.
+
+![Success Factors of Data Governance](https://codao.crawlab.cn/images/2022-10-30-022149.png)
+
+## Keep improving
+
+The business development cannot live without data insights, but to achieve data driven decision making, communication and collaboration between teams and departments are often necessary. This is why many companies have started to adopt Agile. Here you can refer to the author's previous article [Talking Agile: Are you sure your team is practicing Agile properly?](https://dev.to/tikazyq/talking-agile-are-you-sure-your-team-is-practicing-agile-properly-1l5). What data governance needs to do more is to understand the business, think about how to use data integration to optimize the business, and create more value from data insights.
+
