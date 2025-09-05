@@ -1,0 +1,167 @@
+---
+slug: csharp
+title: 为什么推荐你用 C# 构建大型后端应用？- Part 1
+authors:
+  - marvin
+tags:
+  - frontend
+  - backend
+  - golang
+  - typescript
+  - javascript
+date: '2021-11-19'
+---
+## 前言
+
+> 今天下英雄，惟使君与操耳。--曹操《三国演义》
+
+对于在 IT 圈摸爬滚打多年的程序员来说，如果要问国内最主流的后端编程语言，我相信大部分会说 Java。这并不意外，因为 Java 存在了 30 多年，有着庞大的用户规模和生态体系，在软件工程领域似乎有着绝对霸主地位。但是，**古人云：“得民心者得天下。”** 用户最多的编程语言不一定是最受开发者们喜欢的。根据 StackOverflow 2021 年在 82,914 名开发者中做的关于编程语言满意度调查，喜欢 Java 的占比只有 47%，已经排到 20 名开外了，仅高于 PHP、C、COBOL。另一方面，我们从调查结果可以看到，有着 “山寨版 Java” 之称的 C#，反而在开发者心目中满意度达到了 62%，比 Java 高 15%。虽然 C# 的满意度跟 Rust、TypeScript 差距还比较大，但可以看出 **C# 作为 Java 的替代编程语言，在开发效率、部署便捷性、文档完善度等方面已经逐渐占据优势**。笔者因为工作的原因，在平时开发中使用 C# 和 Java 开发了不少项目，因此对它们之间的相同点、不同点以及优势、劣势有一定了解。笔者认为，C# 相对于 Java 来说更受开发者欢迎是有一定道理的，因为它的开发体验很好。
+
+![20211119-language-satisfaction](https://codao.crawlab.cn/images/2021-11-19-084116.png)
+
+限于篇幅原因，整个 C# 的原理及实战介绍（即为何推荐用 C# 构建大型后端应用），将被拆分为一系列文章，该系列将从语法特性、开发模式、生态体系、部署构建等维度深度分析 C# 这门 “年轻” 的编程语言，并以跨平台框架 .NET Core 为例介绍如何用 C# 构建大型后端应用。
+
+本篇文章是 C# 系列文章的第一篇，主要在语法特性方面介绍 C# 的一些现代语法特性，以及它们是如何提高开发效率的。
+
+## C# 简介
+
+C# 是 2000 年由微软发布的新型编程语言。它在诞生之初就因为与 Java 极高的相似度而被贴上 “山寨 Java” 的标签。C# 跟 Java 类似，是面向对象编程（OOP）编程语言，包含类、方法、接口、单一继承等 OOP 元素，而且是 Windows .NET 网络框架的基础语言。C# 语言的发布与 SUN 公司对微软的一个诉讼有关，是为了取代造成纠纷的 Java 变种语言 Visual J++。
+
+从发布 1.0 版本到现在，C# 大大小小经历了多次迭代，至今随 .NET 5 一起发布了 C# 9.0 版本。从最早的面向对象支持，到后来更为丰富的功能，例如异步编程、跨平台支持等。C# 在变得越来越强大的同时，也遵循着 “简单、现代、通用” 的设计标准，在如今越来越复杂的后端开发以及架构要求中显得如鱼得水，既可以开发 Windows 桌面端应用，还可以用于更加具有扩展需求的分布式系统和微服务架构等。
+
+## C# 语法特性
+
+可能很多 C# 的特性都类似于 Java，例如类型系统、面向对象编程、依赖注入、异常处理等。这一小节将介绍更多跟 Java 不一样的特性，而这些特性很大程度上提升了 C# 的开发体验，让开发者更加青睐于 C#。
+
+#### 空值操作
+
+在使用 C# 开发项目的过程中，我发现 C# 中对空值的判断和操作非常简单，不会像 Java 中这么繁琐。下面会举几个例子来说明 C# 的语法优越性。
+
+**例子 1**
+
+如果要从 JSON 对象中获取较深层的元素，一般来说需要做空值判断，这样不可避免的会导致很多诸如 `if (value == null) { ... }` 这样的判断语句，显得异常啰嗦。而在 C# 中，这个空值判断被简化为了一个问号 `?`。例如，你可以这么来写获取深层 JSON 元素的代码。
+
+```csharp
+// access index C in member B of A
+A?.B?[C];
+```
+
+用这样的方式，你避免了大量的 `if` 语句，如果其中一个成员不存在，将自动将整个获取值的表达式返回为 `null`，这大大简化了空值带来的冗余代码。
+
+**例子 2**
+
+不少时候，你可能会希望给一个表达式设置默认值，如果该表达式为空值 `null`，就返回该默认值。例如下面这个例子。
+
+```csharp
+// set default value of text if input is null
+var text = input ?? '-';
+```
+
+用两个问号的操作符 `??`，你将可以在 C# 轻松的设置默认值。否则，例子 1 一样，你可能将不得不加入不必要的 `if (value == null)` 的判断语句。`??` 这样的操作符也是 C# 中节省代码的方式。
+
+C# 还有不少其他空值操作的语法，例如 null 包容运算符、可空类型，但是上面举的两个例子是 C# 中利用空值操作符的最常见例子，对平时的 C# 项目开发来说非常有用。
+
+如果你对本技术博客另一篇介绍 TypeScript 的技术文章 [《为什么说 TypeScript 是开发大型前端项目的必备语言》](http://mp.weixin.qq.com/s?__biz=Mzg5NTU2MzA5MQ==&mid=2247483746&idx=1&sn=93cad4af90ee88c598822a78b6f6481a&chksm=c00f255ef778ac484f36886a1924aa28c76666a6fb95945a08752d79bfe2f0f35b1c29849ff8#rd) 有印象的话，你应该会记得 TypeScript 也有这样的空值操作语法。是的，TS 是借鉴 C# 过来的，因为 TypeScript 的创建者正是 C# 之父 Anders Hejlsberg！
+
+#### 隐式类型本地变量
+
+为什么很多 Java 开发者会抱怨说写 Java 就像在写又臭又长的八股文，就是因为在 Java 中每声明一个新变量你都不得不去思考它的类型，从而需要花大量的脑容量来推演和记忆临时变量的类型。这对于开发效率来说真的不是好事情。
+
+而 C# 借鉴了其他非强制要求变量类型声明的编程语言，集成了隐式类型本地变量（Implicitly typed local variables）语法。笔者认为隐式类型本地变量是 C# 中非常酷的特性，它让开发者不用强迫自己记住需要引用或需要声明的变量类型，从而将注意力聚焦在代码逻辑上。
+
+C# 用 JavaScript 中的 `var` 关键字来声明隐式类型本地变量，它能够让该变量通过隐式的类型推断来 “自动” 声明该变量类型。下面附上 C# 文档的官方例子来说明如何使用隐式类型本地变量。
+
+```csharp
+// i is compiled as an int
+var i = 5;
+
+// s is compiled as a string
+var s = "Hello";
+
+// a is compiled as int[]
+var a = new[] { 0, 1, 2 };
+
+// expr is compiled as IEnumerable<Customer>
+// or perhaps IQueryable<Customer>
+var expr =
+    from c in customers
+    where c.City == "London"
+    select c;
+
+// anon is compiled as an anonymous type
+var anon = new { Name = "Terry", Age = 34 };
+
+// list is compiled as List<int>
+var list = new List<int>();
+```
+
+当然，大量的使用 `var` 也可能会造成一些问题。例如，包含大量包含隐式类型本地变量的代码会让不熟悉的该代码的 C# 开发者花不少时间来琢磨该变量的实际类型，从而影响代码的可读性。不过，常用的 C# IDE 例如 Visual Studio 或 JetBrains Rider 都可以自动帮你显示该隐式类型本地变量的实际类型。正式借助这些强大的 IDE，笔者才放心推荐使用 C# 的 `var` 语法来声明变量。
+
+#### 语言集成查询 (LINQ)
+
+除了上述两个提高开发效率的语法外，C# 还有一个非常新颖的语法特性：语言集成查询，简称为 LINQ。LINQ 的出现让数据源操作的表达式变得足够简单。笔者有理由相信 C# 的创造者一定是参考了 SQL 这样的查询语言来设计 LINQ 语法的。下面是一个使用 LINQ 的例子。
+
+```csharp
+class LINQQueryExpressions
+{
+    static void Main()
+    {
+
+        // Specify the data source.
+        int[] scores = new int[] { 97, 92, 81, 60 };
+
+        // Define the query expression.
+        IEnumerable<int> scoreQuery =
+            from score in scores
+            where score > 80
+            select score;
+
+        // Execute the query.
+        foreach (int i in scoreQuery)
+        {
+            Console.Write(i + " ");
+        }
+    }
+}
+// Output: 97 92 81
+```
+
+我们着重看 `scoreQuery` 这个变量的表达式，其中的 `from ... in ... where ... select ...` 语法就是用了 LINQ。其表达的意思是遍历 `scores` 这个数组，只选取 `score` 大于 80 的元素，最后返回 `score` 行程新的迭代器 `scoreQuery`。这跟 SQL 的 `SELECT ... FROM` 语法非常相似。LINQ 对于 C# 来说只是一个表达式，目的是为了将常规的数据特别是数组操作，变得更写 SQL 一样简单。如果不用 LINQ，你可能会需要用 `foreach` 遍历数组并做 `if` 判断，然后加入更多操作来实现跟上述 LINQ 语句相同的逻辑。
+
+在后面介绍 Entity Framework 数据库操作框架的部分，我们还会继续介绍 C# 中的数据操作。
+
+#### 属性语法
+
+C# 定义模型的方式相对于 Java 要简单很多，同时还支持更高级的特性，例如 `get` 或 `=>` 定义的计算属性。
+
+```csharp
+public class Person
+{
+  // private properties
+  private int _gender;
+  private int _age;
+  
+  // Auto-implemented property
+  public string Name { get; set; }
+  
+  // Expression body definition
+  public string Gender => _gender == 1 ? "Male" : "Female";
+  
+  // Property with backing fields
+  public string Age
+  {
+  	get
+    {
+      return $"{_age} years old";
+    }
+  }
+}
+```
+
+在上面的例子中，我们看到有多种定义属性的方式。`Name` 是自动实现的属性，只需要带上 `get` 和 `set` 表示是可读写的属性；`Gender` 是用 `=>` 表示简化的 `get` 访问器，用于较为简单的计算属性；`Age` 包含 `get` 访问器，用于较为复杂的计算属性。
+
+可以看到，C# 的属性语法同时包含了简单和复杂的使用场景，因此更能够提高开发效率。
+
+## 总结
+
+本篇文章主要从语法特性的角度介绍了 C# 独有而方便的特性。特别是相对于传统的后端编程语言 Java，C# 具有很多让人喜爱的语法，例如空值操作、隐式类型推断、LINQ 等。虽然 Java 在新的版本中加入了部分类似语法试图提高开发效率，然而如今市面上的 Java 产品大多还是用经典的 Java 8 版本，因此没有这些功能。而 C# 背靠微软开发维护，有合理的 Roadmap 开发规划，文档也较为齐全，因此对于很多后端开发者是非常友好的。C# 目前开发方向贯彻了它 “简单、现代、通用” 的设计标准，综合来看很适合做中大型项目。不过，目前国内因为历史原因还暂时是  Java 占据主要市场，而新兴的 Go 也占据了分布式应用领域的份额（参考本博客之前文章 [《大红大紫的 Golang 真的是后端开发中的万能药吗？》](http://mp.weixin.qq.com/s?__biz=Mzg5NTU2MzA5MQ==&mid=2247484109&idx=1&sn=40472a244a06d17803ef01a4b6d82b92&chksm=c00f26f1f778afe7c451d417f7e1e6e975b4e4b7a68848b823901189c5215f613855a5aa84f2#rd)），所以 C# 在推广方面可能还需要假以时日。不过，酒香不怕巷子深。包括笔者在内的越来越多开发者已经意识到 C# 是一门非常优秀的后端编程语言，如果条件允许，可以将其应用在实战项目中。之后的系列文章将更进一步分析 C# 的生态，特别是 .NET Core、Entity Framework 等主流框架。
