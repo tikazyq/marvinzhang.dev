@@ -13,7 +13,7 @@ This is a **Docusaurus 3.8.1** personal blog site with bilingual content (Englis
 ## Content Structure
 
 ### Blog Posts
-- **English**: `blog/YYYY-MM-post-slug.mdx`
+- **English**: `blog/YYYY-MM-DD-post-slug.mdx`
 - **Chinese**: `i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-post-slug.mdx`
 - **Required frontmatter**:
   ```yaml
@@ -94,7 +94,7 @@ pnpm run typecheck
 ## Common Tasks
 
 ### Adding New Blog Post
-1. Create English MDX in `blog/YYYY-MM-post-slug.mdx`
+1. Create English MDX in `blog/YYYY-MM-DD-post-slug.mdx`
 2. Add required frontmatter with `slug`, `title`, `authors`, `tags`, `date`
 3. Create Chinese version in `i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-post-slug.mdx`
 4. Test both language versions
