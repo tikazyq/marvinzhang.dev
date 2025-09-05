@@ -1,0 +1,179 @@
+---
+slug: 2023-10-06-github-actions-
+title: GitHub Actions 如何为开源开发者节省时间
+authors: [marvin]
+tags: ["devops"]
+date: 2023-10-06
+---
+
+
+# GitHub Actions 如何为开源开发者节省时间
+
+## 引子
+
+**[GitHub Actions](https://docs.github.com/cn/actions)** 是一个令人兴奋的工具，特别是对于开源开发者来说。不仅可以做常规的 **CI/CD** 任务，还可以做很多自动化工作，减轻开源贡献者们的运维负担。今天，我们将深入探讨如何充分利用 GitHub Actions 来节省你在开源项目中的时间。
+
+## GitHub Actions的核心功能
+
+GitHub Actions 的核心功能之一是 **Workflow**。Workflow 是由一个或多个 **Job** 组成的，每个 Job 又是由一个或多个 **Step** 组成的。通过这种架构，你可以很容易地定义复杂的自动化任务。
+
+### 示例：自动化测试
+
+例如，你有一个 Python 项目，并想在每次推送代码时运行测试。你的 `.github/workflows/test.yml` 文件可能会这样：
+
+```yaml
+name: Run Tests
+
+on: 
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Install Dependencies
+      run: pip install -r requirements.txt
+    - name: Run Tests
+      run: python -m unittest
+```
+
+### 示例：自动部署文档
+
+当你更新代码时，可能也希望自动更新项目的文档。这就可以通过一个简单的 GitHub Actions Workflow 来完成。
+
+```yaml
+name: Deploy Documentation
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'docs/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build Docs
+      run: mkdocs build
+    - name: Deploy to GitHub Pages
+      uses: gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.DEPLOY_KEY }}
+        publish_dir: ./site
+```
+
+这个例子使用了 MkDocs 来构建文档，并部署到 GitHub Pages 上。
+
+## 如何节省时间
+
+### 自动化琐事
+
+一个明显的好处是自动化一些日常任务，比如上面提到的运行测试和更新文档。这样可以确保每次提交后，都能快速得到反馈。
+
+### 代码质量保证
+
+通过 GitHub Actions 可以轻易地集成各种代码质量检查工具，例如 `flake8`，`mypy` 等，这样可以在代码被合并到主分支之前，确保代码质量。
+
+```yaml
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Install flake8
+      run: pip install flake8
+    - name: Run flake8
+      run: flake8 . --count --show-source --statistics
+```
+
+### 定时任务
+
+有些任务可能需要周期性地运行，而 GitHub Actions 提供了强大的定时任务能力。
+
+例如，你可能需要每天凌晨运行一次数据同步任务：
+
+```yaml
+on:
+  schedule:
+    - cron: '0 0 * * *'
+```
+
+## Crawlab：一个具体的 GitHub Actions 应用案例
+
+[Crawlab](https://github.com/crawlab-team/crawlab) 是一个分布式爬虫管理平台，支持多种编程语言和多种爬虫框架。该项目也广泛地使用了 GitHub Actions，以自动化各种开发和运维任务。
+
+### 自动构建与部署
+
+Crawlab 利用 GitHub Actions 自动构建 Docker 镜像并将其推送到 Docker Hub。这样，用户可以非常轻松地从 Docker Hub 拉取最新的镜像。
+
+```yaml
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    - name: Build Docker Image
+      run: docker build . -t crawlab-team/crawlab:latest
+    - name: Push Docker Image
+      run: docker push crawlab-team/crawlab:latest
+```
+
+### 自动发布 SDK 到 PyPI
+
+Crawlab 还有一个 Python SDK，该 SDK 用于与 Crawlab 平台进行交互。每当 SDK 的代码更新后，GitHub Actions 会自动发布新版本到 PyPI。
+
+```yaml
+name: Publish Python SDK to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+    - name: Install Twine
+      run: pip install twine
+    - name: Build Python Package
+      run: python setup.py sdist bdist_wheel
+    - name: Publish to PyPI
+      run: twine upload dist/* --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
+```
+
+这个工作流程确保了每当有新版本的 SDK 被标记，它将自动构建并上传到 PyPI，从而使得开发者能更方便地使用最新版本的 SDK。
+
+## 总结
+
+GitHub Actions 是一个非常强大的工具，特别适合开源开发者使用。通过智能地使用 GitHub Actions，你可以极大地提高效率，确保代码质量，甚至自动化项目的运营和维护任务。
+
+如果您对笔者的文章感兴趣，可以加笔者微信 tikazyq1 并注明 "码之道"，笔者会将你拉入 "码之道" 交流群。
