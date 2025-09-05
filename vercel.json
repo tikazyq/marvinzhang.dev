@@ -2,7 +2,8 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": "build",
   "installCommand": "pnpm install",
-  "framework": null,
+  "framework": "other",
+  "functions": {},
   "headers": [
     {
       "source": "/static/(.*)",
