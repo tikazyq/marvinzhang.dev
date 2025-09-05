@@ -1,0 +1,252 @@
+# 为什么说 TypeScript 是开发大型前端项目的必备语言
+
+## 前言
+
+> 怎么忍心怪你犯了错，是我给你自由过了火。 -- 张信哲《过火》
+
+可能很多软件工程师都或多或少知道或了解 [TypeScript](https://www.typescriptlang.org/)（简写 TS），使用过 TypeScript 的前端开发者们也出奇一致的对 TypeScript 抱有好感。如果你在搜索引擎里搜索 TypeScript，会发现几乎铺天盖地都是称赞或表扬 TS 的文章，例如 [《TypeScript 让你不会想用回 JavaScript》](https://blog.csdn.net/csdnnews/article/details/103451805)、[《TypeScript 真香系列》](https://www.cnblogs.com/cangqinglang/p/11887535.html)、[《再不拥抱TypeScript你就老了！》](https://www.cnblogs.com/liujian619/p/des4ts.html)。根据最新的 [《2020 State of JS 调研报告》](https://2020.stateofjs.com/)，TypeScript 的受欢迎度（Popularity）以及满意度（Satisfaction）都在逐年增加，包括本文作者在内的 “TS 粉”（在 State of JS 中回答 “会继续使用”）的开发者甚至超过了 70%（如下图）。
+
+![typescript-2020-stateofjs-survey](http://codao.crawlab.cn/images/2021-02-03-135039.png)
+
+总而言之，TS 如今在前端领域具有不可撼动的核心地位，是非常重要的前端工程开发工具。TS 是微软在拥抱开源项目之后为软件行业作出的突出贡献之一。然而，TypeScript 既不能提高 JavaScript 代码在浏览器中的运行效率，又不像 React、Vue 前端框架那样可以提高开发人员的生产力，更不能让你开发的前端页面变得好看而吸引人。那究竟是什么让它成为如此广受欢迎的 “真香语言” 呢，是什么让它令前端人员爱不释手呢？如果你带有这样类似的疑问，请继续阅读接下来的内容，本文将详细解释利用 TS 开发大型前端项目的优势。
+
+## TS 简介
+
+![typescript-es6](http://codao.crawlab.cn/images/2021-02-04-005358.jpg)
+
+TypeScript 诞生于微软（Microsoft），由 C# 首席架构师、.NET（dotnet）创立者 Anders Hejlsberg 设计开发。TypeScript 简单来说就是强类型系统的 JavaScript。它是 JS 的超集（Superset），也就是说，TS 支持 JS 中所有语法，并且还扩展了很多面向对象编程（OOP）的一些功能。TypeScript 首个公开版本 0.8 于 2012 年 10 月发布，并受到了 GNOME 之父 Miguel de Icaza 的称赞，不过他指出 TypeScript 的最大缺点是它缺乏成熟的 IDE 支持，例如当时唯一能支持 TS 只有运行在 Windows 上的 Visual Studio，因此 Mac 和 Linux 使用者无法有效使用 TS 编写项目。不过，这个缺点很快被克服了。1 年之后，很多编辑器，例如 Eclipse、Sublime、Vim 等，都开始支持 TypeScript 语法。如今，绝大多数主流编辑器都能有效支持 TypeScript。而有了 TypeScript 的加持，你在 IDE 中就可以爽快的享受 TS 特有的自动完成（Autocomplete）以及类型提示（Typing Hint），以便于编写可靠而高质量的代码。正如[官网](https://www.typescriptlang.org/)中对 TypeScript 的一句话介绍：“Typed JavaScript at Any Scale”。
+
+## 面向接口编程
+
+TypeScript 的设计理念来自于[面向接口编程（IOP）](https://baike.baidu.com/item/%E9%9D%A2%E5%90%91%E6%8E%A5%E5%8F%A3%E7%BC%96%E7%A8%8B/6025286?fr=aladdin)，一种基于抽象类型约定（Abstract Type Constraint）的程序设计模式。要真正了解 TypeScript，首先得了解面向接口编程的概念和原理。最初引入 IOP 概念的论文[《面向接口编程》](https://www.semanticscholar.org/paper/Interface-Oriented-Programming-Varney/c7235d08ca37b1cd17c5ef477725455182e8d13c)发表于 2004 年，它属于面向对象编程（OOP）体系的一部分，是更为先进和独立的编程思想。作为 OOP 体系的一部分，IOP 更加强调规则和约束，以及接口类型方法的约定，从而让开发人员尽可能的关注更抽象的程序逻辑，而不是在更细节的实现方式上浪费时间。很多大型项目采用的都是 IOP 的编程模式。
+
+![typescript-iop](http://codao.crawlab.cn/images/2021-02-04-012007.png)
+
+上图是 IOP 编程模式的示意图，在  Java 或 C# 这样的 OOP 语言中，随处可见这样的处理方式。类型（Class）的方法（Method）由接口（Interface）来约定，而类型中需要实现（Implement）接口中定义的抽象方法。例如 `IService` 接口定义了 `Request(url)`、`Auth(usr, pwd)` 方法，而这个接口不管这两个方法如何实现，只是将方法的名称、参数与返回值定义下来，而具体的实现，即就是实现该功能的核心代码，将在 `Service` 这个类中完成。
+
+这样注重抽象方法约定的设计模式对于构建大型项目来说具有非常大的优势。首先，它不要求编程人员在程序开发早期或设计系统阶段编写任何核心代码，从而编程人员可以将主要精力放在架构设计以及业务逻辑，避免浪费过多时间在思考具体实现上。其次，由于 IOP 中多了接口这一抽象层，避免将核心代码细节暴露给开发者，不熟悉该模块的开发者可以从文档、名称、参数、返回值等来快速推断程序逻辑，这大大的降低了程序复杂性以及维护成本。最后，IOP 可以让编程变得更灵活，它天生支持多态（Polymorphic），可以作为 OOP 中类继承（Class Inheritance）的有效替代。可能很多初学者会抱怨说这种设计理念让编程变得臃肿，但不得不说这种附加的约束能够让大型项目在面对复杂性和多变性时显得更加稳定和反脆弱。
+
+读者可能会问，这跟 TypeScript 有什么关系？其实，如果你用 TS 编写过大型项目，应该能够意识到 IOP 这种理念在 TS 中发挥的作用。接下来，本文将介绍 TS 的一些核心概念，这将有助于读者进一步理解 TS 的特性以及它为何适合大型项目。
+
+## TS 核心概念
+
+#### 基本语法
+
+之前也提到，TS 是 JS 的超集，也就是说 JS 的语法 TS 全部都包括，而且在此基础上还添加了类型系统。类型的定义主要是以 “变量或属性名称后面加冒号跟类型来制定的，即 `<variable/attribute>: <type>`。下面分别用 JavaScript 和 TypeScript 的代码举例说明。
+
+```js
+// JS
+const strVal = 'string-value';
+const objVal = {
+  key: 'string-value',
+  value: 1,
+}
+const func = param => param * 2;
+```
+
+而 TS 中类似的写法是这样。
+
+```typescript
+// TS
+const strVal: string = 'string-value';
+
+interface IObject {
+  key: string;
+  value: number;
+}
+const objVal: IObject = {
+  key: 'string-value',
+  value: 1,
+};
+
+type Func = (param: number) => number;
+const func: Func = (param: number) => param * 2;
+```
+
+看到区别了么？首先你可能会注意到 JS 要比 TS 简洁得多。这很自然，因为 TS 加入了类型系统，必然会增加一些额外的约束代码。JS 是弱类型动态语言，类型之间可以自由转换，显得非常灵活。然而由这种灵活和自由度产生的编码快感只能持续短短一段时间，当项目不断发展，变量类型变多，模块间的交互关系变得复杂之后，这种自由度带来的麻烦很可能是灾难级的。坊间传言 “动态一时爽，重构火葬场” 说的就是这个道理。
+
+你可能也会注意到，对象变量 `objVal` 被接口 `IObject` 约束（它是用 `interface` 这个关键词来定义的），其中规定了它要求的属性以及相应的类型，因此在对其赋值或取值时不能随意处理。同理，函数（Function）也可以用关键词 `type` 来定义，这里定义了函数类型 `Func` 的参数名、参数类型，以及返回的结果类型。
+
+#### 基础类型
+
+跟其他主流编程语言一样，TypeScript 同样有基础数据类型。其中大部分跟 JavaScript 的基础数据类型一致，另外还添加了一些 TS 特有的类型。
+
+基础类型列表如下：
+
+类型名称|描述|例子
+---|---|---
+Boolean|布尔值|`const a: boolean = true;`
+Number|数值|`const a: number = 1;`
+String|字符串|`const a: string = 'text';`
+Array|数组，不定长度，相同类型|`const a: string[] = ['a', 'b'];`
+Tuple|元组，固定长度，可以不同类型|`const a: [string, number] = ['a', 1];`
+Enum|枚举|[官网例子](https://www.typescriptlang.org/docs/handbook/basic-types.html#enum)
+Unknown|不确定|[官网例子](https://www.typescriptlang.org/docs/handbook/basic-types.html#unknown)
+Any|任意类|[官网例子](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
+Void|无类型|[官网例子](https://www.typescriptlang.org/docs/handbook/basic-types.html#void)
+Null and Undefined|空值|[官网例子](https://www.typescriptlang.org/docs/handbook/basic-types.html#null-and-undefined)
+Never|用于只抛错的函数等|[官网例子](https://www.typescriptlang.org/docs/handbook/basic-types.html#never)
+Object|对象，表示非基础类型|[官网例子](https://www.typescriptlang.org/docs/handbook/basic-types.html#object)
+
+#### 接口与字面类型
+
+TS 中除了基础类型以外，还可以自定义项目中需要的类型。这种自定义类型在 TS 中通常用接口（Interface）或字面类型（Literal Type）来定义。
+
+接口是 TypeScript 中非常重要的核心概念。接口的定义方法非常简单，在 TS 代码里用 `interface` 关键词加接口名，后跟花括号 `{...}`，并在花括号中定义这个接口包含的属性以及属性对应的类型，可以是基础类型，也可以是接口（Interface）、类（Class）、类型（Type）。请注意到，函数也是类型的一种。下面用代码举例说明。
+
+```typescript
+interface Client {
+  host: string;
+  port?: string;
+  username?: string;
+  password?: string;
+  connect: () => void;
+  disconnect: () => void;
+}
+
+interface ResponseData {
+  code: number;
+  error?: string;
+  message: string;
+  data: any;
+}
+
+interface Service {
+  name?: string;
+  client: Client;
+  request: (url: string) => ResponseData;
+}
+```
+
+以上是接口定义代码，下面看一下如何使用。
+
+```typescript
+const client: Client = {
+  host: 'localhost',
+  connect: () => { 
+    console.log('connecting to remote server'); 
+  },
+  disconnect: () => { 
+    console.log('disconnecting from remote server'); 
+  },
+};
+
+const service: Service = {
+  name: 'Mock Service',
+  client,
+  request: (url: string) => {
+    return {
+      code: 200,
+      message: 'success',
+      data: url,
+    },
+  },
+};
+```
+
+这是一个模拟客户端服务定义的非常简单的代码。可以注意到，接口定义了后面实例（Instance）`client`、`service` 的属性（Attributes，有些文章会称作 “字段 Field”）和方法（Methods），该接口约束下的实例必须包含对应要求的属性和正确类型，否则在编译时（Compile Time）就会报错。接口中属性名后面带一个问号 `?` 是代表该属性是可选的（Optional）。因此，模块或功能首先由接口来定义，将大框架考虑好之后再实现接口中的核心逻辑，这也就满足了面向接口编程中的设计模式。
+
+而字面类型（Literal Type）主要是简化一些比较简单的自定义类型。其定义方式同样非常简单，限于篇幅就不展开讲解。感兴趣的读者可以到[官网文档](https://www.typescriptlang.org/docs/handbook/literal-types.html)深入了解。
+
+#### 鸭子类型
+
+了解了基础类型、接口、字面类型之后，我们可以开始着手用 TS 写一些可靠的代码了。不过为了加深对 TS 类型系统的理解，我们需要了解什么情况下，接口与实例的绑定是合法的？ TypeScript 中的类型合法性检测方法是如何规定？
+
+TypeScript 采用了所谓的 “鸭子类型”（Duck Typing）策略。所谓鸭子类型，就是当两个类型具有相同的属性以及方法时，它们就可以看作是同一类型。例如，狗既能吃饭又能拉屎，还有两个眼睛一张嘴；人同样也是既能吃饭又能拉屎，还有两个眼睛一张嘴。单从这些属性来看，狗跟人是同一类型。但很显然这个结论是荒唐的。人类可以说话，狗却不能；狗可以摇尾巴，而人却不能。但如果一个外星人到地球来访问，TA 很可能会将人和狗分为一类，因为它们既能吃饭又能拉屎，还有两个眼睛一张嘴（误）。不过外星人通过选择性的观测两种生物，可以快速的将它们进行归类。
+
+其实，鸭子类型在类型约束的同时，又带有一些灵活性，代码显得灵活而精简，不会因为严格的约束条件而让代码变得臃肿。TypeScript 用这种方式来校验类型合法性，可以提升编写 TS 的体验感，绕开了传统 OOP 语言（例如 Java、C#）死板的类型约束，让写 TS 变得轻松而有趣。
+
+#### 其他
+
+限于篇幅原因，本文不打算详解所有 TS 的特性。不过，TS 中有很多其他实用的特性，例如[联合类型](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html)、[枚举](https://www.typescriptlang.org/docs/handbook/enums.html)、[泛型](https://www.typescriptlang.org/docs/handbook/generics.html)、[命名空间](https://www.typescriptlang.org/docs/handbook/namespaces.html) 等，希望进一步了解或使用 TS 的读者可以到[官方文档](https://www.typescriptlang.org/docs/)深入了解。
+
+## 用 TS 构建大型项目
+
+对于大型项目，你首先联想到的是什么？对于不同领域的开发工程师来说，可能有不同的理解。不过单就软件行业来看，一个软件开发项目被称作 “大型项目”（Large Project），通常意味着将涉及大量的功能模块，从而具有较高系统复杂性（Complexity）。一个大型项目的成功，除了满足传统项目管理中的周期、预算控制以外，还需要注重质量，从软件工程角度看来就是可靠性（Robustness）、稳定性（Stability）、可维护性（Maintainability）、可扩展性（Scalability）等等。就像建筑工程一样，你一定不希望自己设计的建筑是摇摇欲坠的，你需要它尽可能的稳固，在狂风暴雨下屹立不倒，同时可以灵活修缮维护。而为了保障这些非功能性需求或者质量要求，必须要有一些明确的规范和标准，在建筑工程里也许是工程图纸、精密测量等，而在软件工程里则是代码规范（Coding Standard）、设计模式（Design Patterns）、流程规范（Process Standard）、系统架构（System Architecture）、单元测试（Unit Testing）等等。其中的代码规范和设计模式尤为重要，因为这是整个软件系统的基础。没有代码，将没有软件程序；而没有好的代码规范和设计模式，将没有好的代码，也就没有可靠的软件程序，有的只是源源不断的程序 Bug 和系统崩溃。TypeScript 可以在代码规范和设计模式上极大的提高代码质量，进而增强系统的可靠性、稳定性和可维护性。
+
+#### 代码规范
+
+代码风格经常是前端项目的痛点，这个可以用 JavaScript 风格检测工具 [ESLint](https://eslint.org/) 来规范。但是，ESLint 无法解决类型方面带来的问题。只有 TypeScript 可以静态检测在类型层面上可能出现的问题。如果用 TS 来编写前端项目，我会建议对所有可能的变量和方法都用类型约束。而且尽可能不要用 `any` 类型，因为 `any` 类型可以涵盖所有其他类型，相当于没有类型，这也失去了类型系统的意义。
+
+跟纯 JS 相比，TS 虽然多了一些额外的类型声明代码，但它却因此而获得了更好的可读性、可理解性和可预测性，因此也会更加稳定和可靠。如果你是从 JS 转到 TS 的初学者，请尽可能克制住不要用 `any`，这会毁了你的规范和标准。如果你是前后端分离的架构而且在用纯 JS 写前端，在没有明确且可靠的后端接口数据结构约定时，你可能会被迫使写很多类型判断的代码，这跟在静态语言中用反射（Reflect）一样会污染整个代码风格。
+
+TS 其实就是在 JS 上多了一个静态类型系统，没有什么其他的魔法。但就是这个 “小小的” 的附加功能让代码变得规范和可维护，从而成为大型前端项目的首选。很多高级前端工程师都喜欢用 React 或 Angular 来构建大型项目，就是因为它们能支持 TS。不过近期发布的 Vue 3 也及时的加入了 TS 的支持，让它能够胜任大型项目的开发。
+
+#### 目录结构
+
+在你编写大型前端项目时，推荐使用声明文件（Declaration Files）来管理接口或其他自定义类型。声明文件一般是 `<module_name>.d.ts` 的形式，在这类文件中只定义模块中的类型，没有任何实际的实现逻辑。声明文件可以单独放在一个目录里，我喜欢命名为 `interfaces`，意思就是接口。这样，就可以充分将抽象类型、方法、属性等与实际内容分开。
+
+以下例子是一个集成了 TS 的 Vue 项目目录。
+
+```bash
+.
+├── babel.config.js			// Babel 编译配置文件
+├── jest.config.ts			// 单元测试配置文件
+├── package.json				// 项目配置文件
+├── public							// 公共资源
+├── src									// 源代码目录
+│   ├── App.vue					// 主应用
+│   ├── assets					// 静态资源
+│   ├── components			// 组件
+│   ├── constants				// 常量
+│   ├── i18n						// 国际化
+│   ├── interfaces			// 声明文件目录
+│   │   ├── components  // 组件声明
+│   │   ├── index.d.ts  // 主声明
+│   │   ├── layout			// 布局声明
+│   │   ├── store				// 状态管理声明
+│   │   └── views				// 页面声明
+│   ├── layouts					// 布局
+│   ├── main.ts					// 主入口
+│   ├── router					// 路由
+│   ├── shims-vue.d.ts	// 兼容 Vue 声明文件
+│   ├── store						// 状态管理
+│   ├── styles					// CSS/SCSS 样式
+│   ├── test						// 测试
+│   ├── utils						// 公共方法
+│   └── views						// 页面
+└── tsconfig.json				// TS 配置文件
+```
+
+其中可以看到，`interfaces` 这个目录跟其他模块在同一级，而其子目录则是其他模块所对应的类型声明。编写代码前，尽量先创建并设计声明文件内容，设计好之后再到实际的模块下完成实现。当然，这个 “定义 -> 实现“ 是一个不断迭代的过程，可能实现过程中发现有类型设计问题，可以回到声明文件中完善定义，再到实现代码里进行优化。
+
+#### 设计模式
+
+在 ES6 出来之前，JavaScript 的类型系统是比较难以理解的，主要原因之一就是它难以掌握的[原型继承](https://javascript.info/prototype-inheritance)模式。在 ES6 之前，要实现一个传统 OOP 中的工厂方法，都显得举步维艰。不过，ES6 的出现缓解了前端工程师的痛点。ES6 引入了 `class` 语法糖来实现传统的 OOP 的类创建与继承。不过这在 TypeScript 看来，只是 “小打小闹”。虽然 ES6 中的 `class` 让 JS 拥有了一部分封装的能力，但在构建大型项目或系统模块时还显得力不从心。缺少类型系统，尤其是泛型，是 JS 的一个致命弱点。而 TS 不仅有 ES6 种 `class` 的所有功能，还有接口、泛型、装饰器等功能来实现各种灵活而强大的框架级系统。泛型（Generics）通常是框架类库的必备特性，它可以让一个类或方法变得更通用。我建议在大型项目中广泛的使用接口、泛型等特性来抽象你的代码和逻辑，从而提取出重复代码，并在整体上对项目进行优化。
+
+## 如何学习 TS
+
+本文的主要目的是鼓励开发者用 TypeScript 构建大型前端项目，而并不是一个参考指南。因此，本篇文章不会详细介绍如何从头开始创建 TS 项目，或如何运用各种 TS 特性来编写代码。在阅读过本文之后的读者如果对 TS 有深入研究的兴趣，需要阅读更多 TS 参考文章来深入理解。
+
+对于初学者来说，本文将给出一些途径来帮助你快速掌握 TS。
+
+#### 官方文档
+
+官方文档是最权威的参考指南，直接从官方文档上手是最系统也是最有效的学习途径。
+
+- 仔细阅读 [TypeScript 官方文档](https://www.typescriptlang.org/docs)，包括 Get Started、[Hand Book](https://www.typescriptlang.org/docs/handbook/intro.html)、Tutorials 等等；
+- 如果不习惯阅读英文文档，可以去 [TypeScript 中文网](https://www.tslang.cn/docs/home.html) 查看文档。
+
+#### 技术文章
+
+TS 已经发展了很多年，在网上介绍 TS 的技术文章已经汗牛充栋，这里只介绍一些比较有帮助的博客文章。
+
+- [Typescript 最佳实践](https://juejin.cn/post/6844904034302705671)
+- [一份不可多得的 TS 学习指南](https://juejin.cn/post/6872111128135073806)
+- [结合实例学习 Typescript](https://juejin.cn/post/6876981358346895368)
+- [可能是你需要的 React + TypeScript 50 条规范和经验](https://juejin.cn/post/6844903849166110728)
+
+#### 实践项目
+
+“实践出真理”，在学习过程中，理论和实践始终是分不开的。如果能将所学知识运用在实际项目中，不仅会加深印象，还可以亲自体会新技术带来的好处以及它还存在的缺点。你可以尝试以下实践项目的途径。
+
+- 从头开始创建一个 TypeScript 项目，用脚手架工具 [Vue CLI](https://github.com/vuejs/vue-cli)、[create-react-app](https://github.com/facebook/create-react-app) 等搭建 TS 项目；
+- 学习成熟的 TS 项目，例如 [Ant Design](https://github.com/ant-design/ant-design)、[Nest](https://github.com/nestjs/nest)、[Angular](https://github.com/angular/angular) 等，了解声明文件的组织方式；
+- 学习开源项目 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)，理解并实践如何让老 JS 项目支持 TS。
+
+## 总结
+
+拥抱 TypeScript 是现代前端工程的主流。任何一个前端工程师都需要学习 TS，这有助于拓宽你的知识技能，以及加强自己的专业度和职业背景。不过，我们必须意识到，拥抱 TS 并不是终点。如果你研究过前端发展的历史，你会发现 TypeScript 的盛行是前端工程化、模块化和规模化的结果，是前端需求变得越来越复杂的必然产物。TS 只是用后端工程知识解决前端工程问题的一个有效解决方案。TypeScript  之父巧妙的将 C# 的经验移植到了 JavaScript，由此诞生了 TypeScript，革命性的解放了前端工程师的生产力。而这个解决方案会持续多久，我们无法预测。但可以确定，前端工程将继续发展，各种新技术也将层出不穷。作为一个软件工程师，你需要不断学习，这样才能不被后浪拍死在沙滩上。
+
+![typescript-abandon](http://codao.crawlab.cn/images/2021-02-07-081047.jpg)
+
