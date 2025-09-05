@@ -30,3 +30,6 @@ Thumbs.db
 
 # Cache
 .cache/
+
+# Temp
+tmp/

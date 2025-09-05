@@ -1,0 +1,39 @@
+ai:
+  label: 人工智能
+  permalink: /ai
+  description: 人工智能和机器学习
+
+algorithm:
+  label: 算法
+  permalink: /algorithm
+  description: 算法和计算方法
+
+architecture:
+  label: 架构
+  permalink: /architecture
+  description: 软件架构和系统设计
+
+backend:
+  label: 后端
+  permalink: /backend
+  description: 后端开发和服务端技术
+
+crawlab:
+  label: Crawlab
+  permalink: /crawlab
+  description: Crawlab 网络爬虫平台
+
+da:
+  label: 数据分析
+  permalink: /data-analytics
+  description: 数据分析和数据科学
+
+devops:
+  label: DevOps
+  permalink: /devops
+  description: 开发运维和持续集成
+
+project-management:
+  label: 项目管理
+  permalink: /project-management
+  description: 敏捷方法论和项目管理
