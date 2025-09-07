@@ -84,11 +84,16 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
+    colorMode: {
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+      defaultMode: 'light',
+    },
     navbar: {
-      title: 'marvinzhang.dev',
+      title: 'Marvin Zhang',
       logo: {
         alt: 'Marvin Zhang Logo',
-        src: 'img/logo.svg',
+        src: 'logo.png',
       },
       items: [
         {to: '/', label: 'Blog', position: 'left'},
