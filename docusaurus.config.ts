@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'marvinzhang.dev',
+  title: 'Marvin Zhang',
   tagline: 'Marvin Zhang\'s Personal Blog',
   favicon: 'img/favicon.svg',
 
