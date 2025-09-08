@@ -24,7 +24,7 @@ const projects: Project[] = [
     tags: ['Go', 'Vue.js', 'Docker', 'MongoDB', 'Web Scraping', 'DevOps'],
     githubUrl: 'https://github.com/crawlab-team/crawlab',
     liveUrl: 'https://www.crawlab.cn',
-    blogUrl: '/blog/crawlab',
+    blogUrl: '#',
     featured: true,
   },
   {
@@ -33,7 +33,7 @@ const projects: Project[] = [
     image: 'https://sread.ai/logo.png',
     tags: ['AI', 'NLP', 'React', 'Chrome Extension', 'LangChain'],
     liveUrl: 'https://sread.ai',
-    blogUrl: '/blog/sread',
+    blogUrl: '#',
     featured: true,
   },
   {
@@ -41,7 +41,7 @@ const projects: Project[] = [
     description: 'Next-generation intelligent web crawler powered by Large Language Models (LLM). Automatically extracts structured data from websites without manual rule configuration, revolutionizing data collection workflows.',
     image: 'https://raw.githubusercontent.com/crawlab-team/crawlab/master/docs/img/logo-ai.png',
     tags: ['AI', 'LLM', 'Python', 'OpenAI', 'Web Scraping', 'Automation'],
-    blogUrl: '/blog/crawlab-ai',
+    blogUrl: '#',
     featured: true,
   },
   {
@@ -51,7 +51,7 @@ const projects: Project[] = [
     tags: ['Data Analysis', 'Visualization', 'TypeScript', 'React', 'Statistics'],
     githubUrl: 'https://github.com/Kanaries/Rath',
     liveUrl: 'https://rath.kanaries.net',
-    blogUrl: '/blog/rath',
+    blogUrl: '#',
   },
   {
     title: 'LangChain Knowledge QA',
@@ -65,7 +65,7 @@ const projects: Project[] = [
     description: 'Advanced implementation of OpenAI function calling capabilities with LangChain integration. Demonstrates structured data extraction and API integration patterns for building robust AI applications.',
     image: 'https://openai.com/favicon.ico',
     tags: ['OpenAI', 'Function Calls', 'Python', 'API Integration', 'Structured Data'],
-    blogUrl: '/blog/openai-function-calls-langchain',
+    blogUrl: '#',
   },
 ];
 
