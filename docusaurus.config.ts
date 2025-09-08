@@ -95,6 +95,7 @@ const config: Config = {
       },
       items: [
         {to: '/', label: 'Blog', position: 'left'},
+        {to: '/about', label: 'About', position: 'left'},
         {
           type: 'localeDropdown',
           position: 'right',
