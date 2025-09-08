@@ -1,6 +1,6 @@
 ---
 slug: project-management
-title: 除了甘特图，你还应该了解些什么软件项目管理知识 (English Translation Needed)
+title: "Beyond Gantt Charts: What Software Project Management Knowledge You Should Know"
 authors:
   - marvin
 tags:
@@ -9,17 +9,129 @@ tags:
   - ai
   - data-analysis
   - testing
-  - translation-needed
 date: '2021-04-05'
 ---
-This article is currently available only in Chinese. An English translation is needed.
+## Introduction
 
-**Chinese Title:** 除了甘特图，你还应该了解些什么软件项目管理知识
+> A bad plan is better than no plan.
+>
+> 坏计划也好过没有计划。--彼得·蒂尔《从0到1》
 
-**Original Publication Date:** 2021-04-05
+In software development engineering, there are rarely lone wolf programmers. This is because modern, commonly seen software projects are usually very complex, requiring substantial human resources, resources, and time. Having a single developer complete a large software project alone would be like "an old man moving mountains." Therefore, **software development is inseparable from team collaboration and project management**. Project Management, simply put, is a methodology for orderly organizing, planning, executing, and completing various tasks in a project. Of course, the actual scope of project management goes far beyond this, usually involving resource allocation, priority setting, progress tracking, etc. It's a product of the Industrial Revolution and a branch of modern management science that can significantly improve engineering completion efficiency and success rates. This article mainly discusses software project management, which is very different from traditional project management in construction engineering, mechanical engineering, etc. Early IT project management borrowed from traditional project management methodologies like construction engineering, playing an important role in the early information age and significantly improving software development and collaboration efficiency. However, with the rapid development of the IT industry, consumer product demands change rapidly, and market conditions have become increasingly volatile. Traditional software project management models can no longer meet software development needs. Therefore, modern software development models, such as Agile Development, emerged and became the preferred choice for many internet companies.
 
-**Note:** This is a placeholder post. Please refer to the Chinese version in the language switcher or contribute a translation.
+What are the drawbacks of traditional project management models (such as waterfall)? What improvements do modern project management models (such as agile) offer? Should we completely abandon waterfall models and fully embrace agile development? As a programmer, should you master some project management knowledge and related tools? As a team leader, how should you establish project management processes to ensure development efficiency and quality? If readers have similar questions, this article will provide detailed analysis and answers.
 
----
+## Traditional Methodologies
 
-*If you would like to contribute an English translation of this article, please feel free to submit a pull request.*
+The traditional project management models discussed in this article refer to historically longer, more framework and methodology-focused, and relatively stricter project management frameworks. A typical traditional software project management model is the **Waterfall development model**, which is the development model adopted by many traditional software projects. The **Gantt chart** tool involved is also widely known, even becoming a symbol of project management. Other popular traditional project management frameworks include the American **PMBOK** (Project Management Body of Knowledge), which is a project management guide edited and published by the global project management member organization PMI, and is also the foundation for the professional project management certification PMP. It can basically be seen as a "driver's license" in project management. The **PRINCE2** IT project management certification released by the British government, like PMBOK, is also a globally authoritative software project management framework, more suitable for large projects. Additionally, there's **6 Sigma**, which focuses on quality management—a completely different methodology from others that emphasizes quality first and is more suitable for industries like manufacturing that require high-precision quality control. This article doesn't plan to introduce all project management methodologies. Readers who want detailed understanding can refer to [Project Manager related introductions](https://www.projectmanager.com/blog/project-management-methodology).
+
+#### Waterfall Development Model
+
+The so-called Waterfall development model is easy to understand literally: the entire development project consists of many tasks and subtasks; each task has a corresponding planned start and end time; tasks usually have dependencies and sequential relationships; if you visualize the planned execution time of tasks on a **Gantt Chart**, it looks like a waterfall. Below is a typical project management Gantt chart.
+
+![waterfall-gantt-chart](https://codao.crawlab.cn/images/2021-04-05-083209.jpg)
+
+The above Gantt chart reflects the System Development Lifecycle (SDLC) of a software project, including multiple phases such as Requirements Analysis, System Design, Development, Testing, and Closing. Requirements analysis usually occurs in the very initial stage of software projects, while testing and acceptance are generally in the final stages. In the waterfall development model, project tasks are closely linked and tightly connected. Project managers can see the entire project overview at a glance in the Gantt chart. By planning project tasks and designing Gantt charts, we seem to expect to accurately predict project cycles and completion times.
+
+However, "ideals are full, reality is lean." **The biggest problem with the waterfall development model comes from its low tolerance for uncertainty**. Today's market environment changes rapidly, business opportunities are fleeting, and enterprise survival pressures no longer allow development teams to spend large amounts of time on requirements analysis and system design. Many traditional software companies spend several months or even a year in analysis and design phases, then spend several months or even years developing, testing, and launching products, only to find that end users are dissatisfied or even refuse to use them, with massive time and labor costs going down the drain. This is a lesson many IT companies have learned through blood. Modern enterprises prefer more flexible software project management frameworks to meet business development needs.
+
+#### PMBOK
+
+As mentioned earlier, the PMP certification supported by PMBOK is the **"driver's license" in the project management industry** because the management framework defined in PMBOK applies to virtually any industry. Born in the 1970s, after decades of development, it has now been published to the 6th edition and can be said to be the most well-known and authoritative project management guide today. Simply put, PMBOK summarizes project management into 10 areas. Through systematic management of these 10 areas, you can effectively control the entire project's progress, cost, resources, and other factors, ensure project success, and minimize risk control. Readers who want detailed understanding of PMBOK can refer to the [PMI official website](https://www.pmi.org/pmbok-guide-standards).
+
+PMBOK is not only applicable to the IT industry but can be applied by all industries using its project management framework, making it a comprehensive methodology. Including the previously mentioned waterfall development model, it's just an implementation method for some areas in PMBOK. The two are not mutually exclusive. Similarly, PMBOK's methodology involves many concepts, making it appear quite formal. Its Statement of Work (SOW), Charter, and Closing Report can all serve as formal project documents, so it's used more in large projects.
+
+#### Others
+
+The author hasn't deeply engaged with PRINCE2 and 6 Sigma, so won't elaborate on them in detail.
+
+## Agile Development Model
+
+In today's context of rapid IT industry development, very few IT practitioners haven't heard of Agile Development. Agile development, as the name suggests, is a project management method that focuses heavily on **flexibility** and **interactivity**. In practicing agile management, project teams can break out of the rigid frameworks of traditional project management and become more "agile." Those seemingly unchangeable goals, deadlines, and even deliverables can all be flexibly adjusted according to actual situations under the agile framework. Like Mongol mounted archers without heavy armor and large-scale logistics constraints, agile development teams can quickly adapt to changes in battlefield environments, thus flexibly and easily breaking through enemy defenses.
+
+![agile-software-development](https://codao.crawlab.cn/images/2021-04-05-102925.jpg)
+
+#### Agile Development Characteristics
+
+Agile development has three major characteristics:
+
+1. **Driven by development cycles**. Each cycle usually lasts 1-4 weeks, ensuring that each cycle's deliverables can be frequently evaluated, thus focusing development energy on product optimization.
+2. **Based on iteration cycles**. Each iteration cycle is usually fixed, so there's always a valid deliverable at the end of each cycle.
+3. **Open to customers**. Customers can see semi-finished products after cycle completion, improving transparency and interactivity.
+
+#### Significance of Agile Development
+
+The biggest difference between agile development and traditional development models is that agile development doesn't require arranging the entire project task execution plan in advance before project execution. In agile development, the entire project is divided into multiple more controllable phases, with project **milestones** set at phase completion points. When milestones are reached, customers and related stakeholders can provide feedback on Work in Progress (WIP) based on phase deliverables, providing reference opinions for the next phase's development. In this continuous "planning → development → feedback → planning → ..." cyclical development model, the final delivered product has a high probability of being **closer to customer expectations**, thus **improving customer satisfaction** and **avoiding massive resource waste**. In the global bestseller "The Lean Startup," the author mentions: the biggest waste for enterprises comes from "rework." Therefore, adopting agile development models allows project teams to **effectively avoid risks brought by requirement changes**. This gives enterprises practicing agile development **anti-fragility**, enabling them to gain the ability to adapt to environmental uncertainty through continuous iteration and learning.
+
+#### Iteration/Phase/Sprint
+
+A core concept in agile development is Iteration, also called Phase or Sprint. This is the **smallest time unit** in agile development, usually lasting 1-4 weeks. The repeated iteration process is actually a process of continuously optimizing products. At the end of iteration cycles, project teams usually complete part or all of a (possibly imperfect) product while also receiving feedback from customers or related stakeholders, providing reference for the next iteration. For example, in an advertising management backend system development project, in the first phase, the development team developed a very basic backend system with only core functions for ad placement and data viewing based on initial simple requirements. The project team presented the first phase deliverable to end users at the Sprint 1 summary meeting, informing them this wasn't the final product. End users provided improvement suggestions based on actual usage scenarios or reported some bugs. In the following phases, the project team could make adjustments based on Sprint 1 feedback, arranging optimization tasks and bug fix tasks in Sprint 2. This continuous iteration continues. This way, after each iteration completion, the final delivered product gets closer and closer to the optimal state.
+
+#### Related Roles
+
+There are several important roles in agile development:
+
+- **Product Owner**. Mainly responsible for communicating with customers, related stakeholders, and development teams, formulating User Stories, and continuously collaborating with development teams to ensure development progress.
+- **Development Team Members**. Project task implementers, usually developers, designers, testers, etc.
+- **Scrum Master**. Responsible for the smooth implementation and development of the entire Scrum process in projects, resolving communication barriers between customers and developers. This role can overlap with the Product Owner.
+- **Stakeholders**. Not necessarily directly responsible for the product but may indirectly participate in the product usage process.
+
+![agile-scrum-methodology](https://codao.crawlab.cn/images/2021-04-05-104641.jpg)
+
+#### Daily Stand Meetings
+
+Daily Stand Meetings are short meetings lasting about 15 minutes where project team members communicate face-to-face daily. The main purpose is to track project development task progress, solve problems encountered during task execution, and coordinate resources. Don't simply think that stand meetings are just "meetings while standing." First, standing together allows project team members to focus their attention and concentrate on project tasks. Second, shorter meeting times keep the entire meeting from deviating from the topic while saving time and improving work efficiency. Additionally, daily stand meetings require every project team member to speak, improving team member participation. The figure below is an example of a daily stand meeting.
+
+![scrum-stand-meeting](https://codao.crawlab.cn/images/2021-04-05-104500.png)
+
+#### Kanban
+
+Kanban is a management tool from Toyota's JIT (Just in Time) lean production. It sets different statuses for project tasks, usually Backlog, To Do, In Progress, Testing, and Done. Each task estimates completion time, usually calculated in hours. Another important task attribute is priority. In the Backlog stage, development team members need to judge the time required for tasks based on their respective experience and professional knowledge, and define task priorities. Different categories of tasks are marked with different colors. Such Kanban can play a significant role in daily stand meetings because it's clear and intuitive, allowing everything to be seen at a glance. When tasks change status, for example, when a developer takes a task card from Backlog, it will be directly placed in To Do. The figure below is a Kanban diagram.
+
+![kanban](https://codao.crawlab.cn/images/2021-04-05-110051.png)
+
+Of course, we now have more modern tools to manage Kanban processes without manually designing a Kanban or buying lots of stickers. Some popular tools include [Trello](https://www.trello.com), [ZenTao](https://www.zentao.net), [Teambition](https://www.teambition.com), etc.
+
+#### Burndown Chart
+
+The Burndown Chart is an effective tool for tracking project progress. It's a curve that decreases over time. The horizontal axis is duration, and the vertical axis is the total remaining story value, estimated total task hours, etc. Burndown charts usually have two curves: one is the estimated ideal decline curve, usually declining linearly over time; the other is the actual decline curve, representing the actual remaining value or hours at a certain time. If the actual curve is higher than the ideal curve at some point, it indicates the current progress is behind; conversely, if the actual curve is lower than the ideal curve, it means progress is ahead. The figure below is a burndown chart diagram.
+
+![burndown-chart](https://codao.crawlab.cn/images/2021-04-06-061229.png)
+
+#### User Stories and Project Tasks
+
+In agile development, User Stories and Project Tasks are easily confused. They are described from different role perspectives. User stories are simply end-user usage scenarios. They are usually collected and organized by project managers from customers or end users and will establish **Value** and **Priority** for each story from a business perspective. Project tasks are actual development tasks broken down by development teams based on user story descriptions, combined with actual system architecture, technical environment, and other factors. They are more implementable compared to user stories. Therefore, it can be said that project tasks are formulated to implement user stories. The value and priority of user stories usually need to be combined with actual business background and commercial value, so they need to be led and formulated by Product Owners. Project tasks are usually more technically oriented, so they need to be formulated by developers who understand technical modules well. These can usually be completed in initial meetings and milestone summary meetings.
+
+#### Scrum vs Extreme Programming (XP)
+
+For readers who understand agile development, you may have heard of Scrum and even equate Scrum with agile. This view is technically inaccurate. Scrum, including Extreme Programming (XP) that we'll discuss later, is just a guiding framework under agile development methodology. Their goals are to enhance flexibility as much as possible while ensuring project quality. Many professional terms, such as user stories, project tasks, and iterations, are consistent. Their main differences lie in how to execute each iteration or sprint.
+
+In Scrum, project plans within each iteration are usually not allowed to change. Once decided in the early iteration, user stories and project tasks are not allowed to change. Only after that iteration ends can corresponding adjustments be made based on actual feedback. The benefit of doing this is that project team members can focus on completing their respective tasks in each iteration, ensuring the quality and efficiency of implemented functions, pursuing product stability and reliability after that iteration cycle completion. But this also has disadvantages—it's relatively less "agile" because once the project plan is determined, new requirements cannot be added or existing requirements changed. Additionally, Scrum's iteration cycles are generally 2-4 weeks, which is relatively long.
+
+In XP, unimplemented user stories can be replaced by new user stories, provided that the work hours for implementing these two user stories are equal. Regarding user story priority, XP is stricter, requiring actual project tasks to strictly follow user story priorities. Additionally, XP has stricter requirements in software implementation processes, generally requiring Test Driven Development (TDD), Automated Testing, pair programming, refactoring, and other relatively strict quality control measures. Therefore, although XP appears relatively flexible in user stories, it requires very strict software implementation processes, thus having higher technical and experience requirements for development teams.
+
+#### Others
+
+Agile development includes many other elements, which this article won't delve into due to space limitations.
+
+## How to Choose Project Management Models
+
+![project-management](https://codao.crawlab.cn/images/2021-04-06-073207.jpg)
+
+In actual work, we encounter project requirements of all sizes. How to choose project management models is an important question. Unfortunately, there's currently no perfect solution that can adapt to all software-type projects. Although this article spent considerable space introducing agile development, this doesn't mean agile development is omnipotent. Traditional waterfall development models have many drawbacks, but they also have many applicable scenarios, such as government IT projects or some highly specialized development projects. Moreover, before choosing project management models, you need to **fully understand some seemingly less obvious implicit factors, such as corporate culture, organizational structure, industry background, human resources, team experience, etc.** Therefore, the author believes that **agile development is not a master key to solve all problems**. We should think carefully before making actual choices. Even in some situations, you need to make certain adjustments by combining various management models according to actual situations to make them more suitable for current project backgrounds.
+
+The advantages of agile development are very obvious. It can **better adapt to rapidly changing business and market environments, helping enterprises overcome some uncertainty factors**, thus delivering more valuable products to users. Moreover, agile development usually saves many unnecessary documents and cumbersome communication processes compared to traditional waterfall development, so it usually **spends less time accomplishing more things**. However, agile development appears less formal compared to traditional waterfall development, somewhat like "guerrilla" vs "regular army." Traditional project management models, such as PMBOK, have **very complete process management and document management, which are more suitable for long-term large projects**.
+
+Therefore, the author believes that **if your market environment and customer needs change frequently, and this uncertainty will significantly affect the enterprise's financial health, then don't hesitate—choose agile development**. Conversely, **if the market environment doesn't change that fast, customer needs are relatively fixed, and there are high compliance and formal document requirements, such as government IT projects, then you can choose traditional project management models, such as waterfall development models**.
+
+## Conclusion
+
+This article is a popular science piece about software development project management models. We started with traditional project management, introducing some common methodologies such as waterfall and PMBOK, and analyzed their shortcomings. Then, based on the shortcomings of traditional project management methodologies, we introduced the currently popular agile development, covering agile development's characteristics, significance, core concepts, etc. Finally, based on comparisons between traditional methodologies and agile development, this article derived project scenarios suitable for traditional methodologies and agile development respectively, believing that agile development is suitable for more volatile market environments, while traditional project management is suitable for projects with little requirement change.
+
+Actually, the concept of agile development mainly emphasizes flexibility and feedback, which can bring us some insights. Readers can try to answer these questions the author thought of: Why did the huge dinosaurs become extinct? Why do they say cats have nine lives? How can Trisolarians survive in extreme environments? Why did former leading enterprises (such as Kodak) still fall? How did Facebook, once only promoted on campuses, become a social giant? The author won't explain them one by one—readers can make some judgments based on their own understanding.
+
+Perhaps some programmers think project management is only the project manager's business, and all I need to do is write good code. But the author always believes: **programmers who only know how to write code are called code farmers; programmers who know more than just writing code are called engineers**. Therefore, we developers should learn more knowledge outside of technology, such as the project management knowledge introduced today. Otherwise, artificial intelligence that can write code might steal everyone's jobs in the future.
+
+## Community
+
+If you're interested in my articles, you can add my WeChat tikazyq1 and note "码之道" (Code Way), and I'll invite you to the "码之道" discussion group.

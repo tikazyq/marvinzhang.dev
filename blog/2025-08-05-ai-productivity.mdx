@@ -1,6 +1,6 @@
 ---
 slug: ai-productivity
-title: 斯坦福大学研究揭示AI对开发者生产力的真实影响：并非万能灵丹 (English Translation Needed)
+title: "Stanford University Study Reveals Real Impact of AI on Developer Productivity: Not a Silver Bullet"
 authors:
   - marvin
 tags:
@@ -9,17 +9,98 @@ tags:
   - ai
   - data-analysis
   - github
-  - translation-needed
 date: '2025-08-05'
 ---
-This article is currently available only in Chinese. An English translation is needed.
+> This article is based on a presentation by Stanford University researcher Yegor Denisov-Blanch at the [AIEWF 2025 conference](https://youtu.be/tbDDYKRFjhk?si=JAsEeGkaR-2-lUmp), which analyzed real data from nearly 100,000 developers across hundreds of companies. Those interested and able can watch the full presentation on YouTube.
 
-**Chinese Title:** 斯坦福大学研究揭示AI对开发者生产力的真实影响：并非万能灵丹
+Recently, claims that "AI will replace software engineers" have been gaining momentum. Meta's Mark Zuckerberg even stated earlier this year that [he plans to replace all mid-level engineers in the company with AI by the end of the year](https://www.forbes.com/sites/quickerbettertech/2025/01/26/business-tech-news-zuckerberg-says-ai-will-replace-mid-level-engineers-soon/). While this vision is undoubtedly inspiring, it also puts pressure on technology decision-makers worldwide: "How far are we from replacing all developers with AI?"
 
-**Original Publication Date:** 2025-08-05
+The latest findings from Stanford University's software engineering productivity research team provide a more realistic and nuanced answer to this question. After in-depth analysis of **nearly 100,000 software engineers, over 600 companies, tens of millions of commits, and billions of lines of private codebase data**, this large-scale study shows that: **Artificial intelligence does indeed improve developer productivity, but it's far from a "one-size-fits-all" universal solution, and its impact is highly contextual and nuanced**. While average productivity increased by about 20%, in some cases, AI can even be counterproductive, reducing productivity.
 
-**Note:** This is a placeholder post. Please refer to the Chinese version in the language switcher or contribute a translation.
+## Limitations of Existing Research: Why Our Previous Understanding Was One-Sided
 
----
+![Study Limitations](https://free.picui.cn/free/2025/08/05/689196ac3883b.png)
 
-*If you would like to contribute an English translation of this article, please feel free to submit a pull request.*
+Before diving into Stanford University's research methods and conclusions, we must first understand why many previous studies on AI's impact on developer productivity may have been biased. The Stanford research team identified three major common flaws:
+
+1. **Blind pursuit of commit and pull request (PR) numbers:** Many studies only measure productivity by counting commits or PRs. However, this ignores a key fact: **task sizes vary enormously**. Committing more code doesn't necessarily mean higher productivity. Worse yet, research found that **AI-generated code often introduces new bugs or requires rework, forcing developers to spend time fixing the "mess" AI previously created**. This means developers might be "spinning their wheels" - appearing busy but not actually improving efficiency.
+
+2. **"Greenfield" vs "Brownfield" project bias:** Some studies divide developers into AI-using and non-AI-using groups and have them compete on "greenfield" projects (building from scratch without any existing context). In these "greenfield" scenarios, AI indeed excels at generating boilerplate code and can significantly outperform developers not using AI. However, **most software engineering tasks involve existing codebases and complex dependencies (i.e., "brownfield" projects)**. In these more realistic scenarios, AI's advantages are far less pronounced than in new projects, making these studies' conclusions often difficult to generalize.
+
+3. **Over-reliance on surveys:** Research found that asking developers how productive they think they are yields results "almost as unreliable as coin flips." An experiment with 43 developers showed extremely low correlation between people's judgments of their own productivity and actual measurements, with an average deviation of about 30 percentage points - only one-third could accurately estimate which productivity quartile they belonged to. While surveys are valuable for measuring non-quantifiable issues like morale, they cannot effectively measure actual productivity or AI's impact on it.
+
+## Stanford University's Rigorous Approach: Measuring "Functionality" Rather Than Lines of Code
+
+![Evaluation Framework](https://free.picui.cn/free/2025/08/05/689196ac29397.png)
+
+To overcome the above limitations, Stanford University's research employed a more rigorous [automated code review algorithm](https://arxiv.org/pdf/2409.15152). Their core goal is to measure **"actual functionality delivered by code changes over time"** rather than just lines of code or commit counts.
+
+* **From expert validation to automated models:** Ideally, code should be independently evaluated by a panel of 10-15 experts for **quality, maintainability, and actual output**. Research found that these experts showed high agreement among themselves, and their evaluations could effectively predict real-world outcomes. To scale this process and make it economically viable, the research team developed an automated model that seamlessly connects with Git version control systems. It analyzes **source code changes** in each commit and quantifies them across multiple dimensions. Since each commit has a unique author, timestamp, and identifier, this enables them to precisely measure **productivity changes** over time for teams or companies - i.e., "functionality delivered by code."
+
+* **Massive and private dataset:** The key to this research is its use of **massive private codebase data from over 600 companies**. This data covers nearly 100,000 software engineers, tens of millions of commits, and billions of lines of code. Unlike potentially misleading public repositories, **private codebases are more self-contained** and can more accurately measure team or organizational productivity. The research team could therefore observe data trends over time, such as the impact of COVID-19 and AI on productivity.
+
+## Key Findings: The Nuances of AI's Impact on Developer Productivity
+
+The research conclusions clearly indicate that AI does improve developer productivity, but this is far from a universally applicable solution. Its benefits vary based on multiple factors including task complexity, project maturity, programming language, and codebase size.
+
+### Overall Productivity Gains: Initially Impressive, but "Rework" Costs Cannot Be Ignored
+
+![Increased Rework](https://free.picui.cn/free/2025/08/05/689196ac13587.png)
+
+AI coding tools can initially increase delivered code volume by about 30-40%, creating higher perceived productivity. However, this typically involves significant **"rework"** - fixing bugs and issues introduced by AI. Rework refers to modifying recently committed code, which is usually wasteful. After accounting for this rework, **net average productivity gains across all industries and domains are about 15-20%**.
+
+![Compromised Productivity Gains](https://free.picui.cn/free/2025/08/05/689196aeb8563.jpeg)
+
+### Task Complexity and Project Maturity Are Key
+
+![Matureness vs Complexity](https://free.picui.cn/free/2025/08/05/689196af79b6f.jpeg)
+
+AI's benefits are closely related to task nature and project maturity.
+
+* **Greenfield Low Complexity:** AI performs best in these scenarios, bringing **30-40% productivity gains**. This is a typical scenario where AI excels at generating initial, straightforward code.
+* **Greenfield High Complexity:** More moderate gains of about **10-15%**.
+* **Brownfield Low Complexity:** Still performs well with **15-20% improvement**.
+* **Brownfield High Complexity:** This is where AI provides the least help, with gains of only **0-10%**. Research shows that for these high-complexity tasks, **AI is even more likely to reduce engineer productivity by introducing hard-to-detect errors**.
+
+### Programming Language Popularity Is Crucial
+
+![Language vs Complexity](https://free.picui.cn/free/2025/08/05/689196aeb8563.jpeg)
+
+AI's training data and capabilities create significant performance differences across programming languages.
+
+* **High-popularity languages (e.g., Python, Java, JavaScript, TypeScript):** These languages achieved the most significant productivity gains, **20% for low-complexity tasks and 10-15% for high-complexity tasks**.
+* **Low-popularity languages (e.g., Cobol, Haskell, Elixir):** AI provides minimal help. Because AI performs poorly with these languages, developers are reluctant to use it frequently. For complex tasks in these languages, **AI may actually reduce productivity** because the quality of generated code is too poor, slowing development. However, development work in these "niche" languages may only account for 5-10% of global volume.
+
+### Codebase Size Is an Important Limiting Factor
+
+![Codebase Size](https://free.picui.cn/free/2025/08/05/689196ac32582.jpeg)
+
+Research also found a significant trend: as codebase size increases (e.g., from 10,000 to 10 million lines of code), **AI's productivity gains drop sharply**. This is mainly due to three reasons:
+* **Context window limitations** (even large language models see significant performance degradation as context length increases - for example, performance might drop from 90% to about 50% when going from 1,000 to 32,000 tokens).
+* **Signal-to-noise ratio** (larger codebases may confuse the model, reducing its effectiveness).
+* **Dependencies and domain-specific logic** (more complex codebases have more intricate dependencies and unique business logic that AI struggles to accurately understand and replicate).
+
+## Summary: Developing Data-Driven AI Strategies
+
+Stanford University's research clearly shows that AI is undoubtedly a powerful tool for software engineers and does **improve productivity** in most cases. However, blindly following trends and expecting AI to be a "silver bullet" for all problems is dangerous. Understanding its limitations is crucial. AI is not a universal remedy that equally boosts productivity in all scenarios. **The most significant improvements typically occur in: low-complexity tasks, new projects, common programming languages, and relatively small codebases**.
+
+For engineering leaders and technology decision-makers, the key lies in **developing situation-appropriate, data-driven AI strategies** rather than just following trends. This means:
+
+1. **Precisely assess application scenarios:** Identify task and project types that can benefit most from AI.
+2. **Set realistic expectations:** In high-complexity, large legacy projects, or scenarios using niche languages, carefully evaluate AI tool introduction and pay attention to potential "rework" costs.
+3. **Continuously measure and adjust:** Adopt more scientific productivity measurement methods that go beyond simple code commit counts, focus on actual delivered functionality and quality, and adjust AI tool usage strategies based on data.
+
+Ultimately, the key to success is not "whether" to use AI, but "how" to use AI wisely to maximize its benefits while avoiding potential pitfalls.
+
+## Special Thanks
+
+Thanks to [Google NotebookLM](https://notebooklm.google) and [Google Gemini](https://gemini.google.com) for their strong support in creating this article!
+
+## Community
+
+If you're interested in my articles, you can add my WeChat tikazyq1 with note "码之道" (Way of Code), and I'll invite you to the "码之道" discussion group.
+
+## Main References
+
+* [[arXiv.2409.15152] Predicting Expert Evaluations in Software Code Reviews](https://arxiv.org/pdf/2409.15152)
+* [[YouTube] Does AI Actually Boost Developer Productivity? (100k Devs Study)](https://youtu.be/tbDDYKRFjhk?si=PbThK001FWMtv86-)
