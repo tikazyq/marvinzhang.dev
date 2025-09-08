@@ -1,6 +1,6 @@
 ---
 slug: frontend-engineering
-title: 公元2021年，关于前端工程化你应该知道些什么 (English Translation Needed)
+title: "Year 2021: What You Should Know About Frontend Engineering"
 authors:
   - marvin
 tags:
@@ -9,17 +9,313 @@ tags:
   - javascript
   - typescript
   - project-management
-  - translation-needed
 date: '2021-03-02'
 ---
-This article is currently available only in Chinese. An English translation is needed.
+## Introduction
 
-**Chinese Title:** 公元2021年，关于前端工程化你应该知道些什么
+> The only constant in the world is change.
+>
+> 世界上唯一不变的是变化。--《谁动了我的奶酪》作者 斯宾塞·约翰逊
 
-**Original Publication Date:** 2021-03-02
+**The IT industry changes too fast, especially frontend development**. If you could travel back 10 years and meet a Web development software engineer, they would definitely tell you that mastering frontend means being proficient with jQuery and solving IE browser compatibility issues. However, with the continuous development of frontend, jQuery faced "official retirement" and gradually exited the historical stage (element selection and manipulation were unified by standard DOM APIs); the much-criticized IE browser compatibility problems, due to IE's gradually shrinking market and the emergence of compatibility tools (Polyfill), have been downgraded from core optimization issues to minor annoyances, no longer being standard equipment for frontend engineers.
 
-**Note:** This is a placeholder post. Please refer to the Chinese version in the language switcher or contribute a translation.
+Today's frontend development has a dazzling array of professional terminology and complex technology ecosystems, which may make engineers new to frontend development feel anxious: there's simply too much to learn. Modern frontend engineers who don't understand Webpack, Babel, Node.js, NPM/Yarn, ES6/7, React/Vue, Sass/Less, TypeScript, ESLint, Canvas/SVG and other modern frontend knowledge will find it difficult to convince others of their professional background. **Frontend engineers in 2021 may be true engineers in every sense of the word**. They typically need to apply extensive professional knowledge to solve engineering problems, including how to modularize projects, how to design interactions between components, how to improve reusability, how to enhance bundling efficiency, optimize browser rendering performance, etc. They no longer just need the HTML/CSS/JS routine to develop static pages like before.
 
----
+This article will focus on the theme of modern frontend development to introduce various important technologies of frontend engineering in detail, helping readers understand how the complexity and diversity of modern frontend pages are constructed. This article is a popular science piece about frontend engineering—even if you don't understand frontend technology, you can benefit from this article.
 
-*If you would like to contribute an English translation of this article, please feel free to submit a pull request.*
+## Bundling & Deployment
+
+**If I had to say what the biggest difference between modern frontend development and 10 years ago is, I would definitely say it's bundling & deployment**. Developers living in the frontend "Stone Age" (jQuery mainstream period) would find it hard to imagine that today's frontend projects need compilation. Most Web UIs in the past were provided to users through MVC, where frontend pages were mostly generated through backend template rendering, with static resources (HTML/CSS/JS) provided to browsers without any processing. In other words, frontend static resources at that time were equivalent to part of the backend service's presentation layer, and complex interactions were usually completed by the backend. Therefore, frontend static resources were usually very simple, not requiring complex compilation and bundling, at most just minification into smaller files.
+
+The current situation is completely different. Users' demands for interactivity are gradually increasing, and they're usually unwilling to spend too much time waiting for page responses. Traditional MVC patterns, limited by network transmission, usually need hundreds of milliseconds or more to complete a page navigation, which greatly affects user experience. Therefore, frontend projects gradually separated and run independently as applications in browsers, with interactions happening on the browser side, making them very fast. However, complex interactions are all concentrated in the frontend, making frontend projects more complex, bloated, and harder to manage. Therefore, **huge project source code needs to be compressed into very small static files, occupying as little network resource as possible for transmission to browsers**. Dependencies in slightly larger frontend projects today can exceed 500MB. I believe you wouldn't be foolish enough to dump all these files to users!
+
+Therefore, **you need a very powerful bundling and compilation tool**. [Webpack](https://webpack.js.org/) is currently the mainstream bundling tool that can work with compilation tools (such as [Babel](https://babeljs.io/)) to bundle various types of project source code files (such as .vue, .ts, .tsx, .sass) into native .js, .css, .html and other static files, directly providing them to browsers for execution. The diagram below is a process illustration from Webpack's official website. Webpack generates corresponding static resource files by checking various dependency relationships in source code files and analyzing compilation. This is the same principle as compiling Java or C# code.
+
+![webpack](https://codao.crawlab.cn/images/2021-03-02-033035.png)
+
+Webpack configuration is defined by a JavaScript file, usually named `webpack.config.js`. Below is a basic Webpack configuration:
+
+```js
+const path = require('path');
+
+module.exports = {
+  entry: {
+    main: './src/main.js'  // Entry file
+  }
+  output: {
+    path: path.resolve(__dirname, 'dist'),   // Output path after bundling
+    filename: 'bundle.js'                    // Output filename after bundling
+  },
+  module: {
+    rules: [
+      { test: /\.css$/, use: 'css-loader' }, // .css file transformation module
+      { test: /\.ts$/, use: 'ts-loader' }    // .ts file transformation module
+    ]
+  }
+};
+```
+
+This configuration code defines the bundling entry, output, and compilation loading rules, all of which can be completed through a configuration file. After defining the configuration file `webpack.config.js`, executing the `webpack` command in the project root directory will load this configuration file by default, then read source code and bundle it into compiled static files. You might notice that there's a `module.rules` array structure configuration item where various file type loaders can be defined, which can also be seen as compilers. In this example, `css-loader` is a loader for processing .css files that converts keywords like `@import`, `url()`, `import`, `require` into compatible code in native CSS/JS. To make `css-loader` effective, you need to run `npm install css-loader --save` in the project root directory to install this loader. Similarly, `ts-loader` for processing .ts files also needs to be installed via `npm install ts-loader --save`. Actually, **to enable Webpack to handle various file types (such as .vue, .tsx, .sass), you usually need to install corresponding loaders, which gives Webpack very strong extensibility. By installing loaders, different types of files are unified into native frontend code, enabling us to very effectively manage complex and huge frontend projects**.
+
+Since this article is not a reference guide, it doesn't plan to introduce specific Webpack configurations in detail. If you need to learn more about Webpack, you can go to the Webpack official documentation (https://webpack.js.org/concepts) for in-depth study. Of course, Webpack isn't the only frontend bundling tool—there are other popular tools like [Rollup.js](https://www.rollupjs.org), [Gulp.js](https://gulpjs.com), [Parcel.js](https://parceljs.org/), [ESBuild](https://esbuild.github.io), etc. Interested readers can study them in depth.
+
+The driving engine for Webpack and other bundling tools is Node.js, meaning they run as Node.js dependencies. Actually, any modern frontend project cannot do without Node.js and its package management system NPM. We'll introduce frontend project modularization, including NPM, in the next section.
+
+## Modularization
+
+Modularization is a very important concept in any technical engineering project. A complex, stably running large system is usually composed of multiple sub-modules that communicate with each other and collaborate to complete very complex logic or tasks. The trouble that complexity brings to maintainers is usually non-linear—when a system grows to a certain scale, the cost required to add unit scale will increase exponentially. If we don't take measures to limit maintenance costs, projects of this scale are almost unmaintainable. To enable developers to effectively manage large projects, our approach is usually to reduce complexity and understandability, minimizing the speed of system complexity increase as much as possible. An effective way to reduce complexity is divide and conquer—for software projects, this means modularization. Modularization allows various subsystems responsible for the same or similar functions to run independently (high cohesion) while appropriately opening some interfaces for other sub-modules (low coupling). This way, the entire large system is described by multiple sub-modules, each with their own characteristics and functions, allowing maintainers to accurately locate modules corresponding to various functions, greatly reducing maintenance costs. **"High cohesion, low coupling" is the core philosophy of modularization, with the ultimate goal of reducing system complexity and improving maintainability. Modularization is very, very important for frontend projects that are increasingly complex and often hundreds of megabytes of code**.
+
+#### NPM
+
+**For frontend projects, NPM (Node Package Manager) is an indispensable frontend project building tool**. NPM, as the name suggests, is Node.js's package management tool, similar to Python's pip, Java's Maven, C#'s Nuget, etc. For some existing modules or functions, we don't need to write from scratch because the software engineering community advocates the DRY principle (Don't Repeat Yourself), otherwise we'd spend a lot of time reinventing wheels. NPM is the dependency management tool in frontend projects that can help you install packages and libraries needed to build frontend projects, then compile source code into native frontend static files through bundling tools like Webpack mentioned earlier.
+
+The configuration file describing frontend project dependencies is called `package.json`, similar to Python's `setup.py` or Java's `pom.xml`, which can define project dependency packages, runtime entry, environment requirements, etc. `package.json` can be generated manually or created using `npm init`. Below is a sample `package.json` file:
+
+```json
+{
+  "name": "crawlab-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/vue-fontawesome": "^3.0.0-2",
+    "@popperjs/core": "^2.6.0",
+    "@types/codemirror": "^0.0.103",
+    "@types/md5": "^2.2.1",
+    "atom-material-icons": "^3.0.0",
+    "codemirror": "^5.59.1",
+    "core-js": "^3.6.5",
+    "element-plus": "^1.0.1-beta.7",
+    "font-awesome": "^4.7.0",
+    "md5": "^2.3.0",
+    "node-sass": "^5.0.0",
+    "normalize.css": "^8.0.1",
+    "vue": "^3.0.0",
+    "vue-i18n": "^9.0.0-beta.11",
+    "vue-router": "^4.0.0-0",
+    "vuex": "^4.0.0-0"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/jest": "^26.0.19",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-typescript": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/eslint-config-typescript": "^5.0.2",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^7.0.0-0",
+    "sass-loader": "^10.1.0",
+    "scss-loader": "^0.0.1",
+    "typescript": "~3.9.3"
+  }
+}
+```
+
+The more important items are `dependencies` and `devDependencies`, which define the packages this project depends on. They're in Key-Value format, where Key is the dependency package name and Value is the corresponding dependency package version number or version matching expression. After creating the project, executing `npm install` will automatically pull dependency packages from the package hosting website https://npmjs.com. All installed modules will appear in the `node_modules` directory, with each package's directory named after its package name. When we bundle and compile source code, project building tools will automatically analyze source code dependencies and find corresponding modules from `node_modules` for compilation and building.
+
+The `scripts` configuration item is command line aliases for project development, debugging, building, testing, and deployment, helping you quickly start projects. It's also in Key-Value format, where Key is the alias and Value is the specific corresponding execution command. For example, based on the above configuration, executing `npm run build` is equivalent to executing `vue-cli-service build`, i.e., bundling and compiling the frontend project through the official command line tool `vue-cli-service` (`vue-cli-service` is actually a Webpack building tool wrapped for Vue projects).
+
+Besides the points mentioned above, NPM has many other configuration features. For detailed information, refer to the official documentation (https://docs.npmjs.com). If you want to understand frontend package management more deeply, I recommend learning about [Yarn](https://yarnpkg.com), an open source package management tool by Facebook that's very similar to NPM but has some practical features like dependency caching.
+
+#### Project Structure
+
+If NPM and package management systems mentioned above are macro-level modularization between projects, then the project structure introduced in this section is micro-level modularization within projects. **To ensure frontend project code maintainability, frontend development engineers usually need to master clear and reasonable code organization methods**, including how to categorize and manage different types of files or components, and how to organize project directory hierarchy and structure. Below is a typical Vue3 frontend project code structure:
+
+```
+.
+├── LICENSE
+├── README.md
+├── babel.config.js			// Babel compiler configuration file
+├── jest.config.ts			// Jest testing tool configuration file
+├── package.json				// Project definition file
+├── public							// Public static directory
+│   ├── favicon.ico
+│   └── index.html
+├── src									// Source code root directory
+│   ├── assets					// Static files directory, including .scss, .svg, .png etc.
+│   ├── components			// Components
+│   ├── i18n						// Internationalization
+│   ├── interfaces			// Type definitions
+│   ├── layouts					// Layouts
+│   ├── main.ts					// Main entry file
+│   ├── router					// Router
+│   ├── shims-vue.d.ts	// Vue TS adaptation file
+│   ├── store						// State management
+│   ├── styles					// Styles
+│   ├── test						// Tests
+│   ├── utils						// Common methods
+│   └── views						// Pages
+├── tsconfig.json				// TS configuration
+└── yarn.lock						// yarn dependency lock
+```
+
+As you can see, some basic configuration files are in the root directory, and the `src` directory is the main source code directory—you can understand that core code is all in the `src` directory. Within the `src` directory, there are some subdirectories that are core modules of the frontend project, including Pages (Views), Router, Components, Layouts, State Management (Store), etc. Of course, not every project has the same organizational form—there might be some differences, but pages, components, and routing are usually important modules that need to be independent. Components are generally reusable and are parts of pages; routing implements frontend navigation matching page functionality; pages are the actual content of various web pages. Actually, this code organization form is similar to traditional backend projects—modules responsible for different functions with high cohesion are made independent, each forming structures of the same type.
+
+The benefit of doing this is that **developers can categorize the problems they need to solve, enabling them to precisely locate relevant modules and quickly complete development tasks or solve difficult problems**. This is like organizing household items or filing documents—if you clean and organize regularly, it makes life or work environments more orderly.
+
+Of course, it's not that traditional frontend projects didn't have modularization concepts—it's just that in the jQuery era, how to modularize or even whether modularization was needed didn't have unified standards. If you worked on frontend projects 10 years ago, you should deeply understand those smelly, hard-to-look-at "spaghetti" code. Now, with the continuous development of frontend technology, the frontend industry has derived many tools and methodologies to help frontend engineers with engineering, including modularization in this section and the frontend frameworks we'll introduce next—the well-known React, Vue, Angular three major frameworks and other niche frameworks.
+
+## Frontend Frameworks
+
+#### jQuery (Stone Age)
+
+Many times, **the birth and popularity of new things is definitely not accidental**. Just like jQuery that emerged in 2006, it solved the pain points of manipulating DOM with native methods at that time. jQuery became the standard in the frontend world through simple APIs and efficient performance. Speaking of jQuery's success, it was built on the defects of native JavaScript at that time: verbose and bloated syntax, complex and hard-to-understand design patterns, and inconsistent browser standards. This brought enormous pain to Web developers at that time. jQuery, as a lightweight JavaScript utility library, largely compensated for JS's shortcomings, thus receiving welcome from many developers and becoming the frontend hegemon for many years with the development of the internet industry. Many other well-known third-party libraries, such as Bootstrap, were also built on jQuery.
+
+As more and more developers began embracing jQuery, quite a few people also started complaining about its shortcomings. With user experience becoming increasingly important, some developers began migrating some backend interaction logic to frontend to pursue faster response speeds and smoother user experiences. To achieve this goal, many developers began heavily using jQuery through Ajax asynchronous requests to render frontend pages in real-time—using JS code to manipulate DOM. This change brought massive complaints from jQuery users: they thought implementing UI with complex interaction logic using jQuery was a very headache-inducing thing. First, jQuery heavily relied on CSS or XPath selectors for DOM elements, which brought great trouble to project modularization: all elements were almost global for a frontend application, meaning attributes like `class` and `id` became extremely sensitive for project stability—because you might accidentally modify elements you shouldn't have, polluting the entire application. Second, jQuery's principle for implementing frontend interaction is directly manipulating DOM, which is fine for simple applications, but if the frontend interface has large amounts of data or content that need rendering, or requires frequent changes to interface styles, this will produce very large performance problems, causing browser lag and seriously affecting user experience. Third, jQuery didn't have a unified pattern for writing frontend projects—programmers could freely express themselves according to their preferences, which was also one of the reasons frontend applications were full of bugs. Overall, **heavily using jQuery to implement frontend interaction made frontend projects very fragile**.
+
+#### AngularJS (Iron Age)
+
+In 2009, a Google engineer open-sourced his side project AngularJS. **This brand new framework brought revolutionary progress to the frontend industry dominated by jQuery at that time**. This engineer used only 1,500 lines of AngularJS code to implement in 2 weeks what 3 people spent 6 months developing—17,000 lines of code for an internal project. This shows the power of this framework. AngularJS's main feature is two-way binding between HTML views and data models, meaning frontend interfaces would responsively change automatically with data. This feature was both unfamiliar and anticipated for frontend engineers accustomed to writing jQuery, because this writing pattern no longer required actively updating DOM, thus saving a lot of code and logic for actively manipulating DOM—AngularJS automatically completed all of this for you. Below is a diagram illustrating AngularJS two-way binding:
+
+![two-way-binding](https://codao.crawlab.cn/images/2021-03-02-033100.png)
+
+AngularJS (name for version 1.0, later renamed to [Angular](https://angular.io)) could achieve some componentization, but support wasn't complete. Using Directive to componentize some common modules seemed inadequate. This brought inspiration and opportunities to the later two major frameworks [React](https://reactjs.org) (developed by Facebook) and [Vue](https://vuejs.org) (developed by former Google engineer Evan You).
+
+#### React, Vue & Angular (Three-Way Competition)
+
+![react-vue-angular](https://codao.crawlab.cn/images/2021-03-02-033115.png)
+
+In 2013, Facebook publicly released React, this brand new frontend framework, at JS ConfUS. **React was unique, creating the concept of Virtual DOM, cleverly solving frontend rendering performance problems; meanwhile, React provided excellent componentization support**. On the other hand, React's data-view one-way binding solved consistency problems well and supported TypeScript very well, bringing stability and robustness to developing large frontend projects. However, this also created quite a barrier. React beginners usually need to understand many basic concepts, such as JSX, before they can smoothly write React applications.
+
+A year later, **the rising star Vue** was publicly released by former Google engineer Evan You. It **took a different approach, absorbing advantages of React and AngularJS while making some excellent innovations**. Vue integrated views (HTML), data models (JS), and styles (CSS) into one .vue file and continued AngularJS's two-way binding, lowering the frontend development barrier. If you've written AngularJS, you'll find Vue very easy to get started with. Additionally, Vue did an excellent job supporting componentization. The recently released Vue3 also added TypeScript support, enabling it to fully support large frontend projects. Readers who want to learn more about Vue3 can follow the "Code Way" WeChat account (ID: codao) and check the historical article "TypeScript-Enhanced Vue 3: How to Help You Easily Build Enterprise-Level Frontend Applications", which has very detailed introductions about Vue3's new features and how to use it to build large projects.
+
+Starting from version 2.0, **AngularJS was renamed to Angular, optimizing some previous shortcomings while fully embracing TypeScript**. Angular and AngularJS are almost two completely different frameworks syntactically. Angular mandatorily requires TS development, making it very suitable for building large frontend projects. However, this also requires beginners to simultaneously learn TS and Angular's very complex concepts, making its learning curve very steep.
+
+Here's a summary of the current three major frontend frameworks:
+
+| Attribute | React | Vue | Angular |
+| ------------ | ---------------------- | -------------------------------- | ---------------------------------- |
+| Creator | Facebook | Evan You (former Google engineer) | Misko Hevery (Google) |
+| First Release | 2013 (8 years ago) | 2014 (7 years ago) | 2009 (12 years ago) |
+| Domestic Usage | High | High | Low |
+| International Usage | High | Low | Medium |
+| Learning Difficulty | High | Low | Very High |
+| Suitable Project Scale | Large/Medium | Large/Medium/Small | Large |
+| Ecosystem Richness | High | Medium | Low |
+| Data Binding | One-way | Two-way | Two-way |
+| TypeScript | Supported | Supported | Mandatory |
+| File Size | 43KB | 23KB | 143KB |
+| Github Stars | 145k | 158k | 58k |
+| Advantages | Fast, stable, good ecosystem | Simple, highly flexible, easy to learn, detailed documentation | Strong reusability, mandatory TS, suitable for enterprise projects |
+| Disadvantages | High learning cost, slow documentation updates | Slightly poor stability, small community | Complex, very high learning curve, incomplete documentation |
+
+#### Future Outlook
+
+React, Vue, and Angular have now become frontend frameworks that frontend engineers must understand, master, or even excel at in the frontend field. However, with the rise of mobile development and the emergence of new technologies, we can foresee that this "three-way competition" trend will undergo huge changes in the coming years. WebAssembly's emergence brings challenges to traditional HTML/CSS/JS frontend technologies; hybrid development, mini-programs, PWA and other technologies enable frontend engineers to get involved in mobile development; emerging frontend frameworks like Svelte, Elm.js, ReasonML, with their increasing popularity, could all potentially impact existing technologies. In summary, as mentioned at the beginning of this article, **"The only constant in the world is change"**.
+
+## Componentization
+
+For modern frontend engineering, **componentization is a core concept**. Componentization is actually modularization of frontend UI interfaces. For complex frontend applications, many components like buttons, navigation, input boxes, etc., are reusable UI modules that can be used in various pages. Additionally, components can contain sub-components, and sub-components can contain sub-sub-components, making frontend interface organization very flexible. If you design properly, when facing requirement changes from bosses or product managers, such as layout adjustments, style changes, function extensions, etc., you can handle them calmly. Componentization is so important that every frontend engineer needs to master its design principles, regardless of which frontend framework you use.
+
+If the goal is to implement a large, highly extensible frontend project, frontend engineers need to not only organize code structure (layout, components, routing) in advance but also consider designing some basic components to simplify subsequent development and maintenance work. Among these, the most basic components should be layout components—you might need to design Header, Sidebar, Main Container, Footer, etc. Of course, some commonly used functional components also need consideration, such as Input, Form, Modal, etc. I recommend not reinventing wheels—you can choose suitable UI frameworks based on your framework, such as [Ant Design](https://ant.design) for React, [ElementUI](https://element-plus.gitee.io) for Vue. Only relatively special components need to be implemented yourself.
+
+Additionally, frontend engineers need to be very familiar with designing **component communication**. General parent-child component communication can be implemented through property propagation and event emission. For multi-layer communication, you can consider using Context or Event Bus. Communication between sibling components is usually implemented using **state management (Store)**.
+
+Of course, **componentization design patterns are not one-size-fits-all**. Frontend engineers generally accumulate experience from practice and borrowing, forming their own knowledge systems. For beginners, you can look at open source frameworks published by predecessors, such as Ant Design or ElementUI, where source code and implementation processes are public. Studying their source code can help you effectively master design concepts that have been tested by project practice.
+
+## Type Constraints
+
+JavaScript plays a very important role in frontend development as the core of interaction logic. However, **JavaScript is a weakly typed dynamic language**, meaning various basic types can convert to each other, so **the stability and robustness of programs written in JS are quite concerning**. This is a fatal flaw for building large frontend applications. Fortunately, Microsoft released [TypeScript](https://www.typescriptlang.org) in 2012, which can use static code detection mechanisms to constrain JavaScript with strong typing. **TypeScript is a superset of JavaScript**, meaning TS contains all JS syntax and features while adding object-oriented programming (OOP) concepts like classes, interfaces, decorators, and namespaces.
+
+Readers unfamiliar with TypeScript can refer to the previous article "Why TypeScript is Essential for Developing Large-Scale Frontend Projects" from the Code Way WeChat account. You can follow the "Code Way" WeChat account (ID: codao) to view historical articles.
+
+![typescript](https://codao.crawlab.cn/images/2021-03-02-033205.png)
+
+As defined on the TypeScript official website, TypeScript is "Typed JavaScript at Any Scale". TypeScript's main feature is its type system, which extends JavaScript by adding types. If you understand the difference between static typing and dynamic typing, you should be clear about static typing's advantages: predictability, robustness, stability. Through compilation, TS code can be converted to native JS code, so there are no browser compatibility issues with TS code.
+
+The following two code segments can clearly understand the difference between writing frontend applications with pure JS and TS. First, let's look at a pure JS (without TS) example:
+
+```javascript
+// JS Example
+
+// No type definitions
+// Data type constraints rely entirely on documentation or memory
+
+// Valid user instance
+const validUser = {
+  name: 'Zhang San',
+  sex: 'male',
+  age: 40,
+};
+
+// Invalid user instance, won't report error at compile time
+const invalidUser: User = {
+  sex: 'unknown',
+  age: '10',
+};
+
+console.log(invalidUser.name); // undefined
+console.log(invalidUser.name.substr(0, 10)); // Uncaught TypeError: Cannot read property 'substr' of undefined
+```
+
+As you can see, the entire code won't report syntax errors, so it can run smoothly in the JS engine. When running to `console.log(invalidUser.name)`, it will print `undefined` without throwing errors. However, this creates hidden dangers for subsequent code. When executing the next statement `console.log(invalidUser.name.substr(0, 10))`, it will report `Uncaught TypeError: Cannot read property 'substr' of undefined`, a very common error in JavaScript. For large projects, once developers encounter such errors, they're usually at a loss because you don't know how this `undefined` was generated: from backend APIs, previous code logic errors, or data problems?
+
+Now let's look at the next TS code segment:
+
+```typescript
+// TS Example
+
+// Gender
+type Sex = 'female' | 'male';
+
+// User class
+interface User {
+  name: string;
+  sex: Sex;
+  age: number;
+}
+
+// Valid user instance
+const validUser: User = {
+  name: 'Zhang San',
+  sex: 'male',
+  age: 40,
+};
+
+// Invalid user instance. Compilation error
+const invalidUser: User = {
+  sex: 'unknown',
+  age: '10',
+};
+
+console.log(invalidUser.name); // Compilation error
+console.log(invalidUser.name.substr(0, 10)); // Compilation error
+```
+
+By defining types with `type` and `interface`, the TS compiler can scan code during pre-compilation to discover errors in advance, such as missing fields or illegal fields. When compiling this code, you'll find errors are thrown in advance during compilation. Therefore, developers can get early warnings about possible bugs before running code and take measures accordingly.
+
+**TypeScript is almost standard equipment for large frontend projects and an essential skill for almost every frontend engineer**.
+
+## Others
+
+There's much more knowledge related to frontend engineering. The previous sections only introduced some core knowledge. Other frontend engineering-related knowledge includes but is not limited to:
+
+1. **Code style constraints**. Help unify code style, such as ESLint.
+2. **Unit testing**. Effectively avoid bugs, tools include Jest, Mocha, etc.
+3. **Multi-project management**. Split large projects into different sub-projects or modules, help manage multi-module projects, representative tools include Lerna.
+4. **Project deployment**. CI/CD, Nginx, etc.
+
+## Conclusion
+
+This article started from the development of the frontend industry, introducing the historical background of frontend technology development, explaining the importance and necessity of frontend engineering, and starting from bundling and deployment, explaining the bundling and deployment process of modern frontend engineering and implementation tools. Next, this article introduced another important concept of frontend engineering—modularization—explaining the need for modularization that arose with the trend of increasingly complex frontend applications, and how to implement modularization. After that, it introduced the development of frontend frameworks, including the initial jQuery, later AngularJS, and the current three major frontend frameworks React, Vue, Angular, as well as future prospects for frontend framework development. Additionally, this article introduced componentization and type constraints, explaining why TypeScript should be used in large projects.
+
+In summary, the frontend industry is a rapidly developing industry, especially in recent years. The rapid development of the internet has catalyzed the development of frontend engineering, making frontend engineers truly worthy of the engineer title. **Frontend engineers can be called engineers not just because they can write frontend code, but because they can use architectural thinking and engineering thinking to build and manage large, complex frontend applications, enabling users to experience various Web or mobile applications with complex backend functionality but simple frontend usage**. Frontend technology and frontend engineering continue to develop. With the emergence and continuous maturation of new technologies, we believe we'll learn more interesting and practical frontend knowledge. Are you who entered the frontend field today still able to keep learning?
+
+## Community
+
+If you're interested in my articles, you can add my WeChat tikazyq1 and note "码之道" (Code Way), and I'll invite you to the "码之道" discussion group.
