@@ -1,6 +1,6 @@
 ---
 slug: vue3
-title: TS 加持的 Vue 3，如何帮你轻松构建企业级前端应用 (English Translation Needed)
+title: "TypeScript-Enhanced Vue 3: How to Easily Build Enterprise-Level Frontend Applications"
 authors:
   - marvin
 tags:
@@ -9,17 +9,507 @@ tags:
   - javascript
   - typescript
   - project-management
-  - translation-needed
 date: '2021-02-22'
 ---
-This article is currently available only in Chinese. An English translation is needed.
+## Introduction
 
-**Chinese Title:** TS 加持的 Vue 3，如何帮你轻松构建企业级前端应用
+> A craftsman must first sharpen his tools if he is to do his work well. -- The Analects of Confucius
 
-**Original Publication Date:** 2021-02-22
+In today's frontend landscape dominated by three major frameworks, very few people don't know Vue. In 2014, former Google engineer [Evan You](https://baike.baidu.com/item/%E5%B0%A4%E9%9B%A8%E6%BA%AA/2281470) released what's called a progressive frontend application framework, Vue. Its simplified template binding and component-based thinking had a positive and profound impact on the frontend field that was still in the jQuery era. The birth of Vue benefited frontend developers who weren't comfortable with TS or JSX syntax. Moreover, Vue's low learning threshold also makes it very easy for beginners to get started. This is also an important reason why Vue could spread rapidly in a short time. From the State of JS survey, we can see that Vue's awareness is close to 100%, and overall user satisfaction is also quite high.
 
-**Note:** This is a placeholder post. Please refer to the Chinese version in the language switcher or contribute a translation.
+![stateofjs-vue](http://codao.crawlab.cn/images/2021-02-23-031511.png)
 
----
+Vue is both powerful and easy to learn—does this mean Vue is a perfect framework? Unfortunately, the answer is no. Although Vue has a low entry threshold and is flexible and easy to use, this advantage also becomes a double-edged sword, bringing certain limitations for building large projects. Many frontend engineers who have developed large projects with Vue 2 have a love-hate relationship with Vue. However, with the release of [Vue 3](https://www.vue3js.cn/docs/zh/), these disadvantages that became prominent when developing large projects have been effectively resolved, making the Vue framework very versatile and truly having the potential to compete with "frontend framework leader" [React](https://reactjs.org). What important new features does Vue 3 bring? This article will provide a detailed introduction.
 
-*If you would like to contribute an English translation of this article, please feel free to submit a pull request.*
+## Vue Overview
+
+Vue is a frontend framework developed by former Google engineer Evan You in 2013 and released in 2014. Regarding the specific definition of Vue, here's an excerpt from the Vue official website's introduction:
+
+> Vue (pronounced /vjuː/, like **view**) is a **progressive framework** for building user interfaces. Unlike other monolithic frameworks, Vue is designed to be incrementally adoptable. The core library focuses on the view layer only, and is easy to pick up and integrate with other libraries or existing projects. On the other hand, Vue is also perfectly capable of powering sophisticated Single-Page Applications when used in combination with [modern tooling](https://cn.vuejs.org/v2/guide/single-file-components.html) and [supporting libraries](https://github.com/vuejs/awesome-vue#libraries--plugins).
+
+#### Progressive Framework
+
+Many people might not understand the meaning of Progressive Framework. Let me briefly explain. **Progressive** is mainly about the project development process. Traditional software project development is usually waterfall-style, meaning software design and development tasks usually have clear timelines, and there are clear dependencies between tasks. This means the project's tolerance for uncertainty is relatively low. This development model has become quite outdated in the modern, increasingly complex and rapidly changing business environment, because requirements are often uncertain, which brings great risks to projects.
+
+![vue-progressive](http://codao.crawlab.cn/images/2021-02-24-025842.png)
+
+Progressive frameworks or progressive development models can solve this problem. Taking Vue as an example: at the project's beginning, when functional requirements are simple, you can use some relatively simple APIs; as the project gradually develops and some common components need to be abstracted, Vue's componentization functionality is used; when the project becomes very large, you can introduce modules like Vue Router or Vuex to further engineer the frontend system. See? This way, the development process becomes very agile. You don't need to design the entire system in advance; you only develop as needed, so you can quickly develop product prototypes and scale to production systems.
+
+#### Framework Features
+
+Vue uses template syntax to render pages, which is also called **declarative rendering**. An important reason Vue is easy to get started with is because it conforms to frontend developers' habits. For example, here's an example:
+
+```html
+<div id="app">
+  {`{{message}}`}
+</div>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello Vue!'
+    }
+  })
+</script>
+```
+
+As you can see, `el` specifies the element the Vue instance binds to, and `message` in `data` binds to the DOM element's content. You only need to manipulate data in JS, and HTML content will change accordingly.
+
+Additionally, Vue integrates HTML, CSS, and JS all in the same file `.vue`, organizing code through **component-based application construction**. This syntactically encourages "high cohesion, low coupling" design philosophy, making code organization more reasonable and improving readability and logic. Below is a basic `.vue` file example from the official website:
+
+```html
+<template>
+  <p>{`{{ greeting }}`} World!</p>
+</template>
+
+<script>
+  module.exports = {
+    data: function () {
+      return {
+        greeting: 'Hello'
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  p {
+		font-size: 2em;
+    text-align: center;
+  }
+</style>
+```
+
+The component's skeleton (HTML), styles (CSS), and data or operations (JS) are all in the same place. Developers need to think about how to break down the entire system into smaller sub-modules, or components. This is very helpful for building large projects.
+
+![vue-component](http://codao.crawlab.cn/images/2021-02-24-024346.png)
+
+Actually, besides the above two features, Vue has many other practical characteristics, but due to space limitations, we won't explain them in detail here. Interested readers can go to the [official website](https://www.vue3js.cn/docs/zh/) for in-depth understanding.
+
+#### Framework Shortcomings
+
+Nothing is perfect, and Vue is no exception. As Vue's popularity and user base continued to grow, some frontend developers began complaining that Vue's high flexibility led to a lack of constraints when building large projects, making it easy to produce many bugs. Even using [Vuex](https://vuex.vuejs.org/), the state management system in Vue's ecosystem, couldn't effectively solve this. Regarding whether Vue is suitable for large projects, there's quite a bit of debate online, and even Evan You himself personally participated in discussions on Zhihu ([gossip portal](https://www.zhihu.com/question/36898014/answer/69490539)).
+
+Objectively speaking, although Vue has a low entry threshold, this doesn't mean Vue isn't suitable for developing large projects. However, we must also admit that large projects usually require high stability and maintainability, and Vue framework's high flexibility and lack of sufficient constraints make it easy for inexperienced frontend developers to misuse, resulting in smelly, hard-to-look-at "spaghetti" code. Actually, code maintainability doesn't necessarily require low flexibility and freedom, but this freedom might bring risks to overall project stability.
+
+![terrible-code](http://codao.crawlab.cn/images/2021-02-24-035557.png)
+
+Vue author Evan You actually noticed this problem early on, which is why he planned to refactor Vue from the ground up to better support [TypeScript](https://www.typescriptlang.org/). This is Vue 3, released in September 2020.
+
+## Vue 3 New Features
+
+Vue 3 has many practical new features, including [TS support](https://www.vue3js.cn/docs/zh/guide/typescript-support.html), [Composition API](https://www.vue3js.cn/docs/zh/guide/composition-api-introduction.html), and [Teleport](https://www.vue3js.cn/docs/zh/guide/teleport.html), etc. This article is not a reference guide for Vue 3, so it won't introduce all new features. We'll only focus on the more important features, especially TypeScript (abbreviated as TS) which can strengthen code constraints.
+
+#### TS Support
+
+Technically speaking, TS support isn't a new feature in Vue 3, because Vue 2 could already support TS. But Vue 2's TS support was implemented through the awkward decorator approach of [vue-class-component](https://github.com/vuejs/vue-class-component). I deeply understand this "awkward" evaluation because I once migrated a Vue 2 production environment project and found the benefits weren't high: the syntax was very different, I spent a lot of time refactoring, and found it only improved some code standardization, but the code overall became more bloated and readability became worse.
+
+In Vue 3, TS is natively supported because Vue 3 itself is written in TS, making TS a "first-class citizen" in Vue 3. TS support is the most important feature in Vue 3 in my opinion, especially for building large frontend projects. Why is it important? Because TS effectively solves frontend engineering and scaling problems. It greatly improves code quality in terms of code standards and design patterns, thereby enhancing system reliability, stability, and maintainability. Regarding TS's importance, I've already provided detailed introduction in my previous article ["Why TypeScript is Essential for Developing Large-Scale Frontend Projects"](https://mp.weixin.qq.com/s?ver=2909&signature=jEK1UPxA8qNm1OpfQbcRGoEqiebLKJ5BAzStSd3baCIif1RB9-JUZbbtJ1EtrZPJt3XYkBEE8QjFGee1ZRdT78*Rf52jotNRYuxTyo3ISaCWYU2imPe2UOpGOJvucEDy&new=1). Interested readers can continue reading for deeper understanding.
+
+Vue 3 defines many TS interfaces and types, helping developers define and constrain various variables, methods, and class types. Below is a very basic example:
+
+```typescript
+import { defineComponent } from 'vue'
+
+// Define Book interface
+interface Book {
+  title: string
+  author: string
+  year: number
+}
+
+// defineComponent defines component type
+const Component = defineComponent({
+  data() {
+    return {
+      book: {
+        title: 'Vue 3 Guide',
+        author: 'Vue Team',
+        year: 2020
+      } as Book // as Book is an assertion
+    }
+  }
+})
+```
+
+The above code defines component type through `defineComponent`, and defines internal variable `book` in `data`, which is defined through interface `Book`. Therefore, when other components reference this component, they can automatically infer the component's type, internal variable types, etc. If there's any inconsistency between interface or variable types between the referencing and referenced parties, TS will throw an error, allowing you to avoid many errors in advance.
+
+Although Vue 3 can support TS well in the traditional Vue instance definition method (Options API), we recommend using TS with another new method to define Vue instances—the Composition API that we'll introduce next.
+
+#### Composition API
+
+The birth of the Composition API comes from the problem of being unable to elegantly and effectively reuse large numbers of components in large projects. If you already understand Vue, you probably know that previous versions of Vue instances contained many fixed APIs, including `data`, `computed`, `methods`, etc. This definition method has a prominent problem: it separates Vue instance functionality according to different types into different fixed APIs, rather than dividing by actual functionality. This leads to very scattered code in complex components, as shown in the following figure:
+
+![vue-complex-component](http://codao.crawlab.cn/images/2021-02-24-065017.png)
+
+In this "Frankenstein"-style traditional component, code of the same color is responsible for the same functionality, but they're scattered in different areas according to different types. This makes it difficult for developers encountering this component for the first time to quickly understand the entire component's functionality and logic. The Composition API allows developers to aggregate related functionality and variables in components in one place and reference them as needed externally, thus avoiding the traditional approach's logic scattering problem.
+
+In Vue 3's Composition API, all functionality and logic only need to be defined in the `setup` method. `setup` accepts two parameters: properties `props` and context `context`. Inside the method, you define needed variables and methods, and the return value is an object containing public variables and methods that can be used by other components and modules. Most traditional Vue instance APIs, such as `data`, `computed`, `methods`, etc., can be defined in `setup`. Below is an official example of the Composition API:
+
+```typescript
+// src/components/UserRepositories.vue
+import { toRefs } from 'vue'
+import useUserRepositories from '@/composables/useUserRepositories'
+import useRepositoryNameSearch from '@/composables/useRepositoryNameSearch'
+import useRepositoryFilters from '@/composables/useRepositoryFilters'
+
+export default {
+  // Reference child components
+  components: { RepositoriesFilters, RepositoriesSortBy, RepositoriesList },
+  // Properties
+  props: {
+    user: { type: String }
+  },
+  setup(props) {
+    // Destructure properties, must add toRefs if directly referenced in setup
+    const { user } = toRefs(props)
+
+    // Get repository-related public methods, defined in other modules
+    const { repositories, getUserRepositories } = useUserRepositories(user)
+
+    // Search repository-related public methods, defined in other modules
+    const {
+      searchQuery,
+      repositoriesMatchingSearchQuery
+    } = useRepositoryNameSearch(repositories)
+
+    // Filter repository-related public methods, defined in other modules
+    const {
+      filters,
+      updateFilters,
+      filteredRepositories
+    } = useRepositoryFilters(repositoriesMatchingSearchQuery)
+
+    return {
+      // Since we don't care about unfiltered repositories
+      // we can expose filtered results under the `repositories` name
+      repositories: filteredRepositories,
+      getUserRepositories,
+      searchQuery,
+      filters,
+      updateFilters
+    }
+  }
+}
+```
+
+In this example, all variables or methods needed by this component are defined in other modules and exposed to external components through `useXXX` functions, and can also be reused by other components. Doesn't this look much cleaner?
+
+You might think about how to write these `useXXX` functions. It's actually very simple—here's an example:
+
+```typescript
+// src/composables/useUserRepositories.js
+
+import { fetchUserRepositories } from '@/api/repositories'
+import { ref, onMounted, watch } from 'vue'
+
+export default function useUserRepositories(user) {
+  // Internal list variable
+  const repositories = ref([])
+  
+  // Get list method
+  const getUserRepositories = async () => {
+    repositories.value = await fetchUserRepositories(user.value)
+  }
+
+  // Initial list fetch, executed after mounting, equivalent to mounted in traditional components
+  onMounted(getUserRepositories)
+  
+  // Watch user and get latest list based on changes, equivalent to watch in traditional components
+  watch(user, getUserRepositories)
+
+  // Return public variables and methods
+  return {
+    repositories,
+    getUserRepositories
+  }
+}
+```
+
+Some APIs from traditional components, such as `mounted` and `watch`, have become on-demand referenced functions with exactly the same functionality as before. The previous `data`, `computed`, `methods` become internal variables in the `setup` function, and whether they're exposed to the outside depends on whether they're returned.
+
+Note that Vue 3 introduces the concept of [Reactivity APIs](https://www.vue3js.cn/docs/zh/api/refs-api.html), where previous variables need to be defined using different reactivity APIs as needed. The specific principles won't be deeply introduced here. Interested readers can continue learning at the [official documentation](https://www.vue3js.cn/docs/zh/api/refs-api.html).
+
+#### Other New Features
+
+Vue 3 has other new features, but due to space limitations, I won't introduce them in detail. Here are just some practical new features with brief introductions:
+
+- [Teleport](https://www.vue3js.cn/docs/zh/guide/teleport.html) - Suitable for components like Modal and Popover that need to be mounted in global DOM elements
+- [Fragments](https://www.vue3js.cn/docs/zh/guide/migration/fragments.html) - Components support multiple root nodes
+- [Emits Component Option](https://www.vue3js.cn/docs/zh/guide/component-custom-events.html) - Event-related API changes
+
+For the complete list of changes, please refer to the [official documentation (English)](https://v3.vuejs.org/guide/migration/introduction.html#breaking-changes).
+
+## Large Project Practice
+
+After introducing so much theoretical knowledge, this might not be enough for frontend engineers. To make learned knowledge work in actual work, it must be applied to project practice, especially large projects. Therefore, this section will focus on how to use Vue 3 to build enterprise-level projects. This section will use one of my [Github repositories](https://github.com/crawlab-team/crawlab-frontend) as a demonstration to explain how to build large frontend projects with Vue 3.
+
+This repository is the frontend part of the next version v0.6 of my open source project [Crawlab](https://github.com/crawlab-team/crawlab). It's currently still in development and not a finished product; however, the code organization structure has taken shape and is sufficient for demonstration. The previous version was written with Vue 2 using traditional Vue APIs. This Vue 3 version will use TS and Composition API to complete refactoring and migration, then add more practical features on this basis. Readers interested in this frontend project can visit this Github repository to understand code details. I also very much welcome everyone to discuss any related issues with me, including unreasonable or areas needing optimization.
+
+Repository address: [https://github.com/crawlab-team/crawlab-frontend](https://github.com/crawlab-team/crawlab-frontend)
+
+#### Project Structure
+
+The code organization structure of this project is as follows, ignoring some unimportant files or directories:
+
+```bash
+.
+├── public							// Public resources
+├── src									// Source code directory
+│   ├── assets					// Static resources
+│   ├── components			// Components
+│   ├── constants				// Constants
+│   ├── i18n						// Internationalization
+│   ├── interfaces			// TS type declarations
+│   ├── layouts					// Layouts
+│   ├── router					// Router
+│   ├── services				// Services
+│   ├── store						// State management
+│   ├── styles					// CSS/SCSS styles
+│   ├── test						// Tests
+│   ├── utils						// Utility methods
+│   ├── views						// Pages
+│   ├── App.vue					// Main application
+│   ├── main.ts					// Main entry
+│   └── shims-vue.d.ts	// Vue compatibility declaration file
+├── .eslintrc.js				// ESLint configuration file
+├── .eslintignore				// ESLint ignore file
+├── babel.config.js			// Babel compilation configuration file
+├── jest.config.ts			// Unit test configuration file
+├── package.json				// Project configuration file
+└── tsconfig.json				// TS configuration file
+```
+
+As you can see, this frontend project has many sub-modules, including components, layouts, state management, etc. There are more than ten sub-directories in the `src` directory—that's more than ten modules, not including sub-directories under each module, so there are many modules with very complex structure. This is a typical large frontend project structure. Enterprise-level projects, such as ERP, CRM, ITSM, or other backend management systems, mostly have many functional modules and clear project structures. These modules each have their own responsibilities and collaborate with each other to form the entire frontend application.
+
+Actually, this project structure isn't only suitable for Vue; projects from other frameworks like React and Angular can be similar.
+
+#### TS Type Declarations
+
+TS is almost standard equipment for modern large frontend projects. Its powerful type system can avoid many common errors and risks in large projects. Regarding why TS is suitable for large projects, I've already provided detailed explanation in my [previous article](https://mp.weixin.qq.com/s?ver=2909&signature=jEK1UPxA8qNm1OpfQbcRGoEqiebLKJ5BAzStSd3baCIif1RB9-JUZbbtJ1EtrZPJt3XYkBEE8QjFGee1ZRdT78*Rf52jotNRYuxTyo3ISaCWYU2imPe2UOpGOJvucEDy&new=1). Therefore, we also adopted TS as the type system in this frontend project.
+
+In the project structure above, we declare TS types in the `src/interfaces` directory. Type declaration files are represented by `<name>.d.ts`, where `name` indicates type declarations related to this module. For example, in the file `src/interfaces/layout/TabsView.d.ts`, we define types related to the `TabsView` layout component, with the following content:
+
+```typescript
+interface Tab {
+  id?: number;
+  path: string;
+  dragging?: boolean;
+}
+```
+
+A more complex example is the state management type declaration file, such as `src/interfaces/store/spider.d.ts`. This is a module declaration file for [Vuex](https://vuex.vuejs.org/), the state management library in Vue, with the following content:
+
+```typescript
+// Import third-party types
+import {GetterTree, Module, MutationTree} from 'vuex';
+
+// If third-party types are imported, explicit global declaration is needed
+declare global {
+  // Inherit Vuex's basic type Module
+  interface SpiderStoreModule extends Module<SpiderStoreState, RootStoreState> {
+    getters: SpiderStoreGetters;
+    mutations: SpiderStoreMutations;
+  }
+
+  // State type
+  // NavItem is a custom type
+  interface SpiderStoreState {
+    sidebarCollapsed: boolean;
+    actionsCollapsed: boolean;
+    tabs: NavItem[];
+  }
+
+  // Getters
+  // StoreGetter is a custom base type
+  interface SpiderStoreGetters extends GetterTree<SpiderStoreState, RootStoreState> {
+    tabName: StoreGetter<SpiderStoreState, RootStoreState, SpiderTabName>;
+  }
+
+  // Mutations
+  // StoreMutation is a custom base type
+  interface SpiderStoreMutations extends MutationTree<SpiderStoreState> {
+    setSidebarCollapsed: StoreMutation<SpiderStoreState, boolean>;
+    setActionsCollapsed: StoreMutation<SpiderStoreState, boolean>;
+  }
+}
+```
+
+The content in angle brackets `<...>` are generics in TS, which can greatly improve type universality and are usually used as base types.
+
+Below is an example of referencing TS types `src/store/modules/spider.ts`:
+
+```typescript
+import router from '@/router';
+
+export default {
+  namespaced: true,
+  state: {
+    sidebarCollapsed: false,
+    actionsCollapsed: false,
+    tabs: [
+      {id: 'overview', title: 'Overview'},
+      {id: 'files', title: 'Files'},
+      {id: 'tasks', title: 'Tasks'},
+      {id: 'settings', title: 'Settings'},
+    ],
+  },
+  getters: {
+    tabName: () => {
+      const arr = router.currentRoute.value.path.split('/');
+      if (arr.length < 3) return null;
+      return arr[3];
+    }
+  },
+  mutations: {
+    setSidebarCollapsed: (state: SpiderStoreState, value: boolean) => {
+      state.sidebarCollapsed = value;
+    },
+    setActionsCollapsed: (state: SpiderStoreState, value: boolean) => {
+      state.actionsCollapsed = value;
+    },
+  },
+  actions: {}
+} as SpiderStoreModule;
+```
+
+Here the `as SpiderStoreModule` assertion is used. The TS static checker will automatically infer elements in `SpiderStoreModule` and compare them with actual variables. If inconsistencies appear, it will throw an error.
+
+#### Componentization
+
+Componentization is mainstream in modern frontend projects, and Vue 3 is no exception. Vue 3's componentization is quite similar to Vue 2—both use Vue instances to define various components. In this frontend project, components are categorized into different types, with the same type placed in one folder, as shown below:
+
+```bash
+.
+└── src
+		└── components
+    		├── button				// Button
+    		├── context-menu	// Context menu
+    		├── drag					// Drag
+    		├── file					// File
+    		├── icon					// Icon
+    		├── nav						// Navigation
+    		├── table					// Table
+    		└── ...
+```
+
+Component files are defined as `<ComponentName>.vue`. Below is an example of a context menu `src/components/context-menu/ContextMenu.vue`:
+
+```html
+<template>
+  <el-popover
+      :placement="placement"
+      :show-arrow="false"
+      :visible="visible"
+      popper-class="context-menu"
+      trigger="manual"
+  >
+    <template #default>
+      <slot name="default"></slot>
+    </template>
+    <template #reference>
+      <div v-click-outside="onClickOutside">
+        <slot name="reference"></slot>
+      </div>
+    </template>
+  </el-popover>
+</template>
+
+<script lang="ts">
+import {defineComponent} from 'vue';
+import {ClickOutside} from 'element-plus/lib/directives';
+
+// Define properties
+export const contextMenuDefaultProps = {
+  visible: {
+    type: Boolean,
+    default: false,
+  },
+  placement: {
+    type: String,
+    default: 'right-start',
+  },
+};
+
+// Define emitted events
+export const contextMenuDefaultEmits = [
+  'hide',
+];
+
+// Define component
+export default defineComponent({
+  // Component name
+  name: 'ContextMenu',
+  
+  // Reference external directives
+  directives: {
+    ClickOutside,
+  },
+  
+  // Emitted events
+  emits: contextMenuDefaultEmits,
+  
+  // Properties
+  props: contextMenuDefaultProps,
+  
+  // Composition API
+  setup(props, {emit}) {
+    // Click event function
+    const onClickOutside = () => {
+      emit('hide');
+    };
+
+    // Return public object
+    return {
+      onClickOutside,
+    };
+  },
+});
+</script>
+```
+
+You might have doubts: it seems like TS's type system isn't used here. Actually, this is just a very simple component. For a component example that includes complete TS features, you can refer to this component:
+
+`src/file/FileEditor.vue`: [https://github.com/crawlab-team/crawlab-frontend/blob/main/src/components/file/FileEditor.vue](https://github.com/crawlab-team/crawlab-frontend/blob/main/src/components/file/FileEditor.vue)
+
+#### Others
+
+Due to space limitations, this article won't detail all other modules. Here's just a simple list:
+
+- UI Framework - Uses [Element+](https://element-plus.gitee.io/) as the UI framework
+- Layouts - Basic layout `BasicLayout` defines top, sidebar, bottom and other elements
+- State Management - Equivalent to global data management system
+- Routing - Page routing configuration
+- Internationalization - Multi-language configuration
+- Styles - Uses SCSS to define global styles and style variables
+- Services - Includes interaction functions with backend APIs
+- Constants
+- Utilities
+
+## How to Learn Vue 3
+
+Regarding Vue 3 learning approaches, you should first **read the [official documentation](https://www.vue3js.cn/docs/zh/)** to understand Vue 3's basic concepts, advanced principles, and how to engineer, etc. Author Evan You has already introduced various aspects of Vue very thoroughly in the documentation, with illustrated explanations that are both deep and accessible about Vue 3 concepts and knowledge. In summary, Vue 3's documentation is very beginner-friendly. If you're comfortable with English, I recommend directly reading the [English official documentation](https://vue3js.cn/docs/), which usually has the latest content.
+
+Besides reading official documentation, I also recommend **reading excellent Vue 3 open source projects**, such as [Element+](https://github.com/element-plus/element-plus), [Ant Design Vue](https://github.com/vueComponent/ant-design-vue), [Vue-Admin-Beautiful](https://github.com/chuzhixin/vue-admin-beautiful). There are many excellent Vue 3 projects on Github. Reading their source code can help you become familiar with how to use Vue 3 and how to organize code for building large projects.
+
+Of course, hands-on **practicing a frontend project with Vue 3** can help you deeply understand Vue 3's principles and development methods, especially applying Vue 3's new features to work projects. After understanding Vue 3's basic syntax and new features, I applied this knowledge to my own open source project, learning while doing, and very quickly mastered Vue 3's core knowledge.
+
+## Conclusion
+
+This article mainly introduced Vue 3's advantages in large frontend projects, especially the new features of TS support and Composition API, which can greatly enhance code readability and maintainability. This makes the already easy-to-learn Vue framework even more powerful, enabling it to handle the design and development of large frontend projects. Native support for TS allows Vue 3 project code to have good predictability. The Composition API can make scattered code logic more orderly. These all help enhance the robustness of Vue 3 frontend projects, making it easier for frontend personnel to write stable and maintainable code. Additionally, this article demonstrated how to use Vue 3 to develop enterprise-level frontend projects through one of my frontend projects in development (Crawlab Frontend), showing related project structure, TS type declarations, componentization, etc.
+
+More experienced frontend engineers might dismiss Vue 3's new features because the so-called TS support and Composition API were first introduced in other well-known frameworks under different names, such as React Hooks in React. Vue 3 seems to only have borrowed from the past. However, this viewpoint is very inadvisable. In front of technology, no solution is superior or inferior—only suitable or unsuitable. It's like blind dating—only what's suitable is the best. Evan You also admits that AngularJS and React have many excellent technologies, and Vue has also borrowed some. But you definitely can't declare it as plagiarism because of this. Just like C# and Java have similar syntax and features, but you definitely can't prove C# plagiarized Java (actually C# has many excellent features compared to Java, such as implicit type inference, which is one of the reasons I quite like C#). Vue's success is definitely not accidental. Its ease of use and relatively rich documentation resources allow beginners to get started quickly, which is a blessing for frontend developers. Those of us in technology should maintain an inclusive attitude toward new technologies and be able to view issues dialectically and rationally, so we don't become extreme and go astray.
+
+![php-best](http://codao.crawlab.cn/images/2021-02-24-144559.jpg)
+
+## References
+
+- Vue 3 Official Documentation: https://www.vue3js.cn/docs/zh/
+- TypeScript Official Documentation: https://www.typescriptlang.org/docs 
+- Crawlab: https://github.com/crawlab-team/crawlab
+- Crawlab Frontend: https://github.com/crawlab-team/crawlab-frontend
+- ["Why TypeScript is Essential for Developing Large-Scale Frontend Projects"](https://mp.weixin.qq.com/s?ver=2909&signature=jEK1UPxA8qNm1OpfQbcRGoEqiebLKJ5BAzStSd3baCIif1RB9-JUZbbtJ1EtrZPJt3XYkBEE8QjFGee1ZRdT78*Rf52jotNRYuxTyo3ISaCWYU2imPe2UOpGOJvucEDy&new=1)
+
+## Community
+
+If you're interested in my articles, you can add my WeChat tikazyq1 and note "码之道" (Code Way), and I'll invite you to the "码之道" discussion group.
