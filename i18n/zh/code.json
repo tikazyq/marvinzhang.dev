@@ -321,5 +321,69 @@
   "theme.tags.tagsPageTitle": {
     "message": "标签",
     "description": "The title of the tag list page"
+  },
+  "projects.title": {
+    "message": "项目",
+    "description": "The title of the projects page"
+  },
+  "projects.description": {
+    "message": "探索 Marvin Zhang 的开源项目、AI 应用和技术创新作品集，涵盖网络爬虫、数据分析和机器学习领域。",
+    "description": "The description of the projects page"
+  },
+  "projects.hero.title": {
+    "message": "我的项目",
+    "description": "The hero title on the projects page"
+  },
+  "projects.hero.subtitle": {
+    "message": "开源项目、AI 应用和技术创新",
+    "description": "The hero subtitle on the projects page"
+  },
+  "projects.featured.title": {
+    "message": "精选项目",
+    "description": "The featured projects section title"
+  },
+  "projects.featured.description": {
+    "message": "展示我最具影响力和创新性的项目",
+    "description": "The featured projects section description"
+  },
+  "projects.other.title": {
+    "message": "更多项目",
+    "description": "The other projects section title"
+  },
+  "projects.other.description": {
+    "message": "其他项目和技术探索",
+    "description": "The other projects section description"
+  },
+  "projects.featured": {
+    "message": "精选",
+    "description": "The featured badge text"
+  },
+  "projects.github": {
+    "message": "GitHub",
+    "description": "The GitHub link text"
+  },
+  "projects.live": {
+    "message": "在线演示",
+    "description": "The live demo link text"
+  },
+  "projects.blog": {
+    "message": "阅读更多",
+    "description": "The blog link text"
+  },
+  "projects.cta.title": {
+    "message": "有兴趣合作吗？",
+    "description": "The call to action title"
+  },
+  "projects.cta.description": {
+    "message": "我总是乐于讨论新项目、机会和创新想法。",
+    "description": "The call to action description"
+  },
+  "projects.cta.github": {
+    "message": "查看所有代码库",
+    "description": "The GitHub CTA button text"
+  },
+  "projects.cta.contact": {
+    "message": "联系我",
+    "description": "The contact CTA button text"
   }
 }
