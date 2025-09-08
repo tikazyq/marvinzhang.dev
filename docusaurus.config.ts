@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'marvinzhang.dev',
   tagline: 'Marvin Zhang\'s Personal Blog',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -82,8 +82,6 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
     colorMode: {
       disableSwitch: false,
       respectPrefersColorScheme: true,
@@ -92,8 +90,8 @@ const config: Config = {
     navbar: {
       title: 'Marvin Zhang',
       logo: {
-        alt: 'Marvin Zhang Logo',
-        src: 'logo.png',
+        alt: 'Marvin Zhang',
+        src: 'img/logo.svg',
       },
       items: [
         {to: '/', label: 'Blog', position: 'left'},
