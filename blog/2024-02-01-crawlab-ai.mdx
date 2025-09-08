@@ -1,6 +1,6 @@
 ---
 slug: crawlab-ai
-title: 'Crawlab AI: 借助大语言模型 (LLM) 打造智能爬虫 (English Translation Needed)'
+title: 'Crawlab AI: Building Intelligent Web Scrapers with Large Language Models (LLM)'
 authors:
   - marvin
 tags:
@@ -9,17 +9,74 @@ tags:
   - data-analysis
   - github
   - devops
-  - translation-needed
 date: '2024-02-01'
 ---
-This article is currently available only in Chinese. An English translation is needed.
+> "If I had asked people what they wanted, they would have said faster horses" -- Henry Ford
 
-**Chinese Title:** Crawlab AI: 借助大语言模型 (LLM) 打造智能爬虫
+## Preface
 
-**Original Publication Date:** 2024-02-01
+When I first entered the workforce, as a data analyst, I accidentally experienced the ability of web crawlers to automatically extract webpage data, and since then I've been fascinated by this magical technology. As I continued to delve into web scraping technology, I gradually understood the core technologies of web crawling, including web parsing - the process of analyzing webpage HTML structure to build data extraction rules based on XPath or CSS Selectors. This process has long required manual intervention. While relatively simple for scraping engineers, if large-scale extraction is needed, this process is very time-consuming, and as webpage structures change, it increases crawler maintenance costs. This article will introduce my LLM-based intelligent web scraping product: **Crawlab AI**. Although it's still in early development, it has already shown great potential and promises to make data acquisition easy for data practitioners.
 
-**Note:** This is a placeholder post. Please refer to the Chinese version in the language switcher or contribute a translation.
+## Related Work
 
----
+As the founder of the web scraping management platform [Crawlab](https://github.com/crawlab-team/crawlab), I've always been passionate about making data acquisition simple and easy. Through constant communication with data practitioners, I realized the massive demand for intelligent scrapers (or universal scrapers) - extracting target data from any website without manually writing parsing rules. Of course, I'm not the only one researching and trying to solve this problem: In January 2020, Qingnan released the universal article parsing library [GeneralNewsExtractor](https://github.com/GeneralNewsExtractor/GeneralNewsExtractor) based on punctuation density, which can [implement universal news crawlers with 4 lines of code](https://mp.weixin.qq.com/s/i8tDcwgaHAS_oBX8w0BPRw); In July 2020, Cui Qingcai released [GerapyAutoExtractor](https://github.com/Gerapy/GerapyAutoExtractor), implementing [list page data extraction](https://mp.weixin.qq.com/s/3KK80OdgRO3rmk3LYz-2OQ) based on SVM algorithms; In April 2023, I developed [Webspot](https://github.com/crawlab-team/webspot) through high-dimensional vector clustering algorithms, which can also [automatically extract list pages](https://mp.weixin.qq.com/s/C97h_0Q7oEZRsQfxt6etPg). The main problem with these open-source software is that their recognition accuracy has some gaps compared to manually written crawler rules.
 
-*If you would like to contribute an English translation of this article, please feel free to submit a pull request.*
+Additionally, commercial scraping software [Diffbot](https://www.diffbot.com) and [Octoparse](https://www.octoparse.com) have also implemented some universal data extraction functionality through proprietary machine learning algorithms. Unfortunately, their usage costs are relatively high. For example, Diffbot's lowest plan requires a monthly subscription fee of $299.
+
+With the explosion of Large Language Models (LLMs) in 2023, intelligent scraping research seems to have found new directions. After ChatGPT integrated with Bing Search, we can have it directly access a URL and ask questions based on the content. [GPT-Crawler](https://github.com/BuilderIO/gpt-crawler) released by [Builder.io](https://www.builder.io) can crawl entire target websites and integrate with GPTs. Qingnan implemented universal crawlers in ChatGPT using prompt engineering, see [《一日一技：自动提取任意信息的通用爬虫》](https://mp.weixin.qq.com/s/4J-kofsfFDiV1FxGlTJLfA).
+
+## Crawlab AI
+
+Based on previous research results about LLMs in data extraction, I suddenly realized that LLMs might not only excel at processing text but could also handle more unstructured data, including HTML. So I tried using LLMs to parse webpage HTML and extract corresponding data according to requirements, finding surprisingly good results. LLMs can not only accurately extract target data from webpages but also provide node paths where target data is located through CSS Selectors. This allows LLMs to generate corresponding extraction rules based on HTML, ultimately generating corresponding crawler code. Therefore, the idea of using LLMs to generate crawler code for scraping emerged, and I released [Crawlab AI](https://ai.crawlab.io) based on this approach. Currently, Crawlab AI is in early development, providing only a webpage where users input URLs of webpages to be parsed, then automatically parsing data and generating crawler code.
+
+![Crawlab AI](https://codao.crawlab.cn/images/2024-02-01-142700.png)
+
+## List Parsing
+
+First, we visit https://ai.crawlab.io.
+
+![Crawlab AI Playground](https://codao.crawlab.cn/images/2024-02-01-140853.png)
+
+On this page, you can use example webpage URLs or input custom URLs. Here we select "Douban Movies" from the examples and click **Start Parsing**. After waiting a moment, we can get parsing results.
+
+![Parsing Result Data](https://codao.crawlab.cn/images/2024-02-01-140802.png)
+
+As you can see, data from various fields in the Douban Movie Top 250 list has been extracted, including movie names, aliases, directors, ratings, etc. Comparing with the original webpage (below), we can see the data is consistent.
+
+![Douban Movie Top 250](https://codao.crawlab.cn/images/2024-02-01-141007.png)
+
+Moreover, not just data - Crawlab AI has also extracted parsing rules, including CSS Selectors for list elements, fields, and next page, as shown below.
+
+![Parsing Rules](https://codao.crawlab.cn/images/2024-02-01-141447.png)
+
+Now we can start generating code. Click **Generate Code**, and a popup will display the crawler code for Douban Movie Top 250.
+
+![Crawler Code (Python)](https://codao.crawlab.cn/images/2024-02-01-141714.png)
+
+The default is Python code, but we can also select Node.js, Go, and other programming languages. We can also click the **Download** button to download it.
+
+![Crawler Code (Go)](https://codao.crawlab.cn/images/2024-02-01-141829.png)
+
+## Article Parsing
+
+Besides list parsing, Crawlab AI also provides article parsing functionality, similar to GNE and others, which can extract article body text. Here we try parsing a WeChat public account article, as shown below.
+
+![WeChat Public Account Article](https://codao.crawlab.cn/images/2024-02-01-142119.png)
+
+Then, the results after Crawlab AI parsing are as follows.
+
+![Parsing Results (Article)](https://codao.crawlab.cn/images/2024-02-01-142218.png)
+
+Currently, the article parsing feature doesn't support code generation yet. This functionality will be added in the future.
+
+## Future Plans
+
+Crawlab AI currently only supports web interface with relatively basic functionality. More practical features will be added in the future, including batch parsing, import/export, Crawlab integration, etc. Of course, current parsing results don't reach 100% accuracy - some websites, especially those with complex structures, cannot be perfectly parsed, so we'll further optimize and tune the model to enhance parsing accuracy.
+
+## Summary
+
+In this article, we deeply explored the demand for intelligent scrapers in the industry, reviewed the latest research in intelligent scraping technology, and introduced Crawlab AI, an innovative intelligent parsing product. Although Crawlab AI is currently still in early development stages, providing only a Playground with basic functionality, the parsing effects it demonstrates are already impressive. Users don't need to write any code - just input a website URL, and Crawlab AI can **automatically generate parsing rules** and provide **crawler code in multiple programming languages**. With continuous technological progress and functional enhancements, we have reason to believe that a truly universal intelligent scraping solution is gradually becoming reality.
+
+## Community
+
+If you're interested in my articles, you can add my WeChat tikazyq1 with note "AI", and I'll invite you to the "Crawlab AI" discussion group.
