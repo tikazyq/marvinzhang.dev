@@ -57,11 +57,6 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/tikazyq/marvinzhang.dev/tree/main/',
-          // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'ignore', // Ignore truncation warnings for now
@@ -125,7 +120,7 @@ const config: Config = {
           items: [
             {
               label: 'Blog',
-              to: '/',
+              to: '/blog',
             },
           ],
         },
