@@ -1,6 +1,6 @@
 ---
 slug: golang
-title: 大红大紫的 Golang 真的是后端开发中的万能药吗？ (English Translation Needed)
+title: "Is the Extremely Popular Golang Really a Panacea for Backend Development?"
 authors:
   - marvin
 tags:
@@ -9,17 +9,381 @@ tags:
   - golang
   - typescript
   - javascript
-  - translation-needed
 date: '2021-03-24'
 ---
-This article is currently available only in Chinese. An English translation is needed.
+## Introduction
 
-**Chinese Title:** 大红大紫的 Golang 真的是后端开发中的万能药吗？
+> Those outside the city want to get in, those inside the city want to get out. -- Qian Zhongshu "Fortress Besieged"
 
-**Original Publication Date:** 2021-03-24
+With the continuous popularity of Container Orchestration, Microservices, Cloud Technology and other trends in the IT industry, Golang (Go language, abbreviated as Go), born at Google in 2009, is increasingly welcomed and sought after by software engineers, becoming today's hottest backend programming language. In the list of software projects developed with Golang, there are star-level products like [Docker](https://www.docker.com/) (container technology) and [Kubernetes](https://kubernetes.io/) (container orchestration) that have disrupted the entire IT industry, as well as powerful and practical well-known projects like [Prometheus](https://prometheus.io/) (monitoring system), [Etcd](https://etcd.io/) (distributed storage), and [InfluxDB](https://www.influxdata.com/) (time-series database). Of course, Go language's application domains are by no means limited to containers and distributed systems. Today, many large internet companies are extensively using Golang to build backend Web applications, such as Toutiao, JD.com, Qiniu Cloud, etc. The web scraping field, long dominated by Python, is also being continuously challenged by Golang due to the rise of the simple and easy-to-use scraping framework [Colly](https://github.com/gocolly/colly). Golang has become the programming language that most software engineers want to learn today. The image below shows relevant results from [HackerRank](https://hackerrank.com)'s 2020 programmer skills survey.
 
-**Note:** This is a placeholder post. Please refer to the Chinese version in the language switcher or contribute a translation.
+![hackerrank-survey-2020](https://codao.crawlab.cn/images/2021-03-24-072836.png)
 
----
+So, **is Go language really a lifesaver for backend developers? Can it effectively improve programmers' technical capabilities and development efficiency, thus helping them advance further in their careers? Is Go language really worth spending a lot of time learning in depth?** This article will provide detailed introduction to Golang's language characteristics, its advantages and disadvantages, and applicable scenarios. With the above questions in mind, it will analyze various aspects of Go language to help programmers new to the IT industry and developers interested in Go to further understand this popular language.
 
-*If you would like to contribute an English translation of this article, please feel free to submit a pull request.*
+## Golang Introduction
+
+![golang](https://codao.crawlab.cn/images/2021-03-25-024124.jpg)
+
+Golang was born at internet giant Google, and this is not a coincidence. We all know that Google has a corporate culture of spending 20% time on side projects, allowing engineers to create some disruptive innovative products in a relaxed environment. Golang was continuously incubated during this 20% time. Go language's founders are also well-known industry leaders in the IT world, including Unix core team member Rob Pike, C language author Ken Thompson, and V8 engine core contributor Robert Griesemer. Go language became known to the public due to the explosive development of container technology Docker after it was open-sourced in 2014. Subsequently, Go language gained pursuit from many developers due to its simple syntax and rapid compilation speed, and many excellent projects were born, such as Kubernetes.
+
+Compared to other traditional popular programming languages, Go language has many advantages, especially its **efficient compilation speed** and **natural concurrency features**, making it the preferred language for **rapid development of distributed applications**. Go language is a **statically typed language**, meaning Go language needs compilation like Java and C#, and has a complete type system that can effectively reduce **code quality issues** caused by type inconsistencies. Therefore, Go language is very suitable for building large IT systems that require both **stability** and **flexibility**. This is also an important reason why many large internet companies use Golang to refactor old code: traditional static OOP languages (such as Java, C#) have high stability but lack flexibility; while dynamic languages (such as PHP, Python, Ruby, Node.js) have strong flexibility but lack stability. Therefore, it's natural that Golang, which "gets the best of both worlds," is sought after by developers. After all, "the world has long suffered under Java/PHP/Python/Ruby."
+
+However, **Go language is not without shortcomings**. Using dialectical thinking, we can infer that some of Golang's outstanding characteristics will become double-edged swords. For example, Golang's simple syntax advantage will limit its ability to handle complex problems. Especially Go language's lack of generics, which greatly increases the complexity of building universal frameworks. Although this prominent issue will likely be effectively resolved in version 2.0, this also reflects that even star programming languages have shortcomings. Of course, Go's shortcomings don't stop there. Go language users also complain about its verbose error handling, loose duck typing without strict constraints, date format issues, etc. Below, we will start from Golang language characteristics and analyze Golang's advantages and disadvantages as well as project applicable scenarios in depth and from multiple dimensions.
+
+## Language Characteristics
+
+#### Concise Syntax Features
+
+Go language syntax is very simple, at least appearing very concise in variable declaration, struct declaration, function definition, etc.
+
+Variable declaration is not as verbose as Java or C. In Golang, you can use the `:=` syntax to declare new variables. For example, in the following example, when you directly use `:=` to define variables, Go will automatically declare the assignment object's type as the assignment source's type, which saves a lot of code.
+
+```go
+func main() {
+  valInt := 1  // Automatically infer int type
+  valStr := "hello"  // Automatically infer string type
+  valBool := false  // Automatically infer bool type
+}
+```
+
+Golang has many other places that help you save code. You can discover that Go doesn't force you to use the `new` keyword to generate new instances of a class. Moreover, the convention for public and private attributes (variables and methods) no longer uses traditional `public` and `private` keywords, but directly uses the case of the first letter of attribute variables to distinguish. The following examples can help readers understand these features.
+
+```go
+// Define a struct class
+type SomeClass struct {
+  PublicVariable string  // Public variable
+  privateVariable string  // Private variable
+}
+
+// Public method
+func (c *SomeClass) PublicMethod() (result string) {
+  return "This can be called by external modules"
+}
+
+// Private method
+func (c *SomeClass) privateMethod() (result string) {
+  return "This can only be called in SomeClass"
+}
+
+func main() {
+  // Generate instance
+  someInstance := SomeClass{
+    PublicVariable: "hello",
+    privateVariable: "world",
+  }
+}
+```
+
+If you implement the above example using Java, you might see lengthy `.java` class files, like this:
+
+```java
+// SomeClass.java
+public SomeClass {
+  public String PublicVariable;  // Public variable
+  private String privateVariable;  // Private variable
+  
+  // Constructor
+  public SomeClass(String val1, String val2) {
+    this.PublicVariable = val1;
+    this.privateVariable = val2;
+  }
+  
+  // Public method
+  public String PublicMethod() {
+    return "This can be called by external modules";
+  }
+  
+  // Private method
+  public String privateMethod() {
+    return "This can only be called in SomeClass";
+  }
+}
+
+...
+  
+// Application.java
+public Application {
+  public static void main(String[] args) {
+    // Generate instance
+    SomeClass someInstance = new SomeClass("hello", "world");
+  }
+}
+```
+
+As you can see, Java code, besides the eye-straining multiple layers of braces, is also filled with a lot of decorative keywords like `public`, `private`, `static`, `this`, making it extremely verbose; while Golang code relies on simple conventions, such as first letter case, avoiding many repetitive decorative words. Of course, Java and Go still have some differences in type systems, which also causes Go to seem somewhat inadequate when handling complex problems—this is a topic for later discussion. In conclusion, Go's syntax is very concise among statically typed programming languages.
+
+#### Built-in Concurrent Programming
+
+The reason Go language has become the preferred choice for distributed applications, besides its powerful performance, is mainly due to its natural concurrent programming. This concurrent programming feature mainly comes from Goroutines and Channels in Golang. Below is an example using goroutines:
+
+```go
+func asyncTask() {
+  fmt.Printf("This is an asynchronized task")
+}
+
+func syncTask() {
+  fmt.Printf("This is a synchronized task")
+}
+
+func main() {
+  go asyncTask()  // Execute asynchronously, non-blocking
+  syncTask()  // Execute synchronously, blocking
+  go asyncTask()  // After syncTask completes, execute asynchronously again, non-blocking
+}
+```
+
+As you can see, the keyword `go` plus function call can make it execute as an asynchronous function without blocking subsequent code. If you don't add the `go` keyword, it will be treated as synchronous code execution. If readers are familiar with `async/await`, `Promise` syntax in JavaScript, or even multi-threaded asynchronous programming in Java and Python, you'll find they're not on the same level of simplicity as Go's asynchronous programming!
+
+Communication between asynchronous functions, i.e., goroutines, can be implemented using Go language's unique channels. Below is an example about channels:
+
+```go
+func longTask(signal chan int) {
+  // for without parameters
+  // equivalent to while loop
+  for {
+    // Receive value from signal channel
+    v := <- signal
+    
+    // If received value is 1, stop loop
+    if v == 1 {
+      break
+    }
+    
+    time.Sleep(1 * Second)
+  }
+}
+
+func main() {
+  // Declare channel
+  sig := make(chan int)
+  
+  // Asynchronously call longTask
+  go longTask(sig)
+  
+  // Wait 1 second
+  time.Sleep(1 * time.Second)
+  
+  // Send value to channel sig
+  sig <- 1
+  
+  // Then longTask will receive sig value and terminate loop
+}
+```
+
+#### Interface-Oriented Programming
+
+Go language is not strictly object-oriented programming (OOP); it adopts interface-oriented programming (IOP), which is a more advanced programming paradigm compared to OOP. As part of the OOP system, IOP emphasizes rules and constraints more, as well as conventions for interface type methods, allowing developers to focus as much as possible on more abstract program logic rather than wasting time on more detailed implementation methods. Many large projects adopt the IOP programming paradigm. To learn more about interface-oriented programming, please check the previous article ["Why TypeScript is Essential for Developing Large-Scale Frontend Projects"](https://mp.weixin.qq.com/s?__biz=Mzg5NTU2MzA5MQ==&mid=2247483746&idx=1&sn=93cad4af90ee88c598822a78b6f6481a&chksm=c00f255ef778ac484f36886a1924aa28c76666a6fb95945a08752d79bfe2f0f35b1c29849ff8&mpshare=1&scene=1&srcid=03242IJxS8ve39HyJBggFMCK&sharer_sharetime=1616596958160&sharer_shareid=94a92f1041e202e68ae357b6530fc68c#rd) on the "Code Way" personal tech blog, which has detailed explanations about interface-oriented programming.
+
+Go language, like TypeScript, also uses duck typing to validate interface inheritance. The following example can describe Go language's duck typing feature:
+
+```go
+// Define Animal interface
+interface Animal {
+  Eat()  // Declare Eat method
+  Move()  // Declare Move method
+}
+
+// ==== Define Dog Start ====
+// Define Dog class
+type Dog struct {
+}
+
+// Implement Eat method
+func (d *Dog) Eat() {
+  fmt.Printf("Eating bones")
+}
+
+// Implement Move method
+func (d *Dog) Move() {
+  fmt.Printf("Moving with four legs")
+}
+// ==== Define Dog End ====
+
+// ==== Define Human Start ====
+// Define Human class
+type Human struct {
+}
+
+// Implement Eat method
+func (h *Human) Eat() {
+  fmt.Printf("Eating rice")
+}
+
+// Implement Move method
+func (h *Human) Move() {
+  fmt.Printf("Moving with two legs")
+}
+// ==== Define Human End ====
+```
+
+As you can see, although Go language can define interfaces, unlike Java, Go language doesn't have explicit interface implementation keywords. In Go language, to inherit an interface, you only need to implement all methods declared by that interface in the struct. This way, for the Go compiler, your defined class is equivalent to inheriting that interface. In this example, we stipulate that anything that can both eat and move is an animal. Dog and Human happen to both eat and move, so they're both considered animals. This inheritance method based on implementation method matching is duck typing: if an animal looks like a duck and quacks like a duck, then it must be a duck. This duck typing appears more flexible compared to traditional OOP programming languages. However, as we'll discuss later, this programming approach brings some troubles.
+
+#### Error Handling
+
+Go language's error handling is notoriously verbose. Here's a simple example:
+
+```go
+package main
+
+import "fmt"
+
+func isValid(text string) (valid bool, err error){
+  if text == "" {
+    return false, error("text cannot be empty")
+  }
+  return text == "valid text", nil
+}
+
+func validateForm(form map[string]string) (res bool, err error) {
+  for _, text := range form {
+    valid, err := isValid(text)
+    if err != nil {
+      return false, err
+    }
+    if !valid {
+      return false, nil
+    }
+  }
+  return true, nil
+}
+
+func submitForm(form map[string]string) (err error) {
+  if res, err := validateForm(form); err != nil || !res {
+    return error("submit error")
+  }
+  fmt.Printf("submitted")
+  return nil
+}
+
+func main() {
+  form := map[string]string{
+    "field1": "",
+    "field2": "invalid text",
+    "field2": "valid text",
+  }
+  if err := submitForm(form); err != nil {
+    panic(err)
+  }
+}
+```
+
+Although the entire code above is fictional, you can see that Go code is filled with error judgment statements like `if err := ...; err != nil { ... }`. This is because Go language requires developers to manage errors themselves, meaning errors in functions need to be explicitly thrown, otherwise Go programs won't do any error handling. Because Go doesn't have traditional programming languages' `try/catch` syntax for error handling, it lacks flexibility in error management, leading to a situation where "`err` flies everywhere."
+
+However, dialectics tells us that this approach also has benefits. First, it mandatorily requires Go language developers to standardize error management at the code level, driving developers to write more robust code; second, this explicit error return method avoids "try/catch everything," because this "momentarily refreshing" approach might cause bugs to be inaccurately located, thus producing many unpredictable problems; third, because there are no `try/catch` brackets or additional code blocks, Go program code overall looks cleaner with better readability.
+
+#### Others
+
+Go language definitely has many other features, but the author believes the above features are relatively distinctive in Go language, with strong differentiation. Other Go language features include but are not limited to:
+
+- Rapid compilation
+- Cross-platform
+- `defer` delayed execution
+- `select/case` channel selection
+- Direct compilation to executable programs
+- Unconventional dependency management (can directly reference Github repositories as dependencies, e.g., `import "github.com/crawlab-team/go-trace"`)
+- Unconventional date format (format is "2006-01-02 15:04:05"—you read that right, this is supposedly Golang's founding time!)
+
+## Overview of Advantages and Disadvantages
+
+After introducing many features of Go, readers should have some basic understanding of Golang. Some of these language features also hint at its advantages and disadvantages compared to other programming languages. Although Go language is very popular now, while praising and embracing Golang, we must understand some of its shortcomings.
+
+Here the author doesn't plan to provide lengthy analysis of Go language's pros and cons, but will list some related facts for readers to judge themselves. Below is an incomplete comparison list of Golang language feature advantages and disadvantages summarized by the author:
+
+<table>
+<thead>
+<tr>
+<th width="20%">Feature</th>
+<th width="40%">Advantages</th>
+<th width="40%">Disadvantages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simple syntax</td>
+<td>Improves development efficiency, saves time</td>
+<td>Difficult to handle some complex engineering problems</td>
+</tr>
+<tr>
+<td>Native concurrency support</td>
+<td>Greatly reduces difficulty of asynchronous programming, improves development efficiency</td>
+<td>Developers unfamiliar with channels and goroutines will have some learning costs</td>
+</tr>
+<tr>
+<td>Type system</td>
+<td>
+<ul>
+<li>Go is statically typed, more stable and predictable than dynamic languages</li>
+<li>IOP duck typing is more concise than strict OOP languages</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>Lacks inheritance, abstraction, static, dynamic features</li>
+<li>Lacks generics, reducing flexibility</li>
+<li>Difficult to quickly build complex universal frameworks or tools</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Error handling</td>
+<td>Mandatorily constrains error management, avoids "try/catch everything"</td>
+<td>Verbose error handling code, filled with <code>if err := ...</code></td>
+</tr>
+<tr>
+<td>Rapid compilation</td>
+<td>This is definitely an advantage</td>
+<td>How could this be a disadvantage?</td>
+</tr>
+<tr>
+<td>Unconventional dependency management</td>
+<td>
+<ul>
+<li>Can directly reference repositories published on Github as module dependencies, eliminating official dependency hosting websites</li>
+<li>Can publish Go language third-party modules on Github anytime</li>
+<li>Free dependency publishing means Golang's ecosystem development won't be limited by official dependency hosting websites</li>
+</ul>
+</td>
+<td>Heavily dependent on Github, searching for Go language modules on Github is relatively imprecise</td>
+</tr>
+<tr>
+<td>Unconventional date format</td>
+<td>Following 6-1-2-3-4-5 (2006-01-02 15:04:05), relatively easy to remember</td>
+<td>Very uncomfortable for developers already used to yyyy-MM-dd HH:mm:ss format</td>
+</tr>
+</tbody>
+</table>
+
+Actually, each feature has corresponding advantages and disadvantages in certain contexts and cannot be generalized. Like Go language's adoption of static typing and interface-oriented programming, it neither lacks type constraints nor is as lengthy and complex as strict OOP—it's a modern programming language between dynamic languages and traditional statically typed OOP languages. This positioning improves Golang development efficiency while also cutting many necessary OOP syntax features, thus lacking the ability to quickly build universal engineering frameworks (this doesn't mean Go can't build universal frameworks, but it's not as easy as Java or C#). Additionally, Go language's "peculiar" error handling specification makes Go developers love and hate it: you can develop more robust applications while sacrificing some code conciseness. Note that Go language's design philosophy is for "great simplicity," so it's designed to be as simple as possible while pursuing high performance.
+
+Undeniably, Go language's built-in concurrency support is a very innovative feature in recent years, which is also an important reason it's widely adopted by distributed systems. Meanwhile, it's very fast compared to Java, which often takes over ten minutes to compile. Furthermore, Go language didn't sacrifice stability for simple syntax; instead, it standardized entire Go project code style through simple constraint specifications. Therefore, **"Fast," "Concise," and "Robust"** are Go language's design purposes. In our process of learning Golang, we cannot blindly accept everything about it, but should judge its application in actual projects based on its own characteristics.
+
+## Applicable Scenarios
+
+Through the multidimensional discussion of Golang in the previous sections, we can conclude: **Go language is not a panacea for backend development**. In actual development work, developers should avoid mindlessly using Golang as the backend development language in any situation. Instead, **engineers should comprehensively understand all aspects of candidate technologies (languages, frameworks, or architectures) before deciding on technology selection, including the fit between candidate technologies and business requirements, integration with development teams, and factors like learning, development, and time costs**. After learning some programming languages including frontend and backend, the author found that they each have their own advantages and corresponding disadvantages. **If a programming language can be widely known, it definitely won't be a terrible language**. Therefore, the author won't assert that "XXX is the world's best language," but will share personal thoughts on technology selection in specific application scenarios. Of course, this article is a technical piece about Go language, so next the author will share personal views on application scenarios where Golang is most suitable.
+
+#### Distributed Applications
+
+Golang is very suitable for development in distributed application scenarios. The main purpose of distributed applications is to utilize **computing resources and network bandwidth** as much as possible to maximize overall system performance and efficiency, with an important functional requirement being concurrency. Go is a leader in supporting **high concurrency** and **asynchronous programming**. As mentioned earlier, Go language has built-in **Goroutines** and **Channels**, two major concurrency features, making asynchronous programming very easy for backend developers. Golang also has a built-in **`sync` library** containing interfaces like `Mutex` (mutual exclusion lock), `WaitGroup` (wait group), and `Pool` (temporary object pool), helping developers safely control Go program concurrency behavior in concurrent programming. Golang also has many **distributed application development tools**, such as distributed storage systems (Etcd, SeaweedFS), RPC libraries (gRPC, Thrift), mainstream database SDKs (mongo-driver, gnorm, redigo), etc. These can all help developers effectively build distributed applications.
+
+#### Web Scraping
+
+Developers who understand web scraping should have heard of Scrapy, or at least Python. There are countless technical books about Python web scraping on the market, such as Cui Qingcai's ["Python 3 Web Development in Action"](https://item.jd.com/12333540.html) and Wei Shidong's ["Python 3 Web Scraping Guide"](https://item.jd.com/10022002756825.html). The high-performance scraping framework Scrapy written in Python has been the first choice for scraping engineers since its release.
+
+However, due to Go language's rapid development recently, more and more scraping engineers are noticing the huge advantages of developing web scrapers with Golang. Among them, the Colly scraping framework written in Go language now has 13k+ stars on Github. Its concise API and efficient collection speed have attracted many scraping engineers, occupying part of Scrapy's market share as the scraping leader. As mentioned earlier, Go language's built-in concurrency features make scraping programs heavily dependent on network bandwidth more efficient, greatly improving data collection efficiency. Additionally, Go language as a static language has better constraints compared to the dynamic language Python, thus having better robustness and stability.
+
+#### Backend APIs
+
+Golang has many excellent backend frameworks that mostly provide comprehensive support for various functional requirements of modern backend systems: RESTful API, routing, middleware, configuration, authentication, and other modules. Moreover, backend applications written in Golang have very high performance, usually with very fast response speeds. The author once used Golang to refactor Python backend APIs in the open source scraping management platform [Crawlab](https://github.com/crawlab-team/crawlab), optimizing response speed from hundreds of milliseconds to tens of milliseconds or even a few milliseconds, proving through practice that Go language completely crushes dynamic languages in backend performance. Well-known backend frameworks in Go language include [Gin](https://github.com/gin-gonic/gin), [Beego](https://github.com/beego/beego), [Echo](https://github.com/labstack/echo), and [Iris](https://github.com/kataras/iris).
+
+Of course, this doesn't mean that writing backends with Golang is completely the right choice. The author uses Java and C# at work, and after using their respective mainstream frameworks (SpringBoot and .Net Core), found that although these two traditional OOP languages have verbose syntax, their syntax features are very rich, especially generics, which can easily handle some business requirements with complex logic and high repetition. Therefore, the author believes that when considering using Go to write backend APIs, you can research Java or C# in advance—they do excellent work in writing backend business functions.
+
+## Conclusion
+
+This article started from Go language's main syntax features and progressively analyzed Go language's advantages and disadvantages as a backend programming language, as well as its trial scenarios in actual software project development. The author believes Go language's main differences from other languages lie in **simple syntax**, **native concurrency support**, **interface-oriented programming**, **error handling**, and other aspects, and analyzed each language feature from both positive and negative perspectives. Finally, based on previous analysis content, the author derived applicable scenarios for Go language as a backend development programming language: **distributed applications**, **web scraping**, and **backend APIs**. Of course, Go language's actual application domains are not limited to these. In fact, many well-known databases are developed with Golang, such as time-series databases Prometheus and InfluxDB, and TiDB known as NewSQL. Additionally, in machine learning, Go language also has certain advantages. It's just that currently, Google seems to not be heavily promoting Go's applications in machine learning due to intentions for Swift and TensorFlow cooperation, but some potential open source projects have emerged, such as GoLearn, GoML, Gorgonia, etc.
+
+While understanding Go language's advantages and applicable scenarios, we must realize that Go language is not omnipotent. It also has some shortcomings compared to other mainstream frameworks. When developers prepare to adopt Go as their actual work development language, they need to comprehensively understand its language features to make the most reasonable technology selection. It's like playing tennis—you need to master not only forehand and backhand, but also serving, overhead shots, volleys, and other technical moves to play tennis well.
+
+## Community
+
+If you're interested in my articles, you can add my WeChat tikazyq1 and note "码之道" (Code Way), and I'll invite you to the "码之道" discussion group.
