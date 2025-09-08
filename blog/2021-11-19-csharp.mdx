@@ -1,6 +1,6 @@
 ---
 slug: csharp
-title: 为什么推荐你用 C# 构建大型后端应用？- Part 1 (English Translation Needed)
+title: Why I Recommend C# for Building Large-Scale Backend Applications - Part 1
 authors:
   - marvin
 tags:
@@ -9,17 +9,159 @@ tags:
   - golang
   - typescript
   - javascript
-  - translation-needed
 date: '2021-11-19'
 ---
-This article is currently available only in Chinese. An English translation is needed.
+## Preface
 
-**Chinese Title:** 为什么推荐你用 C# 构建大型后端应用？- Part 1
+> Today's heroes in this world are only you and me. -- Cao Cao, "Romance of the Three Kingdoms"
 
-**Original Publication Date:** 2021-11-19
+For programmers who have been working in the IT industry for many years, if asked about the most mainstream backend programming language in China, I believe most would say Java. This isn't surprising, as Java has existed for over 30 years, has a massive user base and ecosystem, and seems to hold an absolute dominant position in the software engineering field. However, **as ancient wisdom says: "Those who win the hearts of the people win the world."** The programming language with the most users isn't necessarily the most beloved by developers. According to StackOverflow's 2021 survey of 82,914 developers on programming language satisfaction, only 47% liked Java, ranking it beyond 20th place, barely higher than PHP, C, and COBOL. On the other hand, we can see from the survey results that C#, often called the "knockoff Java," actually achieved 62% satisfaction among developers, 15% higher than Java. Although C#'s satisfaction still has a considerable gap compared to Rust and TypeScript, we can see that **C# as an alternative programming language to Java is gradually gaining advantages in development efficiency, deployment convenience, and documentation completeness**. Due to work requirements, I've used both C# and Java to develop numerous projects, giving me some understanding of their similarities, differences, advantages, and disadvantages. I believe there are good reasons why C# is more popular among developers than Java - it offers a great development experience.
 
-**Note:** This is a placeholder post. Please refer to the Chinese version in the language switcher or contribute a translation.
+![20211119-language-satisfaction](https://codao.crawlab.cn/images/2021-11-19-084116.png)
 
----
+Due to length constraints, the complete introduction to C# principles and practical applications (i.e., why I recommend using C# to build large-scale backend applications) will be split into a series of articles. This series will deeply analyze this "young" programming language from dimensions such as syntax features, development patterns, ecosystem, deployment and building, using the cross-platform framework .NET Core as an example to introduce how to build large-scale backend applications with C#.
 
-*If you would like to contribute an English translation of this article, please feel free to submit a pull request.*
+This article is the first in the C# series, primarily introducing some modern syntax features of C# and how they improve development efficiency.
+
+## C# Introduction
+
+C# is a new programming language released by Microsoft in 2000. From its inception, it was labeled as a "knockoff Java" due to its extremely high similarity to Java. Like Java, C# is an object-oriented programming (OOP) language, containing OOP elements such as classes, methods, interfaces, and single inheritance, and is the foundational language for the Windows .NET network framework. The release of the C# language was related to a lawsuit by SUN Company against Microsoft, intended to replace the controversial Java variant language Visual J++.
+
+From the release of version 1.0 to now, C# has undergone numerous iterations, and version C# 9.0 was released along with .NET 5. From early object-oriented support to later richer functionality such as asynchronous programming and cross-platform support, C# has become increasingly powerful while adhering to design standards of being "simple, modern, and general-purpose." In today's increasingly complex backend development and architectural requirements, it thrives like a fish in water, capable of developing Windows desktop applications and being used for more scalable distributed systems and microservice architectures.
+
+## C# Syntax Features
+
+Many C# features may be similar to Java, such as type systems, object-oriented programming, dependency injection, exception handling, etc. This section will introduce more features that differ from Java, and these features greatly enhance C#'s development experience, making developers more favorable toward C#.
+
+#### Null Value Operations
+
+While developing projects in C#, I found that null value checking and operations in C# are very simple, not as cumbersome as in Java. Below are some examples to illustrate C#'s syntactic superiority.
+
+**Example 1**
+
+When accessing deeply nested elements from JSON objects, null checking is generally required, which inevitably leads to many statements like `if (value == null) { ... }`, appearing exceptionally verbose. In C#, this null checking is simplified to a question mark `?`. For example, you can write code to access deep JSON elements like this:
+
+```csharp
+// access index C in member B of A
+A?.B?[C];
+```
+
+Using this approach, you avoid numerous `if` statements. If any member doesn't exist, the entire value-getting expression automatically returns `null`, greatly simplifying redundant code caused by null values.
+
+**Example 2**
+
+Often, you might want to set a default value for an expression - if the expression is `null`, return the default value. For example:
+
+```csharp
+// set default value of text if input is null
+var text = input ?? '-';
+```
+
+Using the double question mark operator `??`, you can easily set default values in C#. Otherwise, like Example 1, you might have to add unnecessary `if (value == null)` statements. The `??` operator is another way C# saves code.
+
+C# has many other null value operation syntaxes, such as null-forgiving operators and nullable types, but the two examples above are the most common uses of null value operators in C#, very useful for everyday C# project development.
+
+If you remember another technical article on this tech blog introducing TypeScript - [《为什么说 TypeScript 是开发大型前端项目的必备语言》](http://mp.weixin.qq.com/s?__biz=Mzg5NTU2MzA5MQ==&mid=2247483746&idx=1&sn=93cad4af90ee88c598822a78b6f6481a&chksm=c00f255ef778ac484f36886a1924aa28c76666a6fb95945a08752d79bfe2f0f35b1c29849ff8#rd) - you should remember that TypeScript also has such null value operation syntax. Yes, TS borrowed this from C#, because TypeScript's creator is Anders Hejlsberg, the father of C#!
+
+#### Implicitly Typed Local Variables
+
+Why many Java developers complain that writing Java is like writing long, smelly stereotyped essays is because in Java, every time you declare a new variable, you have to think about its type, requiring significant mental capacity to reason about and remember temporary variable types. This really isn't good for development efficiency.
+
+C# borrowed from other programming languages that don't mandate variable type declarations, integrating implicitly typed local variables syntax. I believe implicitly typed local variables are a very cool feature in C#, allowing developers not to force themselves to remember variable types they need to reference or declare, thus focusing attention on code logic.
+
+C# uses the `var` keyword from JavaScript to declare implicitly typed local variables, enabling variables to "automatically" declare their type through implicit type inference. Below is an official example from C# documentation showing how to use implicitly typed local variables:
+
+```csharp
+// i is compiled as an int
+var i = 5;
+
+// s is compiled as a string
+var s = "Hello";
+
+// a is compiled as int[]
+var a = new[] { 0, 1, 2 };
+
+// expr is compiled as IEnumerable<Customer>
+// or perhaps IQueryable<Customer>
+var expr =
+    from c in customers
+    where c.City == "London"
+    select c;
+
+// anon is compiled as an anonymous type
+var anon = new { Name = "Terry", Age = 34 };
+
+// list is compiled as List<int>
+var list = new List<int>();
+```
+
+Of course, extensive use of `var` can also cause some problems. For example, code containing many implicitly typed local variables might require C# developers unfamiliar with the code to spend considerable time figuring out the actual variable types, affecting code readability. However, common C# IDEs like Visual Studio or JetBrains Rider can automatically display the actual types of these implicitly typed local variables. It's precisely with these powerful IDEs that I confidently recommend using C#'s `var` syntax to declare variables.
+
+#### Language Integrated Query (LINQ)
+
+Besides the two syntax features mentioned above that improve development efficiency, C# has another very innovative syntax feature: Language Integrated Query, abbreviated as LINQ. LINQ's emergence makes data source operation expressions simple enough. I have reason to believe C#'s creators definitely referenced query languages like SQL when designing LINQ syntax. Below is an example using LINQ:
+
+```csharp
+class LINQQueryExpressions
+{
+    static void Main()
+    {
+
+        // Specify the data source.
+        int[] scores = new int[] { 97, 92, 81, 60 };
+
+        // Define the query expression.
+        IEnumerable<int> scoreQuery =
+            from score in scores
+            where score > 80
+            select score;
+
+        // Execute the query.
+        foreach (int i in scoreQuery)
+        {
+            Console.Write(i + " ");
+        }
+    }
+}
+// Output: 97 92 81
+```
+
+Let's focus on the `scoreQuery` variable expression, where the `from ... in ... where ... select ...` syntax uses LINQ. It means: iterate through the `scores` array, select only elements where `score` is greater than 80, and finally return `score` to form a new iterator `scoreQuery`. This is very similar to SQL's `SELECT ... FROM` syntax. LINQ is just an expression for C#, designed to make regular data operations, especially array operations, as simple as writing SQL. Without LINQ, you might need to use `foreach` to iterate through arrays and make `if` judgments, then add more operations to achieve the same logic as the LINQ statement above.
+
+In the later section introducing the Entity Framework database operation framework, we'll continue introducing data operations in C#.
+
+#### Property Syntax
+
+C# defines models much more simply than Java while supporting more advanced features, such as computed properties defined with `get` or `=>`.
+
+```csharp
+public class Person
+{
+  // private properties
+  private int _gender;
+  private int _age;
+  
+  // Auto-implemented property
+  public string Name { get; set; }
+  
+  // Expression body definition
+  public string Gender => _gender == 1 ? "Male" : "Female";
+  
+  // Property with backing fields
+  public string Age
+  {
+  	get
+    {
+      return $"{_age} years old";
+    }
+  }
+}
+```
+
+In the example above, we see multiple ways to define properties. `Name` is an auto-implemented property, only needing `get` and `set` to indicate it's a readable and writable property; `Gender` uses `=>` to represent a simplified `get` accessor for simpler computed properties; `Age` contains a `get` accessor for more complex computed properties.
+
+We can see that C#'s property syntax accommodates both simple and complex use cases, thus better improving development efficiency.
+
+## Summary
+
+This article primarily introduced C#'s unique and convenient features from a syntax perspective. Particularly compared to the traditional backend programming language Java, C# has many lovable syntax features such as null value operations, implicit type inference, LINQ, etc. Although Java has added some similar syntax in newer versions trying to improve development efficiency, most Java products on the market today still use the classic Java 8 version, thus lacking these features. C# is backed by Microsoft's development and maintenance, has reasonable roadmap development planning, and relatively complete documentation, making it very friendly to many backend developers. C#'s current development direction embodies its design standards of being "simple, modern, and general-purpose," making it very suitable for medium to large projects overall. However, due to historical reasons, Java currently still dominates the main market domestically, while emerging Go also occupies share in the distributed application field (refer to a previous article on this blog: [《大红大紫的 Golang 真的是后端开发中的万能药吗？》](http://mp.weixin.qq.com/s?__biz=Mzg5NTU2MzA5MQ==&mid=2247484109&idx=1&sn=40472a244a06d17803ef01a4b6d82b92&chksm=c00f26f1f778afe7c451d417f7e1e6e975b4e4b7a68848b823901189c5215f613855a5aa84f2#rd)), so C# promotion may still need some time. However, good wine needs no bush. More and more developers, including myself, have realized that C# is an excellent backend programming language that can be applied to practical projects when conditions allow. Subsequent series articles will further analyze C#'s ecosystem, particularly mainstream frameworks like .NET Core and Entity Framework.
