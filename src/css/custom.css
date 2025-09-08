@@ -68,11 +68,38 @@
 .button--primary {
   background-color: var(--ifm-color-primary);
   border-color: var(--ifm-color-primary);
+  color: white;
 }
 
 .button--primary:hover {
   background-color: var(--ifm-color-primary-dark);
   border-color: var(--ifm-color-primary-dark);
+  color: white;
+}
+
+/* Fix outline button contrast */
+.button--outline.button--primary {
+  background-color: transparent;
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+.button--outline.button--primary:hover {
+  background-color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: white;
+}
+
+/* Dark mode outline button fixes */
+[data-theme='dark'] .button--outline.button--primary {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .button--outline.button--primary:hover {
+  background-color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: white;
 }
 
 /* Improve card contrast */
