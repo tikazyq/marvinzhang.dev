@@ -65,7 +65,7 @@ const config: Config = {
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'ignore', // Ignore truncation warnings for now
-          routeBasePath: '/', // Serve the blog at the site's root
+          routeBasePath: '/blog', // Serve the blog at the site's root
           include: ['**/*.{md,mdx}'],
           exclude: [
             '**/_*.{js,jsx,ts,tsx,md,mdx}',
@@ -94,7 +94,7 @@ const config: Config = {
         src: 'img/logo.svg',
       },
       items: [
-        {to: '/', label: 'Blog', position: 'left'},
+        {to: '/blog', label: 'Blog', position: 'left'},
         {to: '/projects', label: 'Projects', position: 'left'},
         {to: '/about', label: 'About', position: 'left'},
         {

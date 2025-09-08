@@ -64,6 +64,11 @@
   color: var(--ifm-color-primary);
 }
 
+/* Hide active state for blog nav item since blog is at root */
+.navbar__item .navbar__link[href="/"].navbar__link--active {
+  color: var(--ifm-navbar-link-color);
+}
+
 /* Improve button contrast */
 .button--primary {
   background-color: var(--ifm-color-primary);
