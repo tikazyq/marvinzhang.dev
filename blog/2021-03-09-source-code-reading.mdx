@@ -1,6 +1,6 @@
 ---
 slug: source-code-reading
-title: 优秀开源框架就一定靠谱么？五招助你驾驭源代码 (English Translation Needed)
+title: Are Excellent Open Source Frameworks Always Reliable? Five Techniques to Master Source Code
 authors:
   - marvin
 tags:
@@ -9,17 +9,228 @@ tags:
   - golang
   - typescript
   - project-management
-  - translation-needed
 date: '2021-03-09'
 ---
-This article is currently available only in Chinese. An English translation is needed.
+## Preface
 
-**Chinese Title:** 优秀开源框架就一定靠谱么？五招助你驾驭源代码
+> The most incomprehensible thing about the world is that it is comprehensible.
+>
+> The world's most incomprehensible aspect is that it is comprehensible. -- Albert Einstein
 
-**Original Publication Date:** 2021-03-09
+Open-source has created today's thriving software industry. Open-source enables developers worldwide to collaborate on excellent utility projects, also known as "wheels," benefiting companies and individuals of all sizes while showcasing creators' and contributors' technical prowess. Many developers today extensively use open-source projects as third-party libraries or dependencies to complete development tasks faster and more efficiently.
 
-**Note:** This is a placeholder post. Please refer to the Chinese version in the language switcher or contribute a translation.
+![open-source](https://codao.crawlab.cn/images/2021-03-11-083452.jpg)
 
----
+I'm no exception. Recently, while refactoring the [Crawlab](https://github.com/crawlab-team/crawlab) frontend using [Vue 3](https://www.vue3js.cn/docs/zh/), I used the upgraded version of [ElementUI](https://github.com/ElemeFE/element) developed by the [Element](https://element.eleme.io/) team - the new UI framework [Element Plus](https://github.com/element-plus/element-plus) rebuilt for Vue 3. The Element team completely refactored Element Plus using Vue 3, fully embracing [TypeScript](https://www.typescriptlang.org/). Compared to the previous Vue 2 version, it enriched some components while maintaining consistent styling and usage patterns. Some APIs even became more streamlined. Therefore, during the initial refactoring phase of Crawlab's frontend, I didn't encounter major obstacles. Combined with previous development experience, the development process felt smooth and familiar. However, the good times didn't last long. As the project continued developing, I encountered some technical difficulties. More precisely, I faced limitations from the Element Plus framework itself when implementing complex features. Although I eventually found ways to solve the problems, I deeply experienced the difficulties of **hacking** open-source project source code. Therefore, I'd like to take this opportunity to share my experience in **mastering open-source code** with readers.
 
-*If you would like to contribute an English translation of this article, please feel free to submit a pull request.*
+This article will begin with my experience solving Element Plus problems, progressively discussing issues with open-source projects or frameworks, and further discussing methods and techniques for mastering open-source project source code, sharing thoughts on reading, understanding, and modifying source code. This article primarily focuses on methodology discussions without too many technical details, making it accessible to readers of any professional background.
+
+## Hacking Element Plus
+
+![element-plus](https://codao.crawlab.cn/images/2021-03-11-084755.png)
+
+#### Framework Introduction
+
+If you're a frontend engineer who has used Vue, you've definitely heard of ElementUI. This is a UI framework - a utility framework that helps you build web projects, containing many commonly used components, layouts, and themes. Early ElementUI was written in Vue 2 and was the most popular UI framework in Vue, with 49k stars on GitHub, more than double the second-place [iView](https://github.com/iview/iview) (24k). After Vue author Evan You released Vue 3 and announced full TypeScript adoption, the original Element team developed the new version Element Plus based on Vue 3 - the protagonist of this story. If you're unfamiliar with Vue 3 or even Vue, you can read a previous technical article on this blog: [《TS 加持的 Vue 3，如何帮你轻松构建企业级前端应用》](https://mp.weixin.qq.com/s?src=11&timestamp=1615452907&ver=2939&signature=an3Th17*6TvaSrDJCMDdsx8QnfnuqrpqxlPtm4WuVbEQB4EO22X4vhwN7JX20UJ6vQ8jUg4aoqATFuWxussjXYfuK3W2RhUJEm2yDHmcc0dkTiorPg6Y2sYEgiyRo5L2&new=1).
+
+#### Initial Trial
+
+Element Plus is as simple and easy to use as the previous Vue 2 version, with documentation style consistent with the old version - very comprehensive. Following the official documentation's encouragement, I also tried to optimize previous Crawlab components using component-based approaches, such as tables. Besides simple encapsulation of columns, data, and pagination, I also wanted to add some new practical features, such as custom table filtering and sorting, and allowing users to customize displayed columns and adjust column order. Although Element Plus has sorting and filtering capabilities, I personally felt they were too basic - users typically need UI components that are both simple and user-friendly.
+
+Below is a screenshot of the filter table frontend, quite similar to Excel's display and operation methods.
+
+![crawlab-table-component](https://codao.crawlab.cn/images/2021-03-11-092224.png)
+
+Implementing this feature wasn't too problematic - following the official documentation could solve it. It mainly utilized the `header` slot of the `el-table-column` component, adding a popover inside. Great, so far so good! Next was adding column customization functionality - it seemed like success was just around the corner.
+
+#### Problems Emerge
+
+To implement column customization, the perfect implementation would be letting users click an action button, pop up a dialog where they can select columns to display, sort them by dragging, then click confirm. I quickly found a new component on the Element Plus official website - the Transfer component, shown below. Theoretically, I just needed to reference this component in the dialog to control the displayed column array, placing columns to display in "List 2". Voilà! Everything seemed to be going very smoothly.
+
+![element-plus-transfer](https://codao.crawlab.cn/images/2021-03-11-094014.png)
+
+However, after carefully reading the documentation, I discovered this component didn't support dragging, so I couldn't implement column sorting functionality for now. Although slightly disappointing, this wasn't a big impact - we mainly wanted to implement column selection. Sorting, while important, could be shelved temporarily. Let's implement component selection first!
+
+However, **reality is always unexpected**. During further experimentation, I discovered this component seemed to have a major bug: when selecting all candidate elements in the transfer box, it couldn't select or deselect them (move left or right)! I quickly debugged carefully to find the cause, repeatedly confirming whether it was my own code causing problems. I then discovered that Vue encountered a situation where `oldChildren` was `null` in the `patchBlockChildren` method of `runtime-core.esm-builder.js` when updating components. After further reading Element Plus transfer component related source code, I suspected the `transfer-panel.vue` sub-component had problems - when it updated rendering, `el-checkbox-group` didn't exist, causing update errors. I subsequently submitted a [Bug Issue](https://github.com/element-plus/element-plus/issues/1539) in Element Plus's GitHub repository. However, maintainers didn't consider my reported problem a bug because it seemed fine on [CodePen](https://codepen.io/tikazyq/pen/NWbYoKG). But this bug objectively existed in my project and could be reproduced in [crawlab-frontend](https://github.com/crawlab-team/crawlab-frontend)'s [historical commit](https://github.com/crawlab-team/crawlab-frontend/commit/a92af6de525f03656f3be48bd2c937240bf9db8a).
+
+#### Encountering Difficulties Again
+
+Helplessly, after pondering for half a day without success, I decisively decided to build my own wheel. I quickly wrote a transfer-like component from scratch, with effects shown below. The new component looked very similar to the previous one but had high flexibility, so I also conveniently supported drag functionality. It seemed like the problem was about to be solved.
+
+![crawlab-table-component-customize](https://codao.crawlab.cn/images/2021-03-11-092935.png)
+
+However, when I was hopefully preparing to test the drag sorting functionality, something unexpected happened: after the column order data changed, the table columns showed no change at all! Changing the order of `el-table-column` components had no effect on interface display! According to official documentation definitions, the order of `el-table-column` determines the actual display order of columns. After repeated multiple tests, I had to admit the original implementation approach was problematic. Simply changing the order of column components in templates wouldn't affect interface display.
+
+At that time, I thought of a "clever (stupid)" method. I tried using forced table component refresh to make data re-render, achieving the purpose of changing column order. After testing, this violent approach had significant performance issues - every "Apply" click would freeze for nearly a second.
+
+Thus, I **fell into despair again**.
+
+#### Unraveling the Mystery
+
+In this dilemma, I stopped to think carefully. Did I not understand the Element Plus framework well enough? How was the table component itself implemented? What limitations and drawbacks did it have? These questions drove me to further **disassemble the Element Plus framework itself** - to **read its source code** and understand the component's code logic and working principles. So I **cloned the [Element Plus code repository](https://github.com/element-plus/element-plus) locally**.
+
+Very fortunately, the Element Plus project had quite high code quality, with very clear code organization structure and naming conventions. Although comments were relatively sparse, its **clear logical structure and good naming conventions made readability very strong**. While marveling at the professional quality of big company engineers, I quickly located the table component source code at `packages/table`. The entire Element Plus project is managed using **MonoRepo** approach - simply put, one Git repository containing many NPM projects. The management tool used [Lerna](https://github.com/lerna/lerna). Below is the code organization structure of the `el-table` component NPM project.
+
+```bash
+.
+├── __tests__
+│   └── table.spec.ts
+├── index.ts
+├── package.json
+└── src
+    ├── config.ts
+    ├── filter-panel.vue
+    ├── h-helper.ts
+    ├── layout-observer.ts
+    ├── store
+    │   ├── current.ts
+    │   ├── expand.ts
+    │   ├── helper.ts
+    │   ├── index.ts
+    │   ├── tree.ts
+    │   └── watcher.ts
+    ├── table
+    │   ├── style-helper.ts
+    │   └── utils-helper.ts
+    ├── table-body
+    │   ├── events-helper.ts
+    │   ├── index.ts
+    │   ├── render-helper.ts
+    │   ├── styles-helper.ts
+    │   └── table-body.d.ts
+    ├── table-column
+    │   ├── index.ts
+    │   ├── render-helper.ts
+    │   └── watcher-helper.ts
+    ├── table-footer
+    │   ├── index.ts
+    │   ├── mapState-helper.ts
+    │   └── style-helper.ts
+    ├── table-header
+    │   ├── event-helper.ts
+    │   ├── index.ts
+    │   ├── style.helper.ts
+    │   ├── table-header.d.ts
+    │   └── utils-helper.ts
+    ├── table-layout.ts
+    ├── table.type.ts
+    ├── table.vue
+    ├── tableColumn.ts
+    └── util.ts
+```
+
+From this structure, we can see the entire `el-table` component consists of several sub-components, such as `table-body`, `table-column`, `table-footer`, etc. The entire project has only one component - `table.vue`. Based on Vue development experience, I quickly realized this was the **entry point** of the entire component. Let's take a look!
+
+The entire `table.vue` file has 469 lines of code - quite a large file. Due to space limitations, I won't explain it in detail here. The most important discovery was a variable called `store`. After careful study, I found this was a **state manager** created by Vuex. Good heavens! The table component uses Vuex to manage data. Now it's clear - as long as I can handle the Vuex part, the remaining problems should be easily solved.
+
+Without further ado, let's tackle it!
+
+#### Problem Solved
+
+I began searching for column-related code, starting **global searches** for keywords like "columns". After displaying Detective Conan-level observation skills, I gradually noticed the `useStore` method in the `src/store/index.ts` file - this was the key to the entire problem! Well, I found the root cause of the entire problem - the key lies in `store.states._columns`, this internal state variable that's crucial for rendering column data. But it only gets assigned during initialization or when adding/removing columns - adjusting the order of `el-table-column` doesn't change this variable at all!
+
+Finding the cause made the solution simple. I added the `setColumns` Mutation method for more convenient column array setting. Due to space limitations, I won't detail the specific implementation process. Interested friends can check Crawlab Frontend's [source code](https://github.com/crawlab-team/crawlab-frontend/blob/main/src/components/table/store.ts).
+
+Below is the complete effect diagram of table custom columns. Mission accomplished!
+
+![crawlab-frontend-table-demo](https://codao.crawlab.cn/images/2021-03-12-025044.gif)
+
+## Pros and Cons of Open Source Frameworks
+
+![open-source-pros-cons](https://codao.crawlab.cn/images/2021-03-12-084320.gif)
+
+**Nothing in the world is perfect, and excellent open source frameworks are no exception**. This experience of hacking source code made me deeply understand this principle. I believe it's very necessary to discuss issues related to using and developing open source frameworks or projects. Let's first look at their advantages.
+
+#### Advantages
+
+Many renowned excellent open source projects, such as Nginx and Redis, have become core technologies in software development. So why should we use excellent open source frameworks? I believe open source frameworks mainly have the following advantages:
+
+1. **Free**. Who can refuse free things, especially when many free open source frameworks are already excellent enough;
+2. **Transparent**. All source code of open source frameworks is public and anyone can see it;
+3. **Modifiable**. Most open source projects have high freedom with MIT or BSD open source licenses, allowing customized development as needed;
+4. **Collaborative**. GitHub is the largest open source project platform where developers worldwide can participate in iterating open source projects;
+5. **Influential**. Excellent open source projects can enhance authors' or contributors' reputation and influence in the industry.
+
+#### Disadvantages
+
+Although open source projects have many outstanding advantages, various problems are often encountered when using them. I believe using open source frameworks carries certain risks. I believe open source frameworks mainly have the following disadvantages:
+
+1. **Security risks**. Although many excellent open source projects are developed and maintained by enterprises or senior experts, since they're not entirely for their own use, contributors can easily overlook security, and there are countless examples of well-known open source projects exposing security vulnerabilities, such as OpenSSL Heartbleed, Fastjson remote code vulnerabilities, Antd Christmas easter eggs, etc.;
+2. **Uneven quality**. Open source project developers, contributors, and maintainers can be anyone with different experiences and professional backgrounds, inevitably leading to quality differences in code or open source projects. Although coding standards can avoid some problems, excellent projects are still a minority - just look at NPM or Maven public repositories hosting millions of projects;
+3. **Learning costs**. I admit some excellent open source frameworks have mature and comprehensive documentation systems, but most still lack effective documentation and tutorial support. Even with detailed documentation, developers need to invest significant time costs to read and learn, while most paid products include professional technical support that can effectively help developers save time;
+4. **Sustainability issues**. Excellent programmers can develop very high-quality open source projects, but since open source projects themselves don't generate cash revenue, many authors are unwilling to invest long-term in open source projects, leading to excellent open source projects not receiving continuous maintenance and iteration.
+5. **Unknown risks**. Even the most excellent frameworks have risks. Since open source frameworks haven't undergone extensive actual business testing initially, many problems can't be fixed promptly. Therefore, using open source frameworks inevitably encounters some unexpected problems that consume significant time to solve, and some problems may even be unsolvable.
+
+#### Problem Review
+
+Regarding my experience solving open source framework problems mentioned earlier, **unknown risks** and **learning costs** were particularly prominent. When adopting Element Plus's Transfer component, I took for granted that it could effectively meet my needs. However, unexpectedly, it neither supported my planned column sorting requirements nor could be used due to major bugs. These problems all made me abandon using this component and seek high-cost solutions of reinventing the wheel.
+
+During the subsequent process of hacking Element Plus table components, I didn't abandon using this component but **read the component's source code, judged the core code location and possible causes of problems based on logic and experience**, and made targeted adjustments, ultimately successfully solving the problem. **This decision to read source code and make adjustments saved me significant time and energy, because rebuilding complex wheels like table components requires extensive work, which is very uneconomical**.
+
+![element-plus-doc](https://codao.crawlab.cn/images/2021-03-12-091226.png)
+
+The above image is a screenshot of one component in the official documentation. Element Plus documentation is actually very comprehensive, with detailed descriptions of component usage methods, examples, APIs, etc. Whenever encountering uncertainties during development, you can directly check the official documentation. However, ElementUI originally emerged from Ele.me, so its components were mainly to support Ele.me's food delivery business, giving it certain limitations. As ElementUI's upgraded version, Element Plus, although from the same team, hasn't changed much in functionality and APIs compared to the old version. In comparison, the UI framework [Ant Design](https://ant.design/) born from Ant Financial is relatively much more flexible and free because it supports a wide range of business lines, and Alibaba's promoted middle platform system also requires UI frameworks to be designed very generically. Therefore, Element Plus's limitations likely come from its development team background. Crawlab frontend chose Element Plus mainly because the old version was ElementUI, making migration costs relatively low, but this also brought some problems due to framework immaturity. We must even know that excellent open source projects will have various problems. From this perspective, **understanding the advantages and disadvantages of open source frameworks themselves is very important for proper usage. To make open source frameworks work for us, we need to know how to properly master open source project source code**.
+
+Next, I will combine my project experience to introduce how to effectively master source code in open source projects.
+
+## Source Code Mastery Techniques
+
+If an ancient person traveled to modern times and saw various technological products, they would surely exclaim them as **magic**. However, what they don't know is that this so-called "magic" is created using science and technology, with principles behind them summarized through scientific experiments - not mysterious witchcraft. This principle equally applies to the software industry.
+
+Programmers create magical internet society with code, which is very mysterious to non-technical people. They know it's not real magic, but they have no idea how these are implemented or what principles lie behind them. For programmers, using some excellent open source projects can quickly help them develop product prototypes, validate product feasibility, and even develop production-ready systems. However, if programmers only treat open source products as **tools** without understanding the principles inside, it's equivalent to using magic without knowing why it works. This approach will bring you trouble. **To properly use an open source framework, you must master it; to master it, you must understand its working principles; to understand its working principles, you must read its source code; to make source code obey you, you must learn how to master it - how to modify and optimize source code**.
+
+Next, I'll introduce several effective methods to help you master source code.
+
+#### Overcome Frustration
+
+Readers might be surprised by this seemingly useless suggestion. However, I've seen many friends abandon learning an open source project midway due to its complexity, including myself many years ago. This is frustration at work. I admit it's unrealistic to understand a large open source project in the short term. This causes many friends to be scared away by dazzling technical difficulties, leaving with "as long as I can use it" and continuing to work mechanically. Actually, they all **underestimate their own potential**. I don't oppose programmers' pragmatism, but be careful that excessive pragmatism leads to utilitarianism, ultimately stagnating yourself.
+
+The best thing about open source frameworks is they're completely **transparent** to you - anyone can see the code inside, including underlying implementation logic, code organization structure, project deployment methods, etc. Isn't this an excellent opportunity to improve your source code mastery skills? By reading open source framework source code, you can not only understand the working principles inside but also **learn better programming methods**, thereby **improving your professional quality**. I really don't advocate the joke "from beginner to give up series." You should at least suggest to yourself: **"I currently can't understand because my foundational knowledge is insufficient. After improving my basic strength, I'll definitely be able to master it"**. After hard-hacking some complex open source framework source code, I found reading source code isn't that difficult. Like physical exercise, after getting through this slope and this sprint, it becomes very relaxed afterward, and physical fitness improves too.
+
+Therefore, **overcoming frustration** is very important for mastering open source project source code, and you should suggest to yourself that reading source code isn't difficult.
+
+![overcome-fear](https://codao.crawlab.cn/images/2021-03-12-084727.jpg)
+
+#### Write Your Own Open Source Projects
+
+**One reason people don't want to read source code is unfamiliarity**. Just like when you don't know someone you admire, you think she's a perfect goddess; but when you actually pursue her, date and communicate with her, you find she's just an ordinary girl. Therefore, you can try starting to write your own open source project. This will be very helpful for understanding open source project authors' thinking. This is equally not a practically operational suggestion, but if you really start doing it, you'll definitely improve quickly. As the saying goes: **Learn by doing!**
+
+Of course, starting to write open source projects isn't easy. You might first fall into the difficulty of what to write. Here I recommend two previous articles about developing open source projects: [《如何打造一个上千Star的Github项目》](https://mp.weixin.qq.com/s?src=11&timestamp=1615534281&ver=2941&signature=vBFonYqZisOiexWnabTMgOnmFp-L6wEdtdHu2jh2ksvUxRDINRTr3a6ELjLL7R1xg26c3TERURwrOY2GszyCBQbCF*D8GlDBSQtRffkBso3zthBxoaY7Lgx9HvU4wIdO&new=1) and [《收获人生第一个 5k Star 开源项目，经验教训分享给大家》](https://juejin.cn/post/6844904116255195143), which detail my experiences developing, maintaining, and promoting the open source web crawler management platform Crawlab, introducing how to identify pain points, research users, promote products, manage projects, etc. Interested readers can read in depth.
+
+#### Locate Entry Files
+
+Finally, this is a suggestion with some practical content. When reading source code, you must first find the project's **entry file**. The so-called entry file is a public channel that this project module or system exposes to external systems - the entire project's operation, calling, and execution all start from this file. Other code implementing specific logic is referenced in the entry file or referenced in other files. For frontend projects, it's usually `main.ts`; Python projects usually `app.py`; Golang projects usually `main.go`, etc. If we compare seemingly uncontrollable large open source projects to the invincible war god Achilles, then the entry file is his fatal heel.
+
+Actually, **not only when reading open source projects, but also when reading code written by other colleagues at work, we start studying from the entry file**. After mastering the internal logic of the entry file, you can see other sub-modules it references, then follow the vine to find other core modules and continue. After traversing the entire project through the entry file, you'll more easily understand the code's logical structure, helping you deeply understand specific working principles.
+
+In the previous example of solving Element Plus table problems, I located the entry file `table.vue`, then further found the key location of column data, and finally easily solved the problem. See! Mastering source code isn't that difficult, right?
+
+![entry-file](https://codao.crawlab.cn/images/2021-03-12-085334.png)
+
+#### Use Global Search
+
+This is another technical suggestion. Since large projects usually need to be split into many files, exhaustively traversing all files would consume significant time. Therefore, you can try **global searching for possible keywords to quickly locate core code parts**. Global search functionality is very powerful in mainstream IDEs, usually supporting regular expressions, fuzzy matching, exact matching, case sensitivity, etc. Below is a screenshot of global search results in JetBrains' WebStorm IDE.
+
+![webstorm-global-search](https://codao.crawlab.cn/images/2021-03-12-091413.png)
+
+For statically typed languages like TypeScript, you can also find method or variable usage locations like Java, C#, Golang - it's "Find Usages" in WebStorm, though names might differ in other IDEs, but they all mean the same thing. These techniques can effectively help you read and understand source code.
+
+#### Read Technical Documentation
+
+Good documentation includes project architecture, principles, concepts, etc., which can help developers quickly understand framework code structure. However, not all open source frameworks have detailed documentation - this method depends on luck. But if an open source project contains technical documentation, please spend time browsing it.
+
+Of course, you can also try contacting open source project authors. NPM project information usually contains authors' email addresses; and if you're looking at GitHub open source projects, you can actively submit Issues expressing your questions.
+
+## Summary
+
+This article discussed open source project advantages and disadvantages through introducing my experience tinkering with the open source Vue 3 UI framework Element Plus, concluding that excellent open source frameworks also have problems. Then, I combined my project experience to propose 5 techniques and methods for mastering open source projects, including overcoming frustration, writing your own open source projects, locating entry files, using global search, and reading technical documentation. Modern software development cannot be separated from excellent open source projects, but we must also realize that open source projects aren't specifically serving you, so they have certain limitations. **To better use open source frameworks and make them compatible with your complex requirements, you often must carefully read their source code, which inevitably incurs certain learning costs.**
+
+We usually say programmers should improve their technical strength and be able to "write" good code; but **with the increasingly important trend of team collaboration, I believe the more important ability for programmers is to be able to "read" others' code, whether good or bad**. Ensuring correct and reasonable naming conventions when writing code and trying to add comments for others' understanding is the ability to write code; when collaborating with others, carefully reading others' code, trying to understand their thinking, considering whether implementation methods are correct, etc., is the ability to read code. Of course, writing and reading are just very basic parts. The ability to master code includes more than just "writing" and "reading" - it should also include thinking, logic, planning abilities, such as system architecture, algorithm principles, scalability design, etc.
+
+Therefore, when we complain about colleagues' poor code, don't be annoyed or angry, because it might be because your code reading ability is insufficient and you haven't clearly understood colleagues' thinking; similarly, in colleagues' eyes, our code might also be terrible; or perhaps this is the legendary case of the pot calling the kettle black?
+
+![my-code](https://codao.crawlab.cn/images/2021-03-12-083404.jpg)
+
+## Community
+
+If you're interested in my articles, you can add my WeChat tikazyq1 with note "码之道" (Way of Code), and I'll invite you to the "码之道" discussion group.
