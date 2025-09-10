@@ -33,6 +33,11 @@ blog:
   permalink: /blog
   description: 一般博客文章
 
+complexity:
+  label: 复杂度
+  permalink: /complexity
+  description: 软件复杂度和复杂度管理
+
 crawlab:
   label: Crawlab
   permalink: /crawlab
@@ -98,10 +103,25 @@ react:
   permalink: /react
   description: React 框架和库
 
+software-engineering:
+  label: 软件工程
+  permalink: /software-engineering
+  description: 软件工程原理和实践
+
+technical-management:
+  label: 技术管理
+  permalink: /technical-management
+  description: 技术领导力和工程管理
+
 testing:
   label: 测试
   permalink: /testing
   description: 软件测试和质量保证
+
+translation-needed:
+  label: 需要翻译
+  permalink: /translation-needed
+  description: 需要英文翻译的文章
 
 typescript:
   label: TypeScript
