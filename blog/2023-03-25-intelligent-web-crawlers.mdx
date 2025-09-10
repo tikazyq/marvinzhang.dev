@@ -29,6 +29,10 @@ Crawler technology in the traditional sense mainly includes the following module
 
 ![web crawling system](https://codao.crawlab.cn/images/2023-03-25-061834.png)
 
+<!--truncate-->
+
+## Bottlenecks in Traditional Crawlers
+
 The above is the basic crawler technology modules. For a large crawler system, it is also necessary to have the necessary modules for the production environment such as task scheduling, error management, and log management. The author's crawler management platform [Crawlab ](https://www.crawlab.cn)is a crawler management platform for enterprise-level production environments. In addition, for some anti-crawling measures, such as verification code or IP blocking, additional modules are usually required, such as verification code identification, IP proxy, etc.
 
 However, at present, the development of crawler programs is mainly focused on webpage parsing, which consumes a lot of manpower. Although HTML needs to be parsed into the webpage data, the layout, format, style, and content of different websites are different, so each website and webpage needs separate parsing logic, which greatly increases the cost of manual coding. Although some general-purpose crawlers such as search engine crawlers do not need to write too much parsing logic, such crawlers usually cannot focus on data extraction of specific topics. Therefore, in order to reduce the cost of manual writing, it is best to automatically extract web page data without writing or writing a small amount of parsing logic, which is the main goal of intelligent crawlers.
