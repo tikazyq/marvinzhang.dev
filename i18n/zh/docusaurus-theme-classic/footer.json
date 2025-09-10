@@ -1,10 +1,10 @@
 {
   "link.title.Community": {
-    "message": "Community",
+    "message": "社区",
     "description": "The title of the footer links column with title=Community in the footer"
   },
   "link.title.More": {
-    "message": "More",
+    "message": "更多",
     "description": "The title of the footer links column with title=More in the footer"
   },
   "link.item.label.GitHub": {
@@ -12,11 +12,11 @@
     "description": "The label of footer link with label=GitHub linking to https://github.com/tikazyq"
   },
   "link.item.label.Blog": {
-    "message": "Blog",
+    "message": "博客",
     "description": "The label of footer link with label=Blog linking to /"
   },
   "copyright": {
-    "message": "Copyright © 2025 Marvin Zhang. Built with Docusaurus.",
+    "message": "版权所有 © 2025 Marvin Zhang. 保留所有权利.",
     "description": "The footer copyright"
   }
 }
