@@ -33,6 +33,11 @@ blog:
   permalink: /blog
   description: General blog posts
 
+complexity:
+  label: Complexity
+  permalink: /complexity
+  description: Software complexity and complexity management
+
 crawlab:
   label: Crawlab
   permalink: /crawlab
@@ -97,6 +102,16 @@ react:
   label: React
   permalink: /react
   description: React framework and library
+
+software-engineering:
+  label: Software Engineering
+  permalink: /software-engineering
+  description: Software engineering principles and practices
+
+technical-management:
+  label: Technical Management
+  permalink: /technical-management
+  description: Technical leadership and engineering management
 
 testing:
   label: Testing
