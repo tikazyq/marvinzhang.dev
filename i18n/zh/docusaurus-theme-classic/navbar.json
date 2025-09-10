@@ -17,9 +17,9 @@
   },
   "item.label.Projects": {
     "message": "项目",
-    "description": "Navbar item with label Language"
+    "description": "Navbar item with label Projects"
   },
-  "item.label.Abount": {
+  "item.label.About": {
     "message": "关于我",
     "description": "Navbar item with label About"
   }

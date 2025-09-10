@@ -331,59 +331,122 @@
     "description": "The description of the projects page"
   },
   "projects.hero.title": {
-    "message": "我的项目",
-    "description": "The hero title on the projects page"
+    "message": "我的项目"
   },
   "projects.hero.subtitle": {
-    "message": "开源项目、AI 应用和技术创新",
-    "description": "The hero subtitle on the projects page"
+    "message": "开源项目、AI 应用和技术创新"
   },
   "projects.featured.title": {
-    "message": "精选项目",
-    "description": "The featured projects section title"
+    "message": "精选项目"
   },
   "projects.featured.description": {
-    "message": "展示我最具影响力和创新性的项目",
-    "description": "The featured projects section description"
+    "message": "展示我最具影响力和创新性的项目"
   },
   "projects.other.title": {
-    "message": "更多项目",
-    "description": "The other projects section title"
+    "message": "更多项目"
   },
   "projects.other.description": {
-    "message": "其他项目和技术探索",
-    "description": "The other projects section description"
+    "message": "其他项目和技术探索"
   },
   "projects.featured": {
-    "message": "精选",
-    "description": "The featured badge text"
+    "message": "精选"
   },
   "projects.github": {
-    "message": "GitHub",
-    "description": "The GitHub link text"
+    "message": "GitHub"
   },
   "projects.live": {
-    "message": "在线演示",
-    "description": "The live demo link text"
+    "message": "在线演示"
   },
   "projects.blog": {
-    "message": "阅读更多",
-    "description": "The blog link text"
+    "message": "阅读更多"
   },
   "projects.cta.title": {
-    "message": "有兴趣合作吗？",
-    "description": "The call to action title"
+    "message": "有兴趣合作吗？"
   },
   "projects.cta.description": {
-    "message": "我总是乐于讨论新项目、机会和创新想法。",
-    "description": "The call to action description"
+    "message": "我总是乐于讨论新项目、机会和创新想法。"
   },
   "projects.cta.github": {
-    "message": "查看所有代码库",
-    "description": "The GitHub CTA button text"
+    "message": "查看所有代码库"
   },
   "projects.cta.contact": {
-    "message": "联系我",
-    "description": "The contact CTA button text"
+    "message": "联系我"
+  },
+  "about.title": {
+    "message": "关于 Marvin Zhang",
+    "description": "The title of the about page"
+  },
+  "about.description": {
+    "message": "了解更多关于 Marvin Zhang 的背景、经验和技术专长",
+    "description": "The description of the about page"
+  },
+  "about.hero.title": {
+    "message": "关于 Marvin Zhang"
+  },
+  "about.hero.subtitle": {
+    "message": "技术领导者 • 全栈开发工程师 • AI/ML 工程师"
+  },
+  "about.section.professional.title": {
+    "message": "专业概况"
+  },
+  "about.section.professional.description1": {
+    "message": "充满激情的技术专家，在全栈开发、人工智能和分布式系统方面拥有丰富经验。专注于构建可扩展的解决方案，并领导技术团队交付创新产品。"
+  },
+  "about.section.professional.description2": {
+    "message": "通过我在 marvinzhang.dev 的博客，我分享关于前沿技术、软件工程最佳实践以及 AI/ML 在现实场景中的实际应用的见解。"
+  },
+  "about.section.expertise.title": {
+    "message": "核心专长"
+  },
+  "about.skills.programming.title": {
+    "message": "编程语言"
+  },
+  "about.skills.technologies.title": {
+    "message": "技术与框架"
+  },
+  "about.skills.aiml.title": {
+    "message": "AI/ML 与数据"
+  },
+  "about.skills.architecture.title": {
+    "message": "架构与运维"
+  },
+  "about.section.experience.title": {
+    "message": "经验亮点"
+  },
+  "about.experience.leadership.title": {
+    "message": "技术领导力"
+  },
+  "about.experience.leadership.description": {
+    "message": "领导跨职能团队交付复杂的软件解决方案，从初始架构设计到生产部署。在扩展系统以处理数百万用户和优化高流量应用程序性能方面经验丰富。"
+  },
+  "about.experience.ai.title": {
+    "message": "AI/ML 创新"
+  },
+  "about.experience.ai.description": {
+    "message": "开发智能网络爬虫，实现自然语言处理管道，并使用前沿的 LLM 技术创建 AI 驱动的应用程序。发表关于实用 AI 应用的研究和见解。"
+  },
+  "about.experience.opensource.title": {
+    "message": "开源贡献"
+  },
+  "about.experience.opensource.description": {
+    "message": "积极的开源社区贡献者，在网络爬虫、数据分析和开发工具方面有项目。创建和维护被全球数千名开发者使用的流行库。"
+  },
+  "about.section.education.title": {
+    "message": "教育与学习"
+  },
+  "about.section.education.description": {
+    "message": "致力于持续学习并跟上新兴技术。定期参与技术会议，为技术出版物贡献内容，并维护一个涵盖软件工程、AI/ML 和系统架构高级主题的技术博客。"
+  },
+  "about.section.connect.title": {
+    "message": "让我们联系"
+  },
+  "about.section.connect.description": {
+    "message": "我总是有兴趣讨论新的机会、技术挑战和创新项目。如果您想合作或了解更多关于我的工作，请随时联系。"
+  },
+  "about.connect.github": {
+    "message": "GitHub 个人资料"
+  },
+  "about.connect.email": {
+    "message": "发邮件给我"
   }
 }
