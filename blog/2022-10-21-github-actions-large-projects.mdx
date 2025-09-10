@@ -22,6 +22,8 @@ The new version of Crawlab v0.6 split general functionalities into separated mod
 
 Below is the diagram of the overall CI/CD architecture.
 
+<!--truncate-->
+
 ![Crawlab CI/CD](https://codao.crawlab.cn/images/2022-10-21-025257.png)
 
 The building process of the whole Crawlab project is a little bit trivial. The ultimate deliverable or the Docker image [crawlabteam/crawlab](https://hub.docker.com/crawlabteam/crawlab) depends on the main repository, which depends on the sub-projects of front-end, back-end, base images and plugins. They are come from their own repos, which again depend on upstream core-module repos. Here we have simplified the dependencies of front-end and back-end modules. 
