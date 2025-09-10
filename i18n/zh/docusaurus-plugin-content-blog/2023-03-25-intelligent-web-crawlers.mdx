@@ -34,6 +34,10 @@ date: 2023-03-25T00:00:00.000Z
 
 然而，目前爬虫程序的开发主要集中在网页解析上，这也是非常消耗人力的地方。虽然 HTML 需要解析网页数据，但是不同网站的网页布局、排版、风格、内容各不相同，导致每个网站、网页都需要单独编写解析逻辑，从而大大增加了人工编写成本。虽然一些通用爬虫例如搜索引擎爬虫可以不用编写过多解析逻辑，但这样的爬虫通常都无法聚焦于某些特定的主题数据提取。因此，为了降低人工编写成本，最好是不需要编写或少量编写解析逻辑就可以自动提取网页数据，这也就是智能爬虫的主要目标。
 
+<!--truncate-->
+
+## 智能爬虫发展现状
+
 ## 已知实现方式
 
 要实现智能化网页提取并不容易，但目前已经有一些对于智能爬虫开发的尝试。其中，青南开发的 [GNE](https://github.com/GeneralNewsExtractor/GeneralNewsExtractor) (GeneralNewsExtractor) 是网页正文提取的开源实现，基于[文本及标点符号密度提取算法](https://kns.cnki.net/KCMS/detail/detail.aspx?dbcode=CJFQ&dbname=CJFDLAST2019&filename=GWDZ201908029&v=MDY4MTRxVHJXTTFGckNVUkxPZmJ1Wm5GQ2poVXJyQklqclBkTEc0SDlqTXA0OUhiWVI4ZVgxTHV4WVM3RGgxVDM=)。崔庆才开发的 [GerapyAutoExtractor](https://github.com/Gerapy/GerapyAutoExtractor) 基于[列表簇及 SVM 算法](https://cuiqingcai.com/9531.html) 实现了网页列表页识别。[八爪鱼](https://www.octoparse.com/) (Octoparse)，一个商业客户端软件，已经开发出自动列表识别模块。国外的 [Diffbot](https://www.diffbot.com/) 是一个基于 API 的智能网页识别平台，识别准确率非常高，号称有 99%。对于已知的智能爬虫实现方式，目前主要基于网页 HTML 结构以及内容，例如 GNE 和 GerapyAutoExtractor。对于商用软件例如八爪鱼、Diffbot，我们无法得知具体实现方式。
