@@ -58,7 +58,7 @@ const projects: Project[] = [
     description: 'Intelligent question-answering system built with LangChain framework. Implements RAG (Retrieval-Augmented Generation) patterns for document-based AI conversations and knowledge extraction.',
     image: 'https://python.langchain.com/img/brand/wordmark.png',
     tags: ['AI', 'LangChain', 'Python', 'OpenAI', 'RAG', 'NLP'],
-    blogUrl: '/blog/langchain-knowledge-qa-system',
+    blogUrl: '/langchain-knowledge-qa-system',
   },
   {
     title: 'OpenAI Function Calls',

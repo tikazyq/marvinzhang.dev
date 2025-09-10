@@ -60,7 +60,7 @@ const config: Config = {
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn', // Enable truncation warnings to encourage use of <!--truncate-->
-          routeBasePath: '/blog', // Serve the blog at the site's root
+          routeBasePath: '/', // Serve the blog at the site's root
           include: ['**/*.{md,mdx}'],
           exclude: [
             '**/_*.{js,jsx,ts,tsx,md,mdx}',
@@ -89,7 +89,7 @@ const config: Config = {
         src: 'img/logo.svg',
       },
       items: [
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/', label: 'Blog', position: 'left'},
         {to: '/projects', label: 'Projects', position: 'left'},
         {to: '/about', label: 'About', position: 'left'},
         {
@@ -120,7 +120,7 @@ const config: Config = {
           items: [
             {
               label: 'Blog',
-              to: '/blog',
+              to: '/',
             },
           ],
         },
