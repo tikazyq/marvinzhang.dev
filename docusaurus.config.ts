@@ -52,6 +52,7 @@ const config: Config = {
       {
         docs: false, // Disable docs completely
         blog: {
+          blogSidebarCount: 'ALL',
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],
