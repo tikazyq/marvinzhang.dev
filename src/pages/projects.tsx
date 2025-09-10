@@ -3,11 +3,20 @@ import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import Translate, {translate} from '@docusaurus/Translate';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './projects.module.css';
 
-interface Project {
+interface ProjectContent {
   title: string;
   description: string;
+}
+
+interface Project {
+  id: string;
+  content: {
+    en: ProjectContent;
+    zh: ProjectContent;
+  };
   image: string;
   tags: string[];
   githubUrl?: string;
@@ -18,8 +27,17 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: 'Crawlab',
-    description: 'Distributed web scraping management platform supporting multiple programming languages and frameworks. A comprehensive solution for large-scale data collection with advanced scheduling, monitoring, and team collaboration features.',
+    id: 'crawlab',
+    content: {
+      en: {
+        title: 'Crawlab',
+        description: 'Distributed web scraping management platform supporting multiple programming languages and frameworks. A comprehensive solution for large-scale data collection with advanced scheduling, monitoring, and team collaboration features.',
+      },
+      zh: {
+        title: 'Crawlab',
+        description: '分布式网络爬虫管理平台，支持多种编程语言和框架。为大规模数据收集提供全面解决方案，具有高级调度、监控和团队协作功能。',
+      },
+    },
     image: 'https://raw.githubusercontent.com/crawlab-team/crawlab/master/docs/img/logo.png',
     tags: ['Go', 'Vue.js', 'Docker', 'MongoDB', 'Web Scraping', 'DevOps'],
     githubUrl: 'https://github.com/crawlab-team/crawlab',
@@ -28,8 +46,17 @@ const projects: Project[] = [
     featured: true,
   },
   {
-    title: 'SRead',
-    description: 'AI-powered reading assistant that helps users extract key insights from articles and documents. Features intelligent summarization, Q&A capabilities, and seamless integration via Chrome extension.',
+    id: 'sread',
+    content: {
+      en: {
+        title: 'SRead',
+        description: 'AI-powered reading assistant that helps users extract key insights from articles and documents. Features intelligent summarization, Q&A capabilities, and seamless integration via Chrome extension.',
+      },
+      zh: {
+        title: 'SRead',
+        description: 'AI驱动的阅读助手，帮助用户从文章和文档中提取关键见解。具有智能摘要、问答功能，以及通过Chrome扩展程序的无缝集成。',
+      },
+    },
     image: 'https://sread.ai/logo.png',
     tags: ['AI', 'NLP', 'React', 'Chrome Extension', 'LangChain'],
     liveUrl: 'https://sread.ai',
@@ -37,16 +64,34 @@ const projects: Project[] = [
     featured: true,
   },
   {
-    title: 'Crawlab AI',
-    description: 'Next-generation intelligent web crawler powered by Large Language Models (LLM). Automatically extracts structured data from websites without manual rule configuration, revolutionizing data collection workflows.',
+    id: 'crawlab-ai',
+    content: {
+      en: {
+        title: 'Crawlab AI',
+        description: 'Next-generation intelligent web crawler powered by Large Language Models (LLM). Automatically extracts structured data from websites without manual rule configuration, revolutionizing data collection workflows.',
+      },
+      zh: {
+        title: 'Crawlab AI',
+        description: '由大型语言模型（LLM）驱动的下一代智能网络爬虫。无需手动规则配置即可自动从网站提取结构化数据，革命性地改变数据收集工作流程。',
+      },
+    },
     image: 'https://raw.githubusercontent.com/crawlab-team/crawlab/master/docs/img/logo-ai.png',
     tags: ['AI', 'LLM', 'Python', 'OpenAI', 'Web Scraping', 'Automation'],
     blogUrl: '#',
     featured: true,
   },
   {
-    title: 'Rath Data Explorer',
-    description: 'Open-source automated data exploration and visualization tool. Provides intelligent insights and interactive analytics for complex datasets with drag-and-drop interface and advanced statistical analysis.',
+    id: 'rath',
+    content: {
+      en: {
+        title: 'Rath Data Explorer',
+        description: 'Open-source automated data exploration and visualization tool. Provides intelligent insights and interactive analytics for complex datasets with drag-and-drop interface and advanced statistical analysis.',
+      },
+      zh: {
+        title: 'Rath 数据探索器',
+        description: '开源自动化数据探索和可视化工具。通过拖拽界面和高级统计分析为复杂数据集提供智能洞察和交互式分析。',
+      },
+    },
     image: 'https://kanaries.net/images/rath-logo.png',
     tags: ['Data Analysis', 'Visualization', 'TypeScript', 'React', 'Statistics'],
     githubUrl: 'https://github.com/Kanaries/Rath',
@@ -54,15 +99,33 @@ const projects: Project[] = [
     blogUrl: '#',
   },
   {
-    title: 'LangChain Knowledge QA',
-    description: 'Intelligent question-answering system built with LangChain framework. Implements RAG (Retrieval-Augmented Generation) patterns for document-based AI conversations and knowledge extraction.',
+    id: 'langchain-qa',
+    content: {
+      en: {
+        title: 'LangChain Knowledge QA',
+        description: 'Intelligent question-answering system built with LangChain framework. Implements RAG (Retrieval-Augmented Generation) patterns for document-based AI conversations and knowledge extraction.',
+      },
+      zh: {
+        title: 'LangChain 知识问答',
+        description: '基于LangChain框架构建的智能问答系统。实现RAG（检索增强生成）模式，用于基于文档的AI对话和知识提取。',
+      },
+    },
     image: 'https://python.langchain.com/img/brand/wordmark.png',
     tags: ['AI', 'LangChain', 'Python', 'OpenAI', 'RAG', 'NLP'],
     blogUrl: '/blog/langchain-knowledge-qa-system',
   },
   {
-    title: 'OpenAI Function Calls',
-    description: 'Advanced implementation of OpenAI function calling capabilities with LangChain integration. Demonstrates structured data extraction and API integration patterns for building robust AI applications.',
+    id: 'openai-functions',
+    content: {
+      en: {
+        title: 'OpenAI Function Calls',
+        description: 'Advanced implementation of OpenAI function calling capabilities with LangChain integration. Demonstrates structured data extraction and API integration patterns for building robust AI applications.',
+      },
+      zh: {
+        title: 'OpenAI 函数调用',
+        description: 'OpenAI函数调用功能的高级实现，集成LangChain。展示用于构建强大AI应用程序的结构化数据提取和API集成模式。',
+      },
+    },
     image: 'https://openai.com/favicon.ico',
     tags: ['OpenAI', 'Function Calls', 'Python', 'API Integration', 'Structured Data'],
     blogUrl: '#',
@@ -70,15 +133,19 @@ const projects: Project[] = [
 ];
 
 function ProjectCard({project}: {project: Project; key?: string}) {
+  const {i18n} = useDocusaurusContext();
+  const currentLocale = i18n.currentLocale as 'en' | 'zh';
+  const content = project.content[currentLocale];
+
   return (
     <div className={clsx('col col--6', styles.projectCard, {
       [styles.featured]: project.featured
     })}>
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <img src={project.image} alt={project.title} className={styles.projectImage} />
+          <img src={project.image} alt={content.title} className={styles.projectImage} />
           <div className={styles.projectInfo}>
-            <h3 className={styles.projectTitle}>{project.title}</h3>
+            <h3 className={styles.projectTitle}>{content.title}</h3>
             {project.featured && (
               <span className={styles.featuredBadge}>
                 <Translate id="projects.featured">Featured</Translate>
@@ -86,7 +153,7 @@ function ProjectCard({project}: {project: Project; key?: string}) {
             )}
           </div>
         </div>
-        <p className={styles.projectDescription}>{project.description}</p>
+        <p className={styles.projectDescription}>{content.description}</p>
         <div className={styles.projectTags}>
           {project.tags.map((tag) => (
             <span key={tag} className={styles.tag}>
@@ -173,7 +240,7 @@ function Projects() {
             </div>
             <div className="row">
               {featuredProjects.map((project) => (
-                <ProjectCard key={project.title} project={project} />
+                <ProjectCard key={project.id} project={project} />
               ))}
             </div>
           </section>
@@ -193,7 +260,7 @@ function Projects() {
               </div>
               <div className="row">
                 {otherProjects.map((project) => (
-                  <ProjectCard key={project.title} project={project} />
+                  <ProjectCard key={project.id} project={project} />
                 ))}
               </div>
             </section>
