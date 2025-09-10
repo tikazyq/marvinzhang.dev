@@ -8,6 +8,11 @@ agile:
   permalink: /agile
   description: Agile development methodology
 
+automation:
+  label: Automation
+  permalink: /automation
+  description: Process automation and workflow tools
+
 algorithm:
   label: Algorithm
   permalink: /algorithm
@@ -62,6 +67,11 @@ devops:
   label: DevOps
   permalink: /devops
   description: Development operations and CI/CD
+
+docusaurus:
+  label: Docusaurus
+  permalink: /docusaurus
+  description: Docusaurus static site generator
 
 distributed-systems:
   label: Distributed Systems
