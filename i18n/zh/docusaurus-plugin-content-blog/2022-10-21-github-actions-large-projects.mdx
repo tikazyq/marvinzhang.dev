@@ -23,6 +23,7 @@ Crawlab 新版本 v0.6 将不少通用的模块进行了拆分，因此整个项
 
 以下是 Crawlab 的整体 CI/CD 架构示意图。
 
+<!--truncate-->
 ![Crawlab CI/CD](https://codao.crawlab.cn/images/2022-10-21-025257.png)
 
 可以看到，整个 Crawlab 项目的构建流程还是有些繁琐。给用户拉取部署的最终镜像 [crawlabteam/crawlab](https://hub.docker.com/crawlabteam/crawlab) 依赖于主仓库，而主仓库依赖于前后端、基础镜像、插件镜像，它们来自于各自的代码仓库，也依赖了更上游的核心代码仓库。这里简化了核心前后端代码背后所依赖的模块。
