@@ -21,7 +21,11 @@ Firstly, we need to understand how to obtain structured outputs from ChatOpenAI.
 For instance, we can create a `Person` class to describe basic information about an individual:
 
 ```python
-from langchain.pydantic_v1 import BaseModel, Field   
+from langchain.pydantic_v1 import BaseModel, Field
+
+<!--truncate-->
+
+class Person(BaseModel):
 
 class Person(BaseModel):  
     """Identifying information about a person."""  
