@@ -23,7 +23,7 @@ date: '2021-03-09'
 
 笔者也不例外。我最近在用 [Vue 3](https://www.vue3js.cn/docs/zh/) 重构 [Crawlab](https://github.com/crawlab-team/crawlab) 前端的时候，用到了 [Element](https://element.eleme.io/) 团队开发的升级版的 [ElementUI](https://github.com/ElemeFE/element)，也就是 Vue 3 重构的新 UI 框架 [Element Plus](https://github.com/element-plus/element-plus)。Element 团队在 Element Plus 中将该项目用 Vue 3 完全重构，全面拥抱了 [TypeScript](https://www.typescriptlang.org/)；而且相比于之前的 Vue 2 版本丰富了部分组件；而整体风格和使用方式跟之前的版本一致；一些 API 在使用上还变得更精简了。因此，笔者在重构 Crawlab 前端初期过程中没有遇到太大的障碍，再加上之前的编写经验，开发过程中显得驾轻就熟。然而，好景不长，随着项目的不断开发，笔者遭遇到一些技术上的困难。更准确的说，在实现一些复杂功能时遇到了来自于 Element Plus 框架本身的限制。虽然最终想方设法将问题解决了，但是我也深刻体会到了硬啃（Hacking）开源项目源代码的困难。因此，也希望借此机会将自己**驾驭开源代码**的经验分享给读者。
 
-<!--truncate-->
+{/* truncate */}
 本篇文章将以解决 Element Plus 问题的经历开始，循序渐进讨论开源项目或开源框架的问题，进一步讨论驾驭开源项目源代码的方法和技巧，分享自己阅读、理解和更改源代码的思路。本篇文章主要是方法论的讨论，不涉及太多技术细节，任何专业背景的读者都可阅读。
 
 ## 硬啃 Element Plus
