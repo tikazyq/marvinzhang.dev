@@ -38,7 +38,7 @@ const projects: Project[] = [
         description: '分布式网络爬虫管理平台，支持多种编程语言和框架。为大规模数据收集提供全面解决方案，具有高级调度、监控和团队协作功能。',
       },
     },
-    image: 'https://raw.githubusercontent.com/crawlab-team/crawlab/master/docs/img/logo.png',
+    image: '/img/projects/crawlab.svg',
     tags: ['Go', 'Vue.js', 'Docker', 'MongoDB', 'Web Scraping', 'DevOps'],
     githubUrl: 'https://github.com/crawlab-team/crawlab',
     liveUrl: 'https://www.crawlab.cn',

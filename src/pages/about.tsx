@@ -24,7 +24,7 @@ function About() {
           </h1>
           <p className="hero__subtitle">
             <Translate id="about.hero.subtitle">
-              Technology Leader • Full-Stack Developer • AI/ML Engineer
+              Technology Leader • Full-Stack Developer • Open Source Author
             </Translate>
           </p>
         </div>
@@ -42,9 +42,11 @@ function About() {
                 </h2>
                 <p className="margin-bottom--md">
                   <Translate id="about.section.professional.description1">
-                    Passionate technology professional with extensive experience in full-stack development, 
-                    artificial intelligence, and distributed systems. I specialize in building scalable 
-                    solutions and leading technical teams to deliver innovative products.
+                    10+ years work experience in full-stack software development, data analytics and project management, 
+                    and author of open-source projects including Crawlab. Specialized in building 
+                    end-to-end solutions from frontend interfaces to backend architectures, with extensive expertise 
+                    in leading development teams and scalable platform development. 
+                    I am currently focused on AI technologies including LLM, agents, AI coding, etc.
                   </Translate>
                 </p>
                 <p>
@@ -79,14 +81,14 @@ function About() {
                   <div className="col col--6">
                     <div className={styles.skillSection}>
                       <h3>
-                        <Translate id="about.skills.technologies.title">Technologies & Frameworks</Translate>
+                        <Translate id="about.skills.technologies.title">Full-Stack Technologies</Translate>
                       </h3>
                       <ul className={styles.skillList}>
-                        <li>React, Vue.js, Next.js</li>
-                        <li>Node.js, Express, FastAPI</li>
-                        <li>Docker, Kubernetes</li>
-                        <li>AWS, Azure, GCP</li>
-                        <li>PostgreSQL, MongoDB, Redis</li>
+                        <li>Frontend: Vue.js, React, TypeScript, HTML/CSS</li>
+                        <li>Backend: Node.js, C#, Java, Python, Go</li>
+                        <li>Cloud: Azure, AWS</li>
+                        <li>Database: MongoDB, MySQL, PG, SQL Server, Redis</li>
+                        <li>DevOps: Docker, Azure DevOps, GitHub Actions</li>
                       </ul>
                     </div>
                   </div>
@@ -98,11 +100,11 @@ function About() {
                         <Translate id="about.skills.aiml.title">AI/ML & Data</Translate>
                       </h3>
                       <ul className={styles.skillList}>
-                        <li>TensorFlow, PyTorch</li>
-                        <li>LangChain, OpenAI APIs</li>
-                        <li>Data Analytics & Visualization</li>
+                        <li>AI Coding & Code Generation</li>
+                        <li>AI Agents & LLM Applications</li>
+                        <li>Power BI & Data Analytics Platforms</li>
+                        <li>ETL Pipelines & Data Integration</li>
                         <li>Web Scraping & Automation</li>
-                        <li>Natural Language Processing</li>
                       </ul>
                     </div>
                   </div>
@@ -112,11 +114,11 @@ function About() {
                         <Translate id="about.skills.architecture.title">Architecture & DevOps</Translate>
                       </h3>
                       <ul className={styles.skillList}>
+                        <li>System Design & Implementation</li>
+                        <li>AI Agent System Development</li>
                         <li>Microservices Architecture</li>
-                        <li>CI/CD with GitHub Actions</li>
-                        <li>System Design & Scalability</li>
-                        <li>Performance Optimization</li>
-                        <li>Agile Project Management</li>
+                        <li>Agile Framework (Scrum)</li>
+                        <li>CI/CD & DevOps Pipelines</li>
                       </ul>
                     </div>
                   </div>
@@ -131,58 +133,55 @@ function About() {
                 
                 <div className={styles.experienceItem}>
                   <h3>
-                    <Translate id="about.experience.leadership.title">Technical Leadership</Translate>
+                    <Translate id="about.experience.leadership.title">Technical Team Lead</Translate>
                   </h3>
                   <p>
                     <Translate id="about.experience.leadership.description">
-                      Led cross-functional teams in delivering complex software solutions, 
-                      from initial architecture design to production deployment. Experienced 
-                      in scaling systems to handle millions of users and optimizing performance 
-                      for high-traffic applications.
+                      Currently leading a 20-person development team practicing agile framework (Scrum) 
+                      for software development. Spearheading data governance initiatives with Power BI-based 
+                      analytics platforms and implementing ETL data integration architectures. Researching 
+                      and developing low-code solutions using Microsoft PowerApps/PowerAutomate. Leading AI 
+                      initiatives including LLM integration, AI-powered automation tools, and exploring 
+                      AI agent systems for enterprise workflows. Actively researching and implementing 
+                      AI coding solutions to enhance development team productivity and code quality.
                     </Translate>
                   </p>
                 </div>
 
                 <div className={styles.experienceItem}>
                   <h3>
-                    <Translate id="about.experience.ai.title">AI/ML Innovation</Translate>
+                    <Translate id="about.experience.crawlab.title">Crawlab Open Source Project</Translate>
+                  </h3>
+                  <p>
+                    <Translate id="about.experience.crawlab.description">
+                      Author and maintainer of Crawlab, a distributed web crawler management platform 
+                      supporting multiple programming languages including Python, Node.js, Go, and Java. 
+                      Achieved 12k+ GitHub stars and 500k+ DockerHub downloads, adopted by major companies 
+                      including Xiaomi, Siemens, and Garmin. Successfully architected and migrated the 
+                      entire platform from Python + Vue 2 to Golang + Vue 3, significantly improving 
+                      performance and scalability. Features include distributed task scheduling, 
+                      real-time monitoring, data visualization, and comprehensive spider management 
+                      with support for both code-based and visual crawler development.
+                    </Translate>
+                  </p>
+                </div>
+
+                <div className={styles.experienceItem}>
+                  <h3>
+                    <Translate id="about.experience.ai.title">AI Research & Development</Translate>
                   </h3>
                   <p>
                     <Translate id="about.experience.ai.description">
-                      Developed intelligent web crawlers, implemented natural language processing 
-                      pipelines, and created AI-powered applications using cutting-edge LLM technologies. 
-                      Published research and insights on practical AI applications.
+                      Deep expertise in AI/ML technologies with focus on Large Language Models (LLMs), 
+                      AI agents, and AI-powered development tools. Actively researching and implementing 
+                      cutting-edge AI solutions including prompt engineering, RAG (Retrieval-Augmented Generation), 
+                      and multi-agent systems. Developing AI coding assistants and automation tools that 
+                      enhance developer productivity. Contributing to the AI community through technical 
+                      writing, open-source projects, and exploring the intersection of AI with traditional 
+                      software engineering practices.
                     </Translate>
                   </p>
                 </div>
-
-                <div className={styles.experienceItem}>
-                  <h3>
-                    <Translate id="about.experience.opensource.title">Open Source Contributions</Translate>
-                  </h3>
-                  <p>
-                    <Translate id="about.experience.opensource.description">
-                      Active contributor to the open-source community with projects in web scraping, 
-                      data analytics, and developer tools. Created and maintained popular libraries 
-                      used by thousands of developers worldwide.
-                    </Translate>
-                  </p>
-                </div>
-              </section>
-
-              {/* Education & Certifications */}
-              <section className="margin-bottom--xl">
-                <h2>
-                  <Translate id="about.section.education.title">Education & Learning</Translate>
-                </h2>
-                <p>
-                  <Translate id="about.section.education.description">
-                    Committed to continuous learning and staying current with emerging technologies. 
-                    Regular participant in tech conferences, contributor to technical publications, 
-                    and maintainer of a technical blog covering advanced topics in software engineering, 
-                    AI/ML, and system architecture.
-                  </Translate>
-                </p>
               </section>
 
               {/* Connect */}
