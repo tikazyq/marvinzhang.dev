@@ -48,6 +48,11 @@ crawlab:
   permalink: /crawlab
   description: Crawlab 网络爬虫平台
 
+deepseek:
+  label: DeepSeek
+  permalink: /deepseek
+  description: DeepSeek AI 模型和技术
+
 csharp:
   label: C#
   permalink: /csharp
@@ -98,10 +103,20 @@ javascript:
   permalink: /javascript
   description: JavaScript 编程语言
 
+llm:
+  label: 大语言模型
+  permalink: /llm
+  description: 大语言模型
+
 machine-learning:
   label: 机器学习
   permalink: /machine-learning
   description: 机器学习和人工智能技术
+
+nextjs:
+  label: Next.js
+  permalink: /nextjs
+  description: Next.js React 框架
 
 project-management:
   label: 项目管理
@@ -142,3 +157,8 @@ vue:
   label: Vue
   permalink: /vue
   description: Vue.js 框架
+
+vercel:
+  label: Vercel
+  permalink: /vercel
+  description: Vercel 部署平台和工具
