@@ -38,14 +38,30 @@
   margin-right: auto;
 }
 
+/* Projects Row */
+.projectsRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.projectsRow > * {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 /* Project Cards */
 .projectCard {
   margin-bottom: 2rem;
   height: 100%;
+  display: flex;
 }
 
 .card {
   height: 100%;
+  width: 100%;
   padding: 1.5rem;
   border-radius: 12px;
   border: 2px solid var(--ifm-color-emphasis-300);
@@ -60,24 +76,6 @@
   transform: translateY(-4px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   border-color: var(--ifm-color-primary);
-}
-
-/* Featured Project Styling */
-.featured .card {
-  border: 2px solid var(--ifm-color-primary);
-  background: var(--ifm-background-color);
-  position: relative;
-}
-
-.featured .card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--ifm-color-primary);
-  border-radius: 12px 12px 0 0;
 }
 
 /* Card Header */
@@ -111,16 +109,15 @@
   margin: 0;
 }
 
-.featuredBadge {
-  background: var(--ifm-color-primary);
-  color: white;
+.starsBadge {
+  background: var(--ifm-color-warning);
+  color: var(--ifm-color-emphasis-900);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 /* Project Description */
@@ -153,6 +150,29 @@
 .tag:hover {
   background: var(--ifm-color-primary-lightest);
   color: var(--ifm-color-primary-dark);
+}
+
+/* Special styling for category tags */
+.tag[data-category="Open Source"] {
+  background: var(--ifm-color-success);
+  color: white;
+  font-weight: 600;
+}
+
+.tag[data-category="AI"] {
+  background: var(--ifm-color-info);
+  color: white;
+  font-weight: 600;
+}
+
+.tag[data-category="Open Source"]:hover {
+  background: var(--ifm-color-success-dark);
+  color: white;
+}
+
+.tag[data-category="AI"]:hover {
+  background: var(--ifm-color-info-dark);
+  color: white;
 }
 
 /* Project Links */
@@ -219,12 +239,13 @@
   border-color: var(--ifm-color-primary);
 }
 
-[data-theme='dark'] .featured .card {
-  background: var(--ifm-background-color);
-}
-
 [data-theme='dark'] .projectImage {
   background: var(--ifm-color-emphasis-200);
+}
+
+[data-theme='dark'] .starsBadge {
+  background: var(--ifm-color-warning-dark);
+  color: var(--ifm-color-emphasis-100);
 }
 
 [data-theme='dark'] .tag {
@@ -235,6 +256,26 @@
 [data-theme='dark'] .tag:hover {
   background: var(--ifm-color-primary-dark);
   color: var(--ifm-color-primary-lightest);
+}
+
+[data-theme='dark'] .tag[data-category="Open Source"] {
+  background: var(--ifm-color-success-dark);
+  color: var(--ifm-color-success-lightest);
+}
+
+[data-theme='dark'] .tag[data-category="AI"] {
+  background: var(--ifm-color-info-dark);
+  color: var(--ifm-color-info-lightest);
+}
+
+[data-theme='dark'] .tag[data-category="Open Source"]:hover {
+  background: var(--ifm-color-success-darker);
+  color: var(--ifm-color-success-lightest);
+}
+
+[data-theme='dark'] .tag[data-category="AI"]:hover {
+  background: var(--ifm-color-info-darker);
+  color: var(--ifm-color-info-lightest);
 }
 
 [data-theme='dark'] .ctaSection {

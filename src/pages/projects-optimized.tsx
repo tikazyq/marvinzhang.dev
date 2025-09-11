@@ -4,6 +4,7 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import Translate, {translate} from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { useMultipleGitHubStars } from '../hooks/useGitHubStars';
 import GitHubStarsBadge from '../components/GitHubStarsBadge';
 import styles from './projects.module.css';
 
@@ -24,6 +25,7 @@ interface Project {
   githubStars?: number;
   liveUrl?: string;
   blogUrl?: string;
+  category: 'opensource' | 'ai';
 }
 
 const projects: Project[] = [
@@ -41,11 +43,12 @@ const projects: Project[] = [
       },
     },
     image: '/img/projects/crawlab.svg',
-    tags: ['Open Source', 'Go', 'Web Scraping'],
+    tags: ['Go', 'Vue.js', 'Docker', 'MongoDB', 'Web Scraping', 'DevOps'],
     githubUrl: 'https://github.com/crawlab-team/crawlab',
     githubStars: 11000,
     liveUrl: 'https://www.crawlab.cn',
     blogUrl: '/blog/crawlab',
+    category: 'opensource',
   },
   {
     id: 'artipub',
@@ -60,27 +63,29 @@ const projects: Project[] = [
       },
     },
     image: '/img/projects/artipub.png',
-    tags: ['Open Source', 'Node.js', 'Content Management'],
+    tags: ['Node.js', 'Vue.js', 'Electron', 'Content Management', 'Automation'],
     githubUrl: 'https://github.com/crawlab-team/artipub',
     githubStars: 3000,
     blogUrl: '/blog/artipub',
+    category: 'opensource',
   },
   {
     id: 'devlog',
     content: {
       en: {
         title: 'DevLog',
-        description: 'AI-powered developer activity tracking and analytics platform. Monitors coding patterns, productivity metrics, and provides insights into development workflows. Helps teams understand and optimize their development processes.',
+        description: 'Developer activity tracking and analytics platform. Monitors coding patterns, productivity metrics, and provides insights into development workflows. Helps teams understand and optimize their development processes.',
       },
       zh: {
         title: 'DevLog',
-        description: 'AI驱动的开发者活动跟踪和分析平台。监控编码模式、生产力指标，并提供开发工作流程的洞察。帮助团队了解和优化开发流程。',
+        description: '开发者活动跟踪和分析平台。监控编码模式、生产力指标，并提供开发工作流程的洞察。帮助团队了解和优化开发流程。',
       },
     },
     image: '/img/projects/devlog.svg',
-    tags: ['Open Source', 'AI', 'Developer Tools'],
-    githubUrl: 'https://github.com/codervisor/devlog',
-    githubStars: 100,
+    tags: ['Go', 'React', 'Analytics', 'Developer Tools', 'Productivity'],
+    githubUrl: 'https://github.com/tikazyq/devlog',
+    githubStars: 500,
+    category: 'opensource',
   },
   
   // AI Projects
@@ -97,8 +102,9 @@ const projects: Project[] = [
       },
     },
     image: '/img/projects/crawlab.svg',
-    tags: ['AI', 'Python', 'Web Scraping'],
+    tags: ['AI', 'LLM', 'Python', 'OpenAI', 'Web Scraping', 'Automation'],
     blogUrl: '/blog/crawlab-ai',
+    category: 'ai',
   },
   {
     id: 'sread',
@@ -113,9 +119,26 @@ const projects: Project[] = [
       },
     },
     image: '/img/projects/sread.svg',
-    tags: ['AI', 'JavaScript', 'Reading Assistant'],
+    tags: ['AI', 'NLP', 'Chrome Extension', 'Reading Assistant', 'Summarization'],
     liveUrl: 'https://sread.ai',
     blogUrl: '/blog/sread',
+    category: 'ai',
+  },
+  {
+    id: 'devlog-ai',
+    content: {
+      en: {
+        title: 'DevLog AI',
+        description: 'AI-enhanced version of DevLog with intelligent code analysis, automated documentation generation, and smart development insights. Uses machine learning to provide personalized productivity recommendations.',
+      },
+      zh: {
+        title: 'DevLog AI',
+        description: 'DevLog的AI增强版本，具有智能代码分析、自动文档生成和智能开发洞察。使用机器学习提供个性化生产力建议。',
+      },
+    },
+    image: '/img/projects/devlog.svg',
+    tags: ['AI', 'Machine Learning', 'Code Analysis', 'Documentation', 'Productivity'],
+    category: 'ai',
   },
 ];
 
@@ -135,6 +158,7 @@ function ProjectCard({project}: {project: Project; key?: string}) {
               <GitHubStarsBadge 
                 githubUrl={project.githubUrl} 
                 fallbackStars={project.githubStars}
+                compact={true}
               />
             )}
           </div>
@@ -142,11 +166,7 @@ function ProjectCard({project}: {project: Project; key?: string}) {
         <p className={styles.projectDescription}>{content.description}</p>
         <div className={styles.projectTags}>
           {project.tags.map((tag) => (
-            <span 
-              key={tag} 
-              className={styles.tag}
-              data-category={tag === 'Open Source' || tag === 'AI' ? tag : undefined}
-            >
+            <span key={tag} className={styles.tag}>
               {tag}
             </span>
           ))}
@@ -184,6 +204,17 @@ function ProjectCard({project}: {project: Project; key?: string}) {
 }
 
 function Projects() {
+  const openSourceProjects = projects.filter(project => project.category === 'opensource');
+  const aiProjects = projects.filter(project => project.category === 'ai');
+
+  // Pre-fetch all GitHub URLs for better performance
+  const allGitHubUrls = projects
+    .map(project => project.githubUrl)
+    .filter(Boolean) as string[];
+  
+  // This will batch fetch all repositories at once
+  useMultipleGitHubStars(allGitHubUrls);
+
   return (
     <Layout
       title={translate({
@@ -213,20 +244,39 @@ function Projects() {
       <main>
         <div className="container margin-vert--lg">
           
-          {/* All Projects */}
+          {/* Open Source Projects */}
           <section className="margin-bottom--xl">
             <div className="text--center margin-bottom--lg">
               <h2 className={styles.sectionTitle}>
-                <Translate id="projects.all.title">Featured Projects</Translate>
+                <Translate id="projects.opensource.title">Open Source Projects</Translate>
               </h2>
               <p className={styles.sectionDescription}>
-                <Translate id="projects.all.description">
-                  A collection of my work spanning open-source development, AI applications, and technical innovations
+                <Translate id="projects.opensource.description">
+                  Community-driven projects with open source code and collaborative development
                 </Translate>
               </p>
             </div>
-            <div className={clsx('row', styles.projectsRow)}>
-              {projects.map((project) => (
+            <div className="row">
+              {openSourceProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          </section>
+
+          {/* AI Projects */}
+          <section className="margin-bottom--xl">
+            <div className="text--center margin-bottom--lg">
+              <h2 className={styles.sectionTitle}>
+                <Translate id="projects.ai.title">AI Projects</Translate>
+              </h2>
+              <p className={styles.sectionDescription}>
+                <Translate id="projects.ai.description">
+                  Intelligent applications powered by artificial intelligence and machine learning
+                </Translate>
+              </p>
+            </div>
+            <div className="row">
+              {aiProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
             </div>
