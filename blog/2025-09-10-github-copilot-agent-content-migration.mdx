@@ -1,183 +1,120 @@
 ---
 slug: github-copilot-agent-content-migration
-title: "Unattended AI Coding: My Experience Using GitHub Copilot Agent for Content Migration"
+title: "Unattended AI Programming: My Experience Using GitHub Copilot Agent for Content Migration"
 authors: [marvin]
 tags: ["ai", "github", "blog", "automation", "docusaurus"]
 date: 2025-09-10
 ---
 
-Recently, I successfully migrated all my archived markdown articles to this Docusaurus-powered blog using GitHub Copilot Agent, and the experience was surprisingly smooth and efficient. What impressed me most wasn't just the AI's capability to handle repetitive tasks, but how I could guide it to work autonomously while I focused on higher-level decisions. Even more fascinating was being able to review and steer the AI agent's work from my mobile phone during commutes or breaks. This experience has fundamentally changed how I think about AI-assisted development workflows.
+## Introduction
+
+Recently, I successfully used [GitHub Copilot Agent](https://docs.github.com/en/copilot/concepts/coding-agent/coding-agent) to migrate all my archived markdown articles to this Docusaurus-based blog, and the experience was surprisingly smooth and efficient. What impressed me most wasn't just the AI's ability to handle repetitive tasks, but also how I could guide it to work autonomously while I focused on higher-level decisions. Even more fascinating was that I could review and guide the AI agent's work using my phone during commutes or breaks. This experience fundamentally changed my perspective on AI-assisted development workflows.
+
+Here's a showcase of the bilingual blog after migration completion:
+
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_9214_marvinzhang-gcyb3162b-marvin-zhangs-projects.vercel.app-1.jpeg)
+_Figure 1: Migration results overview (Chinese)_
+
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_9314_marvinzhang-gcyb3162b-marvin-zhangs-projects.vercel.app.jpeg)
+_Figure 2: Migration results overview (English)_
 
 {/* truncate */}
 
-## The Challenge: Migrating Dozens of Archived Articles
+## Migration Challenges
 
-I had accumulated dozens of technical articles over the years, stored as markdown files in various repositories and directories. Each article needed to be:
+Over the years, I had accumulated dozens of technical articles scattered across different repositories and directories as markdown files. The key to migration wasn't just "copy and paste," but making each article "take root and thrive" in the new system: transforming content to match the blog framework structure, filling in necessary metadata (slug, title, authors, tags, date), and consolidating scattered image links to appropriate CDN or static resource paths.
 
-- Reformatted to match Docusaurus MDX structure
-- Updated with proper frontmatter (slug, title, authors, tags, date)
-- Image links converted to appropriate CDN references
-- Chinese translations created and placed in the correct i18n directory structure
-- Tags categorized and added to the tags.yml configuration
+Additionally, some of my blog posts didn't support multiple languages, so to ensure consistency, I needed to generate corresponding Chinese or English versions for untranslated articles and place them in the correct i18n directories.
 
-Doing this manually would have taken days of repetitive, error-prone work. Enter GitHub Copilot Agent.
+If all these steps were completed manually, it would not only take several days but also be prone to omissions and format inconsistencies.
 
-## Setting Up the Unattended Workflow
+To solve this problem, I tried having GitHub Copilot Agent help me complete the migration work.
 
-The key to success was setting up a clear, systematic approach that the AI could follow independently:
+## Initial Attempt
 
-### 1. Clear Instructions and Context
+I first created the tikazyq/marvinzhang.dev GitHub repository. Then, through the GitHub Copilot Agent interface, I provided it with very simple instructions, asking it to use a mainstream blog framework to set up the initial framework.
 
-I provided the Copilot Agent with:
-- The exact Docusaurus directory structure
-- Sample blog post format with required frontmatter
-- Tag categorization guidelines
-- Naming conventions for files and slugs
+It then created a PR, including my initial requirements and its preliminary plan.
 
-### 2. Batch Processing Strategy
+![](https://codao.crawlab.cn/images/2025-09-11-014908.png)
+_Figure 3: Initial attempt PR_
 
-Instead of migrating articles one by one, I guided the agent to:
-- Create migration scripts that could process multiple files
-- Validate each converted article's format
-- Generate both English and Chinese versions systematically
-- Update configuration files (tags.yml, authors.yml) as needed
+Then, Copilot Agent began its work and started AI Coding through GitHub Actions. The figure below shows the session where it started working:
 
-### 3. Mobile-Friendly Review Process
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_95731_github.com.jpeg)
+_Figure 4: AI Coding Session_
 
-This was perhaps the most surprising aspect. Using GitHub's mobile interface, I could:
-- Review the agent's pull requests during my commute
-- Provide feedback and course corrections via comments
-- Approve or request changes without needing a laptop
-- Monitor the migration progress in real-time
+After about ten minutes, it completed all the initialization work (including setting up the environment, installing dependencies, studying the current project structure, etc.). The figure below shows its preliminary results:
 
-## The Unattended Magic in Action
+![](https://codao.crawlab.cn/images/2025-09-11-483863375-ff8ce4b2-c459-424a-8bb6-5d20e4b1a309.jpeg)
+_Figure 5: Basic blog interface_
 
-Here's what a typical migration session looked like:
+It looked good, and it also added some basic blog posts, such as the "Welcome My Blog" article. Next came migrating my markdown articles.
 
-```bash
-# AI agent creates and runs migration script
-node scripts/migrate-articles.js --source /archived-articles --validate
+## Starting Migration
 
-# Processes multiple files automatically:
-# ✓ 2021-02-03-typescript.md → blog/2021-02-03-typescript.mdx
-# ✓ 2021-03-24-golang.md → blog/2021-03-24-golang.mdx
-# ✓ Creates Chinese versions in i18n/zh/docusaurus-plugin-content-blog/
-# ✓ Updates tags.yml with new categories
-# ✓ Validates frontmatter format
-# ✓ Runs build test to ensure no breaking changes
-```
+I provided Copilot Agent with more specific instructions, asking it to migrate the markdown files from the `articles` directory to the `blog` directory.
 
-The agent would then create pull requests with detailed descriptions of what was migrated, allowing me to review the changes at my convenience.
+It then used the same AI Coding workflow and began the migration work.
 
-## Mobile Review Workflow
+Of course, it wouldn't succeed on the first try. It encountered various problems in its first attempt, such as:
 
-The mobile review process was surprisingly effective:
+- Not completing migration of all articles
+- Incomplete frontmatter metadata
+- Image links not properly updated
+- No English versions generated
 
-1. **GitHub notifications** would alert me to new PRs from the agent
-2. **Quick review** of the PR description and file changes on mobile
-3. **Inline comments** if adjustments were needed
-4. **Voice-to-text feedback** for complex instructions
-5. **One-tap approval** for correctly formatted migrations
+Eventually, through multiple iterations, I provided it with more detailed instructions and feedback, helping it gradually improve the migration script. Each time it would create a new PR, which I could review and provide feedback through GitHub's interface.
 
-This meant I could keep the migration momentum going even when away from my desk, maximizing productivity during otherwise idle time.
+Here's a list of all 8 PRs:
 
-## Key Benefits of the Unattended Approach
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_10734_github.com.jpeg)
+_Figure 6: Copilot Agent PR list_
 
-### Consistency at Scale
+There was a small episode where I discovered that the [Nextra](https://nextra.site/) framework itself was too new, so many APIs and documentation were incomplete, causing Copilot Agent to be unable to correctly understand and use them. So I decided to switch to [Docusaurus](https://docusaurus.io/), a more mature blog framework.
 
-The AI agent maintained perfect consistency across dozens of articles:
-- Uniform frontmatter structure
-- Consistent tag categorization  
-- Proper file naming conventions
-- Correct directory placement for bilingual content
+## Mobile Review
 
-### Error Reduction
+The pace of mobile review was more aligned with "fragmented time": when there's a new PR, I receive a notification on my phone, first glance at the change summary, then quickly review key differences, and directly comment inline where adjustments are needed. Complex opinions are more naturally expressed using voice-to-text, and after processing, I can approve with one click. Even when not at my workstation, migration doesn't stop.
 
-Unlike manual migration, the automated approach eliminated:
-- Typos in frontmatter
-- Missing required fields
-- Incorrect file paths
-- Inconsistent date formats
+When Copilot Agent completes its work, it sends email notifications. Then I can review its changes in the PR interface and provide feedback. Often it thoughtfully summarizes its changes and includes screenshots for quick understanding.
 
-### Time Efficiency
+If I'm not satisfied or think there are areas that need adjustment, I can directly add comments inline through the `@` function, and Copilot Agent will receive notifications and make corresponding modifications.
 
-What would have taken 2-3 days of manual work was completed in a few hours of setup plus periodic mobile reviews. The AI worked continuously while I focused on other tasks.
+![](https://codao.crawlab.cn/images/2025-09-11-IMG_6029.jpg)
+_Figure 7: Mobile review interface, allowing quick review and feedback on phone_
 
-### Quality Assurance
+## Final Product
 
-The agent implemented systematic validation:
-- Build tests after each batch
-- Frontmatter validation
-- Link checking
-- Format consistency checks
+After 8 rounds of PR refinement, the entire migration work was finally completed successfully. Looking back, the AI agent indeed exceeded my expectations.
 
-## Lessons Learned
+What satisfied me most was that the blog now supports bilingual Chinese-English switching, and all 50+ articles previously scattered everywhere now have a unified "new home." The format, tags, and author information of each article are organized neatly, and image links have all been migrated to stable CDN. More importantly, for articles that previously only had Chinese or English versions, AI helped me complete versions in the other language.
 
-### 1. Clear Initial Setup is Crucial
+Technically, choosing Docusaurus as the framework was indeed the right decision. Its internationalization support is very mature, and the entire deployment process (through Vercel) has become exceptionally simple. Every time I push code, the website automatically updates—no more manual server maintenance.
 
-The more detailed and specific my initial instructions, the better the agent performed. Taking time to set up proper examples and guidelines paid dividends throughout the process.
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_104527_marvinzhang-gcyb3162b-marvin-zhangs-projects.vercel.app.jpeg)
+_Figure 8: Final blog effect (Chinese)_
 
-### 2. Mobile Review is More Powerful Than Expected
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_102952_marvinzhang-gcyb3162b-marvin-zhangs-projects.vercel.app.jpeg)
+_Figure 9: Final blog effect (English)_
 
-GitHub's mobile interface, combined with voice-to-text, made it surprisingly easy to provide detailed feedback and steering to the AI agent. This removed the constraint of needing to be at a computer to supervise the process.
+Honestly, if I had to complete all this work manually by myself, it would probably take several weeks, and I might have given up halfway. But with AI agent assistance, the entire process became much more manageable. I only needed to provide directional guidance at key points, and it could handle all the detailed work on its own.
 
-### 3. Batch Processing Scales Better
+## How to Use GitHub Copilot Agent
 
-Rather than micromanaging individual files, setting up the agent to process batches with validation was much more efficient.
+Although GitHub Copilot Agent is very powerful, it's not free. For individuals to use Copilot Agent, you need to upgrade your Copilot subscription plan to GitHub Copilot Pro ($10 USD per month) or GitHub Copilot Pro+ ($39 USD per month).
 
-### 4. Trust but Verify
+Here's a [comparison table of different GitHub Copilot subscriptions](https://docs.github.com/en/copilot/concepts/billing/individual-plans).
 
-While the agent was remarkably reliable, having systematic validation and review checkpoints was essential for catching edge cases and ensuring quality.
-
-## The Future of AI-Assisted Development
-
-This experience highlighted how AI agents excel at:
-- **Repetitive, rule-based tasks** with clear patterns
-- **Working within well-defined constraints** and structures
-- **Maintaining consistency** across large volumes of work
-- **Operating autonomously** with periodic human guidance
-
-The mobile review capability was particularly eye-opening, suggesting a future where developers can manage and guide AI assistants from anywhere, breaking free from the traditional desk-bound development workflow.
-
-## Technical Implementation Details
-
-For those interested in the technical approach, the migration involved:
-
-```typescript
-// Example migration script structure
-interface MigrationConfig {
-  sourceDir: string;
-  targetDir: string;
-  tagMapping: Record<string, string>;
-  authorMapping: Record<string, string>;
-}
-
-async function migrateArticle(filePath: string, config: MigrationConfig) {
-  const content = await fs.readFile(filePath, 'utf-8');
-  const { data, content: body } = matter(content);
-  
-  // Transform frontmatter
-  const frontmatter = {
-    slug: generateSlug(data.title),
-    title: data.title,
-    authors: [config.authorMapping[data.author] || 'marvin'],
-    tags: mapTags(data.tags, config.tagMapping),
-    date: formatDate(data.date)
-  };
-  
-  // Generate MDX content
-  const mdxContent = `---\n${yaml.dump(frontmatter)}---\n\n${body}`;
-  
-  // Validate and save
-  await validateMDX(mdxContent);
-  await fs.writeFile(targetPath, mdxContent);
-}
-```
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_10537_docs.github.com.jpeg)
+_Figure 10: GitHub Copilot subscription overview_
 
 ## Conclusion
 
-Using GitHub Copilot Agent for content migration proved that AI assistants are most valuable when they can work autonomously on well-defined tasks while remaining responsive to human guidance. The ability to supervise and steer the process from a mobile device opens up new possibilities for flexible, efficient development workflows.
+This content migration experience highlighted the core advantages of AI agents: they are particularly suited for "clear pattern, well-defined rules" repetitive tasks, can maintain consistency in large-scale work within well-constrained structures, and can autonomously advance under periodic human guidance.
 
-The key insight is that modern AI agents don't just automate individual tasks—they can orchestrate entire workflows while keeping humans in the loop for quality assurance and strategic decisions. This represents a significant evolution in how we can leverage AI for development work, moving from tool assistance to workflow partnership.
+The mobile review capability was particularly eye-opening, suggesting that developers can manage and guide AI assistants from anywhere in the future, breaking free from traditional desktop development workflow limitations. Using GitHub Copilot Agent for content migration proved that AI assistants are most valuable when they can autonomously handle clearly defined tasks while remaining responsive to human guidance.
 
-As AI agents become more sophisticated, I expect we'll see more developers adopting these unattended-but-supervised approaches for various repetitive tasks, from code refactoring to documentation updates to deployment automation. The future of development isn't about AI replacing developers, but about AI enabling developers to work more strategically while handling the repetitive heavy lifting autonomously.
+The key insight is that modern AI agents don't just automate individual tasks—they can orchestrate entire workflows while keeping humans involved in quality assurance and strategic decisions. This represents a significant evolution in how we leverage AI for development work, moving from tool assistance to workflow partnership.
+
+As AI agents become more sophisticated, I look forward to seeing more developers adopt these unattended but supervised approaches for various repetitive tasks, from code refactoring to documentation updates to deployment automation. The future of development isn't about AI replacing developers, but about AI enabling developers to work more strategically while autonomously handling repetitive heavy lifting.
