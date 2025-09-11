@@ -6,177 +6,114 @@ tags: ["ai", "github", "blog", "automation", "docusaurus"]
 date: 2025-09-10
 ---
 
-最近，我使用GitHub Copilot Agent成功将所有存档的markdown文章迁移到这个基于Docusaurus的博客，这个体验出乎意料地顺畅高效。最让我印象深刻的不仅是AI处理重复任务的能力，还有我能够引导它自主工作，而我可以专注于更高层次的决策。更令人着迷的是，我甚至可以在通勤或休息时用手机来审查和引导AI代理的工作。这次体验从根本上改变了我对AI辅助开发工作流的看法。
+## 引言
+
+最近，我使用 [GitHub Copilot Agent](https://docs.github.com/en/copilot/concepts/coding-agent/coding-agent) 成功将所有存档的markdown文章迁移到这个基于Docusaurus的博客，这个体验出乎意料地顺畅高效。最让我印象深刻的不仅是AI处理重复任务的能力，还有我能够引导它自主工作，而我可以专注于更高层次的决策。更令人着迷的是，我甚至可以在通勤或休息时用手机来审查和引导AI代理的工作。这次体验从根本上改变了我对AI辅助开发工作流的看法。
+
+以下是迁移完成后的中英文博客展示：
+
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_9214_marvinzhang-gcyb3162b-marvin-zhangs-projects.vercel.app-1.jpeg)
+_图1：迁移效果一览（中文）_
+
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_9314_marvinzhang-gcyb3162b-marvin-zhangs-projects.vercel.app.jpeg)
+_图2：迁移效果一览（英文）_
 
 {/* truncate */}
 
-## 挑战：迁移几十篇存档文章
+## 迁移挑战
 
-我多年来积累了几十篇技术文章，存储在各种仓库和目录中的markdown文件。每篇文章都需要：
+我多年来积累了几十篇技术文章，散落在不同仓库与目录下的markdown文件。迁移的关键并不只是"复制粘贴"，而是让每一篇在新体系里"落地成活"：把内容改造成符合博客框架的结构，补齐必要的原数据（slug、title、authors、tags、date），把零散的图片链接统一到合适的CDN或静态资源路径。
 
-- 重新格式化以匹配Docusaurus MDX结构
-- 更新为正确的前置元数据（slug、title、authors、tags、date）
-- 图片链接转换为适当的CDN引用
-- 创建中文翻译并放置在正确的i18n目录结构中
-- 标签分类并添加到tags.yml配置中
+此外，我有些博客文章并没有支持多语言，因此为了保证一致性，需要将没有被翻译的文章生成对应的中文或英文版本，并放到正确的i18n目录下。
 
-手动完成这些工作需要数天的重复性、容易出错的工作。这时GitHub Copilot Agent登场了。
+如果这些步骤全部手工完成，不仅耗时数天，而且极易出现遗漏与格式不一致。
 
-## 设置无人值守的工作流
+为了解决这个问题，我尝试让 GitHub Copilot Agent 来帮助我完成迁移工作。
 
-成功的关键是设置一个清晰、系统性的方法，让AI可以独立遵循：
+## 初次尝试
 
-### 1. 清晰的指导和上下文
+我先创建了 tikazyq/marvinzhang.dev 这个 GitHub 仓库。然后，我通过 GitHub Copilot Agent 的界面，给它提供了非常简单的指令，要求使用主流博客框架搭建初始框架。
 
-我为Copilot Agent提供了：
-- 确切的Docusaurus目录结构
-- 带有必需前置元数据的示例博客文章格式
-- 标签分类指南
-- 文件和slug的命名约定
+接着它就创建了一个 PR，包括我的初始需求以及它的初步计划。
 
-### 2. 批处理策略
+![](https://codao.crawlab.cn/images/2025-09-11-014908.png)
+_图3：初次尝试的 PR_
 
-我没有逐一迁移文章，而是引导代理：
-- 创建可以处理多个文件的迁移脚本
-- 验证每个转换文章的格式
-- 系统性地生成英文和中文版本
-- 根据需要更新配置文件（tags.yml、authors.yml）
+然后，Copilot Agent 就开始了它的工作，并通过 GitHub Actions 开始进行 AI Coding。下图是它开始工作的Session：
 
-### 3. 移动友好的审查流程
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_95731_github.com.jpeg)
+_图4：AI Coding Session_
 
-这可能是最令人惊讶的方面。使用GitHub的移动界面，我可以：
-- 在通勤期间审查代理的pull request
-- 通过评论提供反馈和纠正方向
-- 无需笔记本电脑即可批准或请求更改
-- 实时监控迁移进度
+经过大概十几分钟，它完成所有的初始化工作（包括搭建环境、安装依赖、研究当前项目结构等）。下图是它的初步成果：
 
-## 无人值守魔法的实际应用
+![](https://codao.crawlab.cn/images/2025-09-11-483863375-ff8ce4b2-c459-424a-8bb6-5d20e4b1a309.jpeg)
+_图5：基础博客界面_
 
-典型的迁移会话是这样的：
+看起来不错，它也加入了一些基础的博客文章，比如 Welcome My Blog 的文章。接下来就是将我的 markdown 文章迁移进来。
 
-```bash
-# AI代理创建并运行迁移脚本
-node scripts/migrate-articles.js --source /archived-articles --validate
+## 开始迁移
 
-# 自动处理多个文件：
-# ✓ 2021-02-03-typescript.md → blog/2021-02-03-typescript.mdx
-# ✓ 2021-03-24-golang.md → blog/2021-03-24-golang.mdx
-# ✓ 在i18n/zh/docusaurus-plugin-content-blog/中创建中文版本
-# ✓ 使用新类别更新tags.yml
-# ✓ 验证前置元数据格式
-# ✓ 运行构建测试以确保没有破坏性更改
-```
+我给 Copilot Agent 提供了更具体的指令，要求它将 `articles` 目录下的 markdown 文件迁移到 `blog` 目录下。
 
-然后代理会创建带有详细描述的pull request，说明迁移了什么，让我可以方便地审查更改。
+接着它就使用同样的 AI Coding 流程，开始了迁移工作。
 
-## 移动审查工作流
+当然，肯定不会一次成功。它在第一次尝试中遇到了各种各样的问题，比如：
 
-移动审查流程出乎意料地有效：
+- 没有完成所有文章的迁移工作
+- 前置元数据不完整
+- 图片链接没有正确更新
+- 没有生成英文版本
 
-1. **GitHub通知**会提醒我代理的新PR
-2. **在移动设备上快速审查**PR描述和文件更改
-3. **内联评论**如果需要调整
-4. **语音转文本反馈**用于复杂指示
-5. **一键批准**正确格式化的迁移
+最终，我通过多次迭代，给它提供了更详细的指令和反馈，帮助它逐步完善迁移脚本。每次它都会创建一个新的 PR，我可以通过 GitHub 的界面进行审查和反馈。
 
-这意味着即使不在桌前，我也能保持迁移的势头，在原本闲置的时间里最大化生产力。
+以下是所有 8 个 PR 的列表：
 
-## 无人值守方法的主要优势
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_10734_github.com.jpeg)
+_图6：Copilot Agent PR 列表_
 
-### 大规模一致性
+中间有个小插曲，就是我发现 [Nextra](https://nextra.site/) 本身框架过于新了，因此很多 API 和文档都不完善，导致 Copilot Agent 无法正确理解和使用。于是我决定换成 [Docusaurus](https://docusaurus.io/) 这个更成熟的博客框架。
 
-AI代理在几十篇文章中保持了完美的一致性：
-- 统一的前置元数据结构
-- 一致的标签分类
-- 正确的文件命名约定
-- 双语内容的正确目录放置
+## 移动审核
 
-### 减少错误
+移动审核的节奏更贴近“碎片时间”：有新PR时手机收到通知，我先扫一眼改动摘要，再快速查看关键差异，遇到需要调整的地方直接内联评论。复杂意见用语音转文字表达更自然，处理完毕即可一键批准。即便不在工位，迁移也不会停下脚步。
 
-与手动迁移不同，自动化方法消除了：
-- 前置元数据中的拼写错误
-- 缺少必需字段
-- 错误的文件路径
-- 不一致的日期格式
+当 Copilot Agent 完成工作时，会通过邮件发通知到我。然后，我就可以在其 PR 界面上查看它的改动，进行审查和反馈。并且很多时候它会贴心的总结它的改动内容，并附上截图，方便我快速了解。
 
-### 时间效率
+如果我不满意或者认为有需要调整的地方，就可以通过 `@` 功能直接在代码行内添加评论，Copilot Agent 会收到通知并进行相应的修改。
 
-原本需要2-3天手动工作的任务，在几小时的设置加上定期移动审查下就完成了。AI在我专注于其他任务时连续工作。
+![](https://codao.crawlab.cn/images/2025-09-11-IMG_6029.jpg)
+_图7：移动审核界面，可以在手机上进行快速审查和反馈_
 
-### 质量保证
+## 最终成品
 
-代理实施了系统性验证：
-- 每批后的构建测试
-- 前置元数据验证
-- 链接检查
-- 格式一致性检查
+历经8轮PR的打磨后，整个迁移工作终于大功告成。回头看来，AI代理确实超出了我的预期。
 
-## 经验教训
+最让我满意的是博客现在支持中英文双语切换，之前散落各处的50多篇文章都有了统一的"新家"。每篇文章的格式、标签、作者信息都整理得井井有条，图片链接也都迁移到了稳定的CDN上。更重要的是，那些之前只有中文或英文版本的文章，AI帮我补全了另一种语言的版本。
 
-### 1. 清晰的初始设置至关重要
+技术层面，最终选择了Docusaurus作为框架确实是正确的决定。它的国际化支持非常成熟，而且整个部署流程（通过Vercel）也变得异常简单。每次push代码，网站就会自动更新，再也不用手动维护服务器了。
 
-我的初始指导越详细和具体，代理的表现就越好。花时间设置适当的示例和指南在整个过程中获得了回报。
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_104527_marvinzhang-gcyb3162b-marvin-zhangs-projects.vercel.app.jpeg)
+_图8：最终博客效果（中文）_
 
-### 2. 移动审查比预期更强大
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_102952_marvinzhang-gcyb3162b-marvin-zhangs-projects.vercel.app.jpeg)
+_图9：最终博客效果（英文）_
 
-GitHub的移动界面，结合语音转文字，让向AI代理提供详细反馈和引导变得出乎意料地容易。这消除了需要在电脑前监督过程的限制。
+说实话，如果让我一个人手工完成这些工作，估计要花上好几周时间，而且很可能半途而废。但有了AI代理的帮助，整个过程变得可控多了。我只需要在关键节点给出方向性的指导，剩下的细节工作它都能自己搞定。
 
-### 3. 批处理扩展性更好
+## 如何使用 GitHub Copilot Agent
 
-与其微观管理单个文件，不如设置代理来处理带有验证的批次，这样效率要高得多。
+虽然 GitHub Copilot Agent 非常强大，但它并不免费。作为个人要使用 Copilot Agent，需要将 Copilot 订阅计划升级为 GitHub Copilot Pro （每月 $10 USD）或 GitHub Copilot Pro+ （每月 $39 USD）。
 
-### 4. 信任但验证
+以下是 [GitHub Copilot 不同订阅的对比表格](https://docs.github.com/en/copilot/concepts/billing/individual-plans)。
 
-虽然代理非常可靠，但拥有系统性的验证和审查检查点对于捕获边缘情况和确保质量至关重要。
-
-## AI辅助开发的未来
-
-这次体验突出了AI代理在以下方面的优势：
-- **具有清晰模式的重复性、基于规则的任务**
-- **在明确定义的约束和结构内工作**
-- **在大量工作中保持一致性**
-- **在定期人工指导下自主操作**
-
-移动审查能力特别令人大开眼界，暗示着开发者可以从任何地方管理和引导AI助手的未来，摆脱传统的桌面开发工作流限制。
-
-## 技术实现细节
-
-对于那些对技术方法感兴趣的人，迁移涉及：
-
-```typescript
-// 示例迁移脚本结构
-interface MigrationConfig {
-  sourceDir: string;
-  targetDir: string;
-  tagMapping: Record<string, string>;
-  authorMapping: Record<string, string>;
-}
-
-async function migrateArticle(filePath: string, config: MigrationConfig) {
-  const content = await fs.readFile(filePath, 'utf-8');
-  const { data, content: body } = matter(content);
-  
-  // 转换前置元数据
-  const frontmatter = {
-    slug: generateSlug(data.title),
-    title: data.title,
-    authors: [config.authorMapping[data.author] || 'marvin'],
-    tags: mapTags(data.tags, config.tagMapping),
-    date: formatDate(data.date)
-  };
-  
-  // 生成MDX内容
-  const mdxContent = `---\n${yaml.dump(frontmatter)}---\n\n${body}`;
-  
-  // 验证并保存
-  await validateMDX(mdxContent);
-  await fs.writeFile(targetPath, mdxContent);
-}
-```
+![](https://codao.crawlab.cn/images/2025-09-11-Screenshot_11-9-2025_10537_docs.github.com.jpeg)
+_图10：GitHub Copilot 订阅一览_
 
 ## 结论
 
-使用GitHub Copilot Agent进行内容迁移证明了AI助手在能够自主处理明确定义的任务同时对人工指导保持响应时最有价值。从移动设备监督和引导过程的能力为灵活、高效的开发工作流开辟了新的可能性。
+这次内容迁移体验突出了AI代理的核心优势：它尤其适合"模式清晰、规则明确"的重复性任务，在约束良好的结构内能够在大批量工作中保持一致性，并在定期的人类指引下自主推进。
+
+移动审查能力特别令人大开眼界，预示着开发者未来可以从任何地方管理和引导AI助手，摆脱传统的桌面开发工作流限制。使用GitHub Copilot Agent进行内容迁移证明了AI助手在能够自主处理明确定义的任务同时对人工指导保持响应时最有价值。
 
 关键洞察是现代AI代理不仅仅自动化单个任务——它们可以编排整个工作流，同时让人类参与质量保证和战略决策。这代表了我们如何利用AI进行开发工作的重大演进，从工具辅助转向工作流伙伴关系。
 
