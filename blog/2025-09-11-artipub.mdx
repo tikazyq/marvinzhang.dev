@@ -1,0 +1,79 @@
+---
+slug: artipub
+title: "ArtiPub: Open-Source Free Multi-Platform Publishing Tool for Maximum Article Reach"
+authors: ["marvin"]
+tags: ["open-source", "publishing", "automation", "web-crawler"]
+date: 2019-09-25
+---
+
+## Background
+
+Many excellent programmers and technical professionals enjoy writing technical articles and blogs as a way to share and spread knowledge and experience, expand their visibility and influence, attract followers, and some tech bloggers even earn advertising revenue through writing. Many excellent bloggers have also gained opportunities to publish books and find jobs through this method. Therefore, writing technical articles is a very worthwhile investment that helps oneself while benefiting the public.
+
+However, writing technical articles is usually time-consuming, especially for high-quality articles. Not only do they require extensive research, thoughtful article structure, and consideration of the target audience, but they also require a lot of preliminary work, such as setting up environments, writing demo code, testing code, and so on. A high-quality technical article typically takes 3-6 hours to complete. However, spending a lot of time writing articles only to have them receive little attention upon publication is quite frustrating. We believe that quality articles deserve attention and dissemination, allowing more technical workers to gain knowledge and benefit from reading them.
+
+Every tech blogger has their preferred technical media platforms, such as Juejin, CSDN, WeChat Official Accounts, etc. Many tech bloggers also like to publish articles on different platforms to seek maximum attention while preventing their hard work from being copied and plagiarized by others. However, publishing on multiple platforms is troublesome: bloggers need to log into multiple media platforms simultaneously and copy-paste their articles one by one. What's more troublesome is that some platforms only support Markdown while others only support rich text, requiring bloggers to convert between the two, which increases workload.
+
+The multi-platform publishing tool ArtiPub solves exactly this problem. Below, we'll introduce the recently launched open-source multi-platform publishing platform ArtiPub.
+
+## ArtiPub Introduction
+
+ArtiPub (short for Article Publisher) is an open-source multi-platform publishing tool that helps article authors automatically publish their written articles to technical media platforms such as Juejin, SegmentFault, CSDN, Zhihu, OSChina, and others, spreading quality knowledge and achieving maximum exposure. ArtiPub is simple to install, offering multiple installation methods (Docker, NPM, source code), with one-click installation that typically takes only 5 minutes.
+
+The initial release of ArtiPub currently supports article editing, article publishing, and data statistics. In the future, we will add features for importing existing articles and data analysis to help you better manage and optimize your technical articles. Additionally, we will integrate more media channels to truly achieve the goal of making articles readable everywhere.
+
+Using ArtiPub is also simple: users just need to open ArtiPub's web interface in a browser, input articles in Markdown format into the editor, then click one-click publish. In less than 1 minute, articles are automatically synchronized to major technical media platforms. Furthermore, article reading, likes, and comment data will be periodically synchronized back, allowing authors to see their article's dissemination status in near real-time.
+
+- Github: [github.com/crawlab-team/artipub](https://github.com/crawlab-team/artipub)
+- Docker: [hub.docker.com/r/tikazyq/artipub](https://hub.docker.com/r/tikazyq/artipub)
+- NPM: [www.npmjs.com/package/artipub](https://www.npmjs.com/package/artipub)
+
+## Platform Overview
+
+Below are screenshots of the platform's web interface. Of course, we recommend you actually install and experience ArtiPub yourself.
+
+### Platform Management
+
+![Platform Management Interface](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/9/21/16d51b8fad0d9189~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp)
+
+### Article Management
+
+![Article Management Interface](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/9/21/16d51b8fc643c073~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp)
+
+### Article Editing
+
+![Article Editing Interface](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/9/22/16d56abab85dbb0f~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp)
+
+### Article Publishing
+
+![Article Publishing Interface](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/9/21/16d51b8fc9febf80~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp)
+
+### Chrome Extension
+
+![Chrome Extension Interface](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/9/21/16d51b9012954ad7~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp)
+
+## Comparison with Other Platforms
+
+Multi-platform publishing tools already exist in the market, such as OpenWrite. So why create ArtiPub? While other multi-platform publishing tools might be alternative solutions, they require users to upload their account information such as cookies or account passwords to their servers, which is very insecure. Once the platform has problems, your account information could be leaked. Although I believe most platforms won't maliciously operate user accounts, if there are operational errors, your account privacy could be compromised and your platform assets could be damaged - these risks need consideration. ArtiPub doesn't require users to upload account information; all account information is stored in the user's own database, thus avoiding this security risk.
+
+Additionally, since ArtiPub is open-source with easily understandable JavaScript source code and strong extensibility, users with integration needs for other platforms can completely implement their requirements by modifying the source code without waiting for platform updates. The development team will also continue developing ArtiPub to make it more practical and user-friendly.
+
+## ArtiPub Architecture Overview
+
+Actually, ArtiPub's principle isn't complex - simply put, it uses web crawling technology to publish articles to various platforms. ArtiPub's crawler uses Google's automated testing tool Puppeteer, which can not only obtain data that requires AJAX dynamic content but also perform simulated operations, similar to Selenium but more powerful. How does login work? ArtiPub actually obtains user login information (cookies) through a Chrome extension, injects cookies into the Chromium browser operated by Puppeteer, and then the browser can normally log into websites to perform publishing operations. Cookies are stored in the user's own MongoDB database and are not exposed externally, making it very secure.
+
+The diagram below shows ArtiPub's architecture.
+
+![ArtiPub Architecture Diagram](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/9/21/16d51b8ff391b428~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp)
+
+The architecture principles are briefly described as follows:
+
+- **Backend** is the hub of the entire architecture, responsible for exchanging data with the frontend, storing and reading the database, controlling crawlers, collecting cookies, etc.
+- **Chrome Extension** is only responsible for obtaining cookies from websites
+- **Spiders** are controlled by the backend and responsible for publishing articles and crawling data on websites
+- **Database (MongoDB)** is responsible for storing data
+- **Frontend** is a React application based on Ant Design Pro
+
+## Conclusion
+
+Overall, ArtiPub solves the pain point of users needing to publish articles on multiple platforms while not wanting to leak account information. Users can completely use ArtiPub for free since it's open-source with transparent architecture principles, and developers can also contribute to this open-source project themselves. ArtiPub is very practical - the author has already published some existing articles to various available platforms with good results. In fact, this article was also written and published using ArtiPub. If you want to try it, please go to Github, Docker, or NPM homepages to install and experience it.
