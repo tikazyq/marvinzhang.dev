@@ -448,5 +448,13 @@
   },
   "about.connect.email": {
     "message": "发邮件给我"
+  },
+  "components.githubStars.label": {
+    "message": "GitHub 星标",
+    "description": "Label for GitHub stars"
+  },
+  "components.githubStars.loading": {
+    "message": "加载中...",
+    "description": "Loading text for GitHub stars"
   }
 }

@@ -18,7 +18,7 @@ interface Project {
     en: ProjectContent;
     zh: ProjectContent;
   };
-  image: string;
+  image?: string;
   tags: string[];
   githubUrl?: string;
   githubStars?: number;
@@ -43,7 +43,6 @@ const projects: Project[] = [
     image: '/img/projects/crawlab.svg',
     tags: ['Open Source', 'Go', 'Web Scraping'],
     githubUrl: 'https://github.com/crawlab-team/crawlab',
-    githubStars: 11000,
     liveUrl: 'https://www.crawlab.cn',
     blogUrl: '/blog/crawlab',
   },
@@ -62,25 +61,23 @@ const projects: Project[] = [
     image: '/img/projects/artipub.png',
     tags: ['Open Source', 'Node.js', 'Content Management'],
     githubUrl: 'https://github.com/crawlab-team/artipub',
-    githubStars: 3000,
     blogUrl: '/blog/artipub',
   },
   {
     id: 'devlog',
     content: {
       en: {
-        title: 'DevLog',
-        description: 'AI-powered developer activity tracking and analytics platform. Monitors coding patterns, productivity metrics, and provides insights into development workflows. Helps teams understand and optimize their development processes.',
+        title: 'Devlog',
+        description: 'Persistent memory system for AI-assisted development. Solves the critical problem of AI memory loss during extended development sessions by maintaining structured, searchable logs of tasks, decisions, and progress across conversations.',
       },
       zh: {
-        title: 'DevLog',
-        description: 'AI驱动的开发者活动跟踪和分析平台。监控编码模式、生产力指标，并提供开发工作流程的洞察。帮助团队了解和优化开发流程。',
+        title: 'Devlog',
+        description: '面向AI辅助开发的持久化内存系统。通过维护任务、决策和进度的结构化可搜索日志，解决AI在长期开发会话中的内存丢失关键问题。',
       },
     },
     image: '/img/projects/devlog.svg',
-    tags: ['Open Source', 'AI', 'Developer Tools'],
+    tags: ['Open Source', 'AI', 'MCP', 'TypeScript'],
     githubUrl: 'https://github.com/codervisor/devlog',
-    githubStars: 100,
   },
   
   // AI Projects
@@ -114,27 +111,71 @@ const projects: Project[] = [
     },
     image: '/img/projects/sread.svg',
     tags: ['AI', 'JavaScript', 'Reading Assistant'],
-    liveUrl: 'https://sread.ai',
     blogUrl: '/blog/sread',
   },
+  {
+    id: 'webspot',
+    content: {
+      en: {
+        title: 'WebSpot',
+        description: 'Intelligent web service to automatically detect web content and extract information from HTML pages. Uses advanced algorithms to identify meaningful elements, tables, and structured data for automated web scraping and content analysis.',
+      },
+      zh: {
+        title: 'WebSpot',
+        description: '智能网络服务，自动检测网页内容并从HTML页面提取信息。使用先进算法识别有意义的元素、表格和结构化数据，用于自动化网页抓取和内容分析。',
+      },
+    },
+    tags: ['Open Source', 'Python', 'Web Content Detection'],
+    githubUrl: 'https://github.com/crawlab-team/webspot',
+  },
 ];
+
+// Generate alphabet avatar URL
+function generateAlphabetAvatar(title: string): string {
+  const firstLetter = title.charAt(0).toUpperCase();
+  const colors = [
+    '3498db', // blue
+    'e74c3c', // red
+    '2ecc71', // green
+    'f39c12', // orange
+    '9b59b6', // purple
+    '1abc9c', // turquoise
+    'e67e22', // carrot
+    '34495e', // wet asphalt
+  ];
+  const colorIndex = title.charCodeAt(0) % colors.length;
+  const bgColor = colors[colorIndex];
+  
+  return `https://ui-avatars.com/api/?name=${firstLetter}&background=${bgColor}&color=ffffff&size=128&format=svg&bold=true`;
+}
 
 function ProjectCard({project}: {project: Project; key?: string}) {
   const {i18n} = useDocusaurusContext();
   const currentLocale = i18n.currentLocale as 'en' | 'zh';
   const content = project.content[currentLocale];
+  const imageUrl = project.image || generateAlphabetAvatar(content.title);
 
   return (
     <div className={clsx('col col--6', styles.projectCard)}>
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <img src={project.image} alt={content.title} className={styles.projectImage} />
+          <img src={imageUrl} alt={content.title} className={styles.projectImage} />
           <div className={styles.projectInfo}>
-            <h3 className={styles.projectTitle}>{content.title}</h3>
+            {(project.liveUrl || project.blogUrl || project.githubUrl) ? (
+              <Link
+                to={project.liveUrl || project.blogUrl || project.githubUrl}
+                className={styles.projectTitleLink}
+                target={project.liveUrl || project.githubUrl ? "_blank" : undefined}
+                rel={project.liveUrl || project.githubUrl ? "noopener noreferrer" : undefined}
+              >
+                <h3 className={styles.projectTitle}>{content.title}</h3>
+              </Link>
+            ) : (
+              <h3 className={styles.projectTitle}>{content.title}</h3>
+            )}
             {project.githubUrl && (
               <GitHubStarsBadge 
-                githubUrl={project.githubUrl} 
-                fallbackStars={project.githubStars}
+                githubUrl={project.githubUrl}
               />
             )}
           </div>
