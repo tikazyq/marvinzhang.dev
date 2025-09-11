@@ -60,7 +60,7 @@ const config: Config = {
           },
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn', // Enable truncation warnings to encourage use of <!--truncate-->
+          onUntruncatedBlogPosts: 'warn', // Enable truncation warnings to encourage use of {/* truncate */}
           routeBasePath: '/blog', // Serve the blog at the site's root
           include: ['**/*.{md,mdx}'],
           exclude: [
