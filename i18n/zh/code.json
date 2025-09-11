@@ -384,13 +384,13 @@
     "message": "关于 Marvin Zhang"
   },
   "about.hero.subtitle": {
-    "message": "技术领导者 • 全栈开发工程师 • AI/ML 工程师"
+    "message": "技术领导者 • 全栈开发工程师 • 开源项目作者"
   },
   "about.section.professional.title": {
     "message": "专业概况"
   },
   "about.section.professional.description1": {
-    "message": "充满激情的技术专家，在全栈开发、人工智能和分布式系统方面拥有丰富经验。专注于构建可扩展的解决方案，并领导技术团队交付创新产品。"
+    "message": "拥有10+年全栈软件开发、数据分析和项目管理工作经验，是包括Crawlab在内的开源项目作者。专精于构建从前端界面到后端架构的端到端解决方案，在领导开发团队和可扩展平台开发方面拥有丰富专业知识。我目前专注于AI技术包括大语言模型(LLM)、智能体(agents)、AI编程等。"
   },
   "about.section.professional.description2": {
     "message": "通过我在 marvinzhang.dev 的博客，我分享关于前沿技术、软件工程最佳实践以及 AI/ML 在现实场景中的实际应用的见解。"
@@ -402,7 +402,7 @@
     "message": "编程语言"
   },
   "about.skills.technologies.title": {
-    "message": "技术与框架"
+    "message": "全栈技术"
   },
   "about.skills.aiml.title": {
     "message": "AI/ML 与数据"
@@ -414,25 +414,25 @@
     "message": "经验亮点"
   },
   "about.experience.leadership.title": {
-    "message": "技术领导力"
+    "message": "HP Inc 技术团队负责人"
   },
   "about.experience.leadership.description": {
-    "message": "领导跨职能团队交付复杂的软件解决方案，从初始架构设计到生产部署。在扩展系统以处理数百万用户和优化高流量应用程序性能方面经验丰富。"
+    "message": "目前领导20人的开发团队，实践敏捷框架(Scrum)进行软件开发。主导基于Power BI的数据治理分析平台建设，实施ETL数据集成架构。研究和开发基于Microsoft PowerApps/PowerAutomate的低代码解决方案。领导AI项目建设包括大语言模型(LLM)集成、AI驱动的自动化工具，并探索面向企业工作流的AI智能体系统。积极研究和实施AI编程解决方案，以提升开发团队生产力和代码质量。"
+  },
+  "about.experience.crawlab.title": {
+    "message": "Crawlab 开源项目"
+  },
+  "about.experience.crawlab.description": {
+    "message": "Crawlab分布式网络爬虫管理平台的作者和维护者，支持Python、Node.js、Go、Java等多种编程语言。获得12k+ GitHub星标和500k+ DockerHub下载量，被小米、西门子、佳明等主要公司采用。成功设计并将整个平台从Python + Vue 2架构迁移到Golang + Vue 3，显著提升了性能和可扩展性。功能包括分布式任务调度、实时监控、数据可视化，以及支持代码和可视化爬虫开发的综合爬虫管理系统。"
   },
   "about.experience.ai.title": {
-    "message": "AI/ML 创新"
+    "message": "AI 研究与开发"
   },
   "about.experience.ai.description": {
-    "message": "开发智能网络爬虫，实现自然语言处理管道，并使用前沿的 LLM 技术创建 AI 驱动的应用程序。发表关于实用 AI 应用的研究和见解。"
-  },
-  "about.experience.opensource.title": {
-    "message": "开源贡献"
-  },
-  "about.experience.opensource.description": {
-    "message": "积极的开源社区贡献者，在网络爬虫、数据分析和开发工具方面有项目。创建和维护被全球数千名开发者使用的流行库。"
+    "message": "在AI/ML技术方面拥有深厚专业知识，专注于大语言模型(LLM)、AI智能体和AI驱动的开发工具。积极研究和实施前沿AI解决方案，包括提示工程、RAG(检索增强生成)和多智能体系统。开发AI编程助手和自动化工具以提升开发者生产力。通过技术写作、开源项目为AI社区做贡献，并探索AI与传统软件工程实践的结合点。"
   },
   "about.section.education.title": {
-    "message": "教育与学习"
+    "message": "教育背景与认证"
   },
   "about.section.education.description": {
     "message": "致力于持续学习并跟上新兴技术。定期参与技术会议，为技术出版物贡献内容，并维护一个涵盖软件工程、AI/ML 和系统架构高级主题的技术博客。"
