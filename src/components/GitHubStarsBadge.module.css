@@ -1,27 +1,33 @@
 .starsBadge {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  background: var(--ifm-color-emphasis-200);
-  border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 0.375rem;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--ifm-color-content);
-  transition: all 0.2s ease;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .starsBadge:hover {
-  background: var(--ifm-color-emphasis-300);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0.95;
+  text-decoration: none;
+}
+
+.labelContainer {
+  background-color: var(--ifm-color-emphasis-200);
+  padding: 0.125rem 0.5rem;
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .starIcon {
-  font-size: 1em;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
 }
 
 .starsCount {
@@ -29,16 +35,15 @@
   min-width: 2ch;
   text-align: center;
   font-weight: 600;
+  font-size: 0.9em;
+  background-color: var(--ifm-color-emphasis-300);
+  padding: 0.125rem 0.5rem;
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
 }
 
 .starsLabel {
-  font-size: 0.8em;
-  font-weight: 500;
-  opacity: 0.9;
-}
-
-.withLabel {
-  gap: 0.375rem;
+  font-size: 0.9em;
 }
 
 .compact {
@@ -104,10 +109,6 @@
   border-color: var(--ifm-color-emphasis-300);
 }
 
-[data-theme='dark'] .starsBadge:hover {
-  background: var(--ifm-color-emphasis-300);
-}
-
 /* GitHub-style badge variant */
 .githubStyle {
   background: #f6f8fa;
@@ -119,12 +120,4 @@
   background: #21262d;
   border-color: #30363d;
   color: #e6edf3;
-}
-
-.githubStyle:hover {
-  background: #f3f4f6;
-}
-
-[data-theme='dark'] .githubStyle:hover {
-  background: #30363d;
 }
