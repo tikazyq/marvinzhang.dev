@@ -48,6 +48,11 @@ crawlab:
   permalink: /crawlab
   description: Crawlab web scraping platform
 
+deepseek:
+  label: DeepSeek
+  permalink: /deepseek
+  description: DeepSeek AI models and technology
+
 csharp:
   label: C#
   permalink: /csharp
@@ -98,10 +103,20 @@ javascript:
   permalink: /javascript
   description: JavaScript programming language
 
+llm:
+  label: LLM
+  permalink: /llm
+  description: Large Language Models
+
 machine-learning:
   label: Machine Learning
   permalink: /machine-learning
   description: Machine learning and AI techniques
+
+nextjs:
+  label: Next.js
+  permalink: /nextjs
+  description: Next.js React framework
 
 project-management:
   label: Project Management
@@ -142,3 +157,8 @@ vue:
   label: Vue
   permalink: /vue
   description: Vue.js framework
+
+vercel:
+  label: Vercel
+  permalink: /vercel
+  description: Vercel deployment platform and tools
