@@ -8,6 +8,11 @@ agile:
   permalink: /agile
   description: 敏捷开发方法论
 
+automation:
+  label: 自动化
+  permalink: /automation
+  description: 流程自动化和工作流工具
+
 algorithm:
   label: 算法
   permalink: /algorithm
@@ -62,6 +67,11 @@ devops:
   label: DevOps
   permalink: /devops
   description: 开发运维和持续集成
+
+docusaurus:
+  label: Docusaurus
+  permalink: /docusaurus
+  description: Docusaurus 静态网站生成器
 
 distributed-systems:
   label: 分布式系统
