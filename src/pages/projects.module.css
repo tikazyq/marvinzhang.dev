@@ -109,6 +109,25 @@
   margin: 0;
 }
 
+.projectTitleLink {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.projectTitleLink:hover {
+  text-decoration: none;
+  color: var(--ifm-color-primary-dark);
+}
+
+.projectTitleLink .projectTitle {
+  transition: color 0.2s ease;
+}
+
+.projectTitleLink:hover .projectTitle {
+  color: var(--ifm-color-primary-dark);
+}
+
 .starsBadge {
   background: var(--ifm-color-warning);
   color: var(--ifm-color-emphasis-900);
@@ -259,23 +278,33 @@
 }
 
 [data-theme='dark'] .tag[data-category="Open Source"] {
-  background: var(--ifm-color-success-dark);
-  color: var(--ifm-color-success-lightest);
+  background: #2d8a3f;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 [data-theme='dark'] .tag[data-category="AI"] {
-  background: var(--ifm-color-info-dark);
-  color: var(--ifm-color-info-lightest);
+  background: #1976d2;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 [data-theme='dark'] .tag[data-category="Open Source"]:hover {
-  background: var(--ifm-color-success-darker);
-  color: var(--ifm-color-success-lightest);
+  background: #22713d;
+  color: #ffffff;
 }
 
 [data-theme='dark'] .tag[data-category="AI"]:hover {
-  background: var(--ifm-color-info-darker);
-  color: var(--ifm-color-info-lightest);
+  background: #1565c0;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .projectTitleLink:hover {
+  color: var(--ifm-color-primary-light);
+}
+
+[data-theme='dark'] .projectTitleLink:hover .projectTitle {
+  color: var(--ifm-color-primary-light);
 }
 
 [data-theme='dark'] .ctaSection {

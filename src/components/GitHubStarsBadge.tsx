@@ -1,5 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
+import Translate from '@docusaurus/Translate';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useGitHubStars } from '../hooks/useGitHubStars';
 import styles from './GitHubStarsBadge.module.css';
 
@@ -9,6 +11,7 @@ interface GitHubStarsBadgeProps {
   fallbackStars?: number;
   showLoading?: boolean;
   compact?: boolean;
+  showLabel?: boolean;
 }
 
 export function GitHubStarsBadge({ 
@@ -16,8 +19,10 @@ export function GitHubStarsBadge({
   className, 
   fallbackStars,
   showLoading = true,
-  compact = false
+  compact = false,
+  showLabel = true
 }: GitHubStarsBadgeProps) {
+  const { i18n } = useDocusaurusContext();
   const { stars, loading, error } = useGitHubStars(githubUrl);
 
   // Use real-time stars if available, otherwise fallback to static count
@@ -32,6 +37,11 @@ export function GitHubStarsBadge({
       <span className={clsx(styles.starsBadge, styles.loading, className)}>
         <span className={styles.starIcon}>⭐</span>
         <span className={styles.loadingDots}>...</span>
+        {showLabel && (
+          <span className={styles.starsLabel}>
+            <Translate id="components.githubStars.loading" description="Loading text for GitHub stars">Loading...</Translate>
+          </span>
+        )}
       </span>
     );
   }
@@ -44,18 +54,30 @@ export function GitHubStarsBadge({
     ? `${(displayStars / 1000).toFixed(1)}k`
     : displayStars.toLocaleString();
 
+  const tooltipText = i18n.currentLocale === 'zh' 
+    ? `GitHub 上有 ${displayStars.toLocaleString()} 个星标`
+    : `${displayStars.toLocaleString()} stars on GitHub`;
+
   return (
     <span 
       className={clsx(
         styles.starsBadge, 
         compact && styles.compact,
+        showLabel && styles.withLabel,
         loading && styles.updating,
         className
       )}
-      title={`${displayStars.toLocaleString()} stars on GitHub`}
+      title={tooltipText}
     >
       <span className={styles.starIcon}>⭐</span>
       <span className={styles.starsCount}>{formattedStars}</span>
+      {showLabel && (
+        <span className={styles.starsLabel}>
+          <Translate id="components.githubStars.label" description="Label for GitHub stars">
+            GitHub Stars
+          </Translate>
+        </span>
+      )}
       {loading && stars && (
         <span className={styles.updateIndicator} title="Updating...">
           ↻
