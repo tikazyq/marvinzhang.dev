@@ -417,13 +417,13 @@
     "message": "HP Inc 技术团队负责人"
   },
   "about.experience.leadership.description": {
-    "message": "目前领导20人的开发团队，实践敏捷框架(Scrum)进行软件开发。主导基于Power BI的数据治理分析平台建设，实施ETL数据集成架构。研究和开发基于Microsoft PowerApps/PowerAutomate的低代码解决方案。领导AI项目建设包括大语言模型(LLM)集成、AI驱动的自动化工具，并探索面向企业工作流的AI智能体系统。积极研究和实施AI编程解决方案，以提升开发团队生产力和代码质量。"
+    "message": "目前领导开发团队，实践敏捷框架(Scrum)进行软件开发。主导基于Power BI的数据治理分析平台建设，实施ETL数据集成架构。研究和开发基于Microsoft PowerApps/PowerAutomate的低代码解决方案。领导AI项目建设包括大语言模型(LLM)集成、AI驱动的自动化工具，并探索面向企业工作流的AI智能体系统。积极研究和实施AI编程解决方案，以提升开发团队生产力和代码质量。"
   },
   "about.experience.crawlab.title": {
     "message": "Crawlab 开源项目"
   },
   "about.experience.crawlab.description": {
-    "message": "Crawlab分布式网络爬虫管理平台的作者和维护者，支持Python、Node.js、Go、Java等多种编程语言。获得12k+ GitHub星标和500k+ DockerHub下载量，被小米、西门子、佳明等主要公司采用。成功设计并将整个平台从Python + Vue 2架构迁移到Golang + Vue 3，显著提升了性能和可扩展性。功能包括分布式任务调度、实时监控、数据可视化，以及支持代码和可视化爬虫开发的综合爬虫管理系统。"
+    "message": "Crawlab分布式网络爬虫管理平台的作者和维护者，支持Python、Node.js、Go、Java等多种编程语言。获得12k+ GitHub星标和500k+ DockerHub下载量，被小米、西门子、佳明等主要公司采用。功能包括分布式任务调度、实时监控、数据可视化，以及支持代码和可视化爬虫开发的综合爬虫管理系统。"
   },
   "about.experience.ai.title": {
     "message": "AI 研究与开发"

@@ -137,7 +137,7 @@ function About() {
                   </h3>
                   <p>
                     <Translate id="about.experience.leadership.description">
-                      Currently leading a 20-person development team practicing agile framework (Scrum) 
+                      Currently leading a development team practicing agile framework (Scrum) 
                       for software development. Spearheading data governance initiatives with Power BI-based 
                       analytics platforms and implementing ETL data integration architectures. Researching 
                       and developing low-code solutions using Microsoft PowerApps/PowerAutomate. Leading AI 
@@ -157,9 +157,7 @@ function About() {
                       Author and maintainer of Crawlab, a distributed web crawler management platform 
                       supporting multiple programming languages including Python, Node.js, Go, and Java. 
                       Achieved 12k+ GitHub stars and 500k+ DockerHub downloads, adopted by major companies 
-                      including Xiaomi, Siemens, and Garmin. Successfully architected and migrated the 
-                      entire platform from Python + Vue 2 to Golang + Vue 3, significantly improving 
-                      performance and scalability. Features include distributed task scheduling, 
+                      including Xiaomi, Siemens, and Garmin. Features include distributed task scheduling, 
                       real-time monitoring, data visualization, and comprehensive spider management 
                       with support for both code-based and visual crawler development.
                     </Translate>
