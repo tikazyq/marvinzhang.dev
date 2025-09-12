@@ -5,7 +5,7 @@ import Link from '@docusaurus/Link';
 import Translate, {translate} from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { SiGithub } from 'react-icons/si';
-import { HiOutlineExternalLink, HiOutlineBookOpen } from 'react-icons/hi';
+import { HiOutlineExternalLink, HiOutlineBookOpen, HiOutlineMail } from 'react-icons/hi';
 import GitHubStarsBadge from '../components/GitHubStarsBadge';
 import styles from './projects.module.css';
 
@@ -301,6 +301,7 @@ function Projects() {
                 <Link
                   to="/about"
                   className="button button--secondary button--lg">
+                  <HiOutlineMail className={styles.buttonIcon} />
                   <Translate id="projects.cta.contact">Get in Touch</Translate>
                 </Link>
               </div>

@@ -217,18 +217,35 @@
 /* Button Icons */
 .buttonIcon {
   margin-right: 0.5rem;
-  font-size: 1rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   vertical-align: middle;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* Icon sizes for different button sizes */
+.projectLink .buttonIcon {
+  font-size: 0.875rem; /* 14px - for small buttons */
+  width: 14px;
+  height: 14px;
+}
+
+.ctaButtons .button .buttonIcon {
+  font-size: 1.125rem; /* 18px - for large buttons */
+  width: 18px;
+  height: 18px;
+  margin-right: 0.75rem;
 }
 
 /* Ensure buttons with icons are properly aligned */
 .projectLink,
+.ctaButtons a,
 .ctaButtons .button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 /* Call to Action Section */
