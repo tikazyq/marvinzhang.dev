@@ -178,6 +178,7 @@ function ProjectCard({project}: {project: Project; key?: string}) {
             {project.githubUrl && (
               <GitHubStarsBadge 
                 githubUrl={project.githubUrl}
+                showLoading={false}
               />
             )}
           </div>
