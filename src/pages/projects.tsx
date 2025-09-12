@@ -4,6 +4,8 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import Translate, {translate} from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { SiGithub } from 'react-icons/si';
+import { HiOutlineExternalLink, HiOutlineBookOpen } from 'react-icons/hi';
 import GitHubStarsBadge from '../components/GitHubStarsBadge';
 import styles from './projects.module.css';
 
@@ -199,6 +201,7 @@ function ProjectCard({project}: {project: Project; key?: string}) {
               className={clsx('button button--sm button--outline button--primary', styles.projectLink)}
               target="_blank"
               rel="noopener noreferrer">
+              <SiGithub className={styles.buttonIcon} />
               <Translate id="projects.github">GitHub</Translate>
             </Link>
           )}
@@ -208,6 +211,7 @@ function ProjectCard({project}: {project: Project; key?: string}) {
               className={clsx('button button--sm button--primary', styles.projectLink)}
               target="_blank"
               rel="noopener noreferrer">
+              <HiOutlineExternalLink className={styles.buttonIcon} />
               <Translate id="projects.live">Live Demo</Translate>
             </Link>
           )}
@@ -215,6 +219,7 @@ function ProjectCard({project}: {project: Project; key?: string}) {
             <Link
               to={project.blogUrl}
               className={clsx('button button--sm button--secondary', styles.projectLink)}>
+              <HiOutlineBookOpen className={styles.buttonIcon} />
               <Translate id="projects.blog">Read More</Translate>
             </Link>
           )}
@@ -290,6 +295,7 @@ function Projects() {
                   className="button button--primary button--lg margin-right--md"
                   target="_blank"
                   rel="noopener noreferrer">
+                  <SiGithub className={styles.buttonIcon} />
                   <Translate id="projects.cta.github">View All Repositories</Translate>
                 </Link>
                 <Link
