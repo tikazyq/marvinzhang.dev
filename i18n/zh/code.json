@@ -410,6 +410,66 @@
   "about.skills.architecture.title": {
     "message": "架构与运维"
   },
+  "about.skills.programming.typescript": {
+    "message": "TypeScript/JavaScript"
+  },
+  "about.skills.programming.python": {
+    "message": "Python"
+  },
+  "about.skills.programming.go": {
+    "message": "Go"
+  },
+  "about.skills.programming.csharp": {
+    "message": "C#"
+  },
+  "about.skills.programming.java": {
+    "message": "Java"
+  },
+  "about.skills.technologies.frontend": {
+    "message": "前端：Vue.js、React、TypeScript、HTML/CSS"
+  },
+  "about.skills.technologies.backend": {
+    "message": "后端：Node.js、C#、Java、Python、Go"
+  },
+  "about.skills.technologies.cloud": {
+    "message": "云服务：Azure、AWS"
+  },
+  "about.skills.technologies.database": {
+    "message": "数据库：MongoDB、MySQL、PG、SQL Server、Redis"
+  },
+  "about.skills.technologies.devops": {
+    "message": "运维：Docker、Azure DevOps、GitHub Actions"
+  },
+  "about.skills.aiml.coding": {
+    "message": "AI 编程与代码生成"
+  },
+  "about.skills.aiml.agents": {
+    "message": "AI 智能体与 LLM 应用"
+  },
+  "about.skills.aiml.powerbi": {
+    "message": "Power BI 与数据分析平台"
+  },
+  "about.skills.aiml.etl": {
+    "message": "ETL 流水线与数据集成"
+  },
+  "about.skills.aiml.scraping": {
+    "message": "网络爬虫与自动化"
+  },
+  "about.skills.architecture.design": {
+    "message": "系统设计与实现"
+  },
+  "about.skills.architecture.aiagent": {
+    "message": "AI 智能体系统开发"
+  },
+  "about.skills.architecture.microservices": {
+    "message": "微服务架构"
+  },
+  "about.skills.architecture.agile": {
+    "message": "敏捷框架（Scrum）"
+  },
+  "about.skills.architecture.cicd": {
+    "message": "CI/CD 与运维流水线"
+  },
   "about.section.experience.title": {
     "message": "经验亮点"
   },
