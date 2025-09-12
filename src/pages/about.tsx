@@ -191,12 +191,14 @@ function About() {
                   <p>
                     <Translate id="about.experience.ai.description">
                       Deep expertise in AI/ML technologies with focus on Large Language Models (LLMs), 
-                      AI agents, and AI-powered development tools. Actively researching and implementing 
-                      cutting-edge AI solutions including prompt engineering, RAG (Retrieval-Augmented Generation), 
-                      and multi-agent systems. Developing AI coding assistants and automation tools that 
-                      enhance developer productivity. Contributing to the AI community through technical 
-                      writing, open-source projects, and exploring the intersection of AI with traditional 
-                      software engineering practices.
+                      AI agents, and AI-powered development tools. Specialized in context engineering, 
+                      prompt optimization, and spec-driven development methodologies. Actively researching 
+                      and implementing cutting-edge AI solutions including RAG (Retrieval-Augmented Generation), 
+                      multi-agent systems, function calling, and AI workflow orchestration. Developing 
+                      AI coding assistants, automated testing frameworks, and productivity tools that 
+                      enhance developer workflows. Contributing to the AI community through technical 
+                      writing, open-source projects, and exploring advanced AI engineering practices 
+                      including model fine-tuning and AI system architecture design.
                     </Translate>
                   </p>
                 </div>
