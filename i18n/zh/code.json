@@ -327,7 +327,7 @@
     "description": "The title of the projects page"
   },
   "projects.description": {
-    "message": "探索 Marvin Zhang 的开源项目、AI 应用和技术创新作品集，涵盖网络爬虫、数据分析和机器学习领域。",
+    "message": "探索码之道的开源项目、AI 应用和技术创新作品集，涵盖网络爬虫、数据分析和机器学习领域。",
     "description": "The description of the projects page"
   },
   "projects.hero.title": {
@@ -373,7 +373,7 @@
     "message": "联系我"
   },
   "about.title": {
-    "message": "关于 Marvin Zhang",
+    "message": "关于我",
     "description": "The title of the about page"
   },
   "about.description": {
@@ -381,7 +381,7 @@
     "description": "The description of the about page"
   },
   "about.hero.title": {
-    "message": "关于 Marvin Zhang"
+    "message": "关于我"
   },
   "about.hero.subtitle": {
     "message": "技术领导者 • 全栈开发工程师 • 开源项目作者"
@@ -393,7 +393,7 @@
     "message": "拥有10+年全栈软件开发、数据分析和项目管理工作经验，是包括Crawlab在内的开源项目作者。专精于构建从前端界面到后端架构的端到端解决方案，在领导开发团队和可扩展平台开发方面拥有丰富专业知识。我目前专注于AI技术包括大语言模型(LLM)、智能体(agents)、AI编程等。"
   },
   "about.section.professional.description2": {
-    "message": "通过我在 marvinzhang.dev 的博客，我分享关于前沿技术、软件工程最佳实践以及 AI/ML 在现实场景中的实际应用的见解。"
+    "message": "通过码之道 (marvinzhang.dev) 博客，我分享关于前沿技术、软件工程最佳实践以及 AI/ML 在现实场景中的实际应用的见解。"
   },
   "about.section.expertise.title": {
     "message": "核心专长"
