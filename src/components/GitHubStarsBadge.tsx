@@ -33,6 +33,10 @@ export function GitHubStarsBadge({
     return null; // Don't show anything if there's an error and no fallback
   }
 
+  if (loading && !showLoading) {
+    return null; // Don't show anything while loading if showLoading is false
+  }
+
   if (loading && showLoading && !fallbackStars) {
     return (
       <span className={clsx(styles.starsBadge, styles.loading, className)}>
