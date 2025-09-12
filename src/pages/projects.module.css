@@ -214,6 +214,23 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Button Icons */
+.buttonIcon {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+/* Ensure buttons with icons are properly aligned */
+.projectLink,
+.ctaButtons .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Call to Action Section */
 .ctaSection {
   background: var(--ifm-color-emphasis-100);
