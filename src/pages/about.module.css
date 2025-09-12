@@ -76,13 +76,174 @@
   line-height: 1.6;
 }
 
-.connectButtons {
-  margin-top: 1.5rem;
+.contactGrid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-.connectButtons .button {
-  margin-bottom: 1rem;
-  margin-right: 1rem;
+.contactButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.contactButton {
+  width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--ifm-color-emphasis-300) !important;
+  background: var(--ifm-color-emphasis-100) !important;
+  color: var(--ifm-color-content) !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+}
+
+.contactButton:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+  border-color: var(--ifm-color-primary) !important;
+  background: var(--ifm-color-primary-lightest) !important;
+  color: var(--ifm-color-primary-darkest) !important;
+  text-decoration: none !important;
+}
+
+.contactButton:active {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.contactIcon {
+  width: 24px !important;
+  height: 24px !important;
+  flex-shrink: 0;
+}
+
+/* Brand-specific icon colors on hover */
+.contactButton[href*="mailto:"]:hover .contactIcon {
+  color: #EA4335 !important; /* Gmail red */
+}
+
+.contactButton[href*="github.com"]:hover .contactIcon {
+  color: #181717 !important; /* GitHub black */
+}
+
+[data-theme='dark'] .contactButton[href*="github.com"]:hover .contactIcon {
+  color: #ffffff !important;
+}
+
+.contactButton[href*="x.com"]:hover .contactIcon {
+  color: #000000 !important; /* X black */
+}
+
+[data-theme='dark'] .contactButton[href*="x.com"]:hover .contactIcon {
+  color: #ffffff !important;
+}
+
+.contactButton[href*="linkedin.com"]:hover .contactIcon {
+  color: #0A66C2 !important; /* LinkedIn blue */
+}
+
+.wechatSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wechatButton {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ifm-color-emphasis-100);
+  border: 2px solid var(--ifm-color-emphasis-300);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.wechatButton:hover {
+  background: var(--ifm-color-primary-lightest);
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.wechatIcon {
+  width: 24px;
+  height: 24px;
+  color: #07C160; /* WeChat brand green */
+}
+
+.wechatTooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  margin-bottom: 0.5rem;
+  min-width: 240px;
+  text-align: center;
+}
+
+.wechatButton:hover .wechatTooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-8px);
+}
+
+.wechatTooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: white;
+}
+
+.qrImage {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid var(--ifm-color-emphasis-200);
+}
+
+.wechatTooltip p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ifm-color-content-secondary);
+}
+
+.wechatId {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+  font-weight: 500 !important;
+  color: var(--ifm-color-content-secondary) !important;
+  margin-top: 0.25rem !important;
+  font-size: 0.85rem !important;
 }
 
 /* Dark mode adjustments */
@@ -92,6 +253,38 @@
 
 [data-theme='dark'] .experienceItem:hover {
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .contactButton {
+  background: var(--ifm-color-emphasis-200) !important;
+  border-color: var(--ifm-color-emphasis-400) !important;
+  color: var(--ifm-color-content) !important;
+}
+
+[data-theme='dark'] .contactButton:hover {
+  background: var(--ifm-color-primary-darkest) !important;
+  border-color: var(--ifm-color-primary) !important;
+  color: var(--ifm-color-primary-lightest) !important;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme='dark'] .wechatButton {
+  background: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+[data-theme='dark'] .wechatButton:hover {
+  background: var(--ifm-color-primary-darkest);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .wechatTooltip {
+  background: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+[data-theme='dark'] .wechatTooltip::after {
+  border-top-color: var(--ifm-color-emphasis-200);
 }
 
 /* Responsive design */
@@ -104,10 +297,30 @@
     font-size: 1.1rem;
   }
   
-  .connectButtons .button {
-    display: block;
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 0.5rem;
+  .contactGrid {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .contactButtons {
+    justify-content: center;
+  }
+  
+  .wechatTooltip {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-bottom: 0;
+    max-width: 90vw;
+  }
+  
+  .wechatButton:hover .wechatTooltip {
+    transform: translate(-50%, -50%);
+  }
+  
+  .wechatTooltip::after {
+    display: none;
   }
 }

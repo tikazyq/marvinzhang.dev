@@ -2,6 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Translate, {translate} from '@docusaurus/Translate';
+import { SiGithub, SiX, SiLinkedin, SiWechat } from 'react-icons/si';
+import { HiOutlineMail } from 'react-icons/hi';
 import styles from './about.module.css';
 
 function About() {
@@ -156,7 +158,7 @@ function About() {
                     <Translate id="about.experience.crawlab.description">
                       Author and maintainer of Crawlab, a distributed web crawler management platform 
                       supporting multiple programming languages including Python, Node.js, Go, and Java. 
-                      Achieved 12k+ GitHub stars and 500k+ DockerHub downloads, adopted by major companies 
+                      Achieved 12k+ GitHub stars and 1M+ DockerHub downloads, adopted by major companies 
                       including Xiaomi, Siemens, and Garmin. Features include distributed task scheduling, 
                       real-time monitoring, data visualization, and comprehensive spider management 
                       with support for both code-based and visual crawler development.
@@ -194,19 +196,66 @@ function About() {
                     or learn more about my work.
                   </Translate>
                 </p>
-                <div className={styles.connectButtons}>
-                  <a 
-                    href="https://github.com/tikazyq" 
-                    className="button button--primary button--lg margin-right--md"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    <Translate id="about.connect.github">GitHub Profile</Translate>
-                  </a>
-                  <a 
-                    href="mailto:contact@marvinzhang.dev" 
-                    className="button button--secondary button--lg">
-                    <Translate id="about.connect.email">Email Me</Translate>
-                  </a>
+                <div className={styles.contactGrid}>
+                  <div className={styles.contactButtons}>
+                    <a 
+                      href="mailto:tikazyq@163.com" 
+                      className={clsx('button', styles.contactButton)}
+                      title="Email Me"
+                      aria-label="Email Me">
+                      <HiOutlineMail className={styles.contactIcon} />
+                    </a>
+                    <a 
+                      href="https://github.com/tikazyq" 
+                      className={clsx('button', styles.contactButton)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="GitHub"
+                      aria-label="GitHub">
+                      <SiGithub className={styles.contactIcon} />
+                    </a>
+                    <a 
+                      href="https://x.com/marvinzhang89" 
+                      className={clsx('button', styles.contactButton)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Follow on X"
+                      aria-label="Follow on X">
+                      <SiX className={styles.contactIcon} />
+                    </a>
+                    <a 
+                      href="https://www.linkedin.com/in/marvinzhang89/" 
+                      className={clsx('button', styles.contactButton)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="LinkedIn"
+                      aria-label="LinkedIn">
+                      <SiLinkedin className={styles.contactIcon} />
+                    </a>
+                  </div>
+                  
+                  <div className={styles.wechatSection}>
+                    <div className={styles.wechatButton} title="WeChat - Hover to see QR code">
+                      <SiWechat className={styles.wechatIcon} />
+                      <div className={styles.wechatTooltip}>
+                        <img 
+                          src="/img/contacts/qr.jpg" 
+                          alt="WeChat QR Code" 
+                          className={styles.qrImage}
+                        />
+                        <p>
+                          <Translate id="about.connect.wechat.description">
+                            Scan to add me on WeChat
+                          </Translate>
+                        </p>
+                        <p className={styles.wechatId}>
+                          <Translate id="about.connect.wechat.id">
+                            WeChat ID: tikazyq1
+                          </Translate>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </section>
 

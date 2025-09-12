@@ -423,7 +423,7 @@
     "message": "Crawlab 开源项目"
   },
   "about.experience.crawlab.description": {
-    "message": "Crawlab分布式网络爬虫管理平台的作者和维护者，支持Python、Node.js、Go、Java等多种编程语言。获得12k+ GitHub星标和500k+ DockerHub下载量，被小米、西门子、佳明等主要公司采用。功能包括分布式任务调度、实时监控、数据可视化，以及支持代码和可视化爬虫开发的综合爬虫管理系统。"
+    "message": "Crawlab分布式网络爬虫管理平台的作者和维护者，支持Python、Node.js、Go、Java等多种编程语言。获得12k+ GitHub星标和1M+ DockerHub下载量，被小米、西门子、佳明等主要公司采用。功能包括分布式任务调度、实时监控、数据可视化，以及支持代码和可视化爬虫开发的综合爬虫管理系统。"
   },
   "about.experience.ai.title": {
     "message": "AI 研究与开发"
@@ -444,10 +444,25 @@
     "message": "我总是有兴趣讨论新的机会、技术挑战和创新项目。如果您想合作或了解更多关于我的工作，请随时联系。"
   },
   "about.connect.github": {
-    "message": "GitHub 个人资料"
+    "message": "GitHub"
   },
   "about.connect.email": {
     "message": "发邮件给我"
+  },
+  "about.connect.twitter": {
+    "message": "关注 X"
+  },
+  "about.connect.linkedin": {
+    "message": "LinkedIn"
+  },
+  "about.connect.wechat.title": {
+    "message": "微信"
+  },
+  "about.connect.wechat.description": {
+    "message": "扫描添加微信"
+  },
+  "about.connect.wechat.id": {
+    "message": "微信号：tikazyq1"
   },
   "components.githubStars.label": {
     "message": "GitHub 星标",

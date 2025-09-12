@@ -108,11 +108,28 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Community',
+          title: 'Contact',
+          items: [
+            {
+              label: 'Email',
+              href: 'mailto:tikazyq@163.com',
+            },
+          ],
+        },
+        {
+          title: 'Social',
           items: [
             {
               label: 'GitHub',
               href: 'https://github.com/tikazyq',
+            },
+            {
+              label: 'X (Twitter)',
+              href: 'https://x.com/marvinzhang89',
+            },
+            {
+              label: 'LinkedIn',
+              href: 'https://www.linkedin.com/in/marvinzhang89/',
             },
           ],
         },
@@ -122,6 +139,10 @@ const config: Config = {
             {
               label: 'Blog',
               to: '/blog',
+            },
+            {
+              label: 'Projects',
+              to: '/projects',
             },
           ],
         },
