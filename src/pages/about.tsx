@@ -90,11 +90,11 @@ function About() {
                         <Translate id="about.skills.programming.title">Programming Languages</Translate>
                       </h3>
                       <ul className={styles.skillList}>
-                        <li>TypeScript/JavaScript</li>
-                        <li>Python</li>
-                        <li>Go</li>
-                        <li>C#</li>
-                        <li>Java</li>
+                        <li><Translate id="about.skills.programming.typescript">TypeScript/JavaScript</Translate></li>
+                        <li><Translate id="about.skills.programming.python">Python</Translate></li>
+                        <li><Translate id="about.skills.programming.go">Go</Translate></li>
+                        <li><Translate id="about.skills.programming.csharp">C#</Translate></li>
+                        <li><Translate id="about.skills.programming.java">Java</Translate></li>
                       </ul>
                     </div>
                   </div>
@@ -104,11 +104,11 @@ function About() {
                         <Translate id="about.skills.technologies.title">Full-Stack Technologies</Translate>
                       </h3>
                       <ul className={styles.skillList}>
-                        <li>Frontend: Vue.js, React, TypeScript, HTML/CSS</li>
-                        <li>Backend: Node.js, C#, Java, Python, Go</li>
-                        <li>Cloud: Azure, AWS</li>
-                        <li>Database: MongoDB, MySQL, PG, SQL Server, Redis</li>
-                        <li>DevOps: Docker, Azure DevOps, GitHub Actions</li>
+                        <li><Translate id="about.skills.technologies.frontend">Frontend: Vue.js, React, TypeScript, HTML/CSS</Translate></li>
+                        <li><Translate id="about.skills.technologies.backend">Backend: Node.js, C#, Java, Python, Go</Translate></li>
+                        <li><Translate id="about.skills.technologies.cloud">Cloud: Azure, AWS</Translate></li>
+                        <li><Translate id="about.skills.technologies.database">Database: MongoDB, MySQL, PG, SQL Server, Redis</Translate></li>
+                        <li><Translate id="about.skills.technologies.devops">DevOps: Docker, Azure DevOps, GitHub Actions</Translate></li>
                       </ul>
                     </div>
                   </div>
@@ -120,11 +120,11 @@ function About() {
                         <Translate id="about.skills.aiml.title">AI/ML & Data</Translate>
                       </h3>
                       <ul className={styles.skillList}>
-                        <li>AI Coding & Code Generation</li>
-                        <li>AI Agents & LLM Applications</li>
-                        <li>Power BI & Data Analytics Platforms</li>
-                        <li>ETL Pipelines & Data Integration</li>
-                        <li>Web Scraping & Automation</li>
+                        <li><Translate id="about.skills.aiml.coding">AI Coding & Code Generation</Translate></li>
+                        <li><Translate id="about.skills.aiml.agents">AI Agents & LLM Applications</Translate></li>
+                        <li><Translate id="about.skills.aiml.powerbi">Power BI & Data Analytics Platforms</Translate></li>
+                        <li><Translate id="about.skills.aiml.etl">ETL Pipelines & Data Integration</Translate></li>
+                        <li><Translate id="about.skills.aiml.scraping">Web Scraping & Automation</Translate></li>
                       </ul>
                     </div>
                   </div>
@@ -134,11 +134,11 @@ function About() {
                         <Translate id="about.skills.architecture.title">Architecture & DevOps</Translate>
                       </h3>
                       <ul className={styles.skillList}>
-                        <li>System Design & Implementation</li>
-                        <li>AI Agent System Development</li>
-                        <li>Microservices Architecture</li>
-                        <li>Agile Framework (Scrum)</li>
-                        <li>CI/CD & DevOps Pipelines</li>
+                        <li><Translate id="about.skills.architecture.design">System Design & Implementation</Translate></li>
+                        <li><Translate id="about.skills.architecture.aiagent">AI Agent System Development</Translate></li>
+                        <li><Translate id="about.skills.architecture.microservices">Microservices Architecture</Translate></li>
+                        <li><Translate id="about.skills.architecture.agile">Agile Framework (Scrum)</Translate></li>
+                        <li><Translate id="about.skills.architecture.cicd">CI/CD & DevOps Pipelines</Translate></li>
                       </ul>
                     </div>
                   </div>
