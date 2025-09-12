@@ -414,7 +414,7 @@
     "message": "经验亮点"
   },
   "about.experience.leadership.title": {
-    "message": "HP Inc 技术团队负责人"
+    "message": "技术团队负责人"
   },
   "about.experience.leadership.description": {
     "message": "目前领导开发团队，实践敏捷框架(Scrum)进行软件开发。主导基于Power BI的数据治理分析平台建设，实施ETL数据集成架构。研究和开发基于Microsoft PowerApps/PowerAutomate的低代码解决方案。领导AI项目建设包括大语言模型(LLM)集成、AI驱动的自动化工具，并探索面向企业工作流的AI智能体系统。积极研究和实施AI编程解决方案，以提升开发团队生产力和代码质量。"
@@ -429,7 +429,7 @@
     "message": "AI 研究与开发"
   },
   "about.experience.ai.description": {
-    "message": "在AI/ML技术方面拥有深厚专业知识，专注于大语言模型(LLM)、AI智能体和AI驱动的开发工具。积极研究和实施前沿AI解决方案，包括提示工程、RAG(检索增强生成)和多智能体系统。开发AI编程助手和自动化工具以提升开发者生产力。通过技术写作、开源项目为AI社区做贡献，并探索AI与传统软件工程实践的结合点。"
+    "message": "在AI/ML技术方面拥有深厚专业知识，专注于大语言模型(LLM)、AI智能体和AI驱动的开发工具。擅长上下文工程、提示优化和规格驱动开发方法论。积极研究和实施前沿AI解决方案，包括RAG(检索增强生成)、多智能体系统、函数调用和AI工作流编排。开发AI编程助手、自动化测试框架和提升开发者工作流程的生产力工具。通过技术写作、开源项目为AI社区做贡献，并探索高级AI工程实践，包括模型微调和AI系统架构设计。"
   },
   "about.section.education.title": {
     "message": "教育背景与认证"
@@ -463,6 +463,14 @@
   },
   "about.connect.wechat.id": {
     "message": "微信号：tikazyq1"
+  },
+  "projects.all.title": {
+    "message": "精选项目",
+    "description": "Title for all projects section"
+  },
+  "projects.all.description": {
+    "message": "涵盖开源开发、AI应用和技术创新的作品集合",
+    "description": "Description for all projects section"
   },
   "components.githubStars.label": {
     "message": "GitHub 星标",
