@@ -2,73 +2,131 @@
 applyTo: '**/*.mdx'
 ---
 
-# MDX Blog Writing Guidelines
+# MDX Blog Writing Guidelines (Section-by-Section)
+
+## Section-by-Section Writing Approach
+
+**CRITICAL**: Always write content in manageable sections to avoid response limits. Complete one section at a time and clearly indicate section boundaries.
+
+### Section Planning Guidelines
+- **Introduction**: 500-800 words (hook + context + roadmap)
+- **Main Sections**: 600-1000 words each (2-3 subsections maximum)
+- **Conclusion**: 400-600 words (summary + future + takeaways)
 
 ## Content Structure & Organization
 
-### Opening Pattern
+### Introduction Section Pattern
 - **Compelling hook**: Start with thought-provoking quotes, statistics, or rhetorical questions
-- **Industry context**: Place topic within broader tech/industry landscape 
-- **Personal angle**: Connect to reader's likely experiences ("如果你...")
-- **Clear roadmap**: Preview what reader will learn/gain
+- **Industry context**: Place topic within broader tech/industry landscape ("如今的前端开发...")
+- **Personal angle**: Connect to reader's likely experiences ("如果你是一个...")
+- **Clear roadmap**: Preview what reader will learn/gain ("本文将详细介绍...")
 
-### Body Organization
-- **Progressive disclosure**: Build from basic concepts to advanced applications
+### Main Content Section Organization
+- **One major concept per section**: Focus deeply rather than covering multiple topics
+- **Progressive disclosure**: Build from basic concepts to advanced applications within each section
 - **Practical examples**: Include concrete code samples and real-world scenarios
-- **Visual breaks**: Use subheadings, lists, and diagrams to break up text
-- **Transition bridges**: Connect sections with "因此", "而", "不过", "其实"
+- **Visual breaks**: Use subheadings (H3), lists, and code blocks to break up text
+- **Section transitions**: End with bridge to next section ("接下来，我们将探讨...")
 
-### Conclusion
+### Conclusion Section Structure
+- **Key recap**: Summarize main points covered ("总之...")
 - **Future outlook**: Connect current topic to industry trends
 - **Actionable takeaways**: Give readers clear next steps
 - **Learning mindset**: Emphasize continuous growth ("作为一个软件工程师，你需要不断学习")
 
-## Tone & Voice
+## Tone & Voice (Per Section)
 
 ### Professional Yet Accessible
 - **Authoritative but humble**: Share expertise without being condescending
 - **Conversational**: Use "你" and rhetorical questions to engage readers
-- **Slightly playful**: Include mild humor and pop culture references appropriately
+- **Section-appropriate energy**: Vary intensity based on content complexity
 
 ### Language Patterns
+- **Section connectors**: "因此", "而", "不过", "其实", "接下来"
 - **Metaphors**: Use concrete analogies (building construction for software architecture)
 - **Emphasis markers**: "非常重要", "核心概念", "关键点"
-- **Balanced statements**: Present pros/cons honestly, avoid absolute claims
-- **Industry terminology**: Use technical terms correctly with brief explanations
+- **Reader engagement**: "你可能会问", "相信你不会", "对于...来说"
 
-## Writing Style Elements
+## Section-Specific Guidelines
 
-### Sentence Structure
-- **Varied length**: Mix short punchy statements with longer explanatory sentences
-- **Parallel construction**: Use consistent patterns in lists and comparisons
-- **Strategic repetition**: Reinforce key concepts through rephrasing
+### Introduction Section
+- **Hook examples**: Industry statistics, provocative questions, relevant quotes
+- **Context setting**: Historical background, current state, why topic matters now
+- **Value proposition**: What specific benefits reader will gain
+- **Structure preview**: Clear outline of what's coming
 
-### Content Depth
-- **Multiple perspectives**: Consider different developer backgrounds and experience levels
-- **Historical context**: Reference technology evolution and industry trends
-- **Practical focus**: Always connect theory to real implementation challenges
+### Main Content Sections
+- **Single focus**: One major concept or technology per section
+- **Layered depth**: Basic concept → practical implementation → advanced considerations
+- **Code integration**: 1-2 substantial code examples per section
+- **Real-world grounding**: Connect theory to actual development challenges
 
-### Engagement Techniques
-- **Reader inclusion**: "你可能会问", "相信你不会", "对于...来说"
-- **Shared experiences**: Reference common developer pain points
-- **Forward-looking**: Discuss future implications and continued learning
+### Conclusion Section
+- **Synthesis**: How individual sections connect to bigger picture
+- **Trend analysis**: Where technology/industry is heading
+- **Next steps**: Specific actions readers can take
+- **Community building**: Encourage continued exploration and discussion
 
-## Technical Content Standards
+## Technical Content Standards (Per Section)
 
 ### Code Examples
+- **Section-appropriate complexity**: Match code complexity to section's focus
 - **Real-world relevance**: Show practical, implementable examples
-- **Progressive complexity**: Start simple, build to advanced usage
+- **Progressive within section**: Start simple, build complexity within that section
 - **Clear commenting**: Explain non-obvious logic in Chinese comments
-- **Multiple approaches**: Show different solutions when relevant
+- **Working examples**: Ensure code actually runs and demonstrates concept
 
 ### Explanations
-- **Layered understanding**: Basic concept → implementation details → advanced topics
-- **Visual aids**: Include diagrams, screenshots, and tables
-- **Cross-references**: Link to related concepts and previous articles
+- **Section coherence**: Keep explanations focused on section's main theme
+- **Visual aids**: Include tables, lists, diagrams when they enhance understanding
+- **Cross-references**: Link to related concepts but don't lose section focus
+- **Multiple perspectives**: Address different experience levels within section scope
 
-## Avoid
-- Overly academic tone without practical application
-- Absolute statements without nuance
-- Technology advocacy without acknowledging limitations
-- Dense paragraphs without visual breaks
-- Jargon without explanation for different experience levels
+## Section Completion Standards
+
+### Each Section Must Include:
+- **Clear section boundary**: Obvious start and end points
+- **Self-contained value**: Reader gains something useful from this section alone
+- **Smooth transitions**: Natural flow to next section
+- **Appropriate length**: Within target word count for section type
+
+### Section Quality Checklist:
+- ✅ Single, clear focus maintained throughout
+- ✅ Appropriate depth for section type and target audience
+- ✅ Engaging narrative flow with Marvin's voice
+- ✅ Technical accuracy and practical applicability
+- ✅ Proper MDX formatting and code highlighting
+- ✅ Natural transition setup for next section
+
+## Writing Flow Management
+
+### Section Start
+- **Clear heading**: Descriptive H2 that indicates section focus
+- **Opening hook**: Engage reader with section-specific context
+- **Preview**: Brief outline of what this section covers
+
+### Section Development
+- **Consistent voice**: Maintain Marvin's tone throughout
+- **Balanced pacing**: Mix explanation, examples, and reader engagement
+- **Visual variety**: Use formatting to create readable flow
+
+### Section End
+- **Key points summary**: Reinforce main takeaways from this section
+- **Transition bridge**: Connect to next section's topic
+- **Completion indicator**: Clear signal that section is complete
+
+## Avoid in Each Section
+- **Topic sprawl**: Trying to cover too many concepts in one section
+- **Abrupt endings**: Sections that stop without proper conclusion
+- **Overwhelming density**: Too much information without breaks
+- **Disconnected examples**: Code or concepts that don't relate to section focus
+- **Weak transitions**: Sections that don't flow naturally into the next
+
+## Section Handoff Format
+```
+## Section Complete: [Section Name]
+**Focus**: [Main concept covered]
+**Word Count**: ~XXX words
+**Key Takeaway**: [Primary learning outcome]
+**Next Section Preview**: [What comes next and why]
+```

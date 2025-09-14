@@ -1,0 +1,17 @@
+{
+	"servers": {
+		"playwright-mcp": {
+			"type": "stdio",
+			"command": "npx",
+			"args": [
+				"@playwright/mcp@0.0.37",
+        "--headless",
+        "--viewport-size", "1280,720"
+			],
+			"cwd": "${workspaceFolder}",
+			"envFile": "",
+			"env": {}
+		}
+	},
+	"inputs": []
+}
