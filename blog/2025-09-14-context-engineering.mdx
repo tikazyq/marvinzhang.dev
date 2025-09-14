@@ -12,21 +12,25 @@ tags:
 date: '2025-09-14'
 ---
 
-> "Context engineering is the delicate art and science of filling the context window with just the right information for the next step." — [Andrej Karpathy](https://twitter.com/karpathy)
+> "Context engineering is building dynamic systems to provide the right information and tools in the right format such that the LLM can plausibly accomplish the task." — [LangChain](https://blog.langchain.com/the-rise-of-context-engineering/)
 
 If you've been building with AI for a while, you've probably hit the wall where simple prompts just aren't enough anymore. Your carefully crafted prompts fail on edge cases, your AI assistant gets confused with complex tasks, and your applications struggle to maintain coherent conversations. These frustrations aren't accidental—they reveal a fundamental shift happening in AI development.
 
-Companies like OpenAI, Anthropic, Notion, and GitHub aren't just building better models; they're pioneering entirely new approaches to how information flows into AI systems. The secret isn't in the models themselves, but in how we select, organize, and present information to them. This is the essence of context engineering.
+Companies like OpenAI, Anthropic, Notion, and GitHub aren't just building better models; they're pioneering entirely new approaches to how information, tools, and structure flow into AI systems. The secret isn't in the models themselves, but in how we engineer the complete context that enables AI to succeed. This is the essence of context engineering.
 
 {/* truncate */}
 
-Unlike traditional prompt engineering, which treats AI interaction as a simple input-output process, context engineering recognizes that modern AI applications are complex information systems. Consider GitHub Copilot: it doesn't just look at your current line of code. It considers your entire codebase, your project structure, your coding patterns, and even the broader context of what you're trying to accomplish. This holistic approach to information selection is what makes it genuinely useful rather than just impressive.
+Context engineering represents a paradigm shift from simple prompt crafting to building sophisticated systems that dynamically provide AI models with everything they need to accomplish tasks effectively. Unlike traditional prompt engineering, which focuses on clever wording, context engineering encompasses the entire information architecture: what data to retrieve, which tools to provide, how to structure outputs, what state to maintain, and how to format everything optimally.
 
-Context engineering isn't about writing better prompts—it's about building smarter information architectures. It's the discipline of dynamically selecting, organizing, and presenting the most relevant information to AI systems within the constraints of context windows, processing time, and computational costs.
+Consider GitHub Copilot: it doesn't just look at your current line of code. It analyzes your entire codebase, understands your project structure, recognizes your coding patterns, provides relevant tools and functions, and structures its suggestions in formats that integrate seamlessly with your development workflow. This holistic approach to context orchestration is what makes it genuinely useful rather than just impressive.
 
-## From Simple Prompts to Smart Context
+Context engineering isn't about writing better prompts—it's about building dynamic systems that can consistently provide AI models with the right information, tools, and structure to succeed. It encompasses retrieval systems, memory management, tool selection, output formatting, state tracking, and yes, prompt engineering too—all working together as a cohesive system.
 
-The limitations of traditional prompting become clear when you try to build anything beyond simple demos. Imagine you're building an AI-powered customer support system. With basic prompt engineering, you might write something like:
+## From Prompt Engineering to Context Systems
+
+The evolution from traditional prompt engineering to context engineering represents a fundamental shift in how we think about AI applications. Early AI development focused on crafting clever prompts to coax better responses from models. But as [LangChain points out](https://blog.langchain.com/the-rise-of-context-engineering/), prompt engineering is actually a subset of the broader discipline of context engineering.
+
+The limitations of pure prompt engineering become clear when you try to build anything beyond simple demos. Imagine you're building an AI-powered customer support system. With basic prompt engineering, you might write something like:
 
 ```
 You are a helpful customer support agent. Answer the following question:
@@ -37,26 +41,38 @@ This approach immediately runs into problems:
 - **Limited context**: You can't include all product documentation, past conversations, or customer history
 - **Static information**: The prompt can't adapt to new products, policies, or seasonal changes  
 - **No learning**: Each interaction starts from scratch with no memory of previous conversations
+- **No tools**: The AI can only respond with text, not take actions or retrieve real-time data
+- **Poor structure**: Both inputs and outputs lack the formatting needed for system integration
 
-Modern companies have moved beyond this limitation by implementing what we now call context engineering. Instead of static prompts, they build dynamic information systems that can:
+Modern companies have moved beyond this limitation by implementing comprehensive context engineering systems. Instead of static prompts, they build dynamic information orchestration that includes:
 
 ```mermaid
 graph TD
-    A[Customer Question] --> B[Context Retrieval]
-    B --> C[Customer History]
-    B --> D[Product Documentation] 
-    B --> E[Similar Past Cases]
-    C --> F[Context Assembly]
-    D --> F
-    E --> F
-    F --> G[AI Response]
+    A[User Request] --> B[Context Engineering System]
+    B --> C[Information Retrieval]
+    B --> D[Tool Selection]
+    B --> E[Memory Management]
+    B --> F[State Tracking]
+    C --> G[Context Assembly]
+    D --> G
+    E --> G
+    F --> G
+    G --> H[Prompt Construction]
+    H --> I[Structured AI Response]
+    I --> J[Action Execution]
+    I --> K[State Updates]
 ```
 
-This shift represents a fundamental change in how we think about AI interactions. Rather than trying to cram everything into a single prompt, context engineering treats information selection as a separate, specialized process. The AI receives curated, relevant context rather than generic instructions.
+**Prompt engineering remains important** within this broader framework, but its role becomes more focused and systematic. Rather than trying to encode all context and instructions into static prompts, modern prompt engineering focuses on:
 
-Companies like Notion demonstrate this beautifully. When you ask Notion AI about your workspace, it doesn't just process your query in isolation. It dynamically retrieves relevant pages, considers your recent activity, and factors in the structure of your workspace to provide contextually aware responses.
+- **Dynamic prompt construction** that assembles the right context for each specific interaction
+- **Clear instruction formatting** that helps AI models parse and utilize the provided context effectively  
+- **Consistent communication patterns** that work reliably across different types of retrieved information
+- **Output structure specification** that ensures AI responses integrate properly with downstream systems
 
-The key insight is that **context quality matters more than prompt cleverness**. A well-selected context with a simple prompt will outperform a sophisticated prompt with poor context every time.
+Companies like Notion demonstrate this beautifully. When you ask Notion AI about your workspace, the system doesn't rely on a single clever prompt. It dynamically retrieves relevant pages, considers your recent activity, factors in workspace structure, selects appropriate tools for any needed actions, and then constructs a context-rich prompt that enables accurate, actionable responses.
+
+The key insight is that **context quality and system design matter more than prompt cleverness**. A well-engineered context system with straightforward prompts will outperform sophisticated prompts with poor context every time. As [LangChain emphasizes](https://blog.langchain.com/the-rise-of-context-engineering/), the question isn't whether you can write a perfect prompt, but whether you can build a system that provides AI models with everything they need to plausibly accomplish the task.
 
 ## The RAG Revolution: Dynamic Context Retrieval
 
@@ -97,45 +113,158 @@ The beauty of RAG is its modularity. You can start with a simple implementation 
 
 What makes RAG revolutionary isn't just its technical capabilities, but its practical impact. It transforms AI applications from static knowledge repositories into dynamic, learning systems that can stay current and contextually relevant.
 
-## Memory and Persistent Context
+## Structure and Format: The Silent Context Engineers
 
-While RAG solves the problem of accessing external information, modern AI applications also need to remember and learn from interactions. This is where memory systems and persistent context become crucial.
+While much attention focuses on what information to provide AI systems, how that information is structured and formatted can be equally crucial. Poor formatting can render even perfect information useless, while well-structured inputs and outputs can dramatically improve AI performance.
 
-Consider how ChatGPT handles conversations. It doesn't just respond to individual messages—it maintains awareness of the entire conversation history, your preferences, and the evolving context of your discussion. This persistent context is what makes AI interactions feel natural and coherent.
+**Input Structure** affects how well AI models can parse and utilize the information you provide. Consider these two approaches to providing product documentation:
 
-There are several patterns for implementing memory in context engineering:
+```
+// Poor structure - wall of text
+Here is our product documentation: Product A costs $50 and does X, Y, Z. Product B costs $75 and does A, B, C. Product C costs $100 and does M, N, O. Our return policy is 30 days...
+
+// Better structure - organized and labeled
+## Products
+- **Product A**: $50 | Features: X, Y, Z
+- **Product B**: $75 | Features: A, B, C  
+- **Product C**: $100 | Features: M, N, O
+
+## Policies
+- **Returns**: 30-day policy
+- **Shipping**: 3-5 business days
+```
+
+**Output Structure** is equally important. Modern AI applications don't just generate text—they need to produce structured outputs that integrate with existing systems. This includes:
+
+- **JSON schemas** for API integrations and data processing
+- **Function calling** with properly defined parameters and return types
+- **Structured data extraction** from unstructured inputs
+- **Multi-modal outputs** combining text, code, and other formats
+
+```typescript
+// Example: Structured output for customer support
+interface SupportResponse {
+  classification: "technical" | "billing" | "general";
+  urgency: "low" | "medium" | "high";
+  suggestedActions: string[];
+  requiresEscalation: boolean;
+  followUpRequired: boolean;
+}
+```
+
+**Format Consistency** across all context elements creates a cohesive experience. When retrieval results, memory summaries, and tool outputs all follow consistent formatting patterns, AI models can process information more effectively and users can better understand system behavior.
+
+The key insight is that **communication format matters as much as communication content**. A short, descriptive error message will be far more useful than a massive JSON blob. Clear, consistent formatting reduces cognitive load for both AI models and human users, leading to better outcomes across the entire system.
+
+## Tools and Capabilities: Extending AI Beyond Information
+
+Context engineering extends far beyond information retrieval to include the tools and capabilities that AI systems need to accomplish tasks. As [LangChain emphasizes](https://blog.langchain.com/the-rise-of-context-engineering/), providing the right tools is just as important as providing the right information.
+
+**Tool Selection** becomes a critical aspect of context engineering. AI models can't accomplish complex tasks through information alone—they need the ability to take actions, retrieve additional data, and interact with external systems. The context engineering challenge is determining which tools to make available for each specific task or conversation.
 
 ```mermaid
 graph TD
-    A[User Interaction] --> B[Short-term Memory]
-    A --> C[Long-term Memory]
-    B --> D[Current Session Context]
-    C --> E[User Preferences]
-    C --> F[Historical Patterns]
-    D --> G[Response Generation]
-    E --> G
-    F --> G
-    G --> H[Update Memory]
-    H --> B
-    H --> C
+    A[User Request] --> B[Task Analysis]
+    B --> C[Required Capabilities]
+    C --> D[Tool Selection]
+    C --> E[Information Retrieval]
+    D --> F[Context Assembly]
+    E --> F
+    F --> G[AI Response with Actions]
+    G --> H[Tool Execution]
+    H --> I[Result Integration]
 ```
 
-**Short-term memory** handles the immediate conversation context. This includes recent messages, current task state, and temporary preferences. It's typically stored in the current session and discarded afterward.
+**Function Calling** has emerged as a fundamental pattern in modern AI applications. Rather than asking AI to generate code or instructions, systems provide structured function interfaces that models can invoke directly:
 
-**Long-term memory** captures persistent information about users, their preferences, successful interaction patterns, and learned behaviors. This is usually stored in vector databases or structured storage systems.
+```typescript
+// Example: E-commerce assistant with structured tools
+const tools = [
+  {
+    name: "search_products",
+    description: "Search for products in the catalog",
+    parameters: {
+      type: "object",
+      properties: {
+        query: { type: "string", description: "Search terms" },
+        category: { type: "string", enum: ["electronics", "clothing", "books"] },
+        price_range: { type: "object", properties: { min: { type: "number" }, max: { type: "number" } }}
+      }
+    }
+  },
+  {
+    name: "get_order_status", 
+    description: "Check the status of an existing order",
+    parameters: {
+      type: "object",
+      properties: {
+        order_id: { type: "string", description: "The order ID to check" }
+      }
+    }
+  }
+];
+```
 
-GitHub Copilot exemplifies sophisticated memory usage. It remembers your coding style, frequently used patterns, and project-specific conventions. Over time, its suggestions become increasingly tailored to your specific development approach.
+**Tool Format Design** significantly impacts AI performance. Well-designed tool interfaces with clear descriptions, appropriate parameter types, and intuitive naming conventions enable AI models to use them effectively. Poor tool design leads to misuse, errors, and frustrated users.
 
-The technical implementation of memory systems often involves:
+**Dynamic Tool Availability** allows context engineering systems to provide different tools based on user context, conversation state, or task requirements. A customer support AI might have access to refund tools for verified customers but not for anonymous users. A development assistant might provide debugging tools only when working with code.
 
-- **Vector storage** for semantic similarity search across historical interactions
-- **Structured databases** for explicit facts and preferences  
-- **Embedding strategies** that capture both content and context
-- **Retrieval strategies** that balance recency, relevance, and diversity
+The crucial insight is that **tools transform AI from information processors into action-taking agents**. Context engineering must consider not just what information to provide, but what capabilities the AI needs to successfully complete the user's actual goals.
 
-Memory systems face unique challenges around privacy, accuracy, and computational efficiency. Companies like [Anthropic](https://www.anthropic.com/) have pioneered techniques for [constitutional AI](https://arxiv.org/abs/2212.08073) that can maintain helpful memory while respecting user privacy and safety constraints.
+## Memory and State: The Evolution of Context
 
-The key insight is that memory transforms AI from a tool you use to a system that adapts to you. Instead of repeating context in every interaction, sophisticated memory systems learn what information is consistently relevant and surface it automatically.
+While RAG solves the problem of accessing external information and tools enable action-taking, modern AI applications also need sophisticated memory and state management to maintain coherent, evolving conversations and task progression. This represents one of the most complex aspects of context engineering.
+
+**Conversation State Management** goes beyond simple message history to track the evolving context of user interactions. Consider a technical support conversation that spans multiple issues, solution attempts, and follow-up questions. Effective state management captures not just what was said, but what was attempted, what worked, what failed, and what still needs attention.
+
+```mermaid
+graph TD
+    A[User Interaction] --> B[Immediate Context]
+    A --> C[Session State]
+    A --> D[User Profile]
+    B --> E[Short-term Memory]
+    C --> F[Task State]
+    D --> G[Long-term Memory]
+    E --> H[Context Assembly]
+    F --> H
+    G --> H
+    H --> I[AI Response]
+    I --> J[State Updates]
+    J --> C
+    J --> D
+```
+
+**Short-term memory** handles the immediate conversation context, including recent messages, current task state, user preferences expressed in the session, and temporary variables. This information is typically session-scoped and designed to maintain conversational flow and task continuity.
+
+**Long-term memory** captures persistent information about users, their preferences, successful interaction patterns, learned behaviors, and historical context that transcends individual conversations. This creates personalized experiences that improve over time.
+
+**Multi-layered State Tracking** becomes essential in complex applications. Different types of state require different management strategies:
+
+- **Conversation flow**: What topics have been discussed, what questions answered
+- **Task progression**: Steps completed, pending actions, blockers encountered  
+- **User context**: Preferences, expertise level, previous successful patterns
+- **System state**: Available tools, active integrations, operational constraints
+
+GitHub Copilot exemplifies sophisticated state management. It maintains awareness of your current file, project structure, recent changes, coding patterns, and even your broader development goals. This multi-layered context awareness enables increasingly relevant suggestions as your coding session progresses.
+
+**State Compression and Summarization** becomes necessary as conversations grow longer and context accumulates. Rather than maintaining full conversation histories, advanced systems create intelligent summaries that preserve essential context while managing token budgets:
+
+```typescript
+interface ConversationSummary {
+  userGoals: string[];
+  keyDecisions: string[];
+  remainingTasks: string[];
+  userPreferences: Record<string, any>;
+  contextualFacts: string[];
+  lastInteractionSummary: string;
+}
+```
+
+**Cross-session Continuity** allows AI systems to maintain context across separate interactions. When a user returns to continue a project or resume a conversation, effective context engineering can restore relevant state and continue where the previous session ended.
+
+The technical implementation involves sophisticated orchestration between multiple storage systems, retrieval strategies, and state update mechanisms. Companies use combinations of vector databases for semantic memory, structured databases for explicit facts, and caching systems for performance optimization.
+
+The key insight is that **memory transforms AI from tools you use into systems that evolve with you**. Instead of starting fresh each time, sophisticated memory systems learn what information is consistently relevant and automatically surface it, creating AI interactions that feel truly intelligent and adaptive.
 
 ## Context Optimization in Practice
 
@@ -186,12 +315,16 @@ The most successful implementations treat context optimization as an ongoing pro
 
 Context engineering represents a fundamental shift in how we build AI applications. We're moving from prompt-driven interactions to sophisticated information architectures that can dynamically adapt to user needs and task requirements.
 
-The implications extend far beyond current applications. As AI systems become more capable, the quality of context engineering will increasingly determine the difference between impressive demos and genuinely useful products. Companies that master context selection, memory management, and information optimization will build AI applications that feel intelligent and helpful rather than just powerful.
+The implications extend far beyond current applications. As AI systems become more capable, the quality of context engineering will increasingly determine the difference between impressive demos and genuinely useful products. Companies that master context selection, memory management, tool orchestration, and information optimization will build AI applications that feel intelligent and helpful rather than just powerful.
 
-For developers, this means that understanding context engineering is becoming as important as understanding traditional software architecture. The patterns and principles we've explored—RAG for dynamic retrieval, memory systems for persistence, and optimization techniques for production deployment—are becoming fundamental skills for AI application development.
+**The Emerging Discipline**: What started as an informal practice is crystallizing into a recognized engineering discipline. The [LangChain team](https://blog.langchain.com/the-rise-of-context-engineering/) and practitioners like [Dex Horthy](https://github.com/humanlayer/12-factor-agents) are formalizing patterns and principles that guide how we think about context systems. This isn't just about building better AI applications—it's about establishing the foundational practices for a new category of software engineering.
 
-The tools and frameworks are rapidly maturing. [LangChain](https://python.langchain.com/docs/), [Chroma](https://docs.trychroma.com/), [Pinecone](https://docs.pinecone.io/), and others are making sophisticated context engineering accessible to individual developers and small teams. Advanced architectures like [FlashAttention](https://arxiv.org/abs/2205.14135) and [Mamba](https://arxiv.org/abs/2312.00752) are pushing the boundaries of what's possible with long-context processing. What once required significant research and development investment is becoming standard practice.
+**Beyond Current Applications**: The patterns we've explored—dynamic retrieval, structured outputs, tool selection, memory management, and state tracking—are becoming fundamental skills for AI application development. As models become more capable, the bottleneck shifts from model limitations to context engineering effectiveness.
 
-As you start your own context engineering journey, remember that the goal isn't to build the most sophisticated system possible, but to build the system that best serves your users' needs. Start with simple RAG implementations, add memory capabilities as your application grows, and optimize for the specific constraints and requirements of your use case.
+**Tools and Accessibility**: The tooling ecosystem is rapidly maturing. [LangChain](https://python.langchain.com/docs/) and [LangGraph](https://github.com/langchain-ai/langgraph) for orchestration, [Chroma](https://docs.trychroma.com/) and [Pinecone](https://docs.pinecone.io/) for vector operations, frameworks like [Vercel AI SDK](https://sdk.vercel.ai/docs) for integration—what once required significant research investment is becoming accessible to individual developers and small teams.
 
-The art of information selection is ultimately about understanding what matters most in each moment and ensuring that your AI systems have access to that information. In a world of infinite data and limited attention, this skill becomes increasingly valuable—for both humans and the AI systems we build.
+**The Human Element**: Ultimately, context engineering is about understanding what humans need in each moment and ensuring AI systems have the context necessary to provide it. In a world of infinite data and limited attention, the ability to curate, structure, and orchestrate information becomes increasingly valuable—for both humans and the AI systems we build.
+
+As you start your own context engineering journey, remember that the goal isn't to build the most sophisticated system possible, but to build the system that best serves your users' needs. Start with simple RAG implementations, add memory capabilities as your application grows, incorporate appropriate tools for your domain, and optimize for the specific constraints and requirements of your use case.
+
+The art of information selection is ultimately about understanding what matters most in each moment and ensuring that your AI systems have access to that information, the tools to act on it, and the structure to communicate effectively. This holistic approach to context is what separates truly useful AI applications from impressive demos.
