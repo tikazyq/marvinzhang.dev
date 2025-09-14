@@ -162,3 +162,28 @@ vercel:
   label: Vercel
   permalink: /vercel
   description: Vercel 部署平台和工具
+
+systems-design:
+  label: 系统设计
+  permalink: /systems-design
+  description: 系统架构和设计模式
+
+prompt-engineering:
+  label: 提示工程
+  permalink: /prompt-engineering
+  description: 提示工程和AI交互设计
+
+open-source:
+  label: 开源
+  permalink: /open-source
+  description: 开源项目和社区
+
+publishing:
+  label: 发布
+  permalink: /publishing
+  description: 内容发布和管理
+
+web-crawler:
+  label: 网络爬虫
+  permalink: /web-crawler
+  description: 网络爬虫和数据抓取
