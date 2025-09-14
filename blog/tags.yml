@@ -162,3 +162,28 @@ vercel:
   label: Vercel
   permalink: /vercel
   description: Vercel deployment platform and tools
+
+systems-design:
+  label: Systems Design
+  permalink: /systems-design
+  description: System architecture and design patterns
+
+prompt-engineering:
+  label: Prompt Engineering
+  permalink: /prompt-engineering
+  description: Prompt engineering and AI interaction design
+
+open-source:
+  label: Open Source
+  permalink: /open-source
+  description: Open source projects and community
+
+publishing:
+  label: Publishing
+  permalink: /publishing
+  description: Content publishing and management
+
+web-crawler:
+  label: Web Crawler
+  permalink: /web-crawler
+  description: Web crawling and data scraping
