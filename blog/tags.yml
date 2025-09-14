@@ -187,3 +187,13 @@ web-crawler:
   label: Web Crawler
   permalink: /web-crawler
   description: Web crawling and data scraping
+
+rag:
+  label: RAG
+  permalink: /rag
+  description: Retrieval-Augmented Generation
+
+vector-search:
+  label: Vector Search
+  permalink: /vector-search
+  description: Vector databases and semantic search

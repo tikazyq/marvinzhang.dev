@@ -187,3 +187,13 @@ web-crawler:
   label: 网络爬虫
   permalink: /web-crawler
   description: 网络爬虫和数据抓取
+
+rag:
+  label: RAG
+  permalink: /rag
+  description: 检索增强生成
+
+vector-search:
+  label: 向量搜索
+  permalink: /vector-search
+  description: 向量数据库和语义搜索
