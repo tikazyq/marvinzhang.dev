@@ -197,3 +197,18 @@ vector-search:
   label: 向量搜索
   permalink: /vector-search
   description: 向量数据库和语义搜索
+
+productivity:
+  label: 生产力
+  permalink: /productivity
+  description: 开发者生产力和工作流优化
+
+development-tools:
+  label: 开发工具
+  permalink: /development-tools
+  description: 软件开发工具和实用程序
+
+workflow:
+  label: 工作流
+  permalink: /workflow
+  description: 开发工作流和流程
