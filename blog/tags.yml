@@ -197,3 +197,18 @@ vector-search:
   label: Vector Search
   permalink: /vector-search
   description: Vector databases and semantic search
+
+productivity:
+  label: Productivity
+  permalink: /productivity
+  description: Developer productivity and workflow optimization
+
+development-tools:
+  label: Development Tools
+  permalink: /development-tools
+  description: Tools and utilities for software development
+
+workflow:
+  label: Workflow
+  permalink: /workflow
+  description: Development workflows and processes
