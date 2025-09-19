@@ -114,22 +114,17 @@ Instead of a single overwhelming task like "implement multi-platform publishing,
 Each task references specific requirements and design decisions, creating traceability from implementation back to original intentions.
 
 ```mermaid
-gantt
+timeline
     title SDD Task Breakdown: Multi-Platform Publishing
-    dateFormat X
-    axisFormat %s
-
-    section Phase 1: Foundation
-    Platform Adapter Interface    :task1, 0, 3h
-    Content Transformation       :task2, after task1, 4h
-
-    section Phase 2: Core Features  
-    Platform Adapters            :task3, after task2, 4h
-    Retry & Error Handling       :task4, after task3, 3h
-
-    section Phase 3: User Interface
-    Platform Selection UI        :task5, after task4, 4h
-    Status Display              :task6, after task5, 3h
+    
+    Phase 1 Foundation : Platform Adapter Interface (3h)
+                      : Content Transformation (4h)
+    
+    Phase 2 Core Features : Platform Adapters (4h)
+                         : Retry & Error Handling (3h)
+    
+    Phase 3 User Interface : Platform Selection UI (4h)
+                          : Status Display (3h)
 ```
 
 :::info Task Sizing Principles
