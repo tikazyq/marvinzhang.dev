@@ -161,10 +161,10 @@ flowchart TD
     D4 --> E
     E --> F["✨ 完整功能"]
 
-    style B fill:#e1f5fe
-    style C fill:#f3e5f5
-    style D fill:#e8f5e8
-    style E fill:#fff3e0
+    style B fill:#2196f3,color:#fff
+    style C fill:#9c27b0,color:#fff
+    style D fill:#4caf50,color:#fff
+    style E fill:#ff9800,color:#fff
 ```
 
 ### SDD 与传统方法的不同
@@ -188,27 +188,35 @@ flowchart TD
 区别不仅仅在于规划——而在于决策 **何时** 做出。SDD 将艰难的思考推到开始，当你有最大灵活性和最少需要更改的代码时。
 
 ```mermaid
-flowchart LR
-    subgraph Traditional ["🔄 传统反应式开发"]
-        T1["📋 功能请求"] --> T2["💻 开始编码"]
-        T2 --> T3["❌ 遇到问题"]
-        T3 --> T4["🔍 研究解决方案"]
-        T4 --> T5["🏗️ 做架构决策"]
-        T5 --> T6["♻️ 重构现有代码"]
-        T6 --> T7["🔄 重复循环"]
-        T7 --> T3
-    end
-
-    subgraph SDD ["📐 规格驱动开发"]
-        S1["📋 功能请求"] --> S2["📝 需求阶段"]
-        S2 --> S3["🏗️ 设计阶段"]
-        S3 --> S4["📅 规划阶段"]
-        S4 --> S5["⚡ 实现"]
-        S5 --> S6["✅ 完成功能"]
-    end
-
-    style Traditional fill:#ffebee
-    style SDD fill:#e8f5e8
+flowchart TD
+    A["� 功能请求"] --> B{"选择方法"}
+    
+    B -->|传统方法| C["💻 开始编码"]
+    C --> D["❌ 遇到问题"]
+    D --> E["🔍 研究解决方案"]
+    E --> F["🏗️ 做架构决策"]
+    F --> G["♻️ 重构现有代码"]
+    G --> H["🔄 回到问题"]
+    H --> D
+    
+    B -->|SDD方法| I[" 需求阶段"]
+    I --> J["🏗️ 设计阶段"]
+    J --> K["📅 规划阶段"]
+    K --> L["⚡ 顺利实现"]
+    L --> M["✅ 完成功能"]
+    
+    style C fill:#ff5252,color:#fff
+    style D fill:#ff5252,color:#fff
+    style E fill:#ff5252,color:#fff
+    style F fill:#ff5252,color:#fff
+    style G fill:#ff5252,color:#fff
+    style H fill:#ff5252,color:#fff
+    
+    style I fill:#4caf50,color:#fff
+    style J fill:#4caf50,color:#fff
+    style K fill:#4caf50,color:#fff
+    style L fill:#4caf50,color:#fff
+    style M fill:#4caf50,color:#fff
 ```
 
 ### 解决常见的 SDD 误解
@@ -235,43 +243,12 @@ flowchart LR
 
 这种模式无休止地重复，因为 AI 缺乏系统性上下文来理解你真正在构建什么。
 
-```mermaid
-sequenceDiagram
-    participant D as 开发者
-    participant AI as AI 助手
-    
-    Note over D,AI: 传统 AI 交互模式
-    D->>AI: "我需要构建用户身份验证系统"
-    AI->>D: "这是基本的 JWT 实现"
-    D->>AI: "这不适用于我们的 OAuth 提供商"
-    AI->>D: "你使用什么提供商？"
-    D->>AI: "Google + GitHub + 企业 SAML"
-    AI->>D: "这是带有 OAuth 的版本..."
-    D->>AI: "仍然缺少角色管理"
-    AI->>D: "你需要什么角色？"
-    Note over D,AI: 6+ 次交换才建立上下文
-```
-
 使用 SDD，对话变得显著更加专注：
 
 **开发者**："基于项目文档中的需求和设计规格，实现任务 2.1：掘金和 CSDN 平台的平台特定适配器。"  
 **AI**："我理解。基于设计中定义的适配器接口和指定的身份验证需求，我将实现两个适配器，包括你建立的错误处理模式。"
 
 AI 可以专注于实现，因为思考工作已经系统性地完成了。
-
-```mermaid
-sequenceDiagram
-    participant D as 开发者  
-    participant AI as AI 助手
-    participant S as 规格文档
-    
-    Note over D,AI: SDD 增强的 AI 交互
-    D->>AI: "根据身份验证规格实现任务 2.3：OAuth 服务"
-    AI->>S: 访问需求和设计文档
-    S->>AI: 完整上下文：提供商、模式、约束
-    AI->>D: "使用适配器模式 + 错误处理实现 OAuth"
-    Note over D,AI: 1 次交换获得完整上下文
-```
 
 现在我们理解了 SDD 是什么以及它与反应性开发的不同，让我们探索这种方法论在实践中如何提供三个变革性好处。这些好处解决了使复杂开发感觉压倒性和低效的核心痛点。
 
