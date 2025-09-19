@@ -1,8 +1,8 @@
 ---
-applyTo: '**/*.mdx'
+applyTo: '**/*.md*'
 ---
 
-# MDX Blog Writing Guidelines (Section-by-Section)
+# Blog Writing Guidelines (Section-by-Section)
 
 ## Section-by-Section Writing Approach
 
