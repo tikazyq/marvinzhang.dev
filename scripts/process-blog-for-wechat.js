@@ -14,6 +14,7 @@ const glob = require('glob');
 const TEMP_DIR = '.temp/mermaid';
 const WECHAT_DIR = '.temp/wechat';
 const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
+const BASE_URL = 'https://marvinzhang.dev';
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -49,6 +50,25 @@ console.log(`📊 Found ${extractionIndex.totalDiagrams} diagrams to process`);
 // Process diagrams to images
 const mmdFiles = glob.sync(`${TEMP_DIR}/*.mmd`);
 const diagramMap = new Map(); // filename -> image path
+
+// Function to convert relative internal links to absolute URLs
+const convertRelativeLinks = (content, locale) => {
+  const baseUrl = locale === 'zh' ? `${BASE_URL}/zh` : BASE_URL;
+  
+  // Track conversions for logging
+  let conversionCount = 0;
+  
+  // Convert relative blog links like /blog/post-slug to absolute URLs
+  const converted = content.replace(
+    /\[([^\]]+)\]\(\/blog\/([^)]+)\)/g,
+    (match, linkText, postSlug) => {
+      conversionCount++;
+      return `[${linkText}](${baseUrl}/blog/${postSlug})`;
+    }
+  );
+  
+  return { content: converted, conversionsCount: conversionCount };
+};
 
 // Function to convert Docusaurus admonitions to standard Markdown
 const convertAdmonitions = (content) => {
@@ -147,10 +167,15 @@ BLOG_DIRS.forEach((blogDir) => {
     );
     
     // Convert Docusaurus admonitions to standard Markdown
-    const finalContent = convertAdmonitions(processedContent);
+    let finalContent = convertAdmonitions(processedContent);
+    
+    // Convert relative internal links to absolute URLs
+    const linkConversion = convertRelativeLinks(finalContent, locale);
+    finalContent = linkConversion.content;
+    const linksConverted = linkConversion.conversionsCount;
     
     // Add footer message with link to original blog post
-    const blogUrl = locale === 'zh' ? 'https://marvinzhang.dev/zh' : 'https://marvinzhang.dev';
+    const blogUrl = locale === 'zh' ? `${BASE_URL}/zh` : BASE_URL;
     const postUrl = `${blogUrl}/${frontmatter.slug || fileNameWithoutExt}`;
     
     const footerMessage = locale === 'zh' 
@@ -179,7 +204,8 @@ BLOG_DIRS.forEach((blogDir) => {
       title: frontmatter.title || fileNameWithoutExt,
       diagramsReplaced: diagramIndex,
       admonitionsConverted: admonitionCount,
-      truncateMarkersRemoved: truncateCount
+      truncateMarkersRemoved: truncateCount,
+      linksConverted: linksConverted
     });
     
     console.log(`✅ Created WeChat version: ${path.basename(outputPath)}`);
@@ -189,6 +215,9 @@ BLOG_DIRS.forEach((blogDir) => {
     }
     if (truncateCount > 0) {
       console.log(`   ✂️ Removed ${truncateCount} truncate marker(s)`);
+    }
+    if (linksConverted > 0) {
+      console.log(`   🔗 Converted ${linksConverted} relative link(s) to absolute URLs`);
     }
   });
 });
