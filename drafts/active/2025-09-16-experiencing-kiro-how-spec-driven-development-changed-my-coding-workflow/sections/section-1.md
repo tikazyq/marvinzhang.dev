@@ -1,6 +1,6 @@
 # Understanding Spec-Driven Development
 
-When most developers encounter a new feature request, the typical workflow looks something like this: read the requirement, maybe create a quick task list, fire up the IDE, and start coding. If problems arise—which they inevitably do—we Google solutions, ask ChatGPT for help, or dive into documentation. It's a reactive approach that feels natural and immediate, but it often leads to the exact problems I described in my ArtiPub experience.
+When most developers encounter a new feature request, the typical workflow looks something like this: read the requirement, maybe create a quick task list, fire up the IDE, and start coding. If problems arise—which they inevitably do—we Google solutions, ask ChatGPT for help, or dive into documentation. It's a reactive approach that feels natural and immediate, but it often leads to the exact problems that make complex development feel chaotic and unpredictable.
 
 **Spec-Driven Development** takes a fundamentally different approach. Instead of jumping directly into implementation, SDD insists on a structured specification phase that frontloads the thinking work. This isn't about creating heavyweight documentation or following rigid corporate processes—it's about applying systematic thinking to complex problems before they become complex code.
 

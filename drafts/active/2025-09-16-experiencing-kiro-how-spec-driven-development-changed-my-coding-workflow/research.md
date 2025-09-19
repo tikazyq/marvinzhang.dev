@@ -22,10 +22,10 @@
   - Quotes/Data: "upfront specification work reduces defects by 40-60% and significantly improves project success rates"
   - Date accessed: 2025-09-16
 
-- **Source 3**: ArtiPub Case Study (GitHub: crawlab-team/artipub)
-  - Key findings: 3,000+ stars, multi-platform publishing complexity, development challenges with scope creep
+- **Source 3**: Complex Systems Development Patterns
+  - Key findings: Multi-service integration complexity, authentication management across systems, data transformation pipelines
   - Relevance: Real-world example of complex feature development challenges that SDD addresses
-  - Quotes/Data: Multi-platform integration, authentication management, content transformation challenges
+  - Quotes/Data: Common integration patterns, authentication challenges, transformation complexity
   - Date accessed: 2025-09-16
 
 - **Source 4**: Standish Group CHAOS Report
@@ -47,11 +47,11 @@
 - AI development tool competitive analysis (ChatGPT, Copilot, Cursor, Claude)
 
 ### Code Examples Research
-- **Example 1**: ArtiPub Multi-platform Publishing Architecture
-  - Source: Real project development experience
+- **Example 1**: Complex System Integration Architecture
+  - Source: Common development patterns and challenges
   - Complexity: Advanced (multi-service integration)
   - Purpose: Demonstrates complexity that benefits from SDD approach
-  - Testing status: Deployed in production (3,000+ GitHub stars)
+  - Testing status: Representative of real-world integration challenges
 
 - **Example 2**: EARS Requirements Format
   - Source: EARS methodology documentation
