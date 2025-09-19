@@ -212,3 +212,18 @@ workflow:
   label: 工作流
   permalink: /workflow
   description: 开发工作流和流程
+
+methodology:
+  label: 方法论
+  permalink: /methodology
+  description: 软件开发方法论和方法
+
+requirements-engineering:
+  label: 需求工程
+  permalink: /requirements-engineering
+  description: 需求分析和规格说明技术
+
+development-workflow:
+  label: 开发工作流
+  permalink: /development-workflow
+  description: 软件开发过程的结构化方法

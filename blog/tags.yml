@@ -212,3 +212,18 @@ workflow:
   label: Workflow
   permalink: /workflow
   description: Development workflows and processes
+
+methodology:
+  label: Methodology
+  permalink: /methodology
+  description: Software development methodologies and approaches
+
+requirements-engineering:
+  label: Requirements Engineering
+  permalink: /requirements-engineering
+  description: Requirements analysis and specification techniques
+
+development-workflow:
+  label: Development Workflow
+  permalink: /development-workflow
+  description: Structured approaches to software development processes
