@@ -67,15 +67,22 @@ The first phase focuses on transforming vague feature requests into precise, act
 SDD employs structured formats like **EARS (Easy Approach to Requirements Syntax)** to create unambiguous requirements:
 
 ```markdown
-WHEN a user selects multiple publishing platforms 
-THEN the system SHALL publish to all selected platforms within 60 seconds
+🔄 WHEN a user selects multiple publishing platforms 
+✅ THEN the system SHALL publish to all selected platforms within 60 seconds
 
-IF a platform publish fails 
-THEN the system SHALL retry up to 3 times and log the error details
+⚠️ IF a platform publish fails 
+🔄 THEN the system SHALL retry up to 3 times and log the error details
 
-WHEN publishing completes 
-THEN the system SHALL display success/failure status for each platform
+🎯 WHEN publishing completes 
+📊 THEN the system SHALL display success/failure status for each platform
 ```
+
+:::tip EARS Syntax Components
+- **WHEN/IF**: Trigger conditions that define when behavior occurs
+- **THEN**: Expected system response with specific, measurable outcomes
+- **SHALL**: Mandatory requirements (vs. SHOULD for preferences)
+- **Specific metrics**: "60 seconds", "3 times" instead of "quickly", "several times"
+:::
 
 This format forces specificity. Instead of "the system should handle errors gracefully," you get concrete behavioral definitions that can be tested and validated. The result is a shared understanding of exactly what success looks like.
 
@@ -106,6 +113,65 @@ Instead of a single overwhelming task like "implement multi-platform publishing,
 
 Each task references specific requirements and design decisions, creating traceability from implementation back to original intentions.
 
+```mermaid
+gantt
+    title SDD Task Breakdown: Multi-Platform Publishing
+    dateFormat X
+    axisFormat %s
+
+    section Phase 1: Foundation
+    Platform Adapter Interface    :task1, 0, 3h
+    Content Transformation       :task2, after task1, 4h
+
+    section Phase 2: Core Features  
+    Platform Adapters            :task3, after task2, 4h
+    Retry & Error Handling       :task4, after task3, 3h
+
+    section Phase 3: User Interface
+    Platform Selection UI        :task5, after task4, 4h
+    Status Display              :task6, after task5, 3h
+```
+
+:::info Task Sizing Principles
+- **2-4 hour chunks**: Each task completable in a focused work session
+- **Clear dependencies**: Sequential tasks build on previous foundations  
+- **Incremental value**: Each completion moves toward working feature
+- **Testable outcomes**: Specific acceptance criteria for each task
+:::
+
+```mermaid
+flowchart TD
+    A["📋 Feature Request"] --> B["🔍 Phase 1: Requirements Engineering"]
+    B --> B1["📝 EARS Requirements"]
+    B --> B2["🎯 Success Criteria"]
+    B --> B3["⚠️ Edge Cases"]
+    B1 --> C["🏗️ Phase 2: Technical Design"]
+    B2 --> C
+    B3 --> C
+    C --> C1["🏛️ System Architecture"]
+    C --> C2["📊 Data Models"]
+    C --> C3["🔌 API Contracts"]
+    C --> C4["⚡ Integration Patterns"]
+    C1 --> D["📅 Phase 3: Implementation Planning"]
+    C2 --> D
+    C3 --> D
+    C4 --> D
+    D --> D1["✅ Task 1.1 (2-4h)"]
+    D --> D2["✅ Task 1.2 (2-4h)"]
+    D --> D3["✅ Task 2.1 (2-4h)"]
+    D --> D4["✅ Task 2.2 (2-4h)"]
+    D1 --> E["🚀 Incremental Implementation"]
+    D2 --> E
+    D3 --> E
+    D4 --> E
+    E --> F["✨ Complete Feature"]
+
+    style B fill:#e1f5fe
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style E fill:#fff3e0
+```
+
 ### How SDD Differs from Traditional Approaches
 
 The contrast with traditional development becomes clear when you examine what happens when problems arise:
@@ -125,6 +191,30 @@ The contrast with traditional development becomes clear when you examine what ha
 - Reference existing specifications for context instead of re-explaining
 
 The difference isn't just about planning—it's about **when** decisions get made. SDD pushes the hard thinking to the beginning when you have maximum flexibility and minimum code to change.
+
+```mermaid
+flowchart LR
+    subgraph Traditional ["🔄 Traditional Reactive Development"]
+        T1["📋 Feature Request"] --> T2["💻 Start Coding"]
+        T2 --> T3["❌ Hit Problem"]
+        T3 --> T4["🔍 Research Solution"]
+        T4 --> T5["🏗️ Make Architecture Decision"]
+        T5 --> T6["♻️ Refactor Existing Code"]
+        T6 --> T7["🔄 Repeat Cycle"]
+        T7 --> T3
+    end
+
+    subgraph SDD ["📐 Spec-Driven Development"]
+        S1["📋 Feature Request"] --> S2["📝 Requirements Phase"]
+        S2 --> S3["🏗️ Design Phase"]
+        S3 --> S4["📅 Planning Phase"]
+        S4 --> S5["⚡ Implementation"]
+        S5 --> S6["✅ Complete Feature"]
+    end
+
+    style Traditional fill:#ffebee
+    style SDD fill:#e8f5e8
+```
 
 ### Addressing Common SDD Misconceptions
 
@@ -161,37 +251,41 @@ Now that we understand what SDD is and how it differs from reactive development,
 
 ---
 
-## Systematic Planning and Control
+## Systematic Planning and Enhanced AI Collaboration
 
-You know that sinking feeling when a seemingly simple feature request turns into a development nightmare? I experienced this firsthand while working on a content management system. What started as "add support for publishing to multiple platforms simultaneously" gradually revealed layers of complexity I hadn't anticipated: handling different authentication methods, managing partial failures, supporting various content formats, and maintaining publication status across platforms.
+Every developer knows that sinking feeling when a "simple" feature request reveals unexpected complexity. What starts as "add multi-platform publishing support" gradually exposes layers of authentication methods, content transformation requirements, error handling strategies, and user experience considerations that weren't obvious upfront.
 
-Traditional development approaches tackle this complexity reactively—we dive into implementation and solve problems as they arise. But this reactive approach often leads to architectural decisions made under pressure, frequent scope adjustments, and the kind of development chaos that makes complex features feel overwhelming.
+Traditional development tackles this reactively—diving into implementation and solving problems as they arise. This leads to architectural decisions made under pressure, frequent scope adjustments, and the kind of development chaos that makes complex features feel overwhelming.
 
-Kiro's Spec-Driven Development methodology completely transforms this experience by frontloading the thinking work. Instead of discovering complexity during implementation, SDD reveals it during planning when it's easier and cheaper to address.
+Kiro's Spec-Driven Development methodology transforms this experience by frontloading complexity management and dramatically improving AI tool effectiveness through structured context.
 
-### The Problem: Feature Overwhelm and Uncontrolled Scope
+### The Problem: Reactive Chaos and Inefficient AI Interactions
 
-Before adopting SDD principles, my approach to complex features followed a predictable pattern of chaos. When I decided to add multi-platform publishing functionality, I jumped straight into researching APIs and started coding the first integration I understood.
+Before adopting SDD principles, my approach to complex features followed a predictable pattern of inefficiency:
 
-This reactive approach created several problems:
+**Feature Overwhelm**: Scope felt impossibly large. I bounced between implementing authentication, content transformation, and UI without clear direction. Each component seemed to require understanding every other component, creating analysis paralysis.
 
-**Feature Overwhelm**: The scope felt impossibly large. I bounced between implementing authentication for different platforms, handling content transformation, and building the user interface without a clear roadmap. Each component seemed to require understanding of every other component, creating analysis paralysis.
+**Hidden Dependencies**: Implementation revealed unexpected connections requiring expensive architectural changes. My initial authentication system assumed OAuth for all platforms, but some APIs used API keys. Error handling choices conflicted with established UX patterns.
 
-**Hidden Dependencies**: Implementation revealed unexpected connections. The content transformation system I built for one platform didn't work for another, forcing me to restructure core data models. The error handling approach I chose for API failures conflicted with the user experience patterns I'd established elsewhere.
+**Scope Creep**: As basic functionality emerged, obvious missing features became apparent. "Users need content preview." "We should support scheduling." "What about draft synchronization?" Each addition required reworking existing code.
 
-**Scope Creep**: As I implemented basic functionality, obvious missing features became apparent. "Oh, users will need to preview content before publishing." "We should support scheduling publications." "What about draft synchronization across platforms?" Each addition required reworking existing code.
+**AI Communication Friction**: Conversations with AI tools followed familiar but inefficient patterns:
 
-**Architectural Rework**: Decisions made early without complete context required expensive changes later. My initial authentication system assumed OAuth for all platforms, but some APIs used API keys. The publishing status tracking I built couldn't handle partial failures across multiple platforms.
+**Developer**: "I need multi-platform publishing."  
+**AI**: "Here's a basic HTTP request example."  
+**Developer**: "No, it's more complex. Each platform has different authentication..."  
+**AI**: "I see. Here's an OAuth implementation."  
+**Developer**: "That's not quite right either. Let me explain the full context..."
 
-This pattern of reactive problem-solving stretched what should have been a focused feature into months of architectural iteration. The code worked, but the development process felt chaotic and inefficient.
+This pattern repeats endlessly because AI lacks systematic context to understand what you're actually building.
 
-### My Experience with SDD's Systematic Approach
+### SDD's Systematic Solution
 
-When I started using Kiro for subsequent features, the difference was immediately apparent. Let me walk through how SDD transformed my approach to building a content analytics system.
+When I started using Kiro for subsequent features, the transformation was immediate. Here's how SDD changed my approach to building a content analytics system:
 
-#### Step 1: Systematic Requirements Discovery
+#### Structured Requirements Discovery
 
-Instead of jumping into implementation, I started with structured requirements using EARS format:
+Instead of jumping into implementation, I began with EARS-formatted requirements:
 
 ```markdown
 WHEN a user publishes an article to any platform
@@ -202,171 +296,120 @@ THEN the system SHALL continue tracking available platforms and retry failed con
 
 WHEN engagement data is collected
 THEN the system SHALL display metrics with timestamps indicating data freshness
-
-IF metric collection fails for any platform
-THEN the system SHALL display partial data with clear indicators of what's missing
 ```
 
-This structured approach forced me to think through edge cases upfront. The requirement about API unavailability made me realize I needed a robust retry system. The data freshness requirement highlighted the need for clear user feedback about metric reliability.
+This structured approach forced upfront consideration of edge cases. API unavailability requirements revealed the need for robust retry systems. Data freshness requirements highlighted user feedback needs.
 
-#### Step 2: Comprehensive Design Before Implementation  
+#### Comprehensive Design Before Implementation
 
-With clear requirements, I spent time designing the technical architecture:
+With clear requirements, I designed the technical architecture:
+- **Data normalization**: Standardizing metrics across platforms (views, likes, comments)
+- **Collection strategy**: Polling vs. webhooks vs. hybrid approaches
+- **Error handling**: Rate limiting, temporary failures, API changes
+- **Caching approach**: Performance optimization and cache invalidation
 
-- **Data Architecture**: How to normalize metrics from different platforms (views, likes, comments, shares) into comparable data
-- **Collection Strategy**: Whether to poll APIs, use webhooks where available, or implement hybrid approaches
-- **Error Handling**: How to gracefully handle rate limiting, temporary failures, and permanent API changes
-- **Caching Approach**: What data to cache for performance and how to handle cache invalidation
+This revealed architectural decisions that would have been expensive to change later, like different platforms reporting metrics at different granularities (hourly vs. daily).
 
-This design work revealed architectural decisions that would have been expensive to change later. For example, I realized that different platforms report metrics with different granularities (hourly vs. daily) and decided on a normalization strategy before building any data collection logic.
-
-#### Step 3: Incremental Task Breakdown
+#### Incremental Task Breakdown
 
 SDD transformed "build analytics system" into manageable tasks:
 
 1. **Task 1.1**: Create metric collection interface with error handling contracts (3 hours)
-2. **Task 1.2**: Implement data normalization service with platform-specific adapters (4 hours)  
-3. **Task 2.1**: Build retry mechanism with exponential backoff and rate limiting (3 hours)
-4. **Task 2.2**: Create analytics dashboard UI with loading states and error indicators (4 hours)
-5. **Task 3.1**: Add metric comparison features with data freshness indicators (3 hours)
+2. **Task 1.2**: Implement data normalization service with platform adapters (4 hours)
+3. **Task 2.1**: Build retry mechanism with exponential backoff (3 hours)
+4. **Task 2.2**: Create analytics dashboard UI with loading states (4 hours)
+5. **Task 3.1**: Add metric comparison with data freshness indicators (3 hours)
 
-Each task had clear acceptance criteria and built incrementally toward the complete feature. More importantly, each task was sized appropriately—I could complete one in a focused work session and see concrete progress.
+Each task had clear acceptance criteria and appropriate sizing—completable in focused work sessions with visible progress.
 
-### Concrete Results of Systematic Planning
+### Enhanced AI Collaboration Through Structured Context
 
-The difference in development experience was dramatic:
+The most dramatic improvement came from AI interactions. Instead of exploratory conversations, I could begin with comprehensive context:
 
-**Reduced Development Time**: What would have taken weeks of iterative development completed in about 20 hours of focused work. The systematic planning eliminated false starts and architectural rework.
+**Traditional AI Interaction**:
+```mermaid
+sequenceDiagram
+    participant D as Developer
+    participant AI as AI Assistant
+    
+    D->>AI: "I need user authentication"
+    AI->>D: "Here's basic JWT implementation"
+    D->>AI: "Doesn't work with OAuth providers"
+    AI->>D: "Which OAuth provider?"
+    D->>AI: "Google + GitHub + enterprise SAML"
+    AI->>D: "Here's OAuth version..."
+    Note over D,AI: 6+ exchanges to establish context
+```
 
-**Predictable Progress**: Clear task definitions made it easy to track progress and estimate completion. When stakeholders asked about timeline, I could give specific answers based on remaining tasks.
+**SDD-Enhanced AI Interaction**:
+```mermaid
+sequenceDiagram
+    participant D as Developer  
+    participant AI as AI Assistant
+    participant S as Specification Docs
+    
+    D->>AI: "Implement Task 2.3: OAuth service per auth spec"
+    AI->>S: Access requirements & design docs
+    S->>AI: Complete context: providers, patterns, constraints
+    AI->>D: "Implementing OAuth with adapter pattern + error handling"
+    Note over D,AI: 1 exchange with full context
+```
 
-**Scope Control**: When product requirements changed ("Can we also track social media mentions?"), I could evaluate the impact against existing specifications and provide realistic estimates for additional work.
+#### Practical AI Efficiency Examples
 
-**Code Quality**: Architectural decisions made with complete context resulted in cleaner, more maintainable code. The analytics system integrated smoothly with existing system components instead of requiring retrofit changes.
+**Database Design**:  
+- Traditional: "Help me design an e-commerce schema."  
+- SDD: "Implement the product catalog schema from section 3.2, including polymorphic product types and search indexing strategy."
 
-**Reduced Stress**: Perhaps most importantly, complex feature development stopped feeling overwhelming. The systematic approach provided confidence that I understood what I was building and how to get there.
+**API Development**:  
+- Traditional: "Create REST endpoints for orders."  
+- SDD: "Implement order management endpoints per API spec, including validation rules from section 4.1 and error formats from design doc."
 
-### When Systematic Planning Transforms Development
+**Frontend Components**:  
+- Traditional: "Build a user profile form."  
+- SDD: "Create ProfileEditForm per UI spec section 2.4, implementing design system validation patterns and accessibility requirements."
 
-Based on my experience, SDD's planning approach provides the most value for features with specific characteristics:
+### Concrete Results
 
-**Complex Integration Requirements**: Features that coordinate multiple systems or external APIs benefit enormously from upfront planning. The analytics system required integration with six different platform APIs, each with unique authentication and data formats.
+The systematic approach delivered measurable improvements:
 
-**User Experience Complexity**: Features with multiple interaction patterns or complex user workflows need systematic requirements analysis. Without structured planning, UX decisions get made reactively during implementation, often resulting in inconsistent patterns.
+**Reduced Development Time**: Analytics system completed in 20 focused hours vs. weeks of iterative development. Systematic planning eliminated false starts and architectural rework.
 
-**Technical Risk and Uncertainty**: Features involving unfamiliar technologies or integration patterns benefit from design phase research. Understanding architectural constraints before implementation prevents expensive pivot decisions.
+**Predictable Progress**: Clear task definitions enabled accurate progress tracking and timeline estimates. Stakeholder questions received specific answers based on remaining tasks.
 
-**Team Coordination Needs**: When multiple developers work on related features, shared specifications eliminate miscommunication and duplicated effort.
+**Scope Control**: When requirements changed ("Can we track social media mentions?"), impact evaluation against existing specifications provided realistic estimates for additional work.
 
-However, SDD isn't always the right approach. Simple bug fixes, well-understood features, and rapid prototyping often benefit from more direct implementation. The key is recognizing when complexity justifies the upfront planning investment.
+**AI Productivity**: Context-rich interactions eliminated hours of explanation. AI tools generated targeted solutions that fit existing patterns rather than generic implementations requiring modification.
 
-The systematic planning that SDD provides transforms complex features from overwhelming chaos into manageable, predictable work. But planning is only part of the story. The structured approach also dramatically improves how developers interact with AI tools, turning hours of context explanation into focused, productive implementation sessions.
+**Code Quality**: Architectural decisions made with complete context resulted in cleaner, more maintainable code that integrated smoothly with existing systems.
 
----
+### When This Approach Provides Maximum Value
 
-## Efficient AI Communication
+SDD's systematic planning and AI enhancement benefits are most significant for:
 
-Modern development increasingly relies on AI assistance for code generation, problem-solving, and architectural guidance. However, many developers experience frustration with AI tools that provide generic solutions, miss important context, or require extensive explanation to understand project-specific constraints. These communication inefficiencies often stem from the AI's lack of structured context about what developers are actually building.
+**Complex Integration Requirements**: Features coordinating multiple systems or external APIs. Analytics system integration with six platform APIs, each with unique authentication and data formats.
 
-Kiro's Spec-Driven Development methodology dramatically improves AI tool effectiveness by providing comprehensive, structured specifications that enable more targeted and productive interactions.
+**Team Collaboration**: Multi-developer projects where shared specifications eliminate miscommunication and provide consistent AI tool interactions.
 
-### The AI Communication Problem
+**Technical Risk and Uncertainty**: Features involving unfamiliar technologies where design phase research prevents expensive pivot decisions.
 
-Traditional AI-assisted development follows a familiar but inefficient pattern. Developers typically start conversations with broad requests like "help me build a user authentication system" or "create an API for managing inventory." The AI responds with generic implementations that may not fit the specific architectural constraints, business requirements, or technical context of the actual project.
+**AI-Heavy Development**: Teams extensively using AI assistance see substantial productivity improvements from structured context.
 
-This leads to iterative conversations where developers spend significant time explaining:
+However, SDD isn't always appropriate. Simple bug fixes, well-understood features, and rapid prototyping often benefit from more direct implementation. The key is recognizing when complexity justifies the upfront planning investment.
 
-- **Project Context**: What kind of system they're building and how this feature fits into the larger architecture
-- **Technical Constraints**: Existing technology choices, performance requirements, and integration points
-- **Business Requirements**: Specific behavior needed for the feature to meet actual user needs
-- **Edge Cases**: Error conditions and unusual scenarios that generic implementations don't address
+### Limitations to Consider
 
-A typical interaction might look like this:
+While SDD significantly improves both planning and AI interactions, important limitations exist:
 
-**Developer**: "I need to implement user authentication."  
-**AI**: "Here's a basic JWT implementation with login and registration."  
-**Developer**: "This doesn't work with our OAuth provider integration and doesn't handle our specific user roles."  
-**AI**: "I can modify it for OAuth. What provider are you using?"  
-**Developer**: "Google and GitHub, but we also need to support enterprise SAML for some customers."  
-**AI**: "Here's an updated version with OAuth. For SAML, you'll need..."
+**Learning Curve**: Teams need time to develop structured specification skills and adapt workflows.
 
-This pattern repeats across multiple interactions, with the AI gradually understanding the actual requirements through extensive back-and-forth communication.
+**Simple Task Overhead**: Creating detailed specifications for straightforward features can cost more time than implementation.
 
-### SDD's Context Advantage
+**Specification Quality Dependency**: AI assistance is only as good as underlying specifications. Poor requirements still result in suboptimal interactions.
 
-With Spec-Driven Development, AI interactions begin with comprehensive context. Instead of starting from scratch, the AI has immediate access to:
+**Visual Requirements Gap**: Current text-only approach limits applicability for UI-heavy projects requiring wireframes, mockups, and interaction prototypes.
 
-- **Detailed Requirements**: Precise specifications using formats like EARS that eliminate ambiguity
-- **Architectural Decisions**: Design documentation that explains technology choices and integration patterns
-- **Implementation Context**: Clear task definitions with specific acceptance criteria and dependencies
-
-This structured context transforms AI interactions from exploratory conversations into focused implementation sessions.
-
-Using the same authentication example, an SDD-enabled interaction might begin:
-
-**Developer**: "Implement Task 2.3 from the authentication specification: OAuth integration service with Google and GitHub providers, including the error handling patterns defined in the design document."  
-**AI**: "Based on the requirements and design specifications, I'll implement the OAuth service with the adapter pattern you've defined, including the specific error handling for provider failures and the user mapping logic for your existing user model."
-
-The AI can focus on implementation because the thinking work has been completed systematically during the specification phase.
-
-### Practical Examples of Improved Efficiency
-
-Consider several common development scenarios and how structured specifications improve AI assistance:
-
-#### Database Design
-**Traditional Approach**: "Help me design a database schema for an e-commerce system."  
-**SDD Approach**: "Implement the product catalog schema defined in section 3.2 of the design document, including the polymorphic product types and the indexing strategy for search performance."
-
-The AI can generate specific DDL statements rather than asking clarifying questions about product types, relationships, and performance requirements.
-
-#### API Development
-**Traditional Approach**: "Create REST endpoints for managing orders."  
-**SDD Approach**: "Implement the order management endpoints defined in the API specification, including the validation rules from requirements section 4.1 and the error response formats from the design document."
-
-The AI produces endpoints that match exact specifications rather than generic CRUD operations that require modification.
-
-#### Frontend Components
-**Traditional Approach**: "Build a form component for user profiles."  
-**SDD Approach**: "Create the ProfileEditForm component according to the UI specification in section 2.4, implementing the validation patterns and accessibility requirements defined in the design system."
-
-The AI generates components that fit established patterns rather than creating one-off implementations that need integration work.
-
-### Structured Context Benefits
-
-This systematic approach to AI communication provides several advantages:
-
-**Reduced Context Switching**: Developers spend less time explaining project background and more time reviewing implementation details.
-
-**Consistent Solutions**: AI-generated code follows established patterns and conventions because those patterns are explicitly documented in specifications.
-
-**Fewer Iterations**: Solutions more often match requirements on the first attempt because the AI has complete context upfront.
-
-**Better Integration**: Generated code fits existing architecture because architectural decisions are clearly documented and referenced.
-
-**Faster Onboarding**: New team members or AI tools can quickly understand project context through structured documentation rather than lengthy explanation sessions.
-
-### Limitations of AI Enhancement
-
-While SDD significantly improves AI tool effectiveness, it's important to understand the limitations:
-
-**Specification Quality Dependency**: AI assistance is only as good as the underlying specifications. Poorly written requirements or incomplete design documentation will still result in suboptimal AI interactions.
-
-**Complex Reasoning**: AI tools still struggle with complex architectural decisions that require deep understanding of trade-offs. SDD helps with implementation but doesn't replace human judgment for high-level design choices.
-
-**Domain-Specific Knowledge**: Specialized domains may require expertise that AI tools lack, even with good specifications. SDD provides better context but doesn't eliminate the need for domain knowledge.
-
-### When Structured AI Communication Provides Value
-
-SDD's approach to AI communication is most beneficial in certain scenarios:
-
-- **Complex Implementation**: Features with multiple integration points where context is crucial
-- **Team Consistency**: Projects where multiple developers use AI tools and need consistent patterns
-- **Legacy Integration**: Systems where new code must fit existing architectural patterns
-- **Compliance Requirements**: Features with specific regulatory or security requirements that must be precisely implemented
-
-However, for simple, standalone tasks or exploratory development, the overhead of creating comprehensive specifications may not justify the improved AI interactions.
-
-The structured context that SDD provides transforms AI tools from general-purpose assistants into specialized collaborators that understand your specific project context. But like any methodology, SDD has limitations that developers need to understand before adoption.
+The structured context that SDD provides transforms both development planning and AI collaboration, turning overwhelming complexity into manageable, predictable work while converting AI tools from general assistants into specialized collaborators that understand your specific project context.
 
 ---
 
