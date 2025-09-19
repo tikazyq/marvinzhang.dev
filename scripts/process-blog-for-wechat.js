@@ -165,8 +165,8 @@ BLOG_DIRS.forEach((blogDir) => {
     // Count truncate markers removed
     const truncateCount = (processedContent.match(/\{\/\*\s*truncate\s*\*\/\}/g) || []).length;
     
-    // Create WeChat-ready markdown
-    const wechatContent = matter.stringify(contentWithFooter, frontmatter);
+    // Create WeChat-ready markdown (without frontmatter)
+    const wechatContent = contentWithFooter;
     
     // Save to WeChat directory
     const outputPath = `${WECHAT_DIR}/${fileNameWithoutExt}-${locale}-wechat.md`;
