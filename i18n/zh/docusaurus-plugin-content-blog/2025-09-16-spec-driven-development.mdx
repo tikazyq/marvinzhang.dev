@@ -114,22 +114,17 @@ SDD 采用结构化格式，如 **EARS（简易需求语法方法）** 来创建
 每个任务都引用特定的需求和设计决策，创建从实现回到原始意图的可追溯性。
 
 ```mermaid
-gantt
+timeline
     title SDD 任务分解：多平台发布系统
-    dateFormat X
-    axisFormat %s
-
-    section 阶段1：基础设施
-    平台适配器接口    :task1, 0, 3h
-    内容转换服务     :task2, after task1, 4h
-
-    section 阶段2：核心功能  
-    平台适配器      :task3, after task2, 4h
-    重试和错误处理   :task4, after task3, 3h
-
-    section 阶段3：用户界面
-    平台选择界面    :task5, after task4, 4h
-    状态显示       :task6, after task5, 3h
+    
+    阶段1 基础设施 : 平台适配器接口 (3小时)
+                : 内容转换服务 (4小时)
+    
+    阶段2 核心功能 : 平台适配器 (4小时)
+                : 重试和错误处理 (3小时)
+    
+    阶段3 用户界面 : 平台选择界面 (4小时)
+                : 状态显示 (3小时)
 ```
 
 :::info 任务大小原则
