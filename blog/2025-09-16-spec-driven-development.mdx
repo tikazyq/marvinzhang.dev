@@ -161,10 +161,10 @@ flowchart TD
     D4 --> E
     E --> F["✨ Complete Feature"]
 
-    style B fill:#e1f5fe
-    style C fill:#f3e5f5
-    style D fill:#e8f5e8
-    style E fill:#fff3e0
+    style B fill:#2196f3,color:#fff
+    style C fill:#9c27b0,color:#fff
+    style D fill:#4caf50,color:#fff
+    style E fill:#ff9800,color:#fff
 ```
 
 ### How SDD Differs from Traditional Approaches
@@ -188,27 +188,35 @@ The contrast with traditional development becomes clear when you examine what ha
 The difference isn't just about planning—it's about **when** decisions get made. SDD pushes the hard thinking to the beginning when you have maximum flexibility and minimum code to change.
 
 ```mermaid
-flowchart LR
-    subgraph Traditional ["🔄 Traditional Reactive Development"]
-        T1["📋 Feature Request"] --> T2["💻 Start Coding"]
-        T2 --> T3["❌ Hit Problem"]
-        T3 --> T4["🔍 Research Solution"]
-        T4 --> T5["🏗️ Make Architecture Decision"]
-        T5 --> T6["♻️ Refactor Existing Code"]
-        T6 --> T7["🔄 Repeat Cycle"]
-        T7 --> T3
-    end
-
-    subgraph SDD ["📐 Spec-Driven Development"]
-        S1["📋 Feature Request"] --> S2["📝 Requirements Phase"]
-        S2 --> S3["🏗️ Design Phase"]
-        S3 --> S4["📅 Planning Phase"]
-        S4 --> S5["⚡ Implementation"]
-        S5 --> S6["✅ Complete Feature"]
-    end
-
-    style Traditional fill:#ffebee
-    style SDD fill:#e8f5e8
+flowchart TD
+    A["📋 Feature Request"] --> B{"Choose Approach"}
+    
+    B -->|Traditional| C["💻 Start Coding"]
+    C --> D["❌ Hit Problem"]
+    D --> E["🔍 Research Solution"]
+    E --> F["🏗️ Make Architecture Decision"]
+    F --> G["♻️ Refactor Existing Code"]
+    G --> H["🔄 Back to Problems"]
+    H --> D
+    
+    B -->|SDD| I[" Requirements Phase"]
+    I --> J["🏗️ Design Phase"]
+    J --> K["📅 Planning Phase"]
+    K --> L["⚡ Smooth Implementation"]
+    L --> M["✅ Complete Feature"]
+    
+    style C fill:#ff5252,color:#fff
+    style D fill:#ff5252,color:#fff
+    style E fill:#ff5252,color:#fff
+    style F fill:#ff5252,color:#fff
+    style G fill:#ff5252,color:#fff
+    style H fill:#ff5252,color:#fff
+    
+    style I fill:#4caf50,color:#fff
+    style J fill:#4caf50,color:#fff
+    style K fill:#4caf50,color:#fff
+    style L fill:#4caf50,color:#fff
+    style M fill:#4caf50,color:#fff
 ```
 
 ### Addressing Common SDD Misconceptions

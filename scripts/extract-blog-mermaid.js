@@ -12,7 +12,7 @@ const matter = require('gray-matter');
 
 const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 const TEMP_DIR = '.temp/mermaid';
-const DIAGRAM_PATTERN = /```mermaid\n([\s\S]*?)\n```/g;
+const DIAGRAM_PATTERN = /```mermaid\n([\s\S]*?)```/g;
 
 console.log('🔍 Extracting Mermaid diagrams from blog articles...');
 

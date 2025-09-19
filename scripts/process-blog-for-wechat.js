@@ -50,13 +50,45 @@ console.log(`📊 Found ${extractionIndex.totalDiagrams} diagrams to process`);
 const mmdFiles = glob.sync(`${TEMP_DIR}/*.mmd`);
 const diagramMap = new Map(); // filename -> image path
 
+// Function to convert Docusaurus admonitions to standard Markdown
+const convertAdmonitions = (content) => {
+  // Remove Docusaurus-specific truncate markers
+  let processed = content.replace(/\{\/\*\s*truncate\s*\*\/\}/g, '');
+  
+  // Convert :::tip, :::info, :::warning, :::danger, :::note, :::caution
+  processed = processed.replace(
+    /:::(tip|info|warning|danger|note|caution)(?:\s+(.+?))?\n([\s\S]*?)\n:::/g,
+    (match, type, title, body) => {
+      const emojis = {
+        tip: '💡',
+        info: 'ℹ️',
+        warning: '⚠️',
+        danger: '🚨',
+        note: '📝',
+        caution: '⚠️'
+      };
+      
+      const emoji = emojis[type] || '📌';
+      const heading = title ? `${emoji} **${title}**` : `${emoji} **${type.charAt(0).toUpperCase() + type.slice(1)}**`;
+      
+      // Convert to blockquote format for better WeChat compatibility
+      const lines = body.split('\n');
+      const quotedLines = lines.map(line => line.trim() ? `> ${line}` : '>').join('\n');
+      
+      return `${heading}\n\n${quotedLines}`;
+    }
+  );
+  
+  return processed;
+};
+
 mmdFiles.forEach((mmdFile) => {
   const fileName = path.basename(mmdFile, '.mmd');
   const outputImage = `${WECHAT_DIR}/images/${fileName}.png`;
   
   try {
     // Generate PNG with white background for WeChat
-    execSync(`mmdc -i "${mmdFile}" -o "${outputImage}" -t default -b white --outputFormat png`, {
+    execSync(`npx mmdc -i "${mmdFile}" -o "${outputImage}" -t default -b white --outputFormat png`, {
       stdio: 'pipe'
     });
     
@@ -86,7 +118,7 @@ BLOG_DIRS.forEach((blogDir) => {
     const { data: frontmatter, content: markdownContent } = matter(content);
     
     // Check if this file has mermaid diagrams
-    const hasMermaid = /```mermaid\n[\s\S]*?\n```/g.test(markdownContent);
+    const hasMermaid = /```mermaid\n[\s\S]*?```/g.test(markdownContent);
     
     if (!hasMermaid) return;
     
@@ -99,7 +131,7 @@ BLOG_DIRS.forEach((blogDir) => {
     // Replace mermaid blocks with image references
     let diagramIndex = 0;
     const processedContent = markdownContent.replace(
-      /```mermaid\n([\s\S]*?)\n```/g,
+      /```mermaid\n([\s\S]*?)```/g,
       (match, diagramContent) => {
         diagramIndex++;
         const diagramFileName = `${fileNameWithoutExt}-${locale}-${diagramIndex}`;
@@ -114,8 +146,27 @@ BLOG_DIRS.forEach((blogDir) => {
       }
     );
     
+    // Convert Docusaurus admonitions to standard Markdown
+    const finalContent = convertAdmonitions(processedContent);
+    
+    // Add footer message with link to original blog post
+    const blogUrl = locale === 'zh' ? 'https://marvinzhang.dev/zh' : 'https://marvinzhang.dev';
+    const postUrl = `${blogUrl}/${frontmatter.slug || fileNameWithoutExt}`;
+    
+    const footerMessage = locale === 'zh' 
+      ? `\n\n---\n\n📝 **本文同步发布于我的个人技术博客** [marvinzhang.dev](${postUrl})\n\n🔗 **完整文章链接：** ${postUrl}\n\n💬 **欢迎访问我的博客了解更多技术文章！**`
+      : `\n\n---\n\n📝 **Originally published on my personal blog** [marvinzhang.dev](${postUrl})\n\n🔗 **Full article link:** ${postUrl}\n\n💬 **Visit my blog for more tech articles!**`;
+    
+    const contentWithFooter = finalContent + footerMessage;
+    
+    // Count admonitions converted
+    const admonitionCount = (processedContent.match(/:::(tip|info|warning|danger|note|caution)/g) || []).length;
+    
+    // Count truncate markers removed
+    const truncateCount = (processedContent.match(/\{\/\*\s*truncate\s*\*\/\}/g) || []).length;
+    
     // Create WeChat-ready markdown
-    const wechatContent = matter.stringify(processedContent, frontmatter);
+    const wechatContent = matter.stringify(contentWithFooter, frontmatter);
     
     // Save to WeChat directory
     const outputPath = `${WECHAT_DIR}/${fileNameWithoutExt}-${locale}-wechat.md`;
@@ -126,11 +177,19 @@ BLOG_DIRS.forEach((blogDir) => {
       wechat: outputPath,
       locale,
       title: frontmatter.title || fileNameWithoutExt,
-      diagramsReplaced: diagramIndex
+      diagramsReplaced: diagramIndex,
+      admonitionsConverted: admonitionCount,
+      truncateMarkersRemoved: truncateCount
     });
     
     console.log(`✅ Created WeChat version: ${path.basename(outputPath)}`);
     console.log(`   📊 Replaced ${diagramIndex} diagram(s) with images`);
+    if (admonitionCount > 0) {
+      console.log(`   💡 Converted ${admonitionCount} admonition(s) to standard Markdown`);
+    }
+    if (truncateCount > 0) {
+      console.log(`   ✂️ Removed ${truncateCount} truncate marker(s)`);
+    }
   });
 });
 
