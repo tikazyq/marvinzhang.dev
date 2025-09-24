@@ -6,7 +6,7 @@ applyTo: '**/*.md*'
 
 ## Section-by-Section Writing Approach
 
-**CRITICAL**: Always write content in manageable sections to avoid response limits. Complete one section at a time and clearly indicate section boundaries.
+**CRITICAL**: Always write article content in manageable sections to avoid response limits. Write directly to the article file, completing one section at a time and clearly indicating section boundaries within the article.
 
 ### Section Planning Guidelines
 - **Introduction**: 500-800 words (hook + context + roadmap)
@@ -129,4 +129,5 @@ applyTo: '**/*.md*'
 **Word Count**: ~XXX words
 **Key Takeaway**: [Primary learning outcome]
 **Next Section Preview**: [What comes next and why]
+**Article Progress**: [Current completion status of full article]
 ```
