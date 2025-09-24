@@ -48,10 +48,6 @@ function createArticleWorkspace(title, date) {
   
   fs.mkdirSync(fullPath, { recursive: true });
   
-  // Create sections directory
-  const sectionsPath = path.join(fullPath, 'sections');
-  fs.mkdirSync(sectionsPath);
-  
   // Copy and customize templates
   const templates = ['research.md', 'outline.md', 'progress.md', 'notes.md'];
   
@@ -77,30 +73,29 @@ function createArticleWorkspace(title, date) {
     }
   });
   
-  // Create section placeholder files
-  const sectionFiles = [
-    'intro.md',
-    'section-1.md', 
-    'section-2.md',
-    'section-3.md',
-    'conclusion.md'
-  ];
-  
-  sectionFiles.forEach(section => {
-    const sectionPath = path.join(sectionsPath, section);
-    const placeholder = `# ${section.replace('.md', '').replace('-', ' ').toUpperCase()}
+  // Create article.md file
+  const articleContent = `# ${title}
 
-[Section content will be written here]
+[Article content will be written here section by section]
+
+## Introduction
+[Introduction section - 500-800 words]
+
+## Main Content Sections
+[Main sections - 600-1000 words each]
+
+## Conclusion
+[Conclusion section - 400-600 words]
 
 ---
 **Status**: Not Started
 **Word Count**: 0
 **Last Updated**: ${date}
+**Writing Progress**: Ready for Stage 3 (Writing)
 `;
-    fs.writeFileSync(sectionPath, placeholder);
-  });
   
-  console.log(`✅ Created sections/ directory with placeholder files`);
+  fs.writeFileSync(path.join(fullPath, 'article.md'), articleContent);
+  console.log(`✅ Created article.md file`);
   
   // Create initial frontmatter files
   const frontmatterEN = `---
@@ -113,7 +108,7 @@ date: ${date}
 
 # ${title}
 
-[Article content will be assembled here from sections/]
+[Article content will be assembled here from article.md]
 `;
 
   const frontmatterCN = `---
@@ -126,7 +121,7 @@ date: ${date}
 
 # ${title}
 
-[Article content will be assembled here from sections/]
+[Article content will be assembled here from article.md]
 `;
 
   fs.writeFileSync(path.join(fullPath, 'article-en.mdx'), frontmatterEN);
@@ -140,21 +135,16 @@ date: ${date}
   console.log(`   drafts/active/${workspaceDir}/`);
   console.log('   ├── research.md       # Research sources and findings');
   console.log('   ├── outline.md        # Article structure and plan');
+  console.log('   ├── article.md        # Complete article content');
   console.log('   ├── progress.md       # Writing progress tracking');
   console.log('   ├── notes.md          # Writing notes and ideas');
   console.log('   ├── article-en.mdx    # English version template');
-  console.log('   ├── article-cn.mdx    # Chinese version template');
-  console.log('   └── sections/         # Draft sections');
-  console.log('       ├── intro.md');
-  console.log('       ├── section-1.md');
-  console.log('       ├── section-2.md');
-  console.log('       ├── section-3.md');
-  console.log('       └── conclusion.md');
+  console.log('   └── article-cn.mdx    # Chinese version template');
   console.log('');
   console.log('📝 Next steps:');
   console.log('1. Start with research.md to gather sources');
   console.log('2. Create detailed outline in outline.md');
-  console.log('3. Begin writing sections incrementally');
+  console.log('3. Begin writing sections directly in article.md');
   console.log('4. Update progress.md after each section');
   console.log('5. Use notes.md for ideas and writing strategies');
 }
