@@ -47,8 +47,8 @@ pnpm run write-translations -l zh  # Generate translations
 - Quality gates: logical flow, balanced sections, unified narrative
 
 ### Stage 3: Writing ✍️
-- Create content section-by-section to avoid response limits
-- Draft in `drafts/active/YYYY-MM-DD-slug/sections/`
+- Write article content section-by-section to avoid response limits
+- Output directly to `drafts/active/YYYY-MM-DD-slug/article.md`
 - Quality gates: Marvin's voice, technical accuracy, engagement
 
 ### Stage 4: Refine 🔧
