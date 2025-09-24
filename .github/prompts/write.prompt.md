@@ -27,7 +27,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 ### Stage 3: Writing ✍️
 **Objective**: Create high-quality content section-by-section
 **Duration**: 3-6 AI interactions (one per section)
-**Key Deliverable**: Complete draft articles in both languages
+**Key Deliverable**: Complete article.md with all sections
 
 ### Stage 4: Refine 🔧
 **Objective**: Review, improve, and finalize articles based on quality standards
@@ -52,7 +52,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - **Research**: `drafts/active/YYYY-MM-DD-slug/research.md`
 - **Outline**: `drafts/active/YYYY-MM-DD-slug/outline.md`
 - **Progress**: `drafts/active/YYYY-MM-DD-slug/progress.md`
-- **Section Drafts**: `drafts/active/YYYY-MM-DD-slug/sections/`
+- **Article Draft**: `drafts/active/YYYY-MM-DD-slug/article.md`
 - **Notes**: `drafts/active/YYYY-MM-DD-slug/notes.md`
 - **Templates**: `drafts/active/YYYY-MM-DD-slug/article-en.mdx` & `article-cn.mdx`
 
@@ -227,7 +227,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - **Section-by-Section Excellence**: Each section provides standalone value
 
 ### Writing Approach
-**SECTION-BY-SECTION EXECUTION**: Write one complete section per AI interaction to avoid response limits and maintain quality focus.
+**SECTION-BY-SECTION EXECUTION**: Write one complete section per AI interaction directly to article.md to avoid response limits and maintain quality focus.
 
 #### Section Writing Process
 1. **Section Setup**
@@ -243,7 +243,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
    - Smooth transition setup for next section
 
 3. **Section Completion**
-   - Save draft to `sections/section-N.md`
+   - Add section directly to `article.md`
    - Update progress tracking
    - Validate against quality standards
    - Prepare context for next section
@@ -316,12 +316,13 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 ```markdown
 ## Section Complete: [Section Name]
 **Word Count**: ~XXX words
-**File Saved**: drafts/active/YYYY-MM-DD-slug/sections/[section-name].md
+**Added to**: drafts/active/YYYY-MM-DD-slug/article.md
 **Quality Validated**: ✅ Content ✅ Technical ✅ Style
 **Progress Updated**: [Stage completion status]
 **Context Preserved**: ✅ Research, outline, progress maintained
 
 **Next Section**: [What comes next and why]
+**Article Progress**: [Current completion status of full article]
 **Ready to Proceed**: Y/N
 ```
 
@@ -385,7 +386,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
    - Improve transitions
 
 2. **Final Assembly**
-   - Integrate all sections into final MDX
+   - Transform article.md into final MDX format
    - Add proper metadata and tags
    - Ensure bilingual consistency
    - Prepare for publication
@@ -460,16 +461,11 @@ Same structure with Chinese title and appropriate tags.
 drafts/active/YYYY-MM-DD-slug/
 ├── research.md          # Stage 1: Research findings and sources
 ├── outline.md           # Stage 2: Article structure and plan
+├── article.md           # Stage 3: Complete article content
 ├── progress.md          # Cross-stage: Progress tracking
 ├── notes.md             # Cross-stage: Ideas and observations
 ├── article-en.mdx       # Stage 4: Final English version
-├── article-cn.mdx       # Stage 4: Final Chinese version
-└── sections/            # Stage 3: Section drafts
-    ├── intro.md
-    ├── section-1.md
-    ├── section-2.md
-    ├── section-3.md
-    └── conclusion.md
+└── article-cn.mdx       # Stage 4: Final Chinese version
 ```
 
 ### Stage Workflow Instructions
