@@ -173,7 +173,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 
 ## Article Structure
 
-### Introduction (500-800 words)
+### Introduction (300-500 words)
 - **Hook**: [Compelling opening approach]
 - **Context**: [Industry relevance and timing]
 - **Value Proposition**: [What readers will gain]
@@ -192,7 +192,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 ### Section N: [Title] (600-1000 words)
 [Same structure as Section 1]
 
-### Conclusion (400-600 words)
+### Conclusion (250-400 words)
 - **Synthesis**: [How concepts connect]
 - **Key Takeaways**: [3-5 main points]
 - **Future Implications**: [Trends and evolution]
@@ -271,7 +271,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 
 ### Section Types and Standards
 
-#### Introduction Section (500-800 words)
+#### Introduction Section (300-500 words)
 - **Compelling Hook**: Statistics, quotes, or thought-provoking questions
 - **Industry Context**: Current state and relevance ("如今的前端开发...")
 - **Personal Connection**: Reader experience alignment ("如果你是一个...")
@@ -285,7 +285,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - **Visual-First**: Use Mermaid diagrams for flows/architectures and tables for all comparisons and options
 - **Transition Bridge**: Setup for next section ("接下来，我们将探讨...")
 
-#### Conclusion Section (400-600 words)
+#### Conclusion Section (250-400 words)
 - **Key Synthesis**: Connect individual concepts to bigger picture
 - **Trend Analysis**: Future implications and industry direction
 - **Actionable Takeaways**: Specific next steps for readers

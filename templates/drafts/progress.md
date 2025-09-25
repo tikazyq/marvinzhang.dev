@@ -21,11 +21,11 @@
 - **Notes**: [Any important observations]
 
 ### 🔄 Phase 2: Content Writing
-- [ ] Introduction (500-800 words)
+- [ ] Introduction (300-500 words)
 - [ ] Section 1 (600-1000 words)
 - [ ] Section 2 (600-1000 words)
 - [ ] Section 3 (600-1000 words)
-- [ ] Conclusion (400-600 words)
+- [ ] Conclusion (250-400 words)
 - **Current Section**: [Which section is in progress]
 - **Writing Agent**: [Who is currently writing]
 
@@ -42,7 +42,7 @@
 
 ### Introduction
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
-- **Word Count**: [current/target: 500-800]
+- **Word Count**: [current/target: 300-500]
 - **Last Updated**: [Date] by [Agent]
 - **File**: `blog/YYYY-MM-DD-slug.mdx`
 - **Quality Check**: [✅/❌/⏳]
@@ -77,7 +77,7 @@
 
 ### Conclusion
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
-- **Word Count**: [current/target: 400-600]
+- **Word Count**: [current/target: 250-400]
 - **Last Updated**: [Date] by [Agent]
 - **File**: `blog/YYYY-MM-DD-slug.mdx`
 - **Quality Check**: [✅/❌/⏳]
@@ -102,11 +102,14 @@
 ### Content Quality
 - [ ] Follows Marvin's established writing style
 - [ ] Technical accuracy verified
-- [ ] Code examples tested and working
+- [ ] Visual-first approach: Mermaid diagrams and tables used over code
+- [ ] Core concepts highlighted with callouts/first-mention emphasis
+- [ ] Inline references to official docs at first mention
+- [ ] Minimal code usage (≤10 lines when essential)
 - [ ] Appropriate depth for target audience
 - [ ] Smooth narrative flow and transitions
-- [ ] Engaging introduction with clear value proposition
-- [ ] Strong conclusion with actionable takeaways
+- [ ] Engaging introduction with clear value proposition (300-500 words)
+- [ ] Strong conclusion with actionable takeaways (250-400 words)
 
 ### Technical Implementation
 - [ ] Proper MDX formatting throughout

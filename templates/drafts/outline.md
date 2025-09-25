@@ -16,10 +16,12 @@
 - **Unique Angle**: [What makes this different from other articles]
 - **Reader Journey**: [How reader's understanding will progress]
 - **Practical Value**: [Concrete takeaways for readers]
+- **Visual-First Approach**: [How diagrams/tables will replace code explanations]
+- **Core Concepts Strategy**: [Key concepts to highlight and how]
 
 ## Article Structure
 
-### Introduction (500-800 words)
+### Introduction (300-500 words)
 - **Hook**: [Specific quote, statistic, or compelling question]
 - **Industry Context**: [Why this topic matters now - specific trends/events]
 - **Personal Connection**: [Reader experience angle - "如果你是..."]
@@ -69,7 +71,7 @@
 
 [Add more sections as needed - typically 3-5 main sections]
 
-### Conclusion (400-600 words)
+### Conclusion (250-400 words)
 - **Summary Strategy**: [How to recap key points without repetition]
 - **Key Points Recap**: [3-5 main takeaways from article]
 - **Future Outlook**: [Industry trends and implications]
@@ -79,9 +81,10 @@
 
 ## Writing Strategy Notes
 - **Complexity Progression**: [How technical difficulty increases]
-- **Code Example Strategy**: [Progression from simple to complex]
+- **Conceptual Strategy**: [How to explain through diagrams and analogies rather than code]
 - **Reader Engagement Plan**: [Specific interaction techniques]
 - **Marvin's Voice Elements**: [Signature style points to include]
+- **Visual Content Plan**: [Mermaid diagrams and tables to create]
 
 ## Technical Implementation Notes
 - **Code Testing Requirements**: [What needs to be verified]
@@ -97,11 +100,14 @@
 ## Review Criteria
 - [ ] Each section has clear, single focus
 - [ ] Progressive complexity maintained
-- [ ] Practical examples throughout
+- [ ] Visual-first approach (Mermaid/tables preferred over code)
+- [ ] Core concepts highlighted with callouts
+- [ ] Inline references to official docs at first mention
 - [ ] Smooth transitions between sections
-- [ ] Appropriate length for each section
+- [ ] Appropriate length for each section (Intro: 300-500, Conclusion: 250-400)
 - [ ] Marvin's voice and style considerations
 - [ ] Technical accuracy checkpoints identified
+- [ ] Minimal code usage (≤10 lines when essential)
 
 ## Outline Status
 - [ ] Structure finalized
