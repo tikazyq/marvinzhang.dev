@@ -36,6 +36,11 @@ pnpm run write-translations -l zh  # Generate translations
 
 **4-Stage Structured Approach** (see `.github/prompts/write.prompt.md` for full details)
 
+1. **Stage 1 – Research**: Confirm the topic’s value, collect authoritative sources, and fill `research.md` with validated insights.
+2. **Stage 2 – Outline**: Build a detailed section-by-section plan in `outline.md`, including word targets, visuals, and learning goals.
+3. **Stage 3 – Writing**: Draft each section directly in `blog/…` and `i18n/zh/…` with `draft: true`, following section length guidelines and highlighting core concepts.
+4. **Stage 4 – Refine**: Review for narrative flow, technical accuracy, and bilingual parity before flipping drafts to published status.
+
 ### Context File Management
 
 #### Article Workspace Setup (Automatic via Scaffold)
