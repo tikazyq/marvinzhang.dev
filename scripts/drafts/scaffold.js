@@ -130,8 +130,16 @@ draft: true
   console.log('   blog/YYYY-MM-DD-slug.mdx                  # English draft (draft: true)');
   console.log('   i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx  # Chinese draft (draft: true)');
   console.log('');
+  console.log('📝 Writing guidelines (updated):');
+  console.log('   • Introduction: 300-500 words (hook + context + roadmap)');
+  console.log('   • Main sections: 600-1000 words each');
+  console.log('   • Conclusion: 250-400 words (summary + takeaways)');
+  console.log('   • Visual-first: Use Mermaid diagrams and tables over code');
+  console.log('   • Core concepts: Highlight key ideas with callouts');
+  console.log('   • Inline references: Link to official docs at first mention');
+  console.log('');
   console.log('📝 Next steps:');
-  console.log('1. Start with research.md to gather sources');
+  console.log('1. Start with research.md to gather sources and plan visuals');
   console.log('2. Create detailed outline in outline.md');
   console.log('3. Write sections directly in blog/MDX with draft: true');
   console.log('4. Update progress.md after each section');

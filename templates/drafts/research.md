@@ -25,17 +25,32 @@
 ### Supporting Sources
 - [Additional sources with brief notes]
 
-### Code Examples Research
-- **Example 1**: [Description]
+### Visual Content Research
+- **Mermaid Diagram 1**: [Description]
+  - Type: [flowchart/sequence/state diagram]
+  - Purpose: [what process/concept it illustrates]
+  - Complexity: [number of nodes/steps]
+  
+- **Comparison Table 1**: [Description]
+  - Purpose: [what options/features it compares]
+  - Rows/columns: [estimated size]
+  
+### Code Examples Research (Minimal - Only When Essential)
+- **Micro-snippet 1**: [Description - ≤10 lines]
   - Source: [where found/created]
-  - Complexity: [beginner/intermediate/advanced]
-  - Purpose: [what it demonstrates]
-  - Testing status: [verified/needs testing]
+  - Purpose: [specific syntax or pattern demonstration]
+  - Justification: [why this cannot be explained with diagrams/text]
 
 ## Key Concepts Identified
-1. [Concept 1] - [brief explanation]
-2. [Concept 2] - [brief explanation]
-3. [Concept 3] - [brief explanation]
+1. **[Core Concept 1]** - [brief explanation + how to highlight]
+2. **[Core Concept 2]** - [brief explanation + how to highlight]
+3. **[Core Concept 3]** - [brief explanation + how to highlight]
+
+## Inline References to Plan
+- **[First Key Term]**: [Official documentation URL to link]
+- **[Technology/Framework]**: [Primary source URL]
+- **[Industry Standard]**: [RFC/specification URL]
+- **[Internal Connection]**: [Previous marvinzhang.dev article to reference]
 
 ## Industry Context
 - **Current trends**: [relevant developments]
@@ -59,7 +74,10 @@
 
 ## Research Status
 - [ ] Primary sources gathered
-- [ ] Code examples identified
+- [ ] Visual content opportunities identified (Mermaid diagrams, tables)
+- [ ] Core concepts defined for highlighting
+- [ ] Inline reference URLs collected
 - [ ] Industry context researched
 - [ ] Technical details verified
+- [ ] Minimal code examples justified (if any)
 - [ ] Ready for outline creation
