@@ -6,13 +6,13 @@
 - **Primary Language**: Bilingual (English/Chinese)
 - **Estimated Length**: 2800-3200 words
 - **Technical Complexity**: 4/5 (Requires understanding of LLM APIs, enterprise data systems, and application architecture)
-- **Focus**: LLM-based applications using both hosted APIs (Claude Sonnet 4, GPT-5, Gemini 2.5 Pro) and self-hosted models (DeepSeek-R1, QwQ, Gemma 3, Phi 4, etc.)
+- **Focus**: LLM-based applications using both hosted APIs (GPT-4o, Claude Sonnet 4, Gemini 2.5 Pro) and self-hosted models (DeepSeek-R1, QwQ, Gemma 3, Phi 4, etc.)
 
 ## Article Structure
 
 ### Introduction (400-500 words)
-- **Hook**: Start with the common scenario: teams building impressive Claude Sonnet 4-powered demos or self-hosted DeepSeek-R1 applications, then struggling for months to make them work reliably with real enterprise data
-- **Industry Context**: Whether you're using hosted APIs (Claude Sonnet 4, GPT-5, Gemini 2.5 Pro) or self-hosted models (DeepSeek-R1, QwQ, Gemma 3, Phi 4), the real challenge isn't model selection—it's feeding these models the right data at the right time
+- **Hook**: Start with the common scenario: teams building impressive GPT-4o-powered demos or self-hosted DeepSeek-R1 applications, then struggling for months to make them work reliably with real enterprise data
+- **Industry Context**: - **Industry Context**: Whether you're using hosted APIs (GPT-4o, Claude Sonnet 4, Gemini 2.5 Pro) or self-hosted models (DeepSeek-R1, QwQ, Gemma 3, Phi 4), the real challenge isn't model selection—it's feeding these models the right data at the right time
 - **Personal Angle**: Connect to reader's likely experience ("If you've ever tried to transform an impressive AI demo into a production system...")
 - **Value Proposition**: This article argues that successful enterprise LLM applications are built on robust data infrastructure, not just clever prompting or agent frameworks
 - **Clear Roadmap**: Preview specific topics: data accessibility challenges, tool use infrastructure, governance patterns, and production implementation strategies
@@ -26,7 +26,7 @@
   - **Tool Use Dependencies**: AI agents with function calling capabilities are only as good as the data they can access through tools
   - **The Retrieval Challenge**: RAG systems fail when underlying data is inconsistent, stale, or poorly structured
 - **3 Subsections Maximum**:
-  - **Context Window vs. Enterprise Knowledge**: Why you can't just stuff everything into prompts (applies to both Claude Sonnet 4 and self-hosted DeepSeek-R1)
+  - **Context Window vs. Enterprise Knowledge**: Why you can't just stuff everything into prompts (applies to both GPT-4o and self-hosted DeepSeek-R1)
   - **Tool Integration Reality**: Function calls that break because data sources are unreliable
   - **The RAG Data Quality Problem**: How poor data infrastructure makes retrieval-augmented generation unreliable
 - **Minimal Code Examples** (≤10 lines each):
@@ -46,7 +46,7 @@
   - **Context Management**: Strategies for maintaining relevant, fresh context across conversation turns and agent actions
   - **MCP and Data Integration**: How Model Context Protocol and similar standards can unify data access for LLM applications
 - **3 Subsections Maximum**:
-  - **Reliable Tool APIs**: Data contracts, error handling, and consistency for function calling (works for Claude Sonnet 4 functions and self-hosted model tools)
+    - **Reliable Tool APIs**: Data contracts, error handling, and consistency for function calling (works for GPT-4o functions and self-hosted model tools)
   - **Context Store Architecture**: Vector databases, semantic caching, and context retrieval patterns
   - **Unified Data Access**: MCP, GraphQL, and other patterns for consistent data access across tools
 - **Minimal Code Examples** (0-1 per section, ≤10 lines):
@@ -55,7 +55,7 @@
 - **Visual Aid**: Mermaid sequence diagram showing LLM → Tool → Data flow
 - **Table**: Comparison of data access patterns for different LLM deployment models
 - **Core Concept Highlight**: **LLM agents need data infrastructure designed for programmatic access, not just human consumption**
-- **Key Takeaway**: Successful tool use depends on data infrastructure reliability, regardless of whether you use Claude Sonnet 4 or self-hosted DeepSeek-R1
+- **Key Takeaway**: - **Key Takeaway**: Successful tool use depends on data infrastructure reliability, regardless of whether you use GPT-4o or self-hosted DeepSeek-R1
 - **Section Transition**: "But data infrastructure alone isn't enough—you need governance to ensure production reliability"
 
 ### Section 3: Production-Ready Data Governance for LLM Applications (700-900 words)
@@ -96,11 +96,11 @@
 - **Visual Aid**: Mermaid flowchart showing complete LLM application architecture with data infrastructure
 - **Table**: Technology stack comparison for different LLM deployment models
 - **Core Concept Highlight**: **Successful LLM applications are built on data infrastructure patterns, not just clever prompting**
-- **Key Takeaway**: Architecture patterns remain consistent whether using Claude Sonnet 4 APIs or self-hosted DeepSeek-R1—the data foundation matters most
+- **Key Takeaway**: - **Key Takeaway**: Architecture patterns remain consistent whether using GPT-4o APIs or self-hosted DeepSeek-R1—the data foundation matters most
 - **Section Transition**: "With these patterns in place, let's wrap up with next steps"
 
 ### Conclusion (300-400 words)
-- **Key Recap**: Summarize main points covered ("In summary, whether you're using Claude Sonnet 4 or self-hosted DeepSeek-R1...")
+- **Key Recap**: Summarize main points covered ("In summary, whether you're using GPT-4o or self-hosted DeepSeek-R1...")
   - LLM applications are constrained by data accessibility and quality, not model capabilities or hosting choice
   - Tool use, context management, and RAG all depend on robust data infrastructure
   - Production LLM applications require data governance designed for programmatic access
@@ -115,7 +115,7 @@
 - **Community Connection**: Encourage readers to share their experiences with LLM application data challenges
 
 ## Outline Status
-- [x] Structure updated to focus on LLM applications using both hosted APIs (Claude Sonnet 4, GPT-5, Gemini 2.5 Pro) and self-hosted models (DeepSeek-R1, QwQ, Gemma 3, Phi 4, etc.)
+- [x] Structure updated to focus on LLM applications using both hosted APIs (GPT-4o, Claude Sonnet 4, Gemini 2.5 Pro) and self-hosted models (DeepSeek-R1, QwQ, Gemma 3, Phi 4, etc.)
 - [x] Sections follow writing guidelines: proper word counts, single focus per section, progressive disclosure
 - [x] Each section includes: opening hooks, core concept highlights, visual aids (Mermaid/tables), minimal code examples
 - [x] Topics include tool use, context management, MCP, RAG, and function calling with data infrastructure focus
