@@ -103,20 +103,16 @@ date: 2024-01-15
 
 这个统一的入口点通常表现为数据目录或数据门户，它提供了整个组织数据资产的单一视图。开发者和数据科学家可以通过这个入口点发现可用的数据集，了解数据质量和血缘关系，申请访问权限，并通过标准化的API或查询接口获取数据。
 
-以下是这在实践中如何工作的实际例子：
+以下对比可以更直观地看到统一入口带来的体验差异：
 
-```python
-# 传统方法：为每个源自定义数据访问
-sales_data = connect_to_salesforce().query("SELECT * FROM opportunities")
-web_data = elasticsearch_client.search(index="user_events", body=query)
-crm_data = postgres_connection.execute("SELECT * FROM customers")
+| 没有统一入口时 | 拥有面向AI的统一入口后 |
+| --- | --- |
+| 工程师需要逐个对接 Salesforce、Zendesk、Confluence 等系统。 | 团队在 AI 数据目录里浏览 `customer.profiles`、`support.interactions`、`knowledge.articles`，几次点击即可申请访问。 |
+| 每个集成都要单独处理认证、限流、数据模型和错误处理。 | 一个令牌就能调用统一的查询语义、过滤方式与配额控制。 |
+| 为 AI 代理准备上下文必须手动拼接 CSV、REST 返回或脚本输出。 | 数据产品直接提供嵌入向量、语义元数据、实时流等 AI 友好格式，并声明新鲜度与质量指标。 |
+| 监控完全是事后补救——只有发生事故才发现问题。 | 平台原生内置使用分析、血缘视图和质量告警，异常能在代理失控之前被捕捉。 |
 
-# 数据即产品方法：统一访问层
-catalog = DataCatalog(auth_token=token)
-sales_data = catalog.get_dataset("sales.opportunities").query(filters)
-web_data = catalog.get_dataset("digital.user_events").query(filters)
-crm_data = catalog.get_dataset("customer.profiles").query(filters)
-```
+可预期的体验才是关键：无论数据归属哪个系统，AI 团队获取数据的路径都一致、透明。
 
 统一访问层自动处理身份验证、数据格式标准化、质量验证和使用跟踪。底层数据仍然可以存储在针对其特定用例优化的专门系统中，但消费者与一致的接口交互，该接口抽象了多个数据源的复杂性。
 
@@ -126,30 +122,14 @@ crm_data = catalog.get_dataset("customer.profiles").query(filters)
 
 这意味着实施在数据流经你的系统时持续运行的自动化数据质量检查。这些检查超越了简单的模式验证，包括业务逻辑验证、统计异常检测和相关数据集之间的一致性检查。
 
-```yaml
-# 数据质量规范示例
-quality_checks:
-  - name: "sales_completeness"
-    type: "completeness"
-    column: "revenue"
-    threshold: 0.95
-    
-  - name: "date_freshness"
-    type: "freshness"
-    column: "created_date"
-    max_age_hours: 24
-    
-  - name: "revenue_distribution"
-    type: "statistical"
-    column: "revenue"
-    check: "z_score"
-    threshold: 3.0
-    
-  - name: "referential_integrity"
-    type: "consistency"
-    foreign_key: "customer_id"
-    reference_table: "customers"
-```
+| 质量护栏 | 关注的内容 | 面向 AI 的标准 |
+| --- | --- | --- |
+| 销售数据完整度 | 收入、客户、渠道等关键字段是否齐全 | ≥ 95% 记录须完整，避免代理基于不完整订单下结论。 |
+| 数据新鲜度 | 数据从产生到进入数据产品的延迟 | 控制在 24 小时内，帮助模型及时感知业务变化。 |
+| 收入分布稳定性 | 是否存在异常尖峰或异常低谷 | 使用 Z 分数限制在 ±3 以内，防止训练被噪声放大。 |
+| 关联一致性 | 外键是否在客户主数据中存在 | ≥ 99% 匹配率，确保跨系统指向同一客户画像。 |
+
+以表格呈现守护项，让数据产品团队和 AI 团队都能第一时间看懂承诺与差距。
 
 但质量保证超越了技术验证。它还包括维护全面的血缘跟踪，这样你就可以理解上游系统的变化如何影响下游消费者。当检测到数据质量问题时，你需要能够快速识别哪些模型、报告或应用程序可能受到影响并与其所有者沟通。
 
@@ -185,30 +165,14 @@ quality_checks:
 
 在实践中，这意味着销售团队负责维护客户机会数据产品，市场团队负责营销活动效果数据产品，而产品团队负责用户行为和产品使用数据产品。每个团队都深度了解自己领域的数据语义、质量要求和业务规则，但所有团队都遵循相同的元数据标准、访问协议和质量框架。
 
-以下是这对于电商公司在实践中可能的样子：
+以下是这在实践中可能的样子：
 
-```yaml
-# 域：客户体验
-data_products:
-  - name: "customer_journey_events"
-    owner: "customer_experience_team"
-    description: "来自网络和移动端的点击流和交互数据"
-    schema_version: "v2.1"
-    quality_sla: "99.5%完整性，<2小时延迟"
-    access_patterns:
-      - real_time_stream: "kafka://customer-events"
-      - batch_export: "s3://data-products/customer-journey/"
-      - query_interface: "https://api.data.company.com/customer-journey"
+| 领域 | 数据产品 | 负责团队 | 面向 AI 的亮点 | 对外承诺 |
+| --- | --- | --- | --- | --- |
+| 客户体验 | `customer_journey_events` | 客户体验平台小组 | 内置意图嵌入、语义标签，并保证 30 秒内可用。 | 提供 Kafka 实时流、搜索 API 以及夜间批量导出。 |
+| 销售运营 | `opportunity_pipeline` | 收入运营团队 | 输出成交概率、机会健康度，实时同步营销归因和客户旅程。 | 同一入口即可浏览血缘、申请访问，并查看依赖关系。 |
 
-# 域：销售运营
-data_products:
-  - name: "opportunity_pipeline"
-    owner: "sales_operations_team"
-    description: "销售机会、预测和转换指标"
-    schema_version: "v1.3"
-    quality_sla: "100%完整性，<1小时延迟"
-    dependencies: ["customer_journey_events", "marketing_attribution"]
-```
+通过这种表格呈现，数据产品的所有权、能力和服务承诺一目了然，跨域协作更顺畅。
 
 当构建需要关联跨域数据的AI应用程序时，这种方法的力量变得明显。AI团队不需要理解每个源系统的复杂性，而是可以通过标准化接口消费定义良好的数据产品。域团队维护数据质量和语义正确性的问责制，而AI团队可以专注于提取洞察和构建模型。
 
@@ -222,48 +186,23 @@ data_products:
 
 特征存储通过提供统一的特征定义、计算和服务基础设施来解决这些问题。数据科学家可以定义一次特征，然后在训练和推理环境中一致地使用它。团队可以发现和重用其他团队创建的特征，促进整个组织的ML工作协作。
 
-```python
-# 使用特征存储的特征定义
-from feast import FeatureStore, Entity, FeatureView, Field
-from feast.types import Float64, Int64
-
-# 定义客户实体
-customer = Entity(name="customer_id", value_type=ValueType.INT64)
-
-# 为客户终身价值特征定义特征视图
-customer_ltv_features = FeatureView(
-    name="customer_ltv_features",
-    entities=[customer],
-    schema=[
-        Field(name="total_spent_30d", dtype=Float64),
-        Field(name="order_frequency_30d", dtype=Float64),
-        Field(name="avg_order_value_30d", dtype=Float64),
-        Field(name="predicted_churn_score", dtype=Float64),
-    ],
-    source=batch_source,  # 指向你的数据仓库
-    ttl=timedelta(days=7),
-)
-
-# 在训练管道中使用
-store = FeatureStore(".")
-training_data = store.get_historical_features(
-    entity_df=customer_orders_df,
-    features=[
-        "customer_ltv_features:total_spent_30d",
-        "customer_ltv_features:order_frequency_30d",
-        "customer_ltv_features:predicted_churn_score",
-    ],
-).to_df()
-
-# 在实时推理中使用
-online_features = store.get_online_features(
-    features=[
-        "customer_ltv_features:total_spent_30d",
-        "customer_ltv_features:predicted_churn_score",
-    ],
-    entity_rows=[{"customer_id": 12345}],
-).to_dict()
+```mermaid
+flowchart TD
+    AgentQuery["代理提问 + 业务上下文"] --> SemanticSearch["向量索引语义检索"]
+    SemanticSearch --> RealTimeSignals["抓取库存、价格、服务级别等实时信号"]
+    SemanticSearch --> HistoricalCases["回放类似案例与处理流程"]
+    RealTimeSignals --> ContextBundle["组装成可执行的上下文包"]
+    HistoricalCases --> ContextBundle
+    ContextBundle --> ContinuousLearning["记录结果，更新嵌入与策略"]
 ```
+
+现代的数据服务层更像一位调度者：
+
+1. **识别意图**：向量索引把自然语言查询映射到多域语义空间。
+2. **同步当下**：实时连接填充库存、价格、合规限额等最新业务信号。
+3. **借鉴经验**：相似案例搜索复用专家或代理曾经的成功路径。
+4. **打包交付**：平台返回面向人和机器的上下文、建议与置信度提示。
+5. **持续学习**：每次交互都会刷新嵌入、剧本和防护栏，让下一次更聪明。
 
 特征存储还为ML运营提供关键能力，包括特征版本控制、血缘跟踪和监控。当模型在生产中的性能下降时，你可以快速追踪哪些特征可能引起问题，并理解这些特征随时间如何变化。
 
@@ -283,39 +222,15 @@ online_features = store.get_online_features(
 
 当这些组件协同工作时，它们创建了一个强大的数据基础设施，能够支持复杂的AI用例。数据科学家可以快速发现相关数据，理解其质量和血缘关系，通过统一的接口访问数据，并监控其使用对下游系统的影响。
 
-以下是这在实践中可能如何工作的例子：
+以下案例展示了同一个平台服务不同用户群体时的体验：
 
-```python
-# 统一数据平台交互
-from company_data_platform import DataPlatform
+| 使用者 | 平台展示的内容 | 体验的改变 |
+| --- | --- | --- |
+| 数据分析师 | 经过策划的数据集、示例笔记本、新鲜度标识和同事的使用笔记。 | 客户满意度分析从数周缩短到数小时，并且全程保留合规追溯。 |
+| AI 代理 | 流式数据、语义嵌入、访问策略和限流规则打包在同一个上下文 API 中。 | 代理一次调用即可拿到结构化事实、向量检索入口和执行约束，安全运行不走偏。 |
+| 人机协作团队 | 共享工作区同步展示分析师的切片、代理的推理链路，以及决策日志。 | 人与 AI 对同一份真相协同：人类审阅调优，代理执行重复检查，效率与透明度双赢。 |
 
-platform = DataPlatform(auth_token=get_token())
-
-# 发现相关数据集
-datasets = platform.search_datasets(
-    query="客户行为",
-    domains=["营销", "产品"],
-    quality_score_min=8.0,
-    freshness_max_hours=24
-)
-
-# 理解数据血缘和影响
-lineage = platform.get_lineage("customer_behavior_events")
-downstream_impact = platform.analyze_impact(
-    dataset="customer_behavior_events",
-    proposed_changes=["add_column: user_segment"]
-)
-
-# 通过统一接口访问数据
-data = platform.get_data(
-    datasets=["customer_behavior_events", "product_catalog"],
-    join_keys=["product_id"],
-    filters={"date_range": "last_30_days"},
-    format="pandas"
-)
-```
-
-统一平台处理从多个底层系统访问数据的复杂性，应用适当的安全控制，记录治理目的的使用，并确保跨不同来源的一致数据格式。
+当设计从“系统对系统”转向“场景对角色”，平台更容易围绕业务成果而不是底层管道来衡量成功。
 
 ### 集成模式：让一切协同工作
 

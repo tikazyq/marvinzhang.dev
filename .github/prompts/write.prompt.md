@@ -10,7 +10,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 
 **STAGE-BASED APPROACH**: Each stage has distinct objectives, deliverables, and quality gates. Complete one stage fully before proceeding to the next.
 
-**CONTEXT MANAGEMENT**: Use persistent files in `drafts/active/YYYY-MM-DD-slug/` to store all work products. This enables seamless handoffs between stages and different AI agents.
+**CONTEXT MANAGEMENT**: Use persistent files in `drafts/YYYY-MM-DD-slug/` to store all work products. Move the whole folder to `drafts/archive/` after publication.
 
 ## Stage Overview
 
@@ -27,7 +27,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 ### Stage 3: Writing ✍️
 **Objective**: Create high-quality content section-by-section
 **Duration**: 3-6 AI interactions (one per section)
-**Key Deliverable**: Complete article.md with all sections
+**Key Deliverable**: Complete article.mdx (English) with all sections
 
 ### Stage 4: Refine 🔧
 **Objective**: Review, improve, and finalize articles based on quality standards
@@ -49,12 +49,11 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - **Refine Stage**: Draft content, specific feedback areas, quality concerns
 
 **Context Files (Auto-created by scaffold):**
-- **Research**: `drafts/active/YYYY-MM-DD-slug/research.md`
-- **Outline**: `drafts/active/YYYY-MM-DD-slug/outline.md`
-- **Progress**: `drafts/active/YYYY-MM-DD-slug/progress.md`
-- **Article Draft**: `drafts/active/YYYY-MM-DD-slug/article.md`
-- **Notes**: `drafts/active/YYYY-MM-DD-slug/notes.md`
-- **Templates**: `drafts/active/YYYY-MM-DD-slug/article-en.mdx` & `article-cn.mdx`
+- **Research**: `drafts/YYYY-MM-DD-slug/research.md`
+- **Outline**: `drafts/YYYY-MM-DD-slug/outline.md`
+- **Progress**: `drafts/YYYY-MM-DD-slug/progress.md`
+- **English Draft**: `drafts/YYYY-MM-DD-slug/article.mdx`
+- **Chinese Draft**: `drafts/YYYY-MM-DD-slug/article-zh.mdx`
 
 ---
 
@@ -227,7 +226,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - **Section-by-Section Excellence**: Each section provides standalone value
 
 ### Writing Approach
-**SECTION-BY-SECTION EXECUTION**: Write one complete section per AI interaction directly to article.md to avoid response limits and maintain quality focus.
+**SECTION-BY-SECTION EXECUTION**: Write one complete section per AI interaction directly to article.mdx to avoid response limits and maintain quality focus.
 
 #### Section Writing Process
 1. **Section Setup**
@@ -243,7 +242,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
    - Smooth transition setup for next section
 
 3. **Section Completion**
-   - Add section directly to `article.md`
+   - Add section directly to `article.mdx`
    - Update progress tracking
    - Validate against quality standards
    - Prepare context for next section
@@ -316,7 +315,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 ```markdown
 ## Section Complete: [Section Name]
 **Word Count**: ~XXX words
-**Added to**: drafts/active/YYYY-MM-DD-slug/article.md
+**Added to**: drafts/YYYY-MM-DD-slug/article.mdx
 **Quality Validated**: ✅ Content ✅ Technical ✅ Style
 **Progress Updated**: [Stage completion status]
 **Context Preserved**: ✅ Research, outline, progress maintained
@@ -386,7 +385,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
    - Improve transitions
 
 2. **Final Assembly**
-   - Transform article.md into final MDX format
+   - Polish `article.mdx` and translate to `article-zh.mdx`
    - Add proper metadata and tags
    - Ensure bilingual consistency
    - Prepare for publication
@@ -458,20 +457,18 @@ Same structure with Chinese title and appropriate tags.
 
 #### Article Workspace Setup (Automatic via Scaffold)
 ```bash
-drafts/active/YYYY-MM-DD-slug/
+drafts/YYYY-MM-DD-slug/
 ├── research.md          # Stage 1: Research findings and sources
 ├── outline.md           # Stage 2: Article structure and plan
-├── article.md           # Stage 3: Complete article content
-├── progress.md          # Cross-stage: Progress tracking
-├── notes.md             # Cross-stage: Ideas and observations
-├── article-en.mdx       # Stage 4: Final English version
-└── article-cn.mdx       # Stage 4: Final Chinese version
+├── article.mdx          # Stage 3: English article draft (authoritative)
+├── article-zh.mdx       # Stage 4: Chinese translation draft
+└── progress.md          # Cross-stage: Progress tracking
 ```
 
 ### Stage Workflow Instructions
 
 #### Stage Initialization
-1. **Create workspace**: Use `node drafts/scripts/scaffold.js "title" "YYYY-MM-DD"`
+1. **Create workspace**: Use `node scripts/drafts/scaffold.js "title" "YYYY-MM-DD"`
 2. **Set stage context**: Update `progress.md` with current stage
 3. **Load previous work**: Review existing context files if continuing
 4. **Validate readiness**: Ensure prerequisites from previous stages
