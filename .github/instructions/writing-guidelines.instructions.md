@@ -24,8 +24,8 @@ applyTo: '**/*.md*'
 ### Main Content Section Organization
 - **One major concept per section**: Focus deeply rather than covering multiple topics
 - **Progressive disclosure**: Build from basic concepts to advanced applications within each section
-- **Practical examples**: Include concrete code samples and real-world scenarios
-- **Visual breaks**: Use subheadings (H3), lists, and code blocks to break up text
+- **Conceptual examples**: Explain through diagrams, analogies, and real-world scenarios
+- **Visual breaks**: Use subheadings (H3), lists, diagrams, and tables to break up text
 - **Section transitions**: End with bridge to next section ("接下来，我们将探讨...")
 
 ### Conclusion Section Structure
@@ -57,9 +57,9 @@ applyTo: '**/*.md*'
 
 ### Main Content Sections
 - **Single focus**: One major concept or technology per section
-- **Layered depth**: Basic concept → practical implementation → advanced considerations
-- **Code integration**: 1-2 substantial code examples per section
-- **Real-world grounding**: Connect theory to actual development challenges
+- **Layered depth**: Basic concept → practical understanding → advanced considerations
+- **Minimal code**: Use code sparingly; prefer diagrams and conceptual explanations
+- **Real-world grounding**: Connect theory to actual development challenges through scenarios and case studies
 
 ### Conclusion Section
 - **Synthesis**: How individual sections connect to bigger picture
@@ -69,18 +69,35 @@ applyTo: '**/*.md*'
 
 ## Technical Content Standards (Per Section)
 
-### Code Examples
-- **Section-appropriate complexity**: Match code complexity to section's focus
-- **Real-world relevance**: Show practical, implementable examples
-- **Progressive within section**: Start simple, build complexity within that section
-- **Clear commenting**: Explain non-obvious logic in Chinese comments
-- **Working examples**: Ensure code actually runs and demonstrates concept
+### Code Examples (Minimal Use)
+- **Sparingly applied**: Use only when absolutely necessary to illustrate a concept
+- **Micro-snippets preferred**: Show key syntax or patterns in 5-10 lines maximum
+- **Conceptual focus**: Emphasize the idea behind the code, not implementation details
+- **Clear commenting**: Explain the core concept, not line-by-line logic
+- **Alternatives first**: Always consider if a diagram, table, or analogy would be clearer
 
 ### Explanations
 - **Section coherence**: Keep explanations focused on section's main theme
 - **Visual aids**: Include tables, lists, diagrams when they enhance understanding
 - **Cross-references**: Link to related concepts but don't lose section focus
 - **Multiple perspectives**: Address different experience levels within section scope
+
+### Core Concept Highlights
+- **First-mention emphasis**: Bold the key sentence that defines the section’s  core concepts at its first mention.
+- **Callouts for essentials**: Use MDX admonitions to surface must-remember ideas (e.g., note/tip/warning) with a short, skimmable summary line.
+- **One-liner takeaway**: Each main section should include a condensed takeaway line starting with core concepts.
+
+### Inline References & Citations
+ - **Inline links at first mention**: Add a direct link the first time you reference a library/standard/tool (official docs preferred). Use inline `text` with a URL, not footnotes.
+- **Source transparency**: When citing metrics/claims, link to the primary source (docs, RFCs, GitHub releases, reputable blogs) and include the year if relevant.
+- **Internal linking**: When concepts overlap with previous posts on this site, link to the earlier article using its slug.
+- **Link hygiene**: Keep link text descriptive (avoid “here”), and avoid overlinking (generally 1–2 links per paragraph max).
+
+### Diagrams (Mermaid) & Tables (Primary Method)
+- **Visual-first approach**: Default to Mermaid diagrams or tables for explaining any process, comparison, or structure
+- **Mermaid usage**: Use sequence/flowchart/state diagrams to show behavior, architecture, and workflows. Keep diagrams focused (≤ 12 nodes) and label edges clearly.
+- **Tables for all comparisons**: Use tables for pros/cons, feature comparisons, configuration options, and parameter explanations
+- **Minimal code budget**: Aim for 0-1 micro-snippet (≤ 10 lines) per main section; use only when the syntax itself is the learning point
 
 ## Section Completion Standards
 
@@ -89,13 +106,16 @@ applyTo: '**/*.md*'
 - **Self-contained value**: Reader gains something useful from this section alone
 - **Smooth transitions**: Natural flow to next section
 - **Appropriate length**: Within target word count for section type
+- **Core concept surfaced**: Clear highlight/callout of the section’s core concepts
+- **Inline references**: Key terms link to official or canonical sources at first mention
+- **Visual where suitable**: Mermaid diagram or table used when it improves clarity
 
 ### Section Quality Checklist:
 - ✅ Single, clear focus maintained throughout
 - ✅ Appropriate depth for section type and target audience
 - ✅ Engaging narrative flow with Marvin's voice
 - ✅ Technical accuracy and practical applicability
-- ✅ Proper MDX formatting and code highlighting
+- ✅ Proper MDX formatting with visual emphasis (diagrams/tables over code)
 - ✅ Natural transition setup for next section
 
 ## Writing Flow Management
@@ -119,8 +139,10 @@ applyTo: '**/*.md*'
 - **Topic sprawl**: Trying to cover too many concepts in one section
 - **Abrupt endings**: Sections that stop without proper conclusion
 - **Overwhelming density**: Too much information without breaks
-- **Disconnected examples**: Code or concepts that don't relate to section focus
+- **Code-heavy explanations**: Using code when diagrams, analogies, or tables would be clearer
+- **Implementation details**: Focus on concepts and patterns, not specific syntax
 - **Weak transitions**: Sections that don't flow naturally into the next
+- **Wall-of-code**: Any code block longer than 10 lines without exceptional justification
 
 ## Section Handoff Format
 ```
