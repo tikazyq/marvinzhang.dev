@@ -22,7 +22,10 @@ function generateSlug(title) {
 function createArticleWorkspace(title, date) {
   if (!title || !date) {
     console.error('Usage: node scripts/drafts/scaffold.js "article-title" "YYYY-MM-DD"');
-    console.error('Example: node scripts/drafts/scaffold.js "Understanding React Hooks" "2025-09-14"');
+    console.error('Example: node scripts/drafts/scaffold.js "Understanding React Hooks" "2025-09-25"');
+    console.error('');
+    console.error('📅 Important: Use the current date or your intended publication date.');
+    console.error('    The date will be used in both filename and frontmatter consistently.');
     process.exit(1);
   }
 
@@ -30,7 +33,20 @@ function createArticleWorkspace(title, date) {
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   if (!dateRegex.test(date)) {
     console.error('Error: Date must be in YYYY-MM-DD format');
+    console.error('Example: 2025-09-25');
     process.exit(1);
+  }
+
+  // Validate date is reasonable (not too far in past/future)
+  const inputDate = new Date(date);
+  const currentDate = new Date();
+  const oneYearAgo = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
+  const sixMonthsAhead = new Date(currentDate.getFullYear(), currentDate.getMonth() + 6, currentDate.getDate());
+  
+  if (inputDate < oneYearAgo || inputDate > sixMonthsAhead) {
+    console.warn(`⚠️  Warning: Date ${date} seems unusual (too far past/future).`);
+    console.warn(`    Current date: ${currentDate.toISOString().split('T')[0]}`);
+    console.warn('    Proceeding anyway, but please verify this is correct.');
   }
 
   const slug = generateSlug(title);
@@ -49,6 +65,7 @@ function createArticleWorkspace(title, date) {
   );
 
   console.log(`Creating article workspace: ${workspaceDir}`);
+  console.log(`📅 Using date: ${date} (ensure this matches your intended publication date)`);
 
   // Create workspace directory
   if (fs.existsSync(fullPath)) {
@@ -68,13 +85,15 @@ function createArticleWorkspace(title, date) {
     if (fs.existsSync(templatePath)) {
       let content = fs.readFileSync(templatePath, 'utf8');
 
-      // Replace placeholders
+      // Replace placeholders with consistent date handling
+      const currentTimestamp = new Date().toISOString().split('T')[0];
       content = content
         .replace(/\[Title\]/g, title)
         .replace(/\[YYYY-MM-DD\]/g, date)
         .replace(/\[YYYY-MM-DD-slug\]/g, workspaceDir)
         .replace(/\[Agent Name\]/g, 'Scaffold Generator')
-        .replace(/\[Agent\]/g, 'Scaffold Generator');
+        .replace(/\[Agent\]/g, 'Scaffold Generator')
+        .replace(/\[Current Date\]/g, currentTimestamp);
 
       fs.writeFileSync(targetPath, content);
       console.log(`✅ Created ${template}`);
@@ -96,6 +115,14 @@ date: ${date}
 draft: true
 ---
 
+<!-- 
+IMPORTANT: Date consistency check
+- Filename: ${date}-${slug}.mdx
+- Frontmatter date: ${date}
+- These MUST match exactly for proper blog functionality
+- AI agents: Always verify date alignment when editing
+-->
+
 <!-- Write section-by-section. Keep this file as the authoritative English draft. -->
 
 `;
@@ -107,6 +134,14 @@ tags: ["标签1"]
 date: ${date}
 draft: true
 ---
+
+<!-- 
+重要：日期一致性检查
+- 文件名: ${date}-${slug}.mdx
+- 前置数据日期: ${date}
+- 这些必须完全匹配以确保博客功能正常
+- AI代理：编辑时请始终验证日期对齐
+-->
 
 <!-- 中文草稿：英文稳定后再翻译。 -->
 
@@ -144,6 +179,13 @@ draft: true
   console.log('3. Write sections directly in blog/MDX with draft: true');
   console.log('4. Update progress.md after each section');
   console.log('5. Translate to the zh MDX during Stage 4');
+  console.log('');
+  console.log('🤖 For AI agents:');
+  console.log(`   • Article date: ${date} (used in filename AND frontmatter)`);
+  console.log('   • Always maintain date consistency between filename and frontmatter');
+  console.log('   • When in doubt about current date, ask the user or check context');
+  console.log('   • Filename format: YYYY-MM-DD-slug.mdx');
+  console.log('   • Frontmatter date format: YYYY-MM-DD');
 }
 
 // Run the script
