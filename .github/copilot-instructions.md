@@ -44,12 +44,17 @@ drafts/
 ├── YYYY-MM-DD-slug/
 │   ├── research.md     # Stage 1: Research findings and sources
 │   ├── outline.md      # Stage 2: Article structure and plan
-│   ├── article.mdx     # Stage 3: English draft (authoritative source)
-│   ├── article-zh.mdx  # Stage 4: Chinese translation draft
 │   └── progress.md     # Cross-stage: Progress tracking
 └── archive/            # Move dated folders here once the article is published
 ```
 
+Draft article files live directly where they'll ultimately publish, with frontmatter `draft: true` until ready:
+
+```bash
+blog/YYYY-MM-DD-slug.mdx                              # English draft (draft: true)
+i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx  # Chinese draft (draft: true)
+```
+
 Scaffold: `node scripts/drafts/scaffold.js "title" "YYYY-MM-DD"`
 
-Templates live in `templates/drafts/`. After publication, move the entire dated folder to `drafts/archive/`.
+Templates live in `templates/drafts/`. After publication, move the entire dated folder to `drafts/archive/` and flip `draft: false` in the MDX frontmatter to publish.

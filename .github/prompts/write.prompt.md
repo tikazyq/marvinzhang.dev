@@ -10,7 +10,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 
 **STAGE-BASED APPROACH**: Each stage has distinct objectives, deliverables, and quality gates. Complete one stage fully before proceeding to the next.
 
-**CONTEXT MANAGEMENT**: Use persistent files in `drafts/YYYY-MM-DD-slug/` to store all work products. Move the whole folder to `drafts/archive/` after publication.
+**CONTEXT MANAGEMENT**: Use persistent files in `drafts/YYYY-MM-DD-slug/` for research/outline/progress. Write article drafts directly in `blog/` and `i18n/zh/docusaurus-plugin-content-blog/` with `draft: true`. Move the whole `drafts/YYYY-MM-DD-slug/` folder to `drafts/archive/` after publication.
 
 ## Stage Overview
 
@@ -27,7 +27,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 ### Stage 3: Writing ✍️
 **Objective**: Create high-quality content section-by-section
 **Duration**: 3-6 AI interactions (one per section)
-**Key Deliverable**: Complete article.mdx (English) with all sections
+**Key Deliverable**: Complete blog/YYYY-MM-DD-slug.mdx (English, draft: true) with all sections
 
 ### Stage 4: Refine 🔧
 **Objective**: Review, improve, and finalize articles based on quality standards
@@ -52,8 +52,8 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - **Research**: `drafts/YYYY-MM-DD-slug/research.md`
 - **Outline**: `drafts/YYYY-MM-DD-slug/outline.md`
 - **Progress**: `drafts/YYYY-MM-DD-slug/progress.md`
-- **English Draft**: `drafts/YYYY-MM-DD-slug/article.mdx`
-- **Chinese Draft**: `drafts/YYYY-MM-DD-slug/article-zh.mdx`
+- **English Draft**: `blog/YYYY-MM-DD-slug.mdx` (frontmatter `draft: true`)
+- **Chinese Draft**: `i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx` (frontmatter `draft: true`)
 
 ---
 
@@ -226,7 +226,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - **Section-by-Section Excellence**: Each section provides standalone value
 
 ### Writing Approach
-**SECTION-BY-SECTION EXECUTION**: Write one complete section per AI interaction directly to article.mdx to avoid response limits and maintain quality focus.
+**SECTION-BY-SECTION EXECUTION**: Write one complete section per AI interaction directly to `blog/YYYY-MM-DD-slug.mdx` (with `draft: true`) to avoid response limits and maintain focus.
 
 #### Section Writing Process
 1. **Section Setup**
@@ -242,7 +242,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
    - Smooth transition setup for next section
 
 3. **Section Completion**
-   - Add section directly to `article.mdx`
+   - Add section directly to `blog/YYYY-MM-DD-slug.mdx`
    - Update progress tracking
    - Validate against quality standards
    - Prepare context for next section
@@ -315,7 +315,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 ```markdown
 ## Section Complete: [Section Name]
 **Word Count**: ~XXX words
-**Added to**: drafts/YYYY-MM-DD-slug/article.mdx
+**Added to**: blog/YYYY-MM-DD-slug.mdx (draft: true)
 **Quality Validated**: ✅ Content ✅ Technical ✅ Style
 **Progress Updated**: [Stage completion status]
 **Context Preserved**: ✅ Research, outline, progress maintained
@@ -385,7 +385,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
    - Improve transitions
 
 2. **Final Assembly**
-   - Polish `article.mdx` and translate to `article-zh.mdx`
+   - Polish `blog/YYYY-MM-DD-slug.mdx` and translate in `i18n/zh/.../YYYY-MM-DD-slug.mdx`
    - Add proper metadata and tags
    - Ensure bilingual consistency
    - Prepare for publication
@@ -460,9 +460,10 @@ Same structure with Chinese title and appropriate tags.
 drafts/YYYY-MM-DD-slug/
 ├── research.md          # Stage 1: Research findings and sources
 ├── outline.md           # Stage 2: Article structure and plan
-├── article.mdx          # Stage 3: English article draft (authoritative)
-├── article-zh.mdx       # Stage 4: Chinese translation draft
 └── progress.md          # Cross-stage: Progress tracking
+
+blog/YYYY-MM-DD-slug.mdx                              # English draft (draft: true)
+i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx  # Chinese draft (draft: true)
 ```
 
 ### Stage Workflow Instructions
