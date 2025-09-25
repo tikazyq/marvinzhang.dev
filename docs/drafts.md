@@ -9,8 +9,6 @@ This document describes how to use the drafts workflow for creating blog article
  ├── YYYY-MM-DD-slug/
  │   ├── research.md      # Stage 1: Research findings and sources
  │   ├── outline.md       # Stage 2: Article structure and plan
- │   ├── article.mdx      # Stage 3: English draft (authoritative)
- │   ├── article-zh.mdx   # Stage 4: Chinese translation draft
  │   └── progress.md      # Cross-stage: Progress tracking
  └── archive/             # Move dated folders here once the article is published
 ```
@@ -25,13 +23,13 @@ This document describes how to use the drafts workflow for creating blog article
 ## Workflow
 
 1. Run the scaffold to create a workspace
-2. Complete research.md and outline.md
-3. Write section-by-section directly in article.mdx
-4. Translate to article-zh.mdx during refinement
-5. After publication, move the dated folder into `drafts/archive/`
+2. Complete research.md and outline.md under drafts/YYYY-MM-DD-slug/
+3. Write section-by-section directly in blog/YYYY-MM-DD-slug.mdx with `draft: true`
+4. Translate in i18n/zh/.../YYYY-MM-DD-slug.mdx with `draft: true`
+5. When ready to publish, set `draft: false` in both MDX files and move the drafts workspace to `drafts/archive/`
 
 ## Notes
 
 - We no longer maintain separate `active` and `completed` folders
 - We no longer create `notes.md` by default
-- We no longer use `article.md`; `article.mdx` is the authoritative English draft
+- Authoritative drafts now live in blog/ and i18n zh with `draft: true`

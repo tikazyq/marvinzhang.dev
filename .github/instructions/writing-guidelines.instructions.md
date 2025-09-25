@@ -6,7 +6,7 @@ applyTo: '**/*.md*'
 
 ## Section-by-Section Writing Approach
 
-**CRITICAL**: Always write article content in manageable sections to avoid response limits. Write directly to `article.mdx` in the draft workspace, completing one section at a time and clearly indicating section boundaries within the article.
+**CRITICAL**: Always write article content in manageable sections to avoid response limits. Write directly to `blog/YYYY-MM-DD-slug.mdx` with `draft: true`, completing one section at a time and clearly indicating section boundaries within the article. Translate in `i18n/zh/.../YYYY-MM-DD-slug.mdx`.
 
 ### Section Planning Guidelines
 - **Introduction**: 500-800 words (hook + context + roadmap)

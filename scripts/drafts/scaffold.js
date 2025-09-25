@@ -38,6 +38,15 @@ function createArticleWorkspace(title, date) {
   const draftsRoot = path.join(__dirname, '..', '..', 'drafts');
   const fullPath = path.join(draftsRoot, workspaceDir);
   const templatesPath = path.join(__dirname, '..', '..', 'templates', 'drafts');
+  const blogRoot = path.join(__dirname, '..', '..', 'blog');
+  const blogZhRoot = path.join(
+    __dirname,
+    '..',
+    '..',
+    'i18n',
+    'zh',
+    'docusaurus-plugin-content-blog'
+  );
 
   console.log(`Creating article workspace: ${workspaceDir}`);
 
@@ -74,32 +83,42 @@ function createArticleWorkspace(title, date) {
     }
   });
 
-  // Create article.mdx file (English draft authoritative)
-  const articleContent = `# ${title}
+  // Create blog MDX drafts with `draft: true`
+  const enMdxPath = path.join(blogRoot, `${date}-${slug}.mdx`);
+  const zhMdxPath = path.join(blogZhRoot, `${date}-${slug}.mdx`);
 
-[Write the article section-by-section directly in this file.]
-
-## Introduction
-[Introduction section - 500-800 words]
-
-## Main Content Sections
-[Main sections - 600-1000 words each]
-
-## Conclusion
-[Conclusion section - 400-600 words]
-
+  const enFrontmatter = `---
+slug: ${slug}
+title: "${title}"
+authors: ["marvin"]
+tags: ["tag1"]
+date: ${date}
+draft: true
 ---
-**Status**: Not Started
-**Word Count**: 0
-**Last Updated**: ${date}
-**Writing Progress**: Ready for Stage 3 (Writing)
+
+<!-- Write section-by-section. Keep this file as the authoritative English draft. -->
+
+`;
+  const zhFrontmatter = `---
+slug: ${slug}
+title: "${title}"
+authors: ["marvin"]
+tags: ["标签1"]
+date: ${date}
+draft: true
+---
+
+<!-- 中文草稿：英文稳定后再翻译。 -->
+
 `;
 
-  fs.writeFileSync(path.join(fullPath, 'article.mdx'), articleContent);
-  console.log(`✅ Created article.mdx (English draft)`);
-
-  // Create placeholder for Chinese translation draft
-  fs.writeFileSync(path.join(fullPath, 'article-zh.mdx'), '# 待翻译：完成英文稿 article.mdx 后在此撰写中文稿');
+  fs.mkdirSync(blogRoot, { recursive: true });
+  fs.mkdirSync(blogZhRoot, { recursive: true });
+  fs.writeFileSync(enMdxPath, enFrontmatter, 'utf8');
+  fs.writeFileSync(zhMdxPath, zhFrontmatter, 'utf8');
+  console.log(`✅ Created blog drafts:
+  - ${path.relative(path.join(__dirname, '..', '..'), enMdxPath)}
+  - ${path.relative(path.join(__dirname, '..', '..'), zhMdxPath)}`);
   console.log('');
   console.log('🎉 Article workspace created successfully!');
   console.log('');
@@ -107,16 +126,16 @@ function createArticleWorkspace(title, date) {
   console.log(`   drafts/${workspaceDir}/`);
   console.log('   ├── research.md       # Research sources and findings');
   console.log('   ├── outline.md        # Article structure and plan');
-  console.log('   ├── article.mdx       # English draft (authoritative)');
-  console.log('   ├── article-zh.mdx    # Chinese translation draft');
   console.log('   └── progress.md       # Writing progress tracking');
+  console.log('   blog/YYYY-MM-DD-slug.mdx                  # English draft (draft: true)');
+  console.log('   i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx  # Chinese draft (draft: true)');
   console.log('');
   console.log('📝 Next steps:');
   console.log('1. Start with research.md to gather sources');
   console.log('2. Create detailed outline in outline.md');
-  console.log('3. Write sections directly in article.mdx');
+  console.log('3. Write sections directly in blog/MDX with draft: true');
   console.log('4. Update progress.md after each section');
-  console.log('5. Translate to article-zh.mdx during Stage 4');
+  console.log('5. Translate to the zh MDX during Stage 4');
 }
 
 // Run the script

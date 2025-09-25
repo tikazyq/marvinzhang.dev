@@ -34,7 +34,7 @@
 - [ ] Code examples tested
 - [ ] Style consistency check
 - [ ] MDX formatting verification
-- [ ] Chinese translation (article-zh.mdx)
+- [ ] Chinese translation (i18n zh MDX)
 - [ ] Final proofreading
 - [ ] Ready for publication
 
@@ -44,7 +44,7 @@
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 500-800]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `article.mdx`
+- **File**: `blog/YYYY-MM-DD-slug.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
@@ -53,7 +53,7 @@
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 600-1000]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `article.mdx`
+- **File**: `blog/YYYY-MM-DD-slug.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
@@ -62,7 +62,7 @@
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 600-1000]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `article.mdx`
+- **File**: `blog/YYYY-MM-DD-slug.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
@@ -71,7 +71,7 @@
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 600-1000]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `article.mdx`
+- **File**: `blog/YYYY-MM-DD-slug.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
@@ -79,7 +79,7 @@
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 400-600]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `article.mdx`
+- **File**: `blog/YYYY-MM-DD-slug.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
