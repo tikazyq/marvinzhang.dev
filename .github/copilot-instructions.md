@@ -34,32 +34,22 @@ pnpm run write-translations -l zh  # Generate translations
 
 ## Blog Writing Process
 
-**4-Stage Structured Approach** (see `.github/prompts/write.prompt.md` for full details):
+**4-Stage Structured Approach** (see `.github/prompts/write.prompt.md` for full details)
 
-### Stage 1: Research 🔍
-- Gather comprehensive sources and validate topic viability
-- Create `drafts/active/YYYY-MM-DD-slug/research.md`
-- Quality gates: 5+ sources, unique angle, audience validation
+### Context File Management
 
-### Stage 2: Outline 📋  
-- Design detailed article structure and content roadmap
-- Create `drafts/active/YYYY-MM-DD-slug/outline.md`
-- Quality gates: logical flow, balanced sections, unified narrative
+#### Article Workspace Setup (Automatic via Scaffold)
+```bash
+drafts/
+├── YYYY-MM-DD-slug/
+│   ├── research.md     # Stage 1: Research findings and sources
+│   ├── outline.md      # Stage 2: Article structure and plan
+│   ├── article.mdx     # Stage 3: English draft (authoritative source)
+│   ├── article-zh.mdx  # Stage 4: Chinese translation draft
+│   └── progress.md     # Cross-stage: Progress tracking
+└── archive/            # Move dated folders here once the article is published
+```
 
-### Stage 3: Writing ✍️
-- Write article content section-by-section to avoid response limits
-- Output directly to `drafts/active/YYYY-MM-DD-slug/article.md`
-- Quality gates: Marvin's voice, technical accuracy, engagement
+Scaffold: `node scripts/drafts/scaffold.js "title" "YYYY-MM-DD"`
 
-### Stage 4: Refine 🔧
-- Review, optimize, and prepare for publication
-- Finalize bilingual MDX files
-- Quality gates: full validation, consistency, publication-ready
-
-**Workspace Setup**: Use `node drafts/scripts/scaffold.js "title" "YYYY-MM-DD"` to initialize article workspace with all necessary context files.
-
-## Adding New Posts
-
-1. Create English MDX in `blog/YYYY-MM-DD-post-slug.mdx`
-2. Create Chinese version in `i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-post-slug.mdx`
-3. Sync author configs in both `blog/authors.yml` and `i18n/zh/docusaurus-plugin-content-blog/authors.yml`
+Templates live in `templates/drafts/`. After publication, move the entire dated folder to `drafts/archive/`.

@@ -21,11 +21,11 @@
 - **Notes**: [Any important observations]
 
 ### 🔄 Phase 2: Content Writing
-- [ ] Introduction section (500-800 words)
-- [ ] Section 1: [Title] (600-1000 words)
-- [ ] Section 2: [Title] (600-1000 words)
-- [ ] Section 3: [Title] (600-1000 words)
-- [ ] Conclusion section (400-600 words)
+- [ ] Introduction (500-800 words)
+- [ ] Section 1 (600-1000 words)
+- [ ] Section 2 (600-1000 words)
+- [ ] Section 3 (600-1000 words)
+- [ ] Conclusion (400-600 words)
 - **Current Section**: [Which section is in progress]
 - **Writing Agent**: [Who is currently writing]
 
@@ -34,7 +34,7 @@
 - [ ] Code examples tested
 - [ ] Style consistency check
 - [ ] MDX formatting verification
-- [ ] Bilingual version created (if applicable)
+- [ ] Chinese translation (article-zh.mdx)
 - [ ] Final proofreading
 - [ ] Ready for publication
 
@@ -44,34 +44,34 @@
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 500-800]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `sections/intro.md`
+- **File**: `article.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
-### Section 1: [Title]
+### Section 1
 - **Focus**: [Main concept]
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 600-1000]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `sections/section-1.md`
+- **File**: `article.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
-### Section 2: [Title]
+### Section 2
 - **Focus**: [Main concept]
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 600-1000]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `sections/section-2.md`
+- **File**: `article.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
-### Section 3: [Title]
+### Section 3
 - **Focus**: [Main concept]
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 600-1000]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `sections/section-3.md`
+- **File**: `article.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
@@ -79,7 +79,7 @@
 - **Status**: [Not Started/In Progress/Complete/Needs Revision]
 - **Word Count**: [current/target: 400-600]
 - **Last Updated**: [Date] by [Agent]
-- **File**: `sections/conclusion.md`
+- **File**: `article.mdx`
 - **Quality Check**: [✅/❌/⏳]
 - **Notes**: [Specific feedback or issues]
 
