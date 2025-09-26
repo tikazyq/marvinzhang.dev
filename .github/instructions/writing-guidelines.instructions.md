@@ -92,6 +92,7 @@ applyTo: '**/*.md*'
 - **Source transparency**: When citing metrics/claims, link to the primary source (docs, RFCs, GitHub releases, reputable blogs) and include the year if relevant.
 - **Internal linking**: When concepts overlap with previous posts on this site, link to the earlier article using its slug.
 - **Link hygiene**: Keep link text descriptive (avoid “here”), and avoid overlinking (generally 1–2 links per paragraph max).
+- **Existing content**: If referencing existing content on this site, link to the relevant article using its slug.
 
 ### Diagrams (Mermaid) & Tables (Primary Method)
 - **Visual-first approach**: Default to Mermaid diagrams or tables for explaining any process, comparison, or structure
