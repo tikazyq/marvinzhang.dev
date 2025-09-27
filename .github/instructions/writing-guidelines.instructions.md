@@ -4,9 +4,7 @@ applyTo: '**/*.md*'
 
 # Blog Writing Guidelines (Section-by-Section)
 
-## Section-by-Section Writing Approach
-
-**CRITICAL**: Always write article content in manageable sections to avoid response limits. Write directly to `blog/YYYY-MM-DD-slug.mdx` with `draft: true`, completing one section at a time and clearly indicating section boundaries within the article. Translate in `i18n/zh/.../YYYY-MM-DD-slug.mdx`.
+**CRITICAL**: Always write article content in manageable sections to avoid response limits. Write directly to `blog/YYYY-MM-DD-slug.mdx` with `draft: true`, completing one section at a time and clearly indicating section boundaries within the article. Translate in `i18n/en/.../YYYY-MM-DD-slug.mdx`.
 
 ### Section Planning Guidelines
 - **Introduction**: 300-500 words (hook + context + roadmap)
@@ -17,35 +15,40 @@ applyTo: '**/*.md*'
 
 ### Introduction Section Pattern
 - **Compelling hook**: Start with thought-provoking quotes, statistics, or rhetorical questions
-- **Industry context**: Place topic within broader tech/industry landscape ("如今的前端开发...")
-- **Personal angle**: Connect to reader's likely experiences ("如果你是一个...")
-- **Clear roadmap**: Preview what reader will learn/gain ("本文将详细介绍...")
+- **Industry context**: Place topic within broader tech/industry landscape ("Modern frontend development...")
+- **Personal angle**: Connect to reader's likely experiences ("If you're a developer...")
+- **Clear roadmap**: Preview what reader will learn/gain ("This article will detail...")
 
 ### Main Content Section Organization
 - **One major concept per section**: Focus deeply rather than covering multiple topics
 - **Progressive disclosure**: Build from basic concepts to advanced applications within each section
 - **Conceptual examples**: Explain through diagrams, analogies, and real-world scenarios
 - **Visual breaks**: Use subheadings (H3), lists, diagrams, and tables to break up text
-- **Section transitions**: End with bridge to next section ("接下来，我们将探讨...")
+- **Section transitions**: End with bridge to next section ("Next, we'll explore...")
 
 ### Conclusion Section Structure
-- **Key recap**: Summarize main points covered ("总之...")
+- **Key recap**: Summarize main points covered ("In summary...")
 - **Future outlook**: Connect current topic to industry trends
 - **Actionable takeaways**: Give readers clear next steps
-- **Learning mindset**: Emphasize continuous growth ("作为一个软件工程师，你需要不断学习")
+- **Learning mindset**: Emphasize continuous growth ("As a software engineer, continuous learning is essential")
 
 ## Tone & Voice (Per Section)
 
 ### Professional Yet Accessible
 - **Authoritative but humble**: Share expertise without being condescending
-- **Conversational**: Use "你" and rhetorical questions to engage readers
+- **Conversational**: Use "you" and rhetorical questions to engage readers
 - **Section-appropriate energy**: Vary intensity based on content complexity
 
 ### Language Patterns
-- **Section connectors**: "因此", "而", "不过", "其实", "接下来"
+- **Section connectors**: "Therefore", "However", "Moreover", "Actually", "Next"
 - **Metaphors**: Use concrete analogies (building construction for software architecture)
-- **Emphasis markers**: "非常重要", "核心概念", "关键点"
-- **Reader engagement**: "你可能会问", "相信你不会", "对于...来说"
+- **Emphasis markers**: "crucial", "core concept", "key point"
+- **Reader engagement**: "You might wonder", "You'll likely find", "For developers like you"
+
+### Localization Guidelines
+- **Native Chinese version**: When translating to Chinese (zh), ensure the content reads naturally and idiomatically - avoid literal translations that sound awkward
+- **Cultural adaptation**: Adapt examples, metaphors, and references to be culturally relevant for Chinese readers
+- **Natural flow**: Chinese version should feel like it was originally written in Chinese, not translated
 
 ## Section-Specific Guidelines
 
@@ -91,8 +94,9 @@ applyTo: '**/*.md*'
  - **Inline links at first mention**: Add a direct link the first time you reference a library/standard/tool (official docs preferred). Use inline `text` with a URL, not footnotes.
 - **Source transparency**: When citing metrics/claims, link to the primary source (docs, RFCs, GitHub releases, reputable blogs) and include the year if relevant.
 - **Internal linking**: When concepts overlap with previous posts on this site, link to the earlier article using its slug.
-- **Link hygiene**: Keep link text descriptive (avoid “here”), and avoid overlinking (generally 1–2 links per paragraph max).
-- **Existing content**: If referencing existing content on this site, link to the relevant article using its slug.
+- **Previous article references**: Leverage existing articles in the repository as authoritative internal references when relevant - treat them as primary sources for concepts already covered.
+- **Link hygiene**: Keep link text descriptive (avoid "here"), and avoid overlinking (generally 1–2 links per paragraph max).
+- **Existing content**: If referencing existing content on this site, link to the relevant article using its slug
 
 ### Diagrams (Mermaid) & Tables (Primary Method)
 - **Visual-first approach**: Default to Mermaid diagrams or tables for explaining any process, comparison, or structure
