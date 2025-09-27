@@ -227,3 +227,28 @@ development-workflow:
   label: 开发工作流
   permalink: /development-workflow
   description: 软件开发过程的结构化方法
+
+enterprise:
+  label: 企业级
+  permalink: /enterprise
+  description: 企业级软件解决方案和架构
+
+agents:
+  label: 智能代理
+  permalink: /agents
+  description: AI智能代理和自主系统
+
+context-management:
+  label: 上下文管理
+  permalink: /context-management
+  description: AI系统中的上下文处理和管理
+
+data-infrastructure:
+  label: 数据基础设施
+  permalink: /data-infrastructure
+  description: 数据基础设施和平台工程
+
+data-architecture:
+  label: 数据架构
+  permalink: /data-architecture
+  description: 数据架构设计和企业数据建模
