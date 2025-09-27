@@ -93,10 +93,29 @@ applyTo: '**/*.md*'
 ### Inline References & Citations
  - **Inline links at first mention**: Add a direct link the first time you reference a library/standard/tool (official docs preferred). Use inline `text` with a URL, not footnotes.
 - **Source transparency**: When citing metrics/claims, link to the primary source (docs, RFCs, GitHub releases, reputable blogs) and include the year if relevant.
-- **Internal linking**: When concepts overlap with previous posts on this site, link to the earlier article using its slug.
+- **Internal linking**: When concepts overlap with previous posts on this site, link to the earlier article using its slug format `/blog/slug-name`.
 - **Previous article references**: Leverage existing articles in the repository as authoritative internal references when relevant - treat them as primary sources for concepts already covered.
 - **Link hygiene**: Keep link text descriptive (avoid "here"), and avoid overlinking (generally 1–2 links per paragraph max).
-- **Existing content**: If referencing existing content on this site, link to the relevant article using its slug
+
+### Previous Article Reference Patterns
+- **MDX admonishments for deep dives**: Use `:::info Related Reading` blocks with descriptive text and internal links for comprehensive background material:
+  ```markdown
+  :::info Related Reading
+  For a deeper exploration of how complexity emerges and accumulates in software projects, see my previous analysis: [Why Do We Need to Consider Complexity in Software Projects?](/blog/software-project-complexity)
+  :::
+  ```
+- **Inline contextual references**: Naturally weave references into text flow when supporting current points:
+  ```markdown
+  As I explored in [my analysis of agile practices](/blog/agile-team-practices), many teams adopt agile frameworks expecting immediate speed improvements...
+  ```
+- **Supporting evidence links**: Reference previous articles as authoritative sources when making claims or providing additional context:
+  ```markdown
+  Recent research shows that [AI's productivity benefits are highly contextual](/blog/ai-productivity), with structured approaches significantly outperforming ad-hoc usage.
+  ```
+- **Conceptual deep dives**: When introducing related but complex topics, point to dedicated articles for comprehensive coverage:
+  ```markdown
+  For a comprehensive exploration of how information architecture affects AI system performance, see [Context Engineering: The Art of Information Selection in AI Systems](/blog/context-engineering).
+  ```
 
 ### Diagrams (Mermaid) & Tables (Primary Method)
 - **Visual-first approach**: Default to Mermaid diagrams or tables for explaining any process, comparison, or structure
