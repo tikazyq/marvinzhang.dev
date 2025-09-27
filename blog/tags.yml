@@ -227,3 +227,28 @@ development-workflow:
   label: Development Workflow
   permalink: /development-workflow
   description: Structured approaches to software development processes
+
+enterprise:
+  label: Enterprise
+  permalink: /enterprise
+  description: Enterprise-grade software solutions and architecture
+
+agents:
+  label: Agents
+  permalink: /agents
+  description: AI agents and autonomous systems
+
+context-management:
+  label: Context Management
+  permalink: /context-management
+  description: Context handling and management in AI systems
+
+data-infrastructure:
+  label: Data Infrastructure
+  permalink: /data-infrastructure
+  description: Data infrastructure and platform engineering
+
+data-architecture:
+  label: Data Architecture
+  permalink: /data-architecture
+  description: Data architecture design and enterprise data modeling
