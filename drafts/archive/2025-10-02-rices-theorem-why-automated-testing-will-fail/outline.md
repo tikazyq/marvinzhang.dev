@@ -8,8 +8,8 @@
 - **Tags**: ["software-engineering", "testing", "computer-science", "ai", "theory"]
 - **Estimated Sections**: 5 (Intro + 3 main + Conclusion)
 - **Difficulty Level**: Intermediate (accessible theory with practical implications)
-- **Created**: 2025-01-15
-- **Last Updated**: 2025-01-15
+- **Created**: 2025-10-02
+- **Last Updated**: 2025-10-02
 
 ## Content Strategy
 - **Hook Strategy**: Start with Dijkstra's quote and common developer frustration about test coverage
