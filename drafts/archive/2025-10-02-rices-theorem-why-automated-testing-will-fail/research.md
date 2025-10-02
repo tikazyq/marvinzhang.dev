@@ -4,7 +4,7 @@
 - **Topic**: Rice's Theorem and its implications for automated testing; proposing AI-driven spec-based testing as a solution
 - **Target Audience**: Intermediate to advanced developers interested in testing theory, computer science fundamentals, and AI-assisted development
 - **Language**: Both (English primary, Chinese translation in Stage 4)
-- **Started**: 2025-01-15
+- **Started**: 2025-10-02
 - **Agent**: GitHub Copilot Agent
 
 ## Research Sources
@@ -17,7 +17,7 @@
     - Fundamental result in computability theory from 1951
   - Relevance: Core theoretical foundation for why complete automated testing is impossible
   - Quotes/Data: "For any non-trivial property of partial functions, there is no general and effective method to decide whether an algorithm computes a partial function with that property"
-  - Date accessed: 2025-01-15
+  - Date accessed: 2025-10-02
 
 - **Source 2**: Halting Problem (Stanford Encyclopedia of Philosophy) - https://plato.stanford.edu/entries/turing-machine/
   - Key findings:
@@ -26,7 +26,7 @@
     - Fundamental limitation in program analysis
   - Relevance: Provides context for Rice's Theorem and why testing has inherent limitations
   - Quotes/Data: Foundation of computational theory showing limits of what can be proven about programs
-  - Date accessed: 2025-01-15
+  - Date accessed: 2025-10-02
 
 - **Source 3**: Testing Research - "Software Testing: A Research Travelogue (2000-2014)" - https://dl.acm.org/
   - Key findings:
@@ -35,7 +35,7 @@
     - Statistical confidence vs. formal verification tradeoff
   - Relevance: Practical implications of theoretical limitations in industry
   - Quotes/Data: Research on testing effectiveness and limitations
-  - Date accessed: 2025-01-15
+  - Date accessed: 2025-10-02
 
 ### Supporting Sources
 - Formal Methods in Software Engineering - providing context on verification vs testing
