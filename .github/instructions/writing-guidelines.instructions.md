@@ -57,6 +57,10 @@ applyTo: '**/*.md*'
   - Format: `中文术语（English Term）` or `中文术语（English Term，ABBR）`
   - Apply to: core concepts, technical terminology, methodologies, and industry-standard terms
   - Use Chinese punctuation (，、：) throughout Chinese articles
+- **English names for famous people**: In Chinese (zh) articles, always include English names in parentheses at first mention of notable individuals:
+  - Format: `中文姓名（English Name）` (e.g., "艾兹格·迪杰斯特拉（Edsger Dijkstra）")
+  - Apply to: computer scientists, mathematicians, researchers, industry leaders, and other notable figures
+  - Helps readers identify individuals in international context and facilitates further research
 
 ## Section-Specific Guidelines
 
