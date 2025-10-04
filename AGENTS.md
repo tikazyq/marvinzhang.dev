@@ -38,6 +38,7 @@
 - Every English post must have a matching Chinese translation with the same slug and metadata.
 - Draft Markdown lives in the final location (`blog/...` and `i18n/zh/...`) with `draft: true` until release; flip to `false` and move the scaffold folder to `drafts/archive/` at publication.
 - Keep frontmatter aligned (title, tags, date, authors) and ensure translations reflect updates made to the English version.
+- **Chinese articles must include English term annotations**: Add capitalized English translations in parentheses at first mention of technical terms (e.g., `可计算性理论（Computability Theory）`, `大型语言模型（Large Language Model，LLM）`), and use Chinese punctuation throughout (，、：instead of , ・ :).
 
 | Step | English Path | Chinese Path |
 | --- | --- | --- |

@@ -49,6 +49,12 @@ applyTo: '**/*.md*'
 - **Native Chinese version**: When translating to Chinese (zh), ensure the content reads naturally and idiomatically - avoid literal translations that sound awkward
 - **Cultural adaptation**: Adapt examples, metaphors, and references to be culturally relevant for Chinese readers
 - **Natural flow**: Chinese version should feel like it was originally written in Chinese, not translated
+- **English term annotations**: In Chinese (zh) articles, always include English translations for technical terms in parentheses at first mention:
+  - Use capitalized English terms (e.g., "Undecidable" not "undecidable")
+  - Include abbreviations where applicable (e.g., "大型语言模型（Large Language Model，LLM）")
+  - Format: `中文术语（English Term）` or `中文术语（English Term，ABBR）`
+  - Apply to: core concepts, technical terminology, methodologies, and industry-standard terms
+  - Use Chinese punctuation (，、：) throughout Chinese articles
 
 ## Section-Specific Guidelines
 
