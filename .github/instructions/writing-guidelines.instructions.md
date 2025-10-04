@@ -61,6 +61,12 @@ applyTo: '**/*.md*'
   - Format: `中文姓名（English Name）` (e.g., "艾兹格·迪杰斯特拉（Edsger Dijkstra）")
   - Apply to: computer scientists, mathematicians, researchers, industry leaders, and other notable figures
   - Helps readers identify individuals in international context and facilitates further research
+- **Chinese punctuation consistency**: In Chinese (zh) articles, always use Chinese punctuation marks throughout:
+  - Use Chinese comma (，) instead of English comma (,)
+  - Use Chinese period (。) instead of English period (.)
+  - Use Chinese colon (：) instead of English colon (:)
+  - Apply consistently in all text, including technical explanations, lists, and sentence structures
+  - Exception: Keep English punctuation inside code blocks and when quoting English terms
 
 ## Section-Specific Guidelines
 
