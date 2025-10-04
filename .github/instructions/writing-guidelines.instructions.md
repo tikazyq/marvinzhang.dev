@@ -148,6 +148,11 @@ applyTo: '**/*.md*'
 - **Truncate marker**: Add `{/* truncate */}` after the introduction section to control blog list previews
 - **Frontmatter**: YAML format at the top with `---` delimiters
 - **Admonitions**: Use `:::type` syntax (e.g., `:::note`, `:::tip`, `:::warning`)
+- **Bold formatting in Chinese**: When using multiple bold sections on the same line in Chinese text, add a space before the second `**` marker to ensure proper MDX rendering. Without the space, the second bold section may fail to render and appear as literal `**text**` instead of bold text.
+  ```markdown
+  ✅ Correct: 这与 **语法属性（Syntactic Properties）** 形成对比
+  ❌ Incorrect: 这与**语法属性（Syntactic Properties）**形成对比
+  ```
 
 ### Section Quality Checklist:
 - ✅ Single, clear focus maintained throughout
