@@ -43,6 +43,7 @@
 - Draft Markdown lives in the final location (`blog/...` and `i18n/zh/...`) with `draft: true` until release; flip to `false` and move the scaffold folder to `drafts/archive/` at publication.
 - Keep frontmatter aligned (title, tags, date, authors) and ensure translations reflect updates made to the English version.
 - **Chinese articles must include English term annotations**: Add capitalized English translations in parentheses at first mention of technical terms (e.g., `可计算性理论（Computability Theory）`, `大型语言模型（Large Language Model，LLM）`), and use Chinese punctuation throughout (，、：instead of , ・ :).
+- **Chinese articles must include English names for famous people**: Add English names in parentheses at first mention of notable individuals (e.g., `艾兹格·迪杰斯特拉（Edsger Dijkstra）`, `亨利·戈登·莱斯（Henry Gordon Rice）`, `艾伦·图灵（Alan Turing）`).
 
 | Step | English Path | Chinese Path |
 | --- | --- | --- |

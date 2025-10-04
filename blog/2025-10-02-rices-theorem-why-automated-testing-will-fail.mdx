@@ -1,12 +1,12 @@
 ---
 slug: rices-theorem-why-automated-testing-will-fail
-title: "Rice's Theorem: Why automated testing will fail"
+title: "Sorry, AI Can't Save Testing: Rice's Theorem Explains Why"
 authors: ["marvin"]
 tags: ["software-engineering", "testing", "computer-science", "ai", "theory"]
 date: 2025-10-02
 ---
 
-# Rice's Theorem: Why automated testing will fail
+# Sorry, AI Can't Save Testing: Rice's Theorem Explains Why
 
 ## Introduction: The Impossible Dream of Perfect Testing
 
@@ -175,6 +175,38 @@ Understanding the limits helps us focus on what's genuinely achievable:
 - Finding all possible edge cases
 
 The distinction is clear: we can automate checking of specific cases and syntactic properties, but we cannot automate complete verification of semantic correctness.
+
+### The Recursive Testing Paradox
+
+Here's a thought experiment that reveals the deep problem with pursuing perfect automated testing: **If we could build a program that perfectly tests your software, how would we verify that the testing program itself is correct?**
+
+Consider the infinite regress:
+
+```mermaid
+graph TB
+    A[Your Program] --> B[Testing Program]
+    B --> C[Program to Test the<br/>Testing Program]
+    C --> D[Program to Test That Program]
+    D --> E[...]
+    
+    style A fill:#17a2b8,stroke:#117a8b,color:#fff
+    style B fill:#ffc107,stroke:#856404,color:#000
+    style C fill:#dc3545,stroke:#721c24,color:#fff
+    style D fill:#dc3545,stroke:#721c24,color:#fff
+    style E fill:#6c757d,stroke:#495057,color:#fff
+```
+
+1. We write a testing program to verify our software is bug-free
+2. But how do we know the testing program itself has no bugs?
+3. We'd need another program to test the testing program
+4. But how do we verify *that* program is correct?
+5. This continues infinitely...
+
+**Rice's Theorem tells us this chain can never terminate with mathematical certainty.** At some point, we must rely on human judgment, informal reasoning, or accept that our verification is based on sampling rather than proof.
+
+Even if the "tester" is a human expert, the problem persists—humans make mistakes, misunderstand requirements, and have cognitive limitations. The difference is that humans can apply judgment, intuition, and contextual understanding that pure algorithms cannot. We don't escape fallibility; we accept it and work pragmatically within those constraints.
+
+This paradox illuminates why the pursuit of "perfect" automated testing is fundamentally misguided. The question isn't "how do we achieve perfect testing?" but rather "how do we achieve sufficient confidence given unavoidable uncertainty?"
 
 ### A Pragmatic Perspective
 
