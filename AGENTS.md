@@ -22,7 +22,9 @@
 **Core concept: Blog posts follow a four-stage, section-by-section writing process that balances depth with readability.**
 - Use the scaffold script (`node scripts/drafts/scaffold.js "title" "YYYY-MM-DD"`) to create `drafts/YYYY-MM-DD-slug/` with `research.md`, `outline.md`, and `progress.md` helpers.
 - Structure each article with the prescribed section lengths (Intro 300–500 words, Main sections 600–1000 words, Conclusion 250–400 words).
-- Highlight each section’s main idea in bold at first mention, add short takeaways, and prefer diagrams/tables over long code blocks (≤10 lines when unavoidable).
+- Highlight each section's main idea in bold at first mention, add short takeaways, and prefer diagrams/tables over long code blocks (≤10 lines when unavoidable).
+- **Mermaid diagrams**: Style all nodes with explicit colors (`fill,stroke,color`) for light/dark theme compatibility.
+- **MDX syntax**: Use JSX-style comments `{/* comment */}` not HTML comments `<!-- comment -->`. Add `{/* truncate */}` after the introduction to control blog list previews.
 - Introduce links on first reference only, aiming for official sources and meaningful anchor text.
 
 ### 4-Stage Workflow Quick Reference
