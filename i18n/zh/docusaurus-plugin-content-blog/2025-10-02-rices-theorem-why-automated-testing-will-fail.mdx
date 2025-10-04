@@ -256,8 +256,9 @@ graph TB
 下图对比了传统手动测试与AI驱动的基于规格说明的测试：
 
 ```mermaid
-graph TB
-    subgraph "传统手动测试"
+graph TD
+    subgraph Manual["传统手动测试"]
+        direction TB
         A1[编写代码] --> A2[手动编写测试]
         A2 --> A3[运行测试]
         A3 --> A4{通过？}
@@ -266,7 +267,8 @@ graph TB
         A4 -->|是| A6[部署]
     end
     
-    subgraph "AI驱动的基于规格说明的测试"
+    subgraph AISpec["AI驱动的基于规格说明的测试"]
+        direction TB
         B1[编写规格说明] --> B2[编写代码]
         B2 --> B3[AI从规格说明<br/>生成测试]
         B3 --> B4[运行生成的测试]
