@@ -126,6 +126,7 @@ applyTo: '**/*.md*'
 ### Diagrams (Mermaid) & Tables (Primary Method)
 - **Visual-first approach**: Default to Mermaid diagrams or tables for explaining any process, comparison, or structure
 - **Mermaid usage**: Use sequence/flowchart/state diagrams to show behavior, architecture, and workflows. Keep diagrams focused (≤ 12 nodes) and label edges clearly.
+- **Mermaid theme-aware styling**: Always style nodes with explicit `fill,stroke,color` properties (e.g., `style NodeId fill:#color,stroke:#border,color:#text`) to ensure readability in both light and dark modes. Use semantic colors (red for error/negative, green for success/positive, yellow for warning, blue for info).
 - **Tables for all comparisons**: Use tables for pros/cons, feature comparisons, configuration options, and parameter explanations
 - **Minimal code budget**: Aim for 0-1 micro-snippet (≤ 10 lines) per main section; use only when the syntax itself is the learning point
 
@@ -136,9 +137,15 @@ applyTo: '**/*.md*'
 - **Self-contained value**: Reader gains something useful from this section alone
 - **Smooth transitions**: Natural flow to next section
 - **Appropriate length**: Within target word count for section type
-- **Core concept surfaced**: Clear highlight/callout of the section’s core concepts
+- **Core concept surfaced**: Clear highlight/callout of the section's core concepts
 - **Inline references**: Key terms link to official or canonical sources at first mention
 - **Visual where suitable**: Mermaid diagram or table used when it improves clarity
+
+### MDX Syntax Requirements:
+- **Comments**: Use JSX-style comments `{/* comment */}` instead of HTML comments `<!-- comment -->`
+- **Truncate marker**: Add `{/* truncate */}` after the introduction section to control blog list previews
+- **Frontmatter**: YAML format at the top with `---` delimiters
+- **Admonitions**: Use `:::type` syntax (e.g., `:::note`, `:::tip`, `:::warning`)
 
 ### Section Quality Checklist:
 - ✅ Single, clear focus maintained throughout

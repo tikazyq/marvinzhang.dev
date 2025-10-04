@@ -84,9 +84,9 @@ flowchart TD
     C --> F[可以编写算法<br/>检查属性]
     E --> G[没有算法可以<br/>检查所有程序]
     
-    style E fill:#ffcccc
-    style F fill:#ccffcc
-    style G fill:#ffcccc
+    style E fill:#dc3545,stroke:#721c24,color:#fff
+    style F fill:#28a745,stroke:#155724,color:#fff
+    style G fill:#dc3545,stroke:#721c24,color:#fff
 ```
 
 这个图表显示莱斯定理划出了一条清晰的界线：一旦我们询问关于程序行为的语义问题，而这些问题不是平凡回答的，我们就进入了不可判定的领域。无论工程努力或计算能力如何，都无法改变这个边界——这是数学确定性。
@@ -246,8 +246,8 @@ graph TB
         B1 -.->|验证| B3
     end
     
-    style B1 fill:#ccffcc
-    style B3 fill:#ffeecc
+    style B1 fill:#28a745,stroke:#155724,color:#fff
+    style B3 fill:#ffc107,stroke:#856404,color:#000
 ```
 
 关键区别：规格说明成为指导实现和测试的真理来源。AI不会取代人类判断——它通过从人类提供的规格说明生成全面的测试套件来增强人类判断。

@@ -84,9 +84,9 @@ flowchart TD
     C --> F[Can write algorithm<br/>to check property]
     E --> G[No algorithm can<br/>check for all programs]
     
-    style E fill:#ffcccc
-    style F fill:#ccffcc
-    style G fill:#ffcccc
+    style E fill:#dc3545,stroke:#721c24,color:#fff
+    style F fill:#28a745,stroke:#155724,color:#fff
+    style G fill:#dc3545,stroke:#721c24,color:#fff
 ```
 
 This diagram shows that Rice's Theorem draws a sharp line: once we ask semantic questions about program behavior that aren't trivially answered, we enter the realm of undecidability. No amount of engineering effort or computational power changes this boundary—it's a mathematical certainty.
@@ -246,8 +246,8 @@ graph TB
         B1 -.->|Validates| B3
     end
     
-    style B1 fill:#ccffcc
-    style B3 fill:#ffeecc
+    style B1 fill:#28a745,stroke:#155724,color:#fff
+    style B3 fill:#ffc107,stroke:#856404,color:#000
 ```
 
 The key difference: specifications become the source of truth that guides both implementation and testing. AI doesn't replace human judgment—it amplifies it by generating comprehensive test suites from human-provided specifications.
