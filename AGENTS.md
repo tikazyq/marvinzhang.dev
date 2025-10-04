@@ -27,6 +27,7 @@
 - **Mermaid diagrams**: Style all nodes with explicit colors (`fill,stroke,color`) for light/dark theme compatibility.
 - **MDX syntax**: Use JSX-style comments `{/* comment */}` not HTML comments `<!-- comment -->`. Add `{/* truncate */}` after the introduction to control blog list previews.
 - **Bold formatting in Chinese**: When using multiple bold sections on the same line in Chinese text, add a space before the second `**` to ensure proper rendering (e.g., `这与 **语法属性（Syntactic Properties）** 形成对比`).
+- **Bold formatting with quotes**: When bolding text that contains double quotes, add spaces inside the bold markers (e.g., `** "quoted text" **` not `**"quoted text"**`) to prevent MDX parsing issues.
 - Introduce links on first reference only, aiming for official sources and meaningful anchor text.
 
 ### 4-Stage Workflow Quick Reference

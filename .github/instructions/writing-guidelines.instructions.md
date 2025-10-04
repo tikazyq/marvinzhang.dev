@@ -163,6 +163,11 @@ applyTo: '**/*.md*'
   ✅ Correct: 这与 **语法属性（Syntactic Properties）** 形成对比
   ❌ Incorrect: 这与**语法属性（Syntactic Properties）**形成对比
   ```
+- **Bold formatting with quotes**: When bolding text that contains double quotes, add spaces inside the bold markers to prevent parsing issues. The quotes can interfere with MDX's bold syntax parsing.
+  ```markdown
+  ✅ Correct: ** "所有程序行为" ** 是一个语义属性
+  ❌ Incorrect: **"所有程序行为"** 是一个语义属性
+  ```
 
 ### Section Quality Checklist:
 - ✅ Single, clear focus maintained throughout
