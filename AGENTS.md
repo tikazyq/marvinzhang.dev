@@ -26,6 +26,7 @@
 - Highlight each section's main idea in bold at first mention, add short takeaways, and prefer diagrams/tables over long code blocks (≤10 lines when unavoidable).
 - **Mermaid diagrams**: Style all nodes with explicit colors (`fill,stroke,color`) for light/dark theme compatibility.
 - **MDX syntax**: Use JSX-style comments `{/* comment */}` not HTML comments `<!-- comment -->`. Add `{/* truncate */}` after the introduction to control blog list previews.
+- **Bold formatting in Chinese**: When using multiple bold sections on the same line in Chinese text, add a space before the second `**` to ensure proper rendering (e.g., `这与 **语法属性（Syntactic Properties）** 形成对比`).
 - Introduce links on first reference only, aiming for official sources and meaningful anchor text.
 
 ### 4-Stage Workflow Quick Reference
