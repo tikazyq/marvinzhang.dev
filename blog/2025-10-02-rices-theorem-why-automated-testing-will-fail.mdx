@@ -256,8 +256,9 @@ Here's how AI-driven spec-based testing works within Rice's Theorem's limits:
 The following diagram contrasts traditional manual testing with AI-driven spec-based testing:
 
 ```mermaid
-graph TB
-    subgraph "Traditional Manual Testing"
+graph TD
+    subgraph Manual["Traditional Manual Testing"]
+        direction TB
         A1[Write Code] --> A2[Manually Write Tests]
         A2 --> A3[Run Tests]
         A3 --> A4{Pass?}
@@ -266,7 +267,8 @@ graph TB
         A4 -->|Yes| A6[Deploy]
     end
     
-    subgraph "AI-Driven Spec-Based Testing"
+    subgraph AISpec["AI-Driven Spec-Based Testing"]
+        direction TB
         B1[Write Specifications] --> B2[Write Code]
         B2 --> B3[AI Generates Tests<br/>from Specifications]
         B3 --> B4[Run Generated Tests]
