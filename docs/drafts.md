@@ -26,7 +26,7 @@ This document describes how to use the drafts workflow for creating blog article
 2. Complete research.md and outline.md under drafts/YYYY-MM-DD-slug/
 3. Write section-by-section directly in blog/YYYY-MM-DD-slug.mdx with `draft: true`
 4. Translate in i18n/zh/.../YYYY-MM-DD-slug.mdx with `draft: true`
-5. When ready to publish, set `draft: false` in both MDX files and move the drafts workspace to `drafts/archive/`
+5. When ready to publish, set `unlisted: false` in both MDX files and move the drafts workspace to `drafts/archive/`
 
 ## Notes
 

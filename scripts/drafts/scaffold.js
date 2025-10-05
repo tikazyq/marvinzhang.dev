@@ -102,7 +102,7 @@ function createArticleWorkspace(title, date) {
     }
   });
 
-  // Create blog MDX drafts with `draft: true`
+  // Create blog MDX drafts with `unlisted: true`
   const enMdxPath = path.join(blogRoot, `${date}-${slug}.mdx`);
   const zhMdxPath = path.join(blogZhRoot, `${date}-${slug}.mdx`);
 
@@ -112,7 +112,7 @@ title: "${title}"
 authors: ["marvin"]
 tags: ["tag1"]
 date: ${date}
-draft: true
+unlisted: true
 ---
 
 <!-- 
@@ -132,7 +132,7 @@ title: "${title}"
 authors: ["marvin"]
 tags: ["标签1"]
 date: ${date}
-draft: true
+unlisted: true
 ---
 
 <!-- 
@@ -162,8 +162,8 @@ draft: true
   console.log('   ├── research.md       # Research sources and findings');
   console.log('   ├── outline.md        # Article structure and plan');
   console.log('   └── progress.md       # Writing progress tracking');
-  console.log('   blog/YYYY-MM-DD-slug.mdx                  # English draft (draft: true)');
-  console.log('   i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx  # Chinese draft (draft: true)');
+  console.log('   blog/YYYY-MM-DD-slug.mdx                  # English draft (unlisted: true)');
+  console.log('   i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx  # Chinese draft (unlisted: true)');
   console.log('');
   console.log('📝 Writing guidelines (updated):');
   console.log('   • Introduction: 300-500 words (hook + context + roadmap)');
@@ -176,7 +176,7 @@ draft: true
   console.log('📝 Next steps:');
   console.log('1. Start with research.md to gather sources and plan visuals');
   console.log('2. Create detailed outline in outline.md');
-  console.log('3. Write sections directly in blog/MDX with draft: true');
+  console.log('3. Write sections directly in blog/MDX with unlisted: true');
   console.log('4. Update progress.md after each section');
   console.log('5. Translate to the zh MDX during Stage 4');
   console.log('');
