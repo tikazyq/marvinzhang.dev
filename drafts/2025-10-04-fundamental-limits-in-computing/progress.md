@@ -29,7 +29,7 @@
 - [ ] Technical accuracy check
 - [ ] Flow and narrative polish
 - [ ] Visual elements finalized
-- [ ] Ready for publication (change draft: false)
+- [ ] Ready for publication (change unlisted: false)
 
 ## Article Statistics
 - **Part 1 word count**: ~4,943 words (English)

@@ -10,7 +10,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 
 **STAGE-BASED APPROACH**: Each stage has distinct objectives, deliverables, and quality gates. Complete one stage fully before proceeding to the next.
 
-**CONTEXT MANAGEMENT**: Use persistent files in `drafts/YYYY-MM-DD-slug/` for research/outline/progress. Write article drafts directly in `blog/` and `i18n/zh/docusaurus-plugin-content-blog/` with `draft: true`. Move the whole `drafts/YYYY-MM-DD-slug/` folder to `drafts/archive/` after publication.
+**CONTEXT MANAGEMENT**: Use persistent files in `drafts/YYYY-MM-DD-slug/` for research/outline/progress. Write article drafts directly in `blog/` and `i18n/zh/docusaurus-plugin-content-blog/` with `unlisted: true`. Move the whole `drafts/YYYY-MM-DD-slug/` folder to `drafts/archive/` after publication.
 
 ## Stage Overview
 
@@ -27,7 +27,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 ### Stage 3: Writing ✍️
 **Objective**: Create high-quality content section-by-section
 **Duration**: 3-6 AI interactions (one per section)
-**Key Deliverable**: Complete blog/YYYY-MM-DD-slug.mdx (English, draft: true) with all sections
+**Key Deliverable**: Complete blog/YYYY-MM-DD-slug.mdx (English, unlisted: true) with all sections
 
 ### Stage 4: Refine 🔧
 **Objective**: Review, improve, and finalize articles based on quality standards
@@ -52,8 +52,8 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - **Research**: `drafts/YYYY-MM-DD-slug/research.md`
 - **Outline**: `drafts/YYYY-MM-DD-slug/outline.md`
 - **Progress**: `drafts/YYYY-MM-DD-slug/progress.md`
-- **English Draft**: `blog/YYYY-MM-DD-slug.mdx` (frontmatter `draft: true`)
-- **Chinese Draft**: `i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx` (frontmatter `draft: true`)
+- **English Draft**: `blog/YYYY-MM-DD-slug.mdx` (frontmatter `unlisted: true`)
+- **Chinese Draft**: `i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx` (frontmatter `unlisted: true`)
 
 ---
 
@@ -228,7 +228,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - **Section-by-Section Excellence**: Each section provides standalone value
 
 ### Writing Approach
-**SECTION-BY-SECTION EXECUTION**: Write one complete section per AI interaction directly to `blog/YYYY-MM-DD-slug.mdx` (with `draft: true`) to avoid response limits and maintain focus.
+**SECTION-BY-SECTION EXECUTION**: Write one complete section per AI interaction directly to `blog/YYYY-MM-DD-slug.mdx` (with `unlisted: true`) to avoid response limits and maintain focus.
 
 #### Section Writing Process
 1. **Section Setup**
@@ -323,7 +323,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 ```markdown
 ## Section Complete: [Section Name]
 **Word Count**: ~XXX words
-**Added to**: blog/YYYY-MM-DD-slug.mdx (draft: true)
+**Added to**: blog/YYYY-MM-DD-slug.mdx (unlisted: true)
 **Quality Validated**: ✅ Content ✅ Technical ✅ Style
 **Core Concepts**: ✅ Highlighted with callout/first-mention definition
 **References**: ✅ Inline links to official/internal sources
@@ -476,8 +476,8 @@ drafts/YYYY-MM-DD-slug/
 ├── outline.md           # Stage 2: Article structure and plan
 └── progress.md          # Cross-stage: Progress tracking
 
-blog/YYYY-MM-DD-slug.mdx                              # English draft (draft: true)
-i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx  # Chinese draft (draft: true)
+blog/YYYY-MM-DD-slug.mdx                              # English draft (unlisted: true)
+i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx  # Chinese draft (unlisted: true)
 ```
 
 ### Stage Workflow Instructions

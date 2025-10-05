@@ -4,7 +4,7 @@ applyTo: '**/*.md*'
 
 # Blog Writing Guidelines (Section-by-Section)
 
-**CRITICAL**: Always write article content in manageable sections to avoid response limits. Write directly to `blog/YYYY-MM-DD-slug.mdx` with `draft: true`, completing one section at a time and clearly indicating section boundaries within the article. Translate in `i18n/en/.../YYYY-MM-DD-slug.mdx`.
+**CRITICAL**: Always write article content in manageable sections to avoid response limits. Write directly to `blog/YYYY-MM-DD-slug.mdx` with `unlisted: true`, completing one section at a time and clearly indicating section boundaries within the article. Translate in `i18n/en/.../YYYY-MM-DD-slug.mdx`.
 
 **DATE REQUIREMENT**: Always determine the **current date programmatically** for new blog posts by running a terminal command (e.g., `date +%Y-%m-%d`). Do NOT rely on training data memory or assume dates. Use the actual system date for accuracy.
 

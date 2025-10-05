@@ -95,7 +95,7 @@
 ## Next Steps (Priority Order)
 1. **Review and polish**: Human review of technical accuracy and flow - Available for user review
 2. **Consider publication date**: Decide on actual publication date (currently set to 2025-10-02)
-3. **Remove draft flag**: Change `draft: true` to `draft: false` when ready to publish
+3. **Remove unlisted flag**: Change `unlisted: true` to `unlisted: false` when ready to publish
 4. **Archive workspace**: Move drafts folder to archive after publication
 
 ## Quality Assurance Checklist
