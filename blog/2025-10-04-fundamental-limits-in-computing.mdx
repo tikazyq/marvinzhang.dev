@@ -193,7 +193,7 @@ Finally, we encounter questions that may not even be formalizable as computation
 ### The Hierarchy Visualized
 
 ```mermaid
-flowchart TB
+flowchart LR
     A[Computational Problems] --> B[Tier 1: Tractable & Decidable]
     A --> C[Tier 2: Intractable but Decidable]
     A --> D[Tier 3: Undecidable]
@@ -380,22 +380,22 @@ This leads to a profound insight: **intelligence** (pattern recognition, context
 
 ```mermaid
 quadrantChart
-    title Intelligence Required vs. Computability
-    x-axis Low Intelligence → High Intelligence
-    y-axis Undecidable ↑ Decidable
-    quadrant-1 High Intelligence & Decidable
-    quadrant-2 Low Intelligence & Decidable
-    quadrant-3 Low Intelligence & Undecidable
-    quadrant-4 High Intelligence & Undecidable
-    
-    Arithmetic: [0.15, 0.8]
-    Sorting: [0.2, 0.75]
-    Translation: [0.85, 0.7]
-    Chess Strategy: [0.75, 0.6]
-    Image Recognition: [0.8, 0.65]
-    Halting Problem: [0.3, 0.2]
-    Program Equivalence: [0.4, 0.15]
-    Rice's Theorem Scope: [0.35, 0.1]
+    title "Intelligence Required vs. Computability"
+    x-axis "Low Intelligence" --> "High Intelligence"
+    y-axis "Undecidable" --> "Decidable"
+    quadrant-1 "High Intelligence & Decidable"
+    quadrant-2 "Low Intelligence & Decidable"
+    quadrant-3 "Low Intelligence & Undecidable"
+    quadrant-4 "High Intelligence & Undecidable"
+
+    "Arithmetic": [0.15, 0.8]
+    "Sorting": [0.2, 0.75]
+    "Translation": [0.85, 0.7]
+    "Chess Strategy": [0.75, 0.6]
+    "Image Recognition": [0.8, 0.65]
+    "Halting Problem": [0.3, 0.2]
+    "Program Equivalence": [0.4, 0.15]
+    "Rice's Theorem Scope": [0.35, 0.1]
 ```
 
 **Quadrant 1** (High intelligence, Decidable): Machine translation, image recognition, chess—problems requiring intelligence but algorithmically solvable.
