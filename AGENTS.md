@@ -6,6 +6,18 @@
 - English posts live in `blog/`; Chinese counterparts mirror them in `i18n/zh/docusaurus-plugin-content-blog/` with identical slugs and dates.
 - Follow `.github/copilot-instructions.md` for project-wide conventions and reference `.github/instructions/writing-guidelines.instructions.md` for Markdown authoring specifics.
 
+<instructions>
+Here is a list of instruction files that contain rules for modifying or creating new code.
+These files are important for ensuring that the code is modified or created correctly.
+Please make sure to follow the rules specified in these files when working with the codebase.
+If the file is not already available as attachment, use the `read_file` tool to acquire it.
+Make sure to acquire the instructions before making any changes to the code.
+| File | Applies To | Description |
+| ------- | --------- | ----------- |
+| '.github/instructions/writing-guidelines.instructions.md' | **/*.md* | Markdown style, tone, and formatting rules |
+| '.github/instructions/writing-workflow.instructions.md' | **/*.md* | 4-stage article creation workflow (Research → Outline → Writing → Refine) |
+</instructions>
+
 ## Operational Directives
 **Core concept: Agents need to respect the repository etiquette before touching files.**
 - Always manage work through the todo list tool (one item in progress at a time, complete ASAP).
@@ -31,12 +43,12 @@
 - Introduce links on first reference only, aiming for official sources and meaningful anchor text.
 
 ### 4-Stage Workflow Quick Reference
-- **Stage 1 – Research**: Validate topic viability, gather authoritative sources, and complete `research.md` with insights that prove the angle is worth pursuing.
-- **Stage 2 – Outline**: Translate findings into a detailed structure inside `outline.md`, setting word targets, section goals, and planned visuals.
-- **Stage 3 – Writing**: Draft each section directly in `blog/…` and `i18n/zh/…` with `unlisted: true`, keeping to section word counts and surfacing core concepts early.
-- **Stage 4 – Refine**: Perform holistic review, tighten narrative flow, validate technical accuracy, and ensure bilingual parity before flipping `unlisted: false`.
+1. **Research**: Validate topic viability, gather ≥5 authoritative sources, identify unique angle → complete `research.md`
+2. **Outline**: Create detailed structure with section breakdown, word targets, visual plan → complete `outline.md`
+3. **Writing**: Draft section-by-section directly in `blog/YYYY-MM-DD-slug.mdx` (unlisted: true) → one section per interaction
+4. **Refine**: Review holistically, validate technical accuracy, ensure EN/ZH parity → flip unlisted to false, archive draft folder
 
-> For the stage-by-stage checklist, quality gates, and handoff protocol, follow `.github/prompts/write.prompt.md`.
+> Full workflow details, quality gates, and handoff protocols available in `.github/instructions/writing-workflow.instructions.md` (auto-loads when editing blog posts).
 
 ## Localization & Draft Workflow
 **Core concept: Maintain synchronized bilingual content and move drafts through the archive flow when publishing.**

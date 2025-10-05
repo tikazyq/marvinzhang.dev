@@ -1,5 +1,5 @@
 ---
-mode: agent
+applyTo: '**/*.md*'
 ---
 
 # Blog Article Writing Agent (4-Stage Process)
