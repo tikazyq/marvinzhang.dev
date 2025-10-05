@@ -1,8 +1,8 @@
 # Progress Tracker: Fundamental Limits in Computing
 
 **Article**: The Physics of Code - Understanding Fundamental Limits in Computing
-**Date**: 2025-10-04
-**Status**: Stage 3 Complete - Article Written (Both Languages)
+**Date**: 2025-10-04 (Part 1), 2025-10-05 (Part 2)
+**Status**: Both Parts Complete - Ready for Publication
 
 ## Stage Checklist
 
@@ -19,29 +19,27 @@
 - [x] Transition points mapped
 
 ### Stage 3: Writing ✅
-- [x] Introduction (450 words)
-- [x] Section 1: The Nature of Fundamental Limits (750 words)
-- [x] Section 2: The Hierarchy of Computational Complexity (950 words)
-- [x] Section 3: Quantifying Complexity (700 words)
-- [x] Section 4: Intelligence vs Computability Paradox (750 words)
-- [x] Section 5: Specific vs Universal (650 words)
-- [x] Section 6-7: Practical Engineering & Historical Lessons (900 words)
-- [x] Section 8-10: Philosophical Foundations & Framework (850 words)
-- [x] Conclusion (450 words)
-- [x] Complete bilingual sync maintained
+- [x] Part 1: Introduction + Sections 1-4 (~4,943 words)
+- [x] Part 2: Sections 5-7 + Conclusion (~3,167 words)
+- [x] Complete bilingual sync maintained (EN + ZH)
+- [x] Added 15+ reference links for accessibility
+- [x] Series navigation boxes linking parts
 
 ### Stage 4: Refinement
 - [ ] Technical accuracy check
 - [ ] Flow and narrative polish
 - [ ] Visual elements finalized
-- [ ] Ready for publication
+- [ ] Ready for publication (change draft: false)
 
 ## Article Statistics
-- **Total word count**: ~6,500 words (English)
+- **Part 1 word count**: ~4,943 words (English)
+- **Part 2 word count**: ~3,167 words (English)
+- **Total series**: ~8,110 words split across 2 parts
 - **Sections**: Introduction + 7 major sections + Conclusion
-- **Visual elements**: 4 Mermaid diagrams, 6 tables, 3 admonitions
+- **Visual elements**: 5 Mermaid diagrams, 8 tables, 4 admonitions
 - **Both languages**: Complete English and Chinese versions
-- **Draft status**: `draft: true` in both files
+- **Draft status**: `draft: true` in all files
+- **Accessibility**: 15+ links to Wikipedia/authoritative sources
 
 ### Stage 3: Writing
 - [ ] Introduction (300-500 words)
