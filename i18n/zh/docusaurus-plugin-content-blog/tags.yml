@@ -252,3 +252,23 @@ data-architecture:
   label: 数据架构
   permalink: /data-architecture
   description: 数据架构设计和企业数据建模
+
+leadership:
+  label: 领导力
+  permalink: /leadership
+  description: 领导力技能和管理实践
+
+engineering-management:
+  label: 工程管理
+  permalink: /engineering-management
+  description: 工程团队管理和领导力
+
+soft-skills:
+  label: 软技能
+  permalink: /soft-skills
+  description: 沟通、协作和人际交往能力
+
+team-collaboration:
+  label: 团队协作
+  permalink: /team-collaboration
+  description: 团队协作和协调实践
