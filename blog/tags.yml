@@ -252,3 +252,23 @@ data-architecture:
   label: Data Architecture
   permalink: /data-architecture
   description: Data architecture design and enterprise data modeling
+
+leadership:
+  label: Leadership
+  permalink: /leadership
+  description: Leadership skills and management practices
+
+engineering-management:
+  label: Engineering Management
+  permalink: /engineering-management
+  description: Engineering team management and leadership
+
+soft-skills:
+  label: Soft Skills
+  permalink: /soft-skills
+  description: Communication, collaboration, and interpersonal skills
+
+team-collaboration:
+  label: Team Collaboration
+  permalink: /team-collaboration
+  description: Team collaboration and coordination practices
