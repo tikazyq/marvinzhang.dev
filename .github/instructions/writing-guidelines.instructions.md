@@ -141,6 +141,83 @@ Before finalizing a Chinese translation, verify:
 - ✅ Are all English terms and names properly annotated?
 - ✅ Is Chinese punctuation used consistently?
 
+#### Common Pitfalls to Avoid in Chinese Translation
+
+**Pitfall 1: Direct Word-by-Word Translation**
+- ❌ Problem: Maintains English grammar and word order in Chinese
+- ✅ Solution: Restructure sentences following Chinese syntax patterns
+
+**Pitfall 2: Awkward Passive Voice**
+- ❌ Problem: "这个问题被解决了" (direct passive from "the problem was solved")
+- ✅ Solution: Use active voice or topic-comment structure: "我们解决了这个问题" or "这个问题，已经解决"
+
+**Pitfall 3: Overly Long Sentences**
+- ❌ Problem: Translating complex English sentences as single Chinese sentences
+- ✅ Solution: Break into 2-3 shorter sentences with clear logical flow
+
+**Pitfall 4: Missing Cultural Context**
+- ❌ Problem: Using Western examples that don't resonate (e.g., Thanksgiving, baseball metaphors)
+- ✅ Solution: Replace with universal or Chinese-specific examples
+
+**Pitfall 5: Unnatural Conjunctions**
+- ❌ Problem: Overusing "并且"、"但是"、"因为" in every sentence
+- ✅ Solution: Use implicit connections, parallel structures, or varied connectors
+
+#### Advanced Techniques for Natural Chinese Writing
+
+1. **Use Topic-Comment Structure**: Chinese naturally emphasizes topic-comment patterns
+   - EN: "Testing shows bugs exist, not that they don't."
+   - ZH (literal): 测试显示bug存在，而不是它们不存在。❌
+   - ZH (natural): 测试能证明bug的存在，却无法证明不存在。✅
+
+2. **Leverage Four-Character Idioms**: When appropriate, use 成语 for conciseness
+   - "fundamentally impossible" → 根本不可能 or 无从谈起
+   - "tremendous improvement" → 巨大飞跃 or 质的飞跃
+   - "critical turning point" → 关键节点 or 转折点
+
+3. **Adapt Question Patterns**: Chinese rhetorical questions have distinct structures
+   - EN: "Why does this matter?"
+   - ZH (literal): 这为什么重要？❌
+   - ZH (natural): 这有什么意义呢？/ 重要性何在？✅
+
+4. **Use Balanced Parallel Structures**: Chinese appreciates symmetry
+   - "from theory to practice" → 从理论到实践 (good)
+   - "understanding limits and maximizing effectiveness" → 认清边界，提升实效 (balanced rhythm)
+
+5. **Apply Appropriate Modality**: Chinese uses different modal expressions
+   - EN: "You should consider..."
+   - ZH (literal): 你应该考虑... ❌
+   - ZH (natural): 不妨考虑... / 值得注意的是... ✅
+
+#### Technical Explanation Patterns in Chinese
+
+When explaining complex technical concepts, adapt these patterns:
+
+**Pattern 1: Defining Terms**
+- EN: "X is defined as Y"
+- ZH (literal): X被定义为Y ❌
+- ZH (natural): X是什么？简单来说，就是Y / X，即Y ✅
+
+**Pattern 2: Cause and Effect**
+- EN: "Because of X, Y happens"
+- ZH (literal): 因为X，Y发生了 ❌
+- ZH (natural): X导致了Y / 正是因为X，我们才看到Y ✅
+
+**Pattern 3: Contrast and Comparison**
+- EN: "Unlike X, Y does Z"
+- ZH (literal): 不像X，Y做Z ❌
+- ZH (natural): X和Y不同，Y能够Z / Y与X相比，具有Z的特点 ✅
+
+**Pattern 4: Sequential Steps**
+- EN: "First...then...finally..."
+- ZH (literal): 首先...然后...最后... (acceptable but can be improved)
+- ZH (natural): 第一步...接下来...最终... / 先...再...最后... ✅
+
+**Pattern 5: Emphasis and Highlighting**
+- EN: "The key point is..."
+- ZH (literal): 关键点是... ❌
+- ZH (natural): 关键在于... / 核心要点是... / 最重要的是... ✅
+
 ## Section-Specific Guidelines
 
 ### Introduction Section
