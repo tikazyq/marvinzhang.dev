@@ -236,6 +236,33 @@ Tech writing in Chinese can be slightly more formal than English:
 - Use 我们 (we) to include readers
 - Avoid 您 (formal you) except in very specific contexts
 
+### Tip 6: Avoid Common Pitfalls (Learned from Feedback)
+Based on native speaker feedback, watch out for:
+
+**Word Order Issues:**
+- ❌ "协调多元能力" → ✅ "多元能力的协调"
+- Pattern: Add "的" for natural noun-verb relationships
+
+**Overly Complex Terms:**
+- ❌ "跨越不同输入类型的综合练习" → ✅ "综合多种信息来源的过程"
+- Rule: If it sounds confusing aloud, simplify
+
+**Literary vs. Common Words:**
+- ❌ "担纲" → ✅ "主导" (more common in tech contexts)
+- ❌ "待综合" → ✅ "待整合" (more natural)
+
+**Tense and Aspect:**
+- ❌ "你的回应塑造了..." → ✅ "你的回应将塑造...的..."
+- Add future tense + descriptive adjectives for ongoing scenarios
+
+**Word Intensity:**
+- ❌ "否定" (too strong) → ✅ "提出不同意见" (appropriate)
+- Match word intensity to actual context
+
+**Complete Phrases:**
+- ❌ "我是这屋里最懂的" → ✅ "你是团队中技术最强的那个人"
+- Avoid bare superlatives; use complete natural phrases
+
 ---
 
 ## Resources

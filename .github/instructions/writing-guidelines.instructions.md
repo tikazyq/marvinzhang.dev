@@ -141,6 +141,21 @@ Before finalizing a Chinese translation, verify:
 - ✅ Are all English terms and names properly annotated?
 - ✅ Is Chinese punctuation used consistently?
 
+#### Quick Reference: Common Translation Mistakes
+
+When translating, watch out for these frequent issues:
+
+| Issue Type | ❌ Avoid | ✅ Use Instead | Reason |
+|------------|---------|---------------|---------|
+| **Verb-noun order** | 协调多元能力 | 多元能力的协调 | Chinese prefers noun + 的 + verb structure |
+| **Complex compounds** | 跨越不同输入类型的综合练习 | 综合多种信息来源的过程 | Simpler, more direct Chinese |
+| **Literary words** | 担纲、诚然、实则 | 主导、确实、实际上 | More conversational for tech writing |
+| **Wrong tense** | 塑造了（past） | 将塑造（future） | Match natural Chinese temporal expression |
+| **Missing context** | 动态的能力需求 | 对团队能力的动态需求 | Add subject for clarity |
+| **Too strong words** | 否定（deny） | 提出不同意见（disagree） | Match intensity to context |
+| **Bare superlatives** | 最懂的 | 技术最强的那个人 | Complete the phrase naturally |
+| **Wrong word choice** | 待综合 | 待整合 | Use more common synonyms |
+
 #### Common Pitfalls to Avoid in Chinese Translation
 
 **Pitfall 1: Direct Word-by-Word Translation**
@@ -162,6 +177,45 @@ Before finalizing a Chinese translation, verify:
 **Pitfall 5: Unnatural Conjunctions**
 - ❌ Problem: Overusing "并且"、"但是"、"因为" in every sentence
 - ✅ Solution: Use implicit connections, parallel structures, or varied connectors
+
+**Pitfall 6: Awkward Verb-Noun Order**
+- ❌ Problem: Direct translation creates unnatural verb-object combinations (e.g., "协调多元能力")
+- ✅ Solution: Restructure to natural Chinese order with "的": "多元能力的协调" or use complete verb phrases
+
+**Pitfall 7: Overly Complex/Confusing Terminology**
+- ❌ Problem: Creating awkward compound terms that confuse readers (e.g., "跨越不同输入类型的综合练习")
+- ✅ Solution: Simplify to common, clear Chinese: "综合多种信息来源的过程"
+- **Rule**: If a translated term sounds confusing when read aloud, simplify it
+
+**Pitfall 8: Literary or Uncommon Words**
+- ❌ Problem: Using literary/archaic words that feel out of place in tech writing (e.g., "担纲" for "lead")
+- ✅ Solution: Use common modern Chinese: "主导", "负责", "带领"
+- **Examples**: 
+  - "担纲" → "主导" (lead)
+  - "综合" (in some contexts) → "整合" (integrate, more commonly used)
+  - "诚然" → "确实" (indeed, more conversational)
+
+**Pitfall 9: Wrong Tense or Aspect**
+- ❌ Problem: Using past tense when future/general tense is more natural (e.g., "你的回应塑造了团队文化")
+- ✅ Solution: Use appropriate tense: "你的回应将塑造...的团队文化" (future + descriptive adjective)
+- **Rule**: Chinese often prefers future tense for ongoing/hypothetical scenarios
+
+**Pitfall 10: Missing Context/Subjects**
+- ❌ Problem: Dropping necessary subjects/context (e.g., "动态的能力需求" - ambiguous)
+- ✅ Solution: Add clarifying context: "对团队能力的动态需求"
+- **Rule**: Ensure the subject-object relationship is clear
+
+**Pitfall 11: Inappropriate Word Choices for Context**
+- ❌ Problem: Using words that are too strong/negative (e.g., "否定" for simple disagreement)
+- ✅ Solution: Match intensity to context: "提出不同意见", "质疑", "不同意"
+- **Examples**:
+  - "否定" (deny/negate - very strong) → "提出不同意见" (disagree - neutral)
+  - "待综合" (to be synthesized - stiff) → "待整合" (to be integrated - common)
+  
+**Pitfall 12: Unnatural Superlatives**
+- ❌ Problem: Direct translation of superlatives as standalone nouns (e.g., "我是这屋里最懂的")
+- ✅ Solution: Use complete, natural phrases: "你是团队中技术最强的那个人"
+- **Rule**: Avoid bare superlatives; add proper context and measure words
 
 #### Advanced Techniques for Natural Chinese Writing
 
