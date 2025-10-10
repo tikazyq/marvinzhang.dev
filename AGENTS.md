@@ -55,6 +55,7 @@ Make sure to acquire the instructions before making any changes to the code.
 - Every English post must have a matching Chinese translation with the same slug and metadata.
 - Draft Markdown lives in the final location (`blog/...` and `i18n/zh/...`) with `unlisted: true` until release; flip to `false` and move the scaffold folder to `drafts/archive/` at publication.
 - Keep frontmatter aligned (title, tags, date, authors) and ensure translations reflect updates made to the English version.
+- **形不同而意同 (Same Meaning, Different Form)**: Chinese articles must read naturally and idiomatically, not as literal translations. Adapt sentence structures, expressions, and rhetoric to feel native to Chinese readers while preserving core concepts and technical accuracy.
 - **Chinese articles must include English term annotations**: Add capitalized English translations in parentheses at first mention of technical terms (e.g., `可计算性理论（Computability Theory）`, `大型语言模型（Large Language Model，LLM）`), and use Chinese punctuation throughout (，、：instead of , ・ :).
 - **Chinese articles must include English names for famous people**: Add English names in parentheses at first mention of notable individuals (e.g., `艾兹格·迪杰斯特拉（Edsger Dijkstra）`, `亨利·戈登·莱斯（Henry Gordon Rice）`, `艾伦·图灵（Alan Turing）`).
 - **Chinese punctuation consistency**: Always use Chinese commas (，) instead of English commas (,) throughout Chinese articles, including in technical explanations and sentence structures.

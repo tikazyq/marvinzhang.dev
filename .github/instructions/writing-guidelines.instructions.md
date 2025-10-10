@@ -48,25 +48,98 @@ applyTo: '**/*.md*'
 - **Reader engagement**: "You might wonder", "You'll likely find", "For developers like you"
 
 ### Localization Guidelines
-- **Native Chinese version**: When translating to Chinese (zh), ensure the content reads naturally and idiomatically - avoid literal translations that sound awkward
-- **Cultural adaptation**: Adapt examples, metaphors, and references to be culturally relevant for Chinese readers
-- **Natural flow**: Chinese version should feel like it was originally written in Chinese, not translated
+
+#### Core Philosophy: 形不同而意同 (Same Meaning, Different Form)
+Chinese translations must prioritize natural idiomatic expression over literal word-for-word translation. The goal is to convey the same technical concepts and insights while adapting the form, structure, and rhetoric to feel native to Chinese readers.
+
+#### Natural Chinese Writing Principles
+- **Avoid literal translations**: Transform English sentence structures into natural Chinese patterns, even if it means reorganizing ideas
+- **Use Chinese rhetoric**: Leverage Chinese literary devices, four-character idioms (成语), and culturally resonant expressions where appropriate
+- **Adapt sentence length**: Chinese readers often prefer shorter, punchier sentences; break long English sentences into multiple shorter ones
+- **Cultural localization**: Replace Western metaphors with Chinese equivalents or universally understood analogies
+- **Reader connection**: Use "你" (you) naturally and pose rhetorical questions in ways that resonate with Chinese tech culture
+
+#### Sentence Structure Adaptation Examples
+
+**❌ Literal Translation (Too Stiff)**:
+> "This article explores Rice's Theorem and its profound implications for software testing."
+> 本文探讨莱斯定理及其对软件测试的深远影响。
+
+**✅ Natural Chinese (Idiomatic)**:
+> 莱斯定理如何影响软件测试？这正是本文要探讨的核心问题。
+> (How does Rice's Theorem affect software testing? That's the core question this article explores.)
+
+**❌ Literal Translation**:
+> "The journey ahead takes us from theoretical computer science to everyday development practices."
+> 前方的旅程将我们从理论计算机科学带到日常开发实践。
+
+**✅ Natural Chinese**:
+> 让我们从理论出发，一步步走向实际开发中的应用。
+> (Let's start from theory and step by step move toward practical development applications.)
+
+#### Expression Pattern Transformations
+
+| English Pattern | Literal Chinese (❌) | Natural Chinese (✅) |
+|----------------|-------------------|-------------------|
+| "You might wonder..." | 你可能会想... | 也许你会好奇... / 你是否想过... |
+| "Let's unpack this..." | 让我们解开这个... | 咱们来仔细看看... / 深入分析一下... |
+| "Here's the key insight..." | 这是关键洞察... | 关键在于... / 核心要点是... |
+| "This isn't just about..." | 这不仅仅是关于... | 这不只是...的问题 / 问题的本质是... |
+| "The bottom line is..." | 底线是... | 说到底... / 归根结底... |
+
+#### Rhetorical Device Adaptation
+- **Questions**: Transform English rhetorical questions into Chinese patterns
+  - EN: "Why should I care about abstract mathematical theorems?"
+  - ZH (literal): 我为什么应该关心抽象数学定理？ ❌
+  - ZH (natural): 抽象的数学定理和我有什么关系？ ✅
+  
+- **Transitions**: Use Chinese-specific connectors
+  - Instead of direct translations, use: 不过 / 然而 / 因此 / 换句话说 / 实际上 / 更进一步说
+  
+- **Emphasis**: Adapt emphasis patterns
+  - EN: "This is fundamentally important..."
+  - ZH (literal): 这是根本重要的... ❌
+  - ZH (natural): 这一点至关重要... / 这是问题的根本所在... ✅
+
+#### Technical Content Localization
+- **Maintain precision**: Technical accuracy is non-negotiable; adapt presentation, not meaning
+- **Localize examples**: Where possible, use Chinese tech companies, tools, or scenarios familiar to Chinese developers
+- **Balance accessibility**: Chinese technical writing often assumes slightly higher baseline knowledge; adjust explanation depth accordingly
+
+#### Tone and Voice in Chinese
+- **Professional yet warm**: Use 你 (informal you) instead of 您 (formal you) to maintain conversational tone
+- **Collective reference**: When appropriate, use "咱们" (we, inclusive) to build community feel
+- **Humble expertise**: Chinese readers appreciate confident knowledge sharing without arrogance; use phrases like "我们不妨" (we might as well), "不妨思考" (worth considering)
+
+#### Must-Preserve Elements (Technical Requirements)
 - **English term annotations**: In Chinese (zh) articles, always include English translations for technical terms in parentheses at first mention:
   - Use capitalized English terms (e.g., "Undecidable" not "undecidable")
   - Include abbreviations where applicable (e.g., "大型语言模型（Large Language Model，LLM）")
   - Format: `中文术语（English Term）` or `中文术语（English Term，ABBR）`
   - Apply to: core concepts, technical terminology, methodologies, and industry-standard terms
   - Use Chinese punctuation (，、：) throughout Chinese articles
+
 - **English names for famous people**: In Chinese (zh) articles, always include English names in parentheses at first mention of notable individuals:
   - Format: `中文姓名（English Name）` (e.g., "艾兹格·迪杰斯特拉（Edsger Dijkstra）")
   - Apply to: computer scientists, mathematicians, researchers, industry leaders, and other notable figures
   - Helps readers identify individuals in international context and facilitates further research
+
 - **Chinese punctuation consistency**: In Chinese (zh) articles, always use Chinese punctuation marks throughout:
   - Use Chinese comma (，) instead of English comma (,)
   - Use Chinese period (。) instead of English period (.)
   - Use Chinese colon (：) instead of English colon (:)
   - Apply consistently in all text, including technical explanations, lists, and sentence structures
   - Exception: Keep English punctuation inside code blocks and when quoting English terms
+
+#### Quality Check for Chinese Articles
+Before finalizing a Chinese translation, verify:
+- ✅ Does it read naturally when spoken aloud in Chinese?
+- ✅ Would a native Chinese speaker write it this way?
+- ✅ Are sentence structures adapted, not just word-swapped?
+- ✅ Do metaphors and examples resonate with Chinese tech culture?
+- ✅ Is the tone appropriately conversational yet professional?
+- ✅ Are all English terms and names properly annotated?
+- ✅ Is Chinese punctuation used consistently?
 
 ## Section-Specific Guidelines
 
