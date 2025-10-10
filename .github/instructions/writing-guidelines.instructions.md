@@ -48,25 +48,229 @@ applyTo: '**/*.md*'
 - **Reader engagement**: "You might wonder", "You'll likely find", "For developers like you"
 
 ### Localization Guidelines
-- **Native Chinese version**: When translating to Chinese (zh), ensure the content reads naturally and idiomatically - avoid literal translations that sound awkward
-- **Cultural adaptation**: Adapt examples, metaphors, and references to be culturally relevant for Chinese readers
-- **Natural flow**: Chinese version should feel like it was originally written in Chinese, not translated
+
+#### Core Philosophy: 形不同而意同 (Same Meaning, Different Form)
+Chinese translations must prioritize natural idiomatic expression over literal word-for-word translation. The goal is to convey the same technical concepts and insights while adapting the form, structure, and rhetoric to feel native to Chinese readers.
+
+#### Natural Chinese Writing Principles
+- **Avoid literal translations**: Transform English sentence structures into natural Chinese patterns, even if it means reorganizing ideas
+- **Use Chinese rhetoric**: Leverage Chinese literary devices, four-character idioms (成语), and culturally resonant expressions where appropriate
+- **Adapt sentence length**: Chinese readers often prefer shorter, punchier sentences; break long English sentences into multiple shorter ones
+- **Cultural localization**: Replace Western metaphors with Chinese equivalents or universally understood analogies
+- **Reader connection**: Use "你" (you) naturally and pose rhetorical questions in ways that resonate with Chinese tech culture
+
+#### Sentence Structure Adaptation Examples
+
+**❌ Literal Translation (Too Stiff)**:
+> "This article explores Rice's Theorem and its profound implications for software testing."
+> 本文探讨莱斯定理及其对软件测试的深远影响。
+
+**✅ Natural Chinese (Idiomatic)**:
+> 莱斯定理如何影响软件测试？这正是本文要探讨的核心问题。
+> (How does Rice's Theorem affect software testing? That's the core question this article explores.)
+
+**❌ Literal Translation**:
+> "The journey ahead takes us from theoretical computer science to everyday development practices."
+> 前方的旅程将我们从理论计算机科学带到日常开发实践。
+
+**✅ Natural Chinese**:
+> 让我们从理论出发，一步步走向实际开发中的应用。
+> (Let's start from theory and step by step move toward practical development applications.)
+
+#### Expression Pattern Transformations
+
+| English Pattern | Literal Chinese (❌) | Natural Chinese (✅) |
+|----------------|-------------------|-------------------|
+| "You might wonder..." | 你可能会想... | 也许你会好奇... / 你是否想过... |
+| "Let's unpack this..." | 让我们解开这个... | 咱们来仔细看看... / 深入分析一下... |
+| "Here's the key insight..." | 这是关键洞察... | 关键在于... / 核心要点是... |
+| "This isn't just about..." | 这不仅仅是关于... | 这不只是...的问题 / 问题的本质是... |
+| "The bottom line is..." | 底线是... | 说到底... / 归根结底... |
+
+#### Rhetorical Device Adaptation
+- **Questions**: Transform English rhetorical questions into Chinese patterns
+  - EN: "Why should I care about abstract mathematical theorems?"
+  - ZH (literal): 我为什么应该关心抽象数学定理？ ❌
+  - ZH (natural): 抽象的数学定理和我有什么关系？ ✅
+  
+- **Transitions**: Use Chinese-specific connectors
+  - Instead of direct translations, use: 不过 / 然而 / 因此 / 换句话说 / 实际上 / 更进一步说
+  
+- **Emphasis**: Adapt emphasis patterns
+  - EN: "This is fundamentally important..."
+  - ZH (literal): 这是根本重要的... ❌
+  - ZH (natural): 这一点至关重要... / 这是问题的根本所在... ✅
+
+#### Technical Content Localization
+- **Maintain precision**: Technical accuracy is non-negotiable; adapt presentation, not meaning
+- **Localize examples**: Where possible, use Chinese tech companies, tools, or scenarios familiar to Chinese developers
+- **Balance accessibility**: Chinese technical writing often assumes slightly higher baseline knowledge; adjust explanation depth accordingly
+
+#### Tone and Voice in Chinese
+- **Professional yet warm**: Use 你 (informal you) instead of 您 (formal you) to maintain conversational tone
+- **Collective reference**: When appropriate, use "咱们" (we, inclusive) to build community feel
+- **Humble expertise**: Chinese readers appreciate confident knowledge sharing without arrogance; use phrases like "我们不妨" (we might as well), "不妨思考" (worth considering)
+
+#### Must-Preserve Elements (Technical Requirements)
 - **English term annotations**: In Chinese (zh) articles, always include English translations for technical terms in parentheses at first mention:
   - Use capitalized English terms (e.g., "Undecidable" not "undecidable")
   - Include abbreviations where applicable (e.g., "大型语言模型（Large Language Model，LLM）")
   - Format: `中文术语（English Term）` or `中文术语（English Term，ABBR）`
   - Apply to: core concepts, technical terminology, methodologies, and industry-standard terms
   - Use Chinese punctuation (，、：) throughout Chinese articles
+
 - **English names for famous people**: In Chinese (zh) articles, always include English names in parentheses at first mention of notable individuals:
   - Format: `中文姓名（English Name）` (e.g., "艾兹格·迪杰斯特拉（Edsger Dijkstra）")
   - Apply to: computer scientists, mathematicians, researchers, industry leaders, and other notable figures
   - Helps readers identify individuals in international context and facilitates further research
+
 - **Chinese punctuation consistency**: In Chinese (zh) articles, always use Chinese punctuation marks throughout:
   - Use Chinese comma (，) instead of English comma (,)
   - Use Chinese period (。) instead of English period (.)
   - Use Chinese colon (：) instead of English colon (:)
   - Apply consistently in all text, including technical explanations, lists, and sentence structures
   - Exception: Keep English punctuation inside code blocks and when quoting English terms
+
+#### Quality Check for Chinese Articles
+Before finalizing a Chinese translation, verify:
+- ✅ Does it read naturally when spoken aloud in Chinese?
+- ✅ Would a native Chinese speaker write it this way?
+- ✅ Are sentence structures adapted, not just word-swapped?
+- ✅ Do metaphors and examples resonate with Chinese tech culture?
+- ✅ Is the tone appropriately conversational yet professional?
+- ✅ Are all English terms and names properly annotated?
+- ✅ Is Chinese punctuation used consistently?
+
+#### Quick Reference: Common Translation Mistakes
+
+When translating, watch out for these frequent issues:
+
+| Issue Type | ❌ Avoid | ✅ Use Instead | Reason |
+|------------|---------|---------------|---------|
+| **Verb-noun order** | 协调多元能力 | 多元能力的协调 | Chinese prefers noun + 的 + verb structure |
+| **Complex compounds** | 跨越不同输入类型的综合练习 | 综合多种信息来源的过程 | Simpler, more direct Chinese |
+| **Literary words** | 担纲、诚然、实则 | 主导、确实、实际上 | More conversational for tech writing |
+| **Wrong tense** | 塑造了（past） | 将塑造（future） | Match natural Chinese temporal expression |
+| **Missing context** | 动态的能力需求 | 对团队能力的动态需求 | Add subject for clarity |
+| **Too strong words** | 否定（deny） | 提出不同意见（disagree） | Match intensity to context |
+| **Bare superlatives** | 最懂的 | 技术最强的那个人 | Complete the phrase naturally |
+| **Wrong word choice** | 待综合 | 待整合 | Use more common synonyms |
+
+#### Common Pitfalls to Avoid in Chinese Translation
+
+**Pitfall 1: Direct Word-by-Word Translation**
+- ❌ Problem: Maintains English grammar and word order in Chinese
+- ✅ Solution: Restructure sentences following Chinese syntax patterns
+
+**Pitfall 2: Awkward Passive Voice**
+- ❌ Problem: "这个问题被解决了" (direct passive from "the problem was solved")
+- ✅ Solution: Use active voice or topic-comment structure: "我们解决了这个问题" or "这个问题，已经解决"
+
+**Pitfall 3: Overly Long Sentences**
+- ❌ Problem: Translating complex English sentences as single Chinese sentences
+- ✅ Solution: Break into 2-3 shorter sentences with clear logical flow
+
+**Pitfall 4: Missing Cultural Context**
+- ❌ Problem: Using Western examples that don't resonate (e.g., Thanksgiving, baseball metaphors)
+- ✅ Solution: Replace with universal or Chinese-specific examples
+
+**Pitfall 5: Unnatural Conjunctions**
+- ❌ Problem: Overusing "并且"、"但是"、"因为" in every sentence
+- ✅ Solution: Use implicit connections, parallel structures, or varied connectors
+
+**Pitfall 6: Awkward Verb-Noun Order**
+- ❌ Problem: Direct translation creates unnatural verb-object combinations (e.g., "协调多元能力")
+- ✅ Solution: Restructure to natural Chinese order with "的": "多元能力的协调" or use complete verb phrases
+
+**Pitfall 7: Overly Complex/Confusing Terminology**
+- ❌ Problem: Creating awkward compound terms that confuse readers (e.g., "跨越不同输入类型的综合练习")
+- ✅ Solution: Simplify to common, clear Chinese: "综合多种信息来源的过程"
+- **Rule**: If a translated term sounds confusing when read aloud, simplify it
+
+**Pitfall 8: Literary or Uncommon Words**
+- ❌ Problem: Using literary/archaic words that feel out of place in tech writing (e.g., "担纲" for "lead")
+- ✅ Solution: Use common modern Chinese: "主导", "负责", "带领"
+- **Examples**: 
+  - "担纲" → "主导" (lead)
+  - "综合" (in some contexts) → "整合" (integrate, more commonly used)
+  - "诚然" → "确实" (indeed, more conversational)
+
+**Pitfall 9: Wrong Tense or Aspect**
+- ❌ Problem: Using past tense when future/general tense is more natural (e.g., "你的回应塑造了团队文化")
+- ✅ Solution: Use appropriate tense: "你的回应将塑造...的团队文化" (future + descriptive adjective)
+- **Rule**: Chinese often prefers future tense for ongoing/hypothetical scenarios
+
+**Pitfall 10: Missing Context/Subjects**
+- ❌ Problem: Dropping necessary subjects/context (e.g., "动态的能力需求" - ambiguous)
+- ✅ Solution: Add clarifying context: "对团队能力的动态需求"
+- **Rule**: Ensure the subject-object relationship is clear
+
+**Pitfall 11: Inappropriate Word Choices for Context**
+- ❌ Problem: Using words that are too strong/negative (e.g., "否定" for simple disagreement)
+- ✅ Solution: Match intensity to context: "提出不同意见", "质疑", "不同意"
+- **Examples**:
+  - "否定" (deny/negate - very strong) → "提出不同意见" (disagree - neutral)
+  - "待综合" (to be synthesized - stiff) → "待整合" (to be integrated - common)
+  
+**Pitfall 12: Unnatural Superlatives**
+- ❌ Problem: Direct translation of superlatives as standalone nouns (e.g., "我是这屋里最懂的")
+- ✅ Solution: Use complete, natural phrases: "你是团队中技术最强的那个人"
+- **Rule**: Avoid bare superlatives; add proper context and measure words
+
+#### Advanced Techniques for Natural Chinese Writing
+
+1. **Use Topic-Comment Structure**: Chinese naturally emphasizes topic-comment patterns
+   - EN: "Testing shows bugs exist, not that they don't."
+   - ZH (literal): 测试显示bug存在，而不是它们不存在。❌
+   - ZH (natural): 测试能证明bug的存在，却无法证明不存在。✅
+
+2. **Leverage Four-Character Idioms**: When appropriate, use 成语 for conciseness
+   - "fundamentally impossible" → 根本不可能 or 无从谈起
+   - "tremendous improvement" → 巨大飞跃 or 质的飞跃
+   - "critical turning point" → 关键节点 or 转折点
+
+3. **Adapt Question Patterns**: Chinese rhetorical questions have distinct structures
+   - EN: "Why does this matter?"
+   - ZH (literal): 这为什么重要？❌
+   - ZH (natural): 这有什么意义呢？/ 重要性何在？✅
+
+4. **Use Balanced Parallel Structures**: Chinese appreciates symmetry
+   - "from theory to practice" → 从理论到实践 (good)
+   - "understanding limits and maximizing effectiveness" → 认清边界，提升实效 (balanced rhythm)
+
+5. **Apply Appropriate Modality**: Chinese uses different modal expressions
+   - EN: "You should consider..."
+   - ZH (literal): 你应该考虑... ❌
+   - ZH (natural): 不妨考虑... / 值得注意的是... ✅
+
+#### Technical Explanation Patterns in Chinese
+
+When explaining complex technical concepts, adapt these patterns:
+
+**Pattern 1: Defining Terms**
+- EN: "X is defined as Y"
+- ZH (literal): X被定义为Y ❌
+- ZH (natural): X是什么？简单来说，就是Y / X，即Y ✅
+
+**Pattern 2: Cause and Effect**
+- EN: "Because of X, Y happens"
+- ZH (literal): 因为X，Y发生了 ❌
+- ZH (natural): X导致了Y / 正是因为X，我们才看到Y ✅
+
+**Pattern 3: Contrast and Comparison**
+- EN: "Unlike X, Y does Z"
+- ZH (literal): 不像X，Y做Z ❌
+- ZH (natural): X和Y不同，Y能够Z / Y与X相比，具有Z的特点 ✅
+
+**Pattern 4: Sequential Steps**
+- EN: "First...then...finally..."
+- ZH (literal): 首先...然后...最后... (acceptable but can be improved)
+- ZH (natural): 第一步...接下来...最终... / 先...再...最后... ✅
+
+**Pattern 5: Emphasis and Highlighting**
+- EN: "The key point is..."
+- ZH (literal): 关键点是... ❌
+- ZH (natural): 关键在于... / 核心要点是... / 最重要的是... ✅
 
 ## Section-Specific Guidelines
 

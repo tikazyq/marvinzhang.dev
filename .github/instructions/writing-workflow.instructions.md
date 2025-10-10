@@ -206,8 +206,10 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 
 ## Bilingual Considerations
 - **Cultural Adaptation**: [Chinese market specifics]
-- **Technical Terminology**: [Translation approach]
+- **Technical Terminology**: [Translation approach—maintain precision while using natural Chinese expressions]
 - **Example Localization**: [Region-specific cases]
+- **Sentence Structure**: [Plan for adapting English rhetorical patterns to Chinese idiomatic expressions]
+- **形不同而意同 Strategy**: [How to transform key concepts and transitions to read naturally in Chinese while preserving core meaning]
 ```
 
 ### Outline Quality Gates
@@ -366,6 +368,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
    - Tone appropriateness for target audience
    - Engagement level and conversational flow
    - Cultural sensitivity for bilingual content
+   - **Chinese localization quality**: Ensure Chinese version follows 形不同而意同 principle—reading naturally and idiomatically, not as literal translation
 
 #### Optimization Focus Areas
 - **Clarity Enhancement**: Simplify complex explanations
@@ -397,8 +400,9 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 
 2. **Final Assembly**
    - Polish `blog/YYYY-MM-DD-slug.mdx` and translate in `i18n/zh/.../YYYY-MM-DD-slug.mdx`
+   - **Chinese translation**: Apply 形不同而意同 principle—transform expressions and structures to read naturally in Chinese while preserving technical accuracy and core concepts
    - Add proper metadata and tags
-   - Ensure bilingual consistency
+   - Ensure bilingual consistency (same concepts, culturally adapted presentation)
    - Prepare for publication
 
 ### Refinement Deliverables
@@ -543,7 +547,7 @@ i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx  # Chinese draft (unl
 - ✅ **Technical**: Accuracy and implementability verified
 - ✅ **Narrative**: Coherent story flow from research through publication
 - ✅ **Audience**: Consistent targeting and value delivery
-- ✅ **Bilingual**: Appropriate cultural adaptation when applicable
+- ✅ **Bilingual**: Appropriate cultural adaptation when applicable—Chinese version uses 形不同而意同 (same meaning, different form) approach for natural, idiomatic expression
 
 ---
 
