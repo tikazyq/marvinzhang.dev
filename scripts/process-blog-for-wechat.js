@@ -18,9 +18,45 @@ const BASE_URL = 'https://marvinzhang.dev';
 
 // Parse command line arguments
 const args = process.argv.slice(2);
-const singleFile = args.includes('--file') ? args[args.indexOf('--file') + 1] : null;
+const options = {
+  locale: args.includes('--locale') ? args[args.indexOf('--locale') + 1] : null,
+  since: args.includes('--since') ? args[args.indexOf('--since') + 1] : null,
+  tags: args.includes('--tags') ? args[args.indexOf('--tags') + 1].split(',') : null,
+  file: args.includes('--file') ? args[args.indexOf('--file') + 1] : null,
+  help: args.includes('--help') || args.includes('-h')
+};
+
+// Show help message
+if (options.help) {
+  console.log(`
+📖 WeChat Processing Tool
+
+Usage: node scripts/process-blog-for-wechat.js [options]
+
+Options:
+  --locale <en|zh>         Only process files in specified locale
+  --since <date>           Only process files modified since date (YYYY-MM-DD)
+  --tags <tag1,tag2>       Only process files with specified tags (comma-separated)
+  --file <filename>        Only process specific file (partial match)
+  -h, --help               Show this help message
+
+Note: Run 'pnpm wechat:extract' first to extract Mermaid diagrams.
+
+Examples:
+  node scripts/process-blog-for-wechat.js
+  node scripts/process-blog-for-wechat.js --locale zh
+  node scripts/process-blog-for-wechat.js --since 2025-10-01
+  node scripts/process-blog-for-wechat.js --file fundamental-limits
+  node scripts/process-blog-for-wechat.js --tags ai,computing
+`);
+  process.exit(0);
+}
 
 console.log('📱 Processing blog articles for WeChat publishing...');
+if (options.locale) console.log(`   🌐 Filtering by locale: ${options.locale}`);
+if (options.since) console.log(`   📅 Filtering files since: ${options.since}`);
+if (options.tags) console.log(`   🏷️  Filtering by tags: ${options.tags.join(', ')}`);
+if (options.file) console.log(`   📄 Filtering by file: ${options.file}`);
 
 // Ensure directories exist
 const ensureDir = (dir) => {
@@ -31,6 +67,42 @@ const ensureDir = (dir) => {
 
 ensureDir(WECHAT_DIR);
 ensureDir(`${WECHAT_DIR}/images`);
+
+// Helper to check if file should be processed
+const shouldProcessFile = (filePath, frontmatter) => {
+  // Check file filter
+  if (options.file && !filePath.includes(options.file)) {
+    return false;
+  }
+  
+  // Check locale filter
+  const locale = filePath.includes('/zh/') ? 'zh' : 'en';
+  if (options.locale && locale !== options.locale) {
+    return false;
+  }
+  
+  // Check tags filter
+  if (options.tags && frontmatter.tags) {
+    const postTags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [frontmatter.tags];
+    const hasMatchingTag = options.tags.some(tag => 
+      postTags.some(postTag => postTag.toLowerCase().includes(tag.toLowerCase()))
+    );
+    if (!hasMatchingTag) {
+      return false;
+    }
+  }
+  
+  // Check date filter
+  if (options.since) {
+    const sinceDate = new Date(options.since);
+    const stats = fs.statSync(filePath);
+    if (stats.mtime < sinceDate) {
+      return false;
+    }
+  }
+  
+  return true;
+};
 
 // Check if extraction was run
 if (!fs.existsSync(`${TEMP_DIR}/extraction-index.json`)) {
@@ -108,7 +180,7 @@ mmdFiles.forEach((mmdFile) => {
   
   try {
     // Generate PNG with white background for WeChat
-    execSync(`npx mmdc -i "${mmdFile}" -o "${outputImage}" -t default -b white --outputFormat png`, {
+    execSync(`npx mmdc -i "${mmdFile}" -o "${outputImage}" -t default -b white --outputFormat png -p puppeteer.config.json`, {
       stdio: 'pipe'
     });
     
@@ -129,13 +201,13 @@ BLOG_DIRS.forEach((blogDir) => {
   const markdownFiles = glob.sync(`${blogDir}/**/*.{md,mdx}`);
   
   markdownFiles.forEach((filePath) => {
-    // Skip if processing single file and this isn't it
-    if (singleFile && !filePath.includes(singleFile)) {
-      return;
-    }
-    
     const content = fs.readFileSync(filePath, 'utf8');
     const { data: frontmatter, content: markdownContent } = matter(content);
+    
+    // Check if file should be processed based on filters
+    if (!shouldProcessFile(filePath, frontmatter)) {
+      return;
+    }
     
     // Check if this file has mermaid diagrams
     const hasMermaid = /```mermaid\n[\s\S]*?```/g.test(markdownContent);
@@ -229,7 +301,13 @@ const summary = {
   generatedImages: diagramMap.size,
   processedFiles: processedFiles.length,
   files: processedFiles,
-  wechatDir: WECHAT_DIR
+  wechatDir: WECHAT_DIR,
+  filters: {
+    locale: options.locale,
+    since: options.since,
+    tags: options.tags,
+    file: options.file
+  }
 };
 
 fs.writeFileSync(
