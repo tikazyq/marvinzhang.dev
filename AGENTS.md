@@ -16,6 +16,7 @@ Make sure to acquire the instructions before making any changes to the code.
 | ------- | --------- | ----------- |
 | '.github/instructions/writing-guidelines.instructions.md' | **/*.md* | Markdown style, tone, and formatting rules |
 | '.github/instructions/writing-workflow.instructions.md' | **/*.md* | 4-stage article creation workflow (Research → Outline → Writing → Refine) |
+| '.github/instructions/economist-style-principles.instructions.md' | **/*.md* | The Economist-inspired writing principles: clarity, precision, active voice, concrete examples, and data-driven argumentation |
 </instructions>
 
 ## Operational Directives
