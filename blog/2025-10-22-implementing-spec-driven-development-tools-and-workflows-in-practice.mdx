@@ -2,18 +2,33 @@
 slug: implementing-spec-driven-development-tools-and-workflows-in-practice
 title: "Implementing Spec-Driven Development: Tools and Workflows in Practice"
 authors: ["marvin"]
-tags: ["tag1"]
+tags: ["software-engineering", "methodology", "ai", "development-workflow", "spec-driven-development", "tools"]
 date: 2025-10-22
 unlisted: true
 ---
 
-<!-- 
+{/* 
 IMPORTANT: Date consistency check
 - Filename: 2025-10-22-implementing-spec-driven-development-tools-and-workflows-in-practice.mdx
 - Frontmatter date: 2025-10-22
 - These MUST match exactly for proper blog functionality
 - AI agents: Always verify date alignment when editing
--->
+*/}
 
-<!-- Write section-by-section. Keep this file as the authoritative English draft. -->
+## Introduction: From Theory to Practice
 
+After spending three hours explaining your project architecture to an AI assistant for the fifth time this week, you realize there must be a better way. The promise of AI-assisted development is extraordinary—until you find yourself repeatedly re-explaining context, clarifying requirements that seemed obvious yesterday, and watching your AI assistant generate code that solves the wrong problem because it missed a crucial constraint you mentioned two conversations ago.
+
+This frustration isn't unique to you. It's the natural consequence of **"vibe coding"**—the ad-hoc, prompt-driven approach that emerged when AI coding assistants first arrived. We treated these powerful tools like enhanced search engines, throwing increasingly elaborate prompts at them and hoping for useful output. Sometimes it worked brilliantly. Often it didn't.
+
+2025 marks a pivot point in how we work with AI development tools. [GitHub released Spec Kit](https://github.com/github/spec-kit), an open source toolkit for **Spec-Driven Development (SDD)**. Amazon launched [Kiro](https://kiro.dev), an IDE with SDD built directly into its core. These aren't incremental improvements—they represent industry consensus that structured specifications dramatically improve AI-assisted development outcomes.
+
+If you've read about Spec-Driven Development and wondered how to actually implement it in your projects, this guide is for you. You'll learn how to set up SDD workflows using real tools, understand the trade-offs between GitHub Spec Kit's toolkit approach and Kiro's integrated IDE, and develop a framework for choosing the right approach for your team's context.
+
+:::info Related Reading
+For theoretical foundations and SDD methodology details, see my previous analysis: [Spec-Driven Development: A Systematic Approach to Complex Features](/blog/spec-driven-development). This article focuses on practical implementation.
+:::
+
+{/* truncate */}
+
+We'll explore the SDD tool ecosystem and understand what these tools actually do, walk through GitHub Spec Kit's practical implementation from installation to first specification, examine Kiro's IDE-native approach and how it differs, and provide a decision framework for choosing between toolkit and integrated approaches. By the end, you'll have the practical knowledge to implement SDD in your own projects.
