@@ -21,7 +21,7 @@ IMPORTANT: Date consistency check
 
 2025 marks the tipping point. What started as experimental tooling has matured into production-ready frameworks backed by both open-source momentum and substantial enterprise investment. GitHub's [Spec Kit](https://github.com/github/spec-kit) has become the de facto standard for open-source SDD adoption. Amazon launched [Kiro](https://kiro.dev), an IDE with SDD built into its core. Tessl, founded by Snyk's creator, raised $125M at a $500M+ valuation to pioneer "spec-as-source" development. The industry signal is clear: **systematic specification-driven development** (SDD) isn't optional anymore—it's becoming table stakes for AI-augmented engineering.
 
-If you're a technical lead evaluating how to harness AI development without sacrificing code quality, this comprehensive guide maps the entire SDD landscape. You'll understand the ecosystem of 7 major tools and frameworks, learn industry best practices from real production deployments, and get actionable frameworks for choosing and implementing the right approach for your team.
+If you're a technical lead evaluating how to harness AI development without sacrificing code quality, this comprehensive guide maps the entire SDD landscape. You'll understand the ecosystem of 6 major tools and frameworks, learn industry best practices from real production deployments, and get actionable frameworks for choosing and implementing the right approach for your team.
 
 :::info Related Reading
 For theoretical foundations and SDD methodology fundamentals, see [Spec-Driven Development: A Systematic Approach to Complex Features](/blog/spec-driven-development). This article focuses on the industrial landscape and practical implementation.
@@ -47,7 +47,7 @@ The SDD market has coalesced around four architectural patterns, each with disti
 
 **Platforms** like [Tessl](https://tessl.io/) go further, positioning specifications as the primary (often only) artifact humans edit. Code becomes generated output, not hand-crafted implementation. This "spec-as-source" model promises maximum maintainability but requires fundamental workflow changes. Best for long-term projects where specification quality matters more than coding speed.
 
-**Frameworks** provide orchestration systems for custom multi-agent workflows. [BMAD (Breakthrough Method for Agile AI-Driven Development)](https://github.com/oimiragieo/BMAD-SPEC-KIT), [Agent OS (AG2)](https://github.com/ag2ai/ag2), and [Cline's SDD workflow](https://github.com/eliasfloreteng/cline-spec-driven-development) fall into this category. Frameworks offer ultimate customization—define your own agent roles, validation gates, and workflow phases—but demand significant technical sophistication. Best for complex projects requiring specialized quality gates or compliance requirements.
+**Frameworks** provide orchestration systems for custom multi-agent workflows. [BMAD (Breakthrough Method for Agile AI-Driven Development)](https://github.com/oimiragieo/BMAD-SPEC-KIT) and [Agent OS (AG2)](https://github.com/ag2ai/ag2) fall into this category. Frameworks offer ultimate customization—define your own agent roles, validation gates, and workflow phases—but demand significant technical sophistication. Best for complex projects requiring specialized quality gates or compliance requirements.
 
 ```mermaid
 flowchart TD
@@ -70,7 +70,7 @@ flowchart TD
     end
     
     subgraph frameworks["Frameworks (Customization)"]
-        F1["BMAD<br/>AG2<br/>Cline"]
+        F1["BMAD<br/>AG2"]
         F2["Multi-Agent Orchestration"]
         F3["Custom workflows"]
     end
@@ -105,7 +105,7 @@ flowchart TD
 |**Toolkits**|Spec Kit, OpenSpec|CLI + Existing Tools|Spec-First to Spec-Anchored|Multi-tool teams, flexible workflows|Open-source/Free|
 |**IDEs**|Kiro|Integrated Environment|Spec-First to Spec-Anchored|Greenfield projects, unified experience|Commercial|
 |**Platforms**|Tessl|Spec Registry + AI Generation|Spec-as-Source|Long-term maintainability focus|Commercial (Emerging)|
-|**Frameworks**|BMAD, AG2, Cline|Multi-Agent Orchestration|Spec-Anchored|Custom quality gates, compliance needs|Open-source/Custom|
+|**Frameworks**|BMAD, AG2|Multi-Agent Orchestration|Spec-Anchored|Custom quality gates, compliance needs|Open-source/Custom|
 
 ### Tool Landscape Overview
 
@@ -122,8 +122,6 @@ Let's briefly survey each solution to understand their distinctive strengths:
 **[BMAD (Breakthrough Method for Agile AI-Driven Development)](https://github.com/oimiragieo/BMAD-SPEC-KIT)** demonstrates the potential of multi-agent orchestration. BMAD deploys specialized AI agents for each development phase—Analyst agents gather requirements, PM agents structure specifications, Architect agents design systems, Developer agents write code, QA agents validate output. This division of labor, combined with JSON-first artifacts and cross-agent consistency checks, produces measurable quality improvements. BMAD studies show 55% faster completion rates compared to ad-hoc AI coding—evidence that sophisticated orchestration delivers real ROI.
 
 **[Agent OS (AG2)](https://github.com/ag2ai/ag2)**, formerly AutoGen, provides the foundation for custom multi-agent implementations. This Python framework (supports 3.10-3.13) enables teams to define their own agent roles, workflow phases, and quality gates. AG2's 3-layer context system (Standards → Product → Specs) ensures agents work from comprehensive project understanding. Best for teams needing SDD workflows tailored to specific compliance requirements or technical constraints.
-
-**[Cline's SDD Workflow](https://github.com/eliasfloreteng/cline-spec-driven-development)** offers a practical template for AI agent integration. Cline's 4-phase structure (Requirements Clarification → Design Document Creation → Implementation Planning → Task Execution) provides feature-based artifact organization with approval gates between phases. While less sophisticated than BMAD's multi-agent orchestration, Cline's simplicity makes it approachable for teams new to structured SDD.
 
 :::tip Key Insight
 The SDD ecosystem has matured from experimental tooling to production-ready solutions. Choose based on your team's needs—not marketing hype or funding announcements. Toolkits offer flexibility, IDEs provide integration, platforms promise spec-as-source futures, and frameworks enable customization. No universal "best" exists; context determines fit.
