@@ -53,7 +53,7 @@ For theoretical foundations and SDD methodology fundamentals, see [Spec-Driven D
 - **Subsections**:
   - **Four Categories Emerge** - Toolkits, IDEs, Platforms, Frameworks with key characteristics
   - **Maturity Levels** - Spec-first, spec-anchored, spec-as-source progression (Martin Fowler's framework)
-  - **Representative Solutions** - Brief intro to all 7 tools (BMAD, OpenSpec, Spec Kit, Kiro, Tessl, Cline, AG2)
+  - **Representative Solutions** - Brief intro to all 6 tools (BMAD, OpenSpec, Spec Kit, Kiro, Tessl, AG2)
 - **Visual Elements**: 
   - **Mermaid Diagram 1**: SDD Ecosystem Map (4 categories, 7 tools positioned by type and maturity)
   - **Table 1**: Tool Landscape Matrix (7 tools × 6 dimensions: Type, Maturity, Cost, AI Support, Integration, Best For)
@@ -103,7 +103,7 @@ For theoretical foundations and SDD methodology fundamentals, see [Spec-Driven D
     - **Toolkits** (Spec Kit, OpenSpec) - Flexibility, multi-tool integration, learning curve
     - **IDEs** (Kiro) - Integration smoothness, vendor lock-in, cloud-native advantages
     - **Platforms** (Tessl) - Long-term vision, spec registry, emerging ecosystem
-    - **Frameworks** (BMAD, AG2, Cline) - Customization, multi-agent orchestration, technical sophistication
+    - **Frameworks** (BMAD, AG2) - Customization, multi-agent orchestration, technical sophistication
   - **Context-Specific Recommendations** - Startup vs enterprise, greenfield vs brownfield, regulated vs fast-moving
 - **Code Examples**: 
   - BMAD JSON spec structure (5 lines) - Show multi-agent artifact format
@@ -116,8 +116,6 @@ For theoretical foundations and SDD methodology fundamentals, see [Spec-Driven D
   - ** "Context-dependent choice" ** - No universal "best" tool
   - ** "Multi-agent orchestration" ** - Framework sophistication for complex needs
 - **Inline References**:
-  - [BMAD Implementation Guide](https://buildmode.dev/blog/mastering-bmad-method-2025/)
-  - [Cline SDD Workflow](https://github.com/eliasfloreteng/cline-spec-driven-development)
   - [Agent OS Documentation](https://docs.ag2.ai/)
 - **Key Takeaway**: Match tool complexity to problem complexity—simple projects need simple tools, complex orchestration requires frameworks
 - **Transition to Next**: "Once you've selected your approach, how do you actually roll it out without disrupting existing workflows?"

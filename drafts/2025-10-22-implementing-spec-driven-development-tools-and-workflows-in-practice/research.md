@@ -70,17 +70,6 @@
 - **Relevance**: Next-generation platform showing industry investment in SDD
 - **Date accessed**: 2025-10-24
 
-#### 6. **Cline SDD Workflow**
-- **Source**: https://github.com/eliasfloreteng/cline-spec-driven-development
-- **Key Findings**:
-  - 4-phase structured workflow (Requirements → Design → Planning → Execution)
-  - EARS format for requirements
-  - Task-based implementation with checklists
-  - Feature-based artifact organization
-  - Review and approval gates between phases
-- **Relevance**: Practical workflow template for AI agent integration
-- **Date accessed**: 2025-10-24
-
 #### 7. **Agent OS (AG2)**
 - **Source**: https://github.com/ag2ai/ag2, https://buildermethods.com/agent-os
 - **Key Findings**:
@@ -166,7 +155,7 @@ Total: ~15 lines across 3 micro-examples, all focused on configuration/format, n
 1. **Toolkits** (GitHub Spec Kit, OpenSpec) - CLI tools that work with existing environments
 2. **IDEs** (Kiro) - Integrated development environments with built-in SDD
 3. **Platforms** (Tessl) - Full-stack SDD platforms with spec registries
-4. **Frameworks** (BMAD, Agent OS/AG2, Cline Workflow) - Methodological approaches and orchestration systems
+4. **Frameworks** (BMAD, Agent OS/AG2) - Methodological approaches and orchestration systems
 
 ### Industry Best Practices (2025)
 1. **Iterative Collaborative Planning** - Stakeholder participation in spec creation
@@ -237,7 +226,7 @@ Total: ~15 lines across 3 micro-examples, all focused on configuration/format, n
    - Non-technical stakeholder collaboration
    - Willing to adopt emerging platforms
 
-4. **For Custom Multi-Agent Workflows** → Agent OS (AG2) or Cline
+4. **For Custom Multi-Agent Workflows** → Agent OS (AG2)
    - Complex orchestration needs
    - Python-based development
    - Custom agent role definitions
@@ -293,7 +282,7 @@ Total: ~15 lines across 3 micro-examples, all focused on configuration/format, n
 ## Research Status & Next Steps
 
 ### Research Completion Checklist
-- [x] Identified all major SDD tools and frameworks (7 total: BMAD, OpenSpec, Spec Kit, Kiro, Tessl, Cline, AG2)
+- [x] Identified all major SDD tools and frameworks (6 total: BMAD, OpenSpec, Spec Kit, Kiro, Tessl, AG2)
 - [x] Gathered comprehensive industry analysis and best practices
 - [x] Documented tool comparison criteria
 - [x] Collected ROI and adoption statistics

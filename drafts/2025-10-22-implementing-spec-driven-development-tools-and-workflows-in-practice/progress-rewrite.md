@@ -10,7 +10,7 @@
 - **Last Updated**: 2025-10-24
 
 ## Rewrite Objectives
-- Expand from 2 tools (Spec Kit, Kiro) to 7 tools/frameworks (BMAD, OpenSpec, Spec Kit, Kiro, Tessl, Cline, AG2)
+- Expand from 2 tools (Spec Kit, Kiro) to 6 tools/frameworks (BMAD, OpenSpec, Spec Kit, Kiro, Tessl, AG2)
 - Shift focus from tool tutorials to strategic guidelines and best practices
 - Target technical leaders making adoption decisions rather than individual developers
 - Provide comprehensive ecosystem map and decision frameworks
@@ -26,7 +26,6 @@
   - GitHub Spec Kit (Open-source CLI toolkit) - Most widely adopted
   - AWS Kiro (Enterprise IDE solution) - Cloud-native integration
   - Tessl ($125M funded platform) - Next-generation spec-as-source
-  - Cline SDD Workflow (Practical workflow template) - AI agent integration
   - Agent OS (AG2) (Multi-agent orchestration framework) - Custom implementations
 - [x] Industry best practices documented from production deployments
 - [x] Adoption statistics gathered (YC 2025: 25% cohort, 95% AI-generated code)
