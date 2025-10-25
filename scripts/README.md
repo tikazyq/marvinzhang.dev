@@ -1,4 +1,191 @@
-# Blog Structure Migration Script
+# Blog Scripts
+
+This directory contains various scripts for managing blog content, validating formatting, and processing articles.
+
+## Table of Contents
+
+1. [Chinese Bold Formatting Validators](#chinese-bold-formatting-validators)
+   - [Source Validator (Recommended)](#source-validator-recommended)
+   - [Rendered Output Validator](#rendered-output-validator)
+2. [Blog Structure Migration](#blog-structure-migration)
+
+---
+
+## Chinese Bold Formatting Validators
+
+Two complementary validators for ensuring proper bold formatting in Chinese (ZH) blog posts:
+
+### Why These Validators?
+
+AI coding agents sometimes fail to follow MDX bold formatting rules for Chinese articles, which can cause:
+- Bold sections rendering as literal `**text**` instead of **bold text**
+- Improper spacing between multiple bold sections on the same line
+- Issues with bold text containing quotes
+
+### Formatting Rules
+
+1. **Multiple bold sections on same line**: Must have space before second `**`
+   ```markdown
+   ✅ 这与 **语法属性（Syntactic Properties）** 形成对比
+   ❌ 这与**语法属性（Syntactic Properties）**形成对比
+   ```
+
+2. **Bold text with quotes**: Must have spaces inside bold markers
+   ```markdown
+   ✅ ** "所有程序行为" ** 是一个语义属性
+   ❌ **"所有程序行为"** 是一个语义属性
+   ```
+
+---
+
+### Source Validator (Recommended)
+
+**File:** `validate-zh-bold-formatting-source.js`
+
+Fast, static analysis of MDX source files without requiring a build or running server.
+
+#### Usage
+
+```bash
+# Validate all Chinese blog posts (fast, no build needed)
+pnpm run validate:zh-bold-source
+
+# Validate specific file
+pnpm run validate:zh-bold-source:file 2025-10-04-fundamental-limits-in-computing.mdx
+
+# Auto-fix detected issues
+pnpm run validate:zh-bold-source:fix
+
+# Or run directly with more options
+node scripts/validate-zh-bold-formatting-source.js --verbose
+```
+
+#### What It Checks
+
+- ✅ Multiple bold sections on same line missing space
+- ✅ Bold text with quotes lacking proper spacing
+- ✅ Fast execution (no build or server required)
+- ✅ Auto-fix capability
+
+#### Example Output
+
+```
+📝 Validating Chinese blog posts for bold formatting (source check)...
+
+Found 48 Chinese blog post(s) to validate
+
+Checking: 2025-10-04-fundamental-limits-in-computing.mdx
+  ❌ FAIL - Found 2 formatting issue(s):
+
+     1. Line 45:148 [missing-space-before-bold]
+        Missing space before second bold section on same line
+        💡 Add space: "是 **状态管理（Store）**"
+
+     2. Line 189:182 [quote-spacing]
+        Bold text with quotes needs spacing inside markers
+        💡 Use: ** "quoted text" ** instead of **"quoted text"**
+
+======================================================================
+📊 VALIDATION SUMMARY
+======================================================================
+Total files checked: 48
+✅ Passed: 27
+❌ Failed: 21
+Total issues found: 121
+
+💡 Run with --fix flag to automatically fix issues:
+   node scripts/validate-zh-bold-formatting-source.js --fix
+======================================================================
+```
+
+---
+
+### Rendered Output Validator
+
+**File:** `validate-zh-bold-formatting.js`
+
+Validates actual rendered HTML using Playwright to catch issues that source analysis might miss.
+
+#### Prerequisites
+
+```bash
+# Install Playwright browsers (one-time setup)
+npx playwright install chromium
+```
+
+#### Usage
+
+```bash
+# Validate all Chinese blog posts (includes build)
+pnpm run validate:zh-bold
+
+# Validate specific file (includes build)
+pnpm run validate:zh-bold:file 2025-10-04-fundamental-limits-in-computing.mdx
+
+# Skip build if you've already built recently
+pnpm run validate:zh-bold:skip-build
+
+# Or run directly with more options
+node scripts/validate-zh-bold-formatting.js --verbose
+```
+
+#### What It Checks
+
+- ✅ Literal `**` markers in rendered HTML (indicates parsing failure)
+- ✅ Multiple bold elements in Chinese paragraphs
+- ✅ Spacing issues detected in the actual rendered output
+- ⚠️ Requires Playwright and longer execution time
+
+#### How It Works
+
+1. **Build**: Runs `pnpm run build` to create production build
+2. **Serve**: Starts local server on port 3001
+3. **Check**: Uses Playwright to:
+   - Navigate to each Chinese blog post
+   - Look for literal `**` markers in rendered HTML
+   - Check for multiple bold elements in Chinese paragraphs
+   - Detect potential spacing issues
+4. **Report**: Provides detailed issues with file locations and suggestions
+
+---
+
+### Choosing a Validator
+
+| Feature | Source Validator | Rendered Validator |
+|---------|-----------------|-------------------|
+| **Speed** | ⚡ Fast (seconds) | 🐌 Slow (minutes with build) |
+| **Setup** | ✅ No prerequisites | ⚠️ Requires Playwright |
+| **Auto-fix** | ✅ Yes | ❌ No |
+| **Accuracy** | ⭐⭐⭐⭐ Very good | ⭐⭐⭐⭐⭐ Excellent |
+| **Use case** | Daily validation, CI/CD | Final verification, debugging |
+
+**Recommendation**: Use **Source Validator** for regular checks and auto-fixing. Use **Rendered Validator** for final validation before deployment or when debugging rendering issues.
+
+---
+
+### Integration with CI/CD
+
+Add to your CI/CD pipeline:
+
+```yaml
+# .github/workflows/validate-formatting.yml
+- name: Validate Chinese Bold Formatting
+  run: pnpm run validate:zh-bold-source
+```
+
+For more thorough checks (slower):
+
+```yaml
+- name: Install Playwright
+  run: npx playwright install chromium --with-deps
+
+- name: Validate Rendered Output
+  run: pnpm run validate:zh-bold
+```
+
+---
+
+## Blog Structure Migration
 
 This script migrates the blog content from the legacy nested folder structure to a flat file structure following the `YYYY-MM-DD-post-slug.mdx` naming convention.
 
