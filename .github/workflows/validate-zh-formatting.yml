@@ -1,0 +1,82 @@
+name: Validate Chinese Blog Formatting
+
+on:
+  pull_request:
+    paths:
+      - 'i18n/zh/docusaurus-plugin-content-blog/**/*.mdx'
+      - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
+  push:
+    branches:
+      - main
+    paths:
+      - 'i18n/zh/docusaurus-plugin-content-blog/**/*.mdx'
+      - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
+  workflow_dispatch:
+
+jobs:
+  validate-formatting:
+    name: Validate ZH Bold Formatting
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate Chinese blog formatting
+        run: pnpm run validate:zh-bold-source
+        
+      - name: Comment on PR with results
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue_number = context.issue.number;
+            const message = `## ⚠️ Chinese Blog Formatting Issues Detected
+            
+            The validation found formatting issues in Chinese blog posts. Please run:
+            
+            \`\`\`bash
+            pnpm run validate:zh-bold-source
+            \`\`\`
+            
+            To automatically fix these issues, run:
+            
+            \`\`\`bash
+            pnpm run validate:zh-bold-source:fix
+            \`\`\`
+            
+            ### Formatting Rules
+            
+            1. **Multiple bold on same line**: Must have space before second \`**\`
+               \`\`\`markdown
+               ✅ 这与 **语法属性（Syntactic Properties）** 形成对比
+               ❌ 这与**语法属性（Syntactic Properties）**形成对比
+               \`\`\`
+            
+            2. **Bold with quotes**: Must have spaces inside bold markers
+               \`\`\`markdown
+               ✅ ** "所有程序行为" ** 是一个语义属性
+               ❌ **"所有程序行为"** 是一个语义属性
+               \`\`\`
+            `;
+            
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: message
+            });
