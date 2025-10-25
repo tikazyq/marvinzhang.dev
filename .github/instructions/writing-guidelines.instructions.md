@@ -372,6 +372,7 @@ When explaining complex technical concepts, adapt these patterns:
   ✅ Correct: ** "所有程序行为" ** 是一个语义属性
   ❌ Incorrect: **"所有程序行为"** 是一个语义属性
   ```
+- **Validation**: For Chinese articles, always run `pnpm run validate:zh-bold-source` before committing to catch formatting issues. Use `pnpm run validate:zh-bold-source:fix` to automatically correct any detected problems.
 
 ### Section Quality Checklist:
 - ✅ Single, clear focus maintained throughout

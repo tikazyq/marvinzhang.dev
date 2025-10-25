@@ -70,5 +70,6 @@ Make sure to acquire the instructions before making any changes to the code.
 ## Quality Gates & Verification
 **Core concept: Validate meaningful changes locally and document the outcomes succinctly.**
 - Run quick checks that match the scope of your edits; prioritize `pnpm run build` for production confidence and `pnpm dev` for smoke tests when relevant.
+- **For Chinese blog posts**: Always run `pnpm run validate:zh-bold-source` to check bold formatting before committing. Use `pnpm run validate:zh-bold-source:fix` to auto-fix any issues detected.
 - Report PASS/FAIL status for build, lint, and tests; include failure summaries plus remediation steps or follow-ups.
 - Note any assumptions or unresolved issues explicitly so maintainers can follow up effortlessly.

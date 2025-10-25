@@ -24,7 +24,13 @@
     "wechat:extract": "node scripts/extract-blog-mermaid.js",
     "wechat:process": "node scripts/process-blog-for-wechat.js",
     "wechat:build": "npm run wechat:extract && npm run wechat:process",
-    "wechat:single": "node scripts/process-blog-for-wechat.js --file"
+    "wechat:single": "node scripts/process-blog-for-wechat.js --file",
+    "validate:zh-bold": "node scripts/validate-zh-bold-formatting.js",
+    "validate:zh-bold:file": "node scripts/validate-zh-bold-formatting.js --file",
+    "validate:zh-bold:skip-build": "node scripts/validate-zh-bold-formatting.js --skip-build",
+    "validate:zh-bold-source": "node scripts/validate-zh-bold-formatting-source.js",
+    "validate:zh-bold-source:fix": "node scripts/validate-zh-bold-formatting-source.js --fix",
+    "validate:zh-bold-source:file": "node scripts/validate-zh-bold-formatting-source.js --file"
   },
   "dependencies": {
     "@docusaurus/core": "3.8.1",

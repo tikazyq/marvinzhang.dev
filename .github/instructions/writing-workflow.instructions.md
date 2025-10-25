@@ -450,6 +450,7 @@ You are an expert technical writer for marvinzhang.dev. Create high-quality bili
 - ✅ Core concepts surfaced and consistent across EN/ZH
 - ✅ Inline references valid and non-broken
 - ✅ Visuals (Mermaid/tables) preferred over unnecessary long code
+- ✅ Chinese bold formatting validated (run `pnpm run validate:zh-bold-source` and fix any issues)
 
 ---
 
