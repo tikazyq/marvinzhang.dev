@@ -23,7 +23,7 @@ Make sure to acquire the instructions before making any changes to the code.
 **Core concept: Agents need to respect the repository etiquette before touching files.**
 - Always manage work through the todo list tool (one item in progress at a time, complete ASAP).
 - Prefer the `apply_patch` editing flow; fall back to other edit tools only if necessary.
-- When adding blog content, write directly in the final MDX location with `unlisted: true` until publication.
+- When adding blog content, write directly in the final MDX location (articles will be visible in preview environment).
 - Summaries or explanations should stay skimmable, friendly, and free of filler phrases.
 
 :::note Workflow Essentials
@@ -46,15 +46,15 @@ Make sure to acquire the instructions before making any changes to the code.
 ### 4-Stage Workflow Quick Reference
 1. **Research**: Validate topic viability, gather ≥5 authoritative sources, identify unique angle → complete `research.md`
 2. **Outline**: Create detailed structure with section breakdown, word targets, visual plan → complete `outline.md`
-3. **Writing**: Draft section-by-section directly in `blog/YYYY-MM-DD-slug.mdx` (unlisted: true) → one section per interaction
-4. **Refine**: Review holistically, validate technical accuracy, ensure EN/ZH parity → flip unlisted to false, archive draft folder
+3. **Writing**: Draft section-by-section directly in `blog/YYYY-MM-DD-slug.mdx` → one section per interaction
+4. **Refine**: Review holistically, validate technical accuracy, ensure EN/ZH parity → archive draft folder
 
 > Full workflow details, quality gates, and handoff protocols available in `.github/instructions/writing-workflow.instructions.md` (auto-loads when editing blog posts).
 
 ## Localization & Draft Workflow
 **Core concept: Maintain synchronized bilingual content and move drafts through the archive flow when publishing.**
 - Every English post must have a matching Chinese translation with the same slug and metadata.
-- Draft Markdown lives in the final location (`blog/...` and `i18n/zh/...`) with `unlisted: true` until release; flip to `false` and move the scaffold folder to `drafts/archive/` at publication.
+- Draft Markdown lives in the final location (`blog/...` and `i18n/zh/...`) and will be visible in the preview environment; move the scaffold folder to `drafts/archive/` at publication.
 - Keep frontmatter aligned (title, tags, date, authors) and ensure translations reflect updates made to the English version.
 - **形不同而意同 (Same Meaning, Different Form)**: Chinese articles must read naturally and idiomatically, not as literal translations. Adapt sentence structures, expressions, and rhetoric to feel native to Chinese readers while preserving core concepts and technical accuracy.
 - **Chinese articles must include English term annotations**: Add capitalized English translations in parentheses at first mention of technical terms (e.g., `可计算性理论（Computability Theory）`, `大型语言模型（Large Language Model，LLM）`), and use Chinese punctuation throughout (，、：instead of , ・ :).
