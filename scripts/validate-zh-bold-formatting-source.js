@@ -146,6 +146,82 @@ function checkSourceFormatting(content, filePath) {
         }
       }
     }
+
+    // Pattern 3: Bold ending with Chinese punctuation followed immediately by text
+    // Critical: **text。**text should be **text。** text
+    const pattern3 = /\*\*[^*]+[。！？]\*\*([\u4e00-\u9fa5])/g;
+    
+    while ((match = pattern3.exec(line)) !== null) {
+      const boldText = match[0].substring(0, match[0].length - 1); // Remove the trailing Chinese char
+      const followingChar = match[1];
+      
+      issues.push({
+        line: lineNumber,
+        column: match.index + 1,
+        type: 'missing-space-after-bold-punctuation',
+        issue: `Missing space after bold ending with Chinese punctuation`,
+        context: line.trim().substring(Math.max(0, match.index - 10), match.index + match[0].length + 10),
+        suggestion: `Add space: "${boldText} ${followingChar}"`,
+        fixable: true,
+        original: line,
+        fix: () => {
+          const startPos = match.index;
+          const endPos = match.index + match[0].length;
+          return line.substring(0, endPos - 1) + ' ' + line.substring(endPos - 1);
+        }
+      });
+
+      if (autoFix) {
+        const startPos = match.index;
+        const endPos = match.index + match[0].length;
+        const fixedLine = line.substring(0, endPos - 1) + ' ' + line.substring(endPos - 1);
+        fixes.push({
+          lineIndex,
+          originalLine: line,
+          fixedLine
+        });
+        // Update line for subsequent fixes
+        lines[lineIndex] = fixedLine;
+      }
+    }
+
+    // Pattern 4: Bold wrapping markdown links followed immediately by Chinese text
+    // Critical: **[text](link)**text should be **[text](link)** text
+    const pattern4 = /\*\*\[[^\]]+\]\([^)]+\)\*\*([\u4e00-\u9fa5])/g;
+    
+    while ((match = pattern4.exec(line)) !== null) {
+      const boldLink = match[0].substring(0, match[0].length - 1); // Remove the trailing Chinese char
+      const followingChar = match[1];
+      
+      issues.push({
+        line: lineNumber,
+        column: match.index + 1,
+        type: 'missing-space-after-bold-link',
+        issue: `Missing space after bold markdown link`,
+        context: line.trim().substring(Math.max(0, match.index - 10), match.index + match[0].length + 10),
+        suggestion: `Add space: "${boldLink} ${followingChar}"`,
+        fixable: true,
+        original: line,
+        fix: () => {
+          const startPos = match.index;
+          const endPos = match.index + match[0].length;
+          return line.substring(0, endPos - 1) + ' ' + line.substring(endPos - 1);
+        }
+      });
+
+      if (autoFix) {
+        const startPos = match.index;
+        const endPos = match.index + match[0].length;
+        const fixedLine = line.substring(0, endPos - 1) + ' ' + line.substring(endPos - 1);
+        fixes.push({
+          lineIndex,
+          originalLine: line,
+          fixedLine
+        });
+        // Update line for subsequent fixes
+        lines[lineIndex] = fixedLine;
+      }
+    }
   });
 
   // Apply fixes if requested
@@ -253,6 +329,10 @@ function printSummary(results) {
     console.log('     (note the space before the second **)');
     console.log('  2. Bold with quotes: ** "quoted text" ** 是一个属性');
     console.log('     (note spaces inside the bold markers)');
+    console.log('  3. Bold ending with punctuation: **陷阱1：过度规范。** 团队有时...');
+    console.log('     (note the space after ** when bold ends with 。！？)');
+    console.log('  4. Bold wrapping links: **[BMAD（...）](link)** 展示了...');
+    console.log('     (note the space after ** when bold wraps a markdown link)');
   }
   
   console.log('='.repeat(70) + '\n');
