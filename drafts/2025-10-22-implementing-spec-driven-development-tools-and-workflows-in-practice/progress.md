@@ -2,7 +2,7 @@
 
 ## Project Overview
 - **Article**: Implementing Spec-Driven Development: Tools and Workflows in Practice
-- **Slug**: implementing-spec-driven-development-tools-and-workflows-in-practice
+- **Slug**: sdd-tools-practices
 - **Start Date**: 2025-10-22
 - **Target Completion**: 2025-10-23
 - **Current Status**: Research
@@ -45,7 +45,7 @@
 - **Status**: Complete
 - **Word Count**: 420/target: 400
 - **Last Updated**: 2025-10-22 by GitHub Copilot Agent
-- **File**: `blog/2025-10-22-implementing-spec-driven-development-tools-and-workflows-in-practice.mdx`
+- **File**: `blog/2025-10-22-sdd-tools-practices.mdx`
 - **Quality Check**: ✅
 - **Notes**: Hook uses context loss pain point, references existing SDD article, includes truncate marker, proper frontmatter with correct tags
 
