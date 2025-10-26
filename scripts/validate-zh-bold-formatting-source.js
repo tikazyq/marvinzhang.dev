@@ -149,7 +149,8 @@ function checkSourceFormatting(content, filePath) {
 
     // Pattern 3: Bold ending with Chinese punctuation followed immediately by text
     // Critical: **text。**text should be **text。** text
-    const pattern3 = /\*\*[^*]+[。！？]\*\*([\u4e00-\u9fa5])/g;
+    // Covers: 。！？，：；、
+    const pattern3 = /\*\*[^*]+[。！？，：；、]\*\*([\u4e00-\u9fa5])/g;
     
     while ((match = pattern3.exec(line)) !== null) {
       const boldText = match[0].substring(0, match[0].length - 1); // Remove the trailing Chinese char
@@ -328,9 +329,8 @@ function printSummary(results) {
     console.log('  1. Multiple bold on same line: 这与 **term1** 形成对比');
     console.log('     (note the space before the second **)');
     console.log('  2. Bold with quotes: ** "quoted text" ** 是一个属性');
-    console.log('     (note spaces inside the bold markers)');
     console.log('  3. Bold ending with punctuation: **陷阱1：过度规范。** 团队有时...');
-    console.log('     (note the space after ** when bold ends with 。！？)');
+    console.log('     (note the space after ** when bold ends with 。！？，：；、)');
     console.log('  4. Bold wrapping links: **[BMAD（...）](link)** 展示了...');
     console.log('     (note the space after ** when bold wraps a markdown link)');
   }
