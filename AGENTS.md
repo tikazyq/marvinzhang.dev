@@ -67,6 +67,8 @@ Make sure to acquire the instructions before making any changes to the code.
 | Research assets | `drafts/YYYY-MM-DD-slug/` | Shared resources |
 | Post-publication archive | `drafts/archive/YYYY-MM-DD-slug/` | Shared resources |
 
+**Slug naming convention**: Keep slugs concise (prefer 2-4 words). Examples: `sdd-tools-practices`, `ai-coding-guide`, `spec-driven-basics`. Avoid long descriptive slugs like `implementing-spec-driven-development-tools-and-workflows-in-practice`.
+
 ## Quality Gates & Verification
 **Core concept: Validate meaningful changes locally and document the outcomes succinctly.**
 - Run quick checks that match the scope of your edits; prioritize `pnpm run build` for production confidence and `pnpm dev` for smoke tests when relevant.
