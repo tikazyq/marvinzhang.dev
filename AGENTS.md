@@ -1,12 +1,16 @@
 # GitHub Copilot Agent Playbook
 
 ## Mission Snapshot
-**Core concept: This repository hosts a Docusaurus 3.8.1 bilingual blog that must always use the `pnpm` workflow.**
-- Root path serves blog content only; no docs section is present.
-- English posts live in `blog/`; Chinese counterparts mirror them in `i18n/zh/docusaurus-plugin-content-blog/` with identical slugs and dates.
-- Follow `.github/copilot-instructions.md` for project-wide conventions and reference `.github/instructions/writing-guidelines.instructions.md` for Markdown authoring specifics.
 
-<instructions>
+**This repository hosts marvinzhang.dev, a Docusaurus 3.8.1 bilingual technical blog. Always use `pnpm`.**
+
+| Aspect | Details |
+|--------|---------|
+| **Tech Stack** | Docusaurus 3.8.1, React 19, TypeScript, MDX, Mermaid |
+| **Content** | Blog only (no docs section) |
+| **Languages** | English (`blog/`) + Chinese (`i18n/zh/docusaurus-plugin-content-blog/`) |
+| **Package Manager** | `pnpm` only—never use `npm` or `yarn` |
+
 Here is a list of instruction files that contain rules for modifying or creating new code.
 These files are important for ensuring that the code is modified or created correctly.
 Please make sure to follow the rules specified in these files when working with the codebase.
@@ -17,22 +21,47 @@ Make sure to acquire the instructions before making any changes to the code.
 | '.github/instructions/writing-guidelines.instructions.md' | **/*.md* | Markdown style, tone, and formatting rules |
 | '.github/instructions/writing-workflow.instructions.md' | **/*.md* | 4-stage article creation workflow (Research → Outline → Writing → Refine) |
 | '.github/instructions/economist-style-principles.instructions.md' | **/*.md* | The Economist-inspired writing principles: clarity, precision, active voice, concrete examples, and data-driven argumentation |
-</instructions>
 
 ## Operational Directives
-**Core concept: Agents need to respect the repository etiquette before touching files.**
-- Always manage work through the todo list tool (one item in progress at a time, complete ASAP).
-- Prefer the `apply_patch` editing flow; fall back to other edit tools only if necessary.
-- When adding blog content, write directly in the final MDX location (articles will be visible in preview environment).
-- Summaries or explanations should stay skimmable, friendly, and free of filler phrases.
 
-:::note Workflow Essentials
-- Never use `npm` or `yarn`; stick to `pnpm` for installs, scripts, and scaffolds.
-- Keep instructions concise when reporting results; share deltas rather than repeating entire plans.
-:::
+**Before touching files:**
+1. Use `lean-spec board` to see project state
+2. Use `lean-spec search` to find related specs
+3. Never create spec files manually—use `lean-spec create`
+
+**During work:**
+- Manage tasks via todo list tool (one in-progress at a time)
+- Write blog content directly to final MDX paths (visible in preview)
+- Keep explanations skimmable—share deltas, not full plans
+
+## 🔧 LeanSpec Commands
+
+Use MCP tools if available, otherwise CLI:
+
+| Action | Command | Description |
+|--------|---------|-------------|
+| Project status | `lean-spec board` | Kanban view + health metrics |
+| List specs | `lean-spec list` | All specs with metadata |
+| Search | `lean-spec search "query"` | Semantic search |
+| Create spec | `lean-spec create <name>` | Auto-sequences, proper structure |
+| Update | `lean-spec update <spec> --status <status>` | Validates transitions |
+| Dependencies | `lean-spec deps <spec>` | Visual dependency graph |
+
+## Spec Workflow
+
+| Phase | Actions |
+|-------|--------|
+| **Before** | `board` → `search` → check if spec exists |
+| **During** | Update to `in-progress` → document decisions → link related specs |
+| **After** | Update to `complete` → document learnings → create follow-ups if needed |
+
+**When to write a spec:** Features affecting multiple areas, breaking changes, design decisions needing alignment.  
+**Skip specs for:** Bug fixes, trivial changes, self-explanatory refactors.
 
 ## Content Authoring Standards
+
 **Core concept: Blog posts follow a four-stage, section-by-section writing process that balances depth with readability.**
+
 - **Always determine the current date programmatically** for new articles (use `date +%Y-%m-%d` command, not training data memory). Pass the actual system date when scaffolding: `node scripts/drafts/scaffold.js "title" "YYYY-MM-DD"`.
 - Use the scaffold script to create `drafts/YYYY-MM-DD-slug/` with `research.md`, `outline.md`, and `progress.md` helpers.
 - Structure each article with the prescribed section lengths (Intro 300–500 words, Main sections 600–1000 words, Conclusion 250–400 words).
@@ -44,6 +73,7 @@ Make sure to acquire the instructions before making any changes to the code.
 - Introduce links on first reference only, aiming for official sources and meaningful anchor text.
 
 ### 4-Stage Workflow Quick Reference
+
 1. **Research**: Validate topic viability, gather ≥5 authoritative sources, identify unique angle → complete `research.md`
 2. **Outline**: Create detailed structure with section breakdown, word targets, visual plan → complete `outline.md`
 3. **Writing**: Draft section-by-section directly in `blog/YYYY-MM-DD-slug.mdx` → one section per interaction
@@ -52,7 +82,9 @@ Make sure to acquire the instructions before making any changes to the code.
 > Full workflow details, quality gates, and handoff protocols available in `.github/instructions/writing-workflow.instructions.md` (auto-loads when editing blog posts).
 
 ## Localization & Draft Workflow
+
 **Core concept: Maintain synchronized bilingual content and move drafts through the archive flow when publishing.**
+
 - Every English post must have a matching Chinese translation with the same slug and metadata.
 - Draft Markdown lives in the final location (`blog/...` and `i18n/zh/...`) and will be visible in the preview environment; move the scaffold folder to `drafts/archive/` at publication.
 - Keep frontmatter aligned (title, tags, date, authors) and ensure translations reflect updates made to the English version.
@@ -69,9 +101,22 @@ Make sure to acquire the instructions before making any changes to the code.
 
 **Slug naming convention**: Keep slugs concise (prefer 2-4 words). Examples: `sdd-tools-practices`, `ai-coding-guide`, `spec-driven-basics`. Avoid long descriptive slugs like `implementing-spec-driven-development-tools-and-workflows-in-practice`.
 
-## Quality Gates & Verification
-**Core concept: Validate meaningful changes locally and document the outcomes succinctly.**
-- Run quick checks that match the scope of your edits; prioritize `pnpm run build` for production confidence and `pnpm dev` for smoke tests when relevant.
-- **For Chinese blog posts**: Always run `pnpm run validate:zh-bold-source` to check bold formatting before committing. Use `pnpm run validate:zh-bold-source:fix` to auto-fix any issues detected.
-- Report PASS/FAIL status for build, lint, and tests; include failure summaries plus remediation steps or follow-ups.
-- Note any assumptions or unresolved issues explicitly so maintainers can follow up effortlessly.
+## Spec Relationships
+
+| Type | Behavior | Use When |
+|------|----------|----------|
+| `related` | Bidirectional, informational | Related topics, coordinated work |
+| `depends_on` | Directional, blocking | True dependency, work order matters |
+
+**Default:** Use `related`. Reserve `depends_on` for true blockers.
+
+## Quality Gates
+
+| Check | Command | When |
+|-------|---------|------|
+| Build | `pnpm run build` | Before committing significant changes |
+| Dev preview | `pnpm dev` | Smoke testing |
+| Chinese formatting | `pnpm run validate:zh-bold-source` | Before committing Chinese posts |
+| Auto-fix Chinese | `pnpm run validate:zh-bold-source:fix` | To fix formatting issues |
+
+**Spec status flow:** `planned` → `in-progress` (before coding) → `complete` (after done)
