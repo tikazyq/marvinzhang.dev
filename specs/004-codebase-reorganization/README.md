@@ -1,5 +1,5 @@
 ---
-status: planned
+status: in-progress
 created: '2025-11-27'
 tags:
   - cleanup
@@ -8,11 +8,15 @@ tags:
   - dx
 priority: high
 created_at: '2025-11-27T08:57:08.089Z'
+updated_at: '2025-11-27T09:18:08.524Z'
+transitions:
+  - status: in-progress
+    at: '2025-11-27T09:18:08.524Z'
 ---
 
 # Codebase Reorganization and Cleanup
 
-> **Status**: 📅 Planned · **Priority**: High · **Created**: 2025-11-27
+> **Status**: ⏳ In progress · **Priority**: High · **Created**: 2025-11-27 · **Tags**: cleanup, organization, refactoring, dx
 
 ## Overview
 
