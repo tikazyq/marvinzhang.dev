@@ -16,7 +16,8 @@ prompts/
 ├── common/                    # Always include these
 │   ├── formatting.md          # MDX syntax, Mermaid, tables, code blocks
 │   ├── localization.md        # EN/ZH bilingual rules, 形不同而意同
-│   └── quality-standards.md   # Universal quality gates
+│   ├── quality-standards.md   # Universal quality gates
+│   └── LOCALIZATION_GUIDE.md  # Detailed CN adaptation examples
 ├── styles/                    # Choose ONE based on article type
 │   ├── analytical.md          # Deep-dive technical analysis
 │   ├── tutorial.md            # Step-by-step practical guides
@@ -137,12 +138,11 @@ Example prompt header:
 
 ## Migration from Old System
 
-The previous `.github/instructions/*.instructions.md` files are being deprecated. This new system:
+The previous `.github/instructions/*.instructions.md` files have been removed. This new system:
 
 | Old | New |
 |-----|-----|
 | `writing-guidelines.instructions.md` | Split into `common/formatting.md` + `common/localization.md` |
 | `economist-style-principles.instructions.md` | `styles/analytical.md` |
 | `writing-workflow.instructions.md` | LeanSpec templates + style-specific workflows |
-
-The old files remain for backward compatibility but are no longer the source of truth.
+| `.github/LOCALIZATION_GUIDE.md` | `common/LOCALIZATION_GUIDE.md` |

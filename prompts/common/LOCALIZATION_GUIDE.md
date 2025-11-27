@@ -269,8 +269,8 @@ Based on native speaker feedback, watch out for:
 
 For more details, see:
 - `AGENTS.md` - Core localization principles
-- `.github/instructions/writing-guidelines.instructions.md` - Comprehensive localization guidelines
-- `.github/instructions/writing-workflow.instructions.md` - Workflow integration
+- `prompts/common/localization.md` - Comprehensive localization guidelines
+- `prompts/styles/*.md` - Style-specific workflows
 
 ---
 

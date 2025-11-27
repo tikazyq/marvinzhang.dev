@@ -1,5 +1,5 @@
 ---
-status: in-progress
+status: complete
 created: '2025-11-27'
 tags:
   - cleanup
@@ -8,15 +8,19 @@ tags:
   - dx
 priority: high
 created_at: '2025-11-27T08:57:08.089Z'
-updated_at: '2025-11-27T09:18:08.524Z'
+updated_at: '2025-11-27T09:27:06.121Z'
 transitions:
   - status: in-progress
     at: '2025-11-27T09:18:08.524Z'
+  - status: complete
+    at: '2025-11-27T09:27:06.121Z'
+completed_at: '2025-11-27T09:27:06.121Z'
+completed: '2025-11-27'
 ---
 
 # Codebase Reorganization and Cleanup
 
-> **Status**: ⏳ In progress · **Priority**: High · **Created**: 2025-11-27 · **Tags**: cleanup, organization, refactoring, dx
+> **Status**: ✅ Complete · **Priority**: High · **Created**: 2025-11-27 · **Tags**: cleanup, organization, refactoring, dx
 
 ## Overview
 
@@ -95,45 +99,45 @@ marvinzhang.dev/
 ## Plan
 
 ### Phase 1: Audit & Backup
-- [ ] Verify `articles/` content is fully migrated to `blog/`
-- [ ] Audit `drafts/` for any salvageable content
-- [ ] Check `tmp/` contents and confirm safe to delete
-- [ ] Ensure `.gitignore` covers `.temp/`, `build/`, `node_modules/`
+- [x] Verify `articles/` content is fully migrated to `blog/`
+- [x] Audit `drafts/` for any salvageable content
+- [x] Check `tmp/` contents and confirm safe to delete
+- [x] Ensure `.gitignore` covers `.temp/`, `build/`, `node_modules/`
 
 ### Phase 2: Remove Redundant Content
-- [ ] Archive `articles/` directory (or delete if confident)
-- [ ] Clean up `drafts/` (move useful content, delete rest)
-- [ ] Delete `tmp/` directory
-- [ ] Remove `.github/instructions/` (deprecated)
+- [x] Archive `articles/` directory (or delete if confident)
+- [x] Clean up `drafts/` (move useful content, delete rest)
+- [x] Delete `tmp/` directory
+- [x] Remove `.github/instructions/` (deprecated)
 
 ### Phase 3: Consolidate Templates
-- [ ] Move `templates/drafts/` content to `.lean-spec/templates/`
-- [ ] Delete empty `templates/` directory
-- [ ] Update any references in AGENTS.md
+- [x] Move `templates/drafts/` content to `.lean-spec/templates/`
+- [x] Delete empty `templates/` directory
+- [x] Update any references in AGENTS.md
 
 ### Phase 4: Organize Scripts
-- [ ] Create `scripts/archived/` for one-time migration scripts
-- [ ] Move migration scripts: `migrate-*.js`, `backup-*.js`
-- [ ] Consolidate documentation into single `scripts/README.md`
-- [ ] Delete `scripts/drafts/`
+- [x] Create `scripts/archived/` for one-time migration scripts
+- [x] Move migration scripts: `migrate-*.js`, `backup-*.js`
+- [x] Consolidate documentation into single `scripts/README.md`
+- [x] Delete `scripts/drafts/`
 
 ### Phase 5: Update Documentation
-- [ ] Update AGENTS.md with new directory structure
-- [ ] Update prompts/README.md if needed
-- [ ] Add DIRECTORY_STRUCTURE.md or update README.md with folder explanations
+- [x] Update AGENTS.md with new directory structure
+- [x] Update prompts/README.md if needed
+- [x] Add DIRECTORY_STRUCTURE.md or update README.md with folder explanations
 
 ### Phase 6: Verification
-- [ ] Run `pnpm build` to ensure nothing broken
-- [ ] Run `pnpm dev` and verify blog renders correctly
-- [ ] Verify all scripts still work
+- [x] Run `pnpm build` to ensure nothing broken
+- [x] Run `pnpm dev` and verify blog renders correctly
+- [x] Verify all scripts still work
 
 ## Test
 
-- [ ] `pnpm build` completes successfully
-- [ ] `pnpm dev` shows all blog posts correctly
-- [ ] `pnpm wechat <slug> --zh` still works
-- [ ] `pnpm run validate:zh-bold-source` still works
-- [ ] No broken internal links in blog posts
+- [x] `pnpm build` completes successfully
+- [x] `pnpm dev` shows all blog posts correctly
+- [x] `pnpm wechat <slug> --zh` still works
+- [x] `pnpm run validate:zh-bold-source` still works
+- [x] No broken internal links in blog posts
 
 ## Notes
 
@@ -152,3 +156,29 @@ marvinzhang.dev/
 - This is a **breaking change** for anyone with local workflows referencing old paths
 - AGENTS.md update will guide AI tools to new locations
 - No impact on published blog content
+
+## Completion Notes
+
+**Completed**: 2025-11-27
+
+### Changes Made
+
+| Directory | Action |
+|-----------|--------|
+| `articles/` | Deleted (content was migrated to `blog/`) |
+| `drafts/` | Deleted (superseded by specs workflow) |
+| `templates/` | Deleted (superseded by `.lean-spec/templates/`) |
+| `tmp/` | Deleted (old backup, gitignored) |
+| `.github/instructions/` | Deleted (rules moved to `prompts/`) |
+| `.github/LOCALIZATION_GUIDE.md` | Moved to `prompts/common/` |
+| `scripts/` | Reorganized - migration scripts moved to `archived/` |
+
+### Documentation Updates
+- AGENTS.md: Added directory structure section, removed legacy references
+- prompts/README.md: Updated migration table, added LOCALIZATION_GUIDE.md
+- scripts/README.md: Simplified to focus on active scripts only
+
+### Decisions
+1. **Deleted vs archived**: Deleted redundant directories since git history preserves them
+2. **Drafts content**: No salvageable content found - old drafts were for already-published articles
+3. **LOCALIZATION_GUIDE.md**: Moved to `prompts/common/` as it's a writing reference

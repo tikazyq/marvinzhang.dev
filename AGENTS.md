@@ -27,7 +27,25 @@ Modular prompts for AI-assisted writing live in `prompts/`. These work with any 
 
 **Usage**: Always include all `common/` prompts + one style prompt based on article type. See `prompts/README.md` for details.
 
-> **Legacy**: The `.github/instructions/*.instructions.md` files are deprecated but retained for backward compatibility.
+## Directory Structure
+
+```
+marvinzhang.dev/
+├── blog/                    # Published MDX posts (English)
+├── i18n/zh/.../             # Chinese translations
+├── specs/                   # Active specs (planning artifacts)
+│   └── archived/            # Completed specs
+├── prompts/                 # AI writing prompts (canonical)
+│   ├── common/              # Shared formatting & localization rules
+│   └── styles/              # Style-specific prompts
+├── scripts/                 # Active utilities
+│   ├── archived/            # One-time migration scripts
+│   └── wechat.js            # WeChat export tool
+├── src/                     # Docusaurus customizations
+├── static/                  # Static assets
+├── .lean-spec/              # LeanSpec config & templates
+└── docs/                    # Minimal (Docusaurus requirement)
+```
 
 ## Operational Directives
 
