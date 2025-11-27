@@ -67,74 +67,82 @@ Use MCP tools if available, otherwise CLI:
 
 ## Article Writing Workflow
 
+### Creating an Article Spec
+
+**Use the style-specific template** for your article:
+
+```bash
+# For project releases, updates
+lean-spec create "my-project-release" --template=announcement
+
+# For step-by-step guides
+lean-spec create "react-hooks-guide" --template=tutorial
+
+# For technical deep-dives
+lean-spec create "rice-theorem-analysis" --template=analytical
+
+# For lessons learned, retrospectives
+lean-spec create "five-years-opensource" --template=experiential
+```
+
+Each template includes a **focused questionnaire** for that style—no need to delete unused sections.
+
 ### Writing Style Selection
 
-Choose based on article type:
-
-| Style | Use Case | Workflow |
+| Style | Template | Use Case |
 |-------|----------|----------|
-| **Analytical** | Technical deep-dives, industry analysis | Research → Outline → Writing → Refine |
-| **Tutorial** | Step-by-step guides, how-tos | Outline → Writing → Refine |
-| **Experiential** | Lessons learned, personal insights | Outline → Writing → Refine |
-| **Announcement** | Project releases, updates | Writing → Refine |
+| **Announcement** | `--template=announcement` | Project releases, updates |
+| **Tutorial** | `--template=tutorial` | Step-by-step guides, how-tos |
+| **Analytical** | `--template=analytical` | Technical deep-dives, industry analysis |
+| **Experiential** | `--template=experiential` | Lessons learned, personal insights |
 
-### Creating an Article
+### The Questionnaire-First Workflow
 
-Just tell the AI what you want to write about. Example prompts:
-- *"I want to write a tutorial about building React hooks"*
-- *"Help me write an announcement for Crawlab 2.0"*
-- *"I'd like to share my lessons learned from 5 years of open source"*
-
-The AI will:
-1. **Create article spec** via LeanSpec MCP tools (with appropriate `style:` and `lang:` tags)
-2. **Load prompts**: Read `prompts/common/*` + the chosen `prompts/styles/*.md`
-3. **Scaffold files** if needed (for research/outline)
-4. **Write directly** to final MDX paths
-5. **Update spec status** as work progresses
-
-### Collaborative Writing: AI Behavior
-
-**Two collaboration modes:**
-
-#### Mode 1: Questionnaire-First (Recommended for Announcements/Experiential)
-
-More efficient for articles requiring personal input:
+**All articles start with the embedded questionnaire in the spec file.**
 
 ```
-1. AI creates spec with questionnaire.md
-2. Author fills out questionnaire async
-3. Author says "questionnaire complete"
-4. AI writes article based on answers
+1. Create spec with blog-article template
+2. Fill out the questionnaire section for your style (delete unused styles)
+3. Tell AI "questionnaire complete" 
+4. AI generates outline, then writes section-by-section
+5. Update spec progress as each stage completes
 ```
 
-All artifacts live in the spec folder:
+**Spec structure** (single README.md file):
 ```
 specs/NNN-article-slug/
-├── README.md           # Spec metadata and status
-├── questionnaire.md    # AI generates, author fills
-├── research.md         # Optional: AI-gathered sources
-└── outline.md          # Generated from questionnaire
+└── README.md
+    ├── Overview          # Topic summary
+    ├── Questionnaire     # Style-specific questions (author fills)
+    ├── Research          # AI fills during research phase
+    ├── Outline           # AI generates, author approves
+    ├── Progress          # Track writing stages
+    └── Prompts Reference # Links to relevant prompts
 ```
 
-#### Mode 2: Interactive Chat (For Research-Heavy/Analytical)
+**Why questionnaire-first?**
+- Eliminates chat ping-pong for gathering context
+- Author can think deeply without time pressure
+- All inputs saved in git for future reference
+- One questionnaire replaces 5-10 chat exchanges
 
-**Always collaborate—never generate full articles autonomously.** Pause for human input at these checkpoints:
+### AI Behavior: Collaborative Writing
 
-| Stage | You Do | Then Ask User For |
-|-------|--------|-------------------|
-| **Topic** | Suggest structure, identify style | Their angle, specific examples to include |
-| **Research** | Gather sources, find data | Key points they want to make, experiences to reference |
-| **Outline** | Propose structure | Approval, reordering, sections to add/remove |
-| **Writing** | Draft ONE section | Feedback before writing next section |
-| **Refine** | Polish, translate | Final review, tone adjustments |
+**Never generate full articles autonomously.** Follow these checkpoints:
 
-**Prompt the user with questions like:**
-- *"What specific angle or argument do you want to make?"*
-- *"Any personal experiences or examples you want me to include?"*
-- *"Here's the outline—should I adjust any sections before writing?"*
-- *"I've drafted section 1. Review it and let me know what to change before I continue."*
+| Stage | AI Does | Then Waits For |
+|-------|---------|----------------|
+| **Questionnaire** | Identify style, point to template | Author completes questionnaire |
+| **Research** | Gather sources, fill Research section | Author confirms key points |
+| **Outline** | Generate structure in Outline section | Author approval/edits |
+| **Writing** | Draft ONE section at a time | Feedback before next section |
+| **Refine** | Polish, translate to Chinese | Final review |
 
-**Never assume**—ask when uncertain about the user's perspective, tone preference, or which examples to use.
+**AI should ask:**
+- *"I see you want to write about X. Should I create a spec using the blog-article template?"*
+- *"Please fill out the questionnaire section, then say 'questionnaire complete'"*
+- *"Here's the proposed outline—should I adjust before writing?"*
+- *"Section 1 is drafted. Review and let me know changes before I continue."*
 
 ### Content Standards (Quick Reference)
 
@@ -148,14 +156,20 @@ specs/NNN-article-slug/
 
 See `prompts/common/*.md` for complete formatting and localization rules.
 
-### 4-Stage Workflow Quick Reference
+### Progress Tracking
 
-1. **Research**: Validate topic viability, gather ≥5 authoritative sources, identify unique angle → complete `research.md`
-2. **Outline**: Create detailed structure with section breakdown, word targets, visual plan → complete `outline.md`
-3. **Writing**: Draft section-by-section directly in `blog/YYYY-MM-DD-slug.mdx` → one section per interaction
-4. **Refine**: Review holistically, validate technical accuracy, ensure EN/ZH parity → archive draft folder
+Update the Progress table in the spec as you complete each stage:
 
-> Full workflow details, quality gates, and handoff protocols available in `.github/instructions/writing-workflow.instructions.md` (auto-loads when editing blog posts).
+| Stage | Status Markers |
+|-------|---------------|
+| Questionnaire | ⬜ Not started → 🔄 In progress → ✅ Complete |
+| Research | ⬜ → 🔄 → ✅ |
+| Outline | ⬜ → 🔄 → ✅ |
+| Writing (per section) | ⬜ → 🔄 → ✅ |
+| Chinese Translation | ⬜ → 🔄 → ✅ |
+| Final Review | ⬜ → 🔄 → ✅ |
+
+When all stages are ✅, run `lean-spec update <spec> --status complete`.
 
 ## Localization & Draft Workflow
 

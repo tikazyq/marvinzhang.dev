@@ -11,45 +11,45 @@ Specs are stored in `specs/` with auto-generated sequence numbers.
 ### Default Template
 Used for technical specs and feature planning.
 
-### Article Template
-Used for blog articles. Create with:
-```bash
-lean-spec create "article-topic" --tags article,style:analytical,lang:bilingual
+### Article Templates ⭐
+
+Style-specific templates for blog articles:
+
+| Template | Command | Use Case |
+|----------|---------|----------|
+| `announcement` | `lean-spec create "topic" --template=announcement` | Project releases, updates |
+| `tutorial` | `lean-spec create "topic" --template=tutorial` | Step-by-step guides |
+| `analytical` | `lean-spec create "topic" --template=analytical` | Technical deep-dives |
+| `experiential` | `lean-spec create "topic" --template=experiential` | Lessons learned |
+
+Each template includes:
+- **Focused questionnaire** for that style only
+- **Progress tracking** with relevant writing stages
+- **Outline structure** tailored to the style
+- **Prompt references** for AI assistants
+
+## Article Workflow
+
 ```
-
-## Article Workflow Integration
-
-Blog articles are tracked as specs with special tags:
-
-| Tag Pattern | Description | Values |
-|-------------|-------------|--------|
-| `article` | Marks as blog article | Required |
-| `style:*` | Writing style | `analytical`, `tutorial`, `experiential`, `announcement` |
-| `lang:*` | Language target | `en`, `zh`, `bilingual` |
-
-### Creating an Article Spec
-
-```bash
-# Analytical deep-dive
-lean-spec create "rice-theorem-testing" --tags article,style:analytical,lang:bilingual
-
-# Tutorial
-lean-spec create "react-hook-tutorial" --tags article,style:tutorial,lang:bilingual
-
-# Personal insight
-lean-spec create "five-years-opensource" --tags article,style:experiential,lang:bilingual
-
-# Project announcement
-lean-spec create "crawlab-2-release" --tags article,style:announcement,lang:bilingual
+1. Create spec with style-specific template
+2. Fill out the Questionnaire section
+3. Tell AI "questionnaire complete"
+4. AI generates outline → author approves
+5. AI writes section by section → author reviews each
+6. Update Progress table as stages complete
+7. lean-spec update <spec> --status complete
 ```
 
 ### Article Spec Structure
 
-Article specs contain:
-- **Overview**: Topic summary and target audience
-- **Research**: Sources and key findings (for analytical/tutorial)
-- **Outline**: Section structure and visual planning
-- **Progress**: Writing status by section
+| Section | Purpose | Who Fills |
+|---------|---------|-----------|
+| Overview | Topic + audience | Author (brief) |
+| Questionnaire | Style-specific input | Author (detailed) |
+| Research | Sources and findings | AI (analytical only) |
+| Outline | Article structure | AI (author approves) |
+| Progress | Stage tracking | Both |
+| Prompts Reference | Which prompts to load | Reference only |
 
 ### Status Flow
 

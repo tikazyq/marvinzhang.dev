@@ -1,5 +1,12 @@
 {
   "template": "spec-template.md",
+  "templates": {
+    "default": "spec-template.md",
+    "announcement": "articles/announcement.md",
+    "tutorial": "articles/tutorial.md",
+    "analytical": "articles/analytical.md",
+    "experiential": "articles/experiential.md"
+  },
   "specsDir": "specs",
   "structure": {
     "pattern": "flat",
@@ -10,8 +17,5 @@
   },
   "features": {
     "aiAgents": true
-  },
-  "templates": {
-    "default": "spec-template.md"
   }
 }
