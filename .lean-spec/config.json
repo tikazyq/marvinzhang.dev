@@ -1,0 +1,21 @@
+{
+  "template": "spec-template.md",
+  "templates": {
+    "default": "spec-template.md",
+    "announcement": "articles/announcement.md",
+    "tutorial": "articles/tutorial.md",
+    "analytical": "articles/analytical.md",
+    "experiential": "articles/experiential.md"
+  },
+  "specsDir": "specs",
+  "structure": {
+    "pattern": "flat",
+    "prefix": "",
+    "dateFormat": "YYYYMMDD",
+    "sequenceDigits": 3,
+    "defaultFile": "README.md"
+  },
+  "features": {
+    "aiAgents": true
+  }
+}
