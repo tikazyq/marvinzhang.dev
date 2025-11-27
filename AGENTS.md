@@ -11,16 +11,23 @@
 | **Languages** | English (`blog/`) + Chinese (`i18n/zh/docusaurus-plugin-content-blog/`) |
 | **Package Manager** | `pnpm` only—never use `npm` or `yarn` |
 
-Here is a list of instruction files that contain rules for modifying or creating new code.
-These files are important for ensuring that the code is modified or created correctly.
-Please make sure to follow the rules specified in these files when working with the codebase.
-If the file is not already available as attachment, use the `read_file` tool to acquire it.
-Make sure to acquire the instructions before making any changes to the code.
-| File | Applies To | Description |
-| ------- | --------- | ----------- |
-| '.github/instructions/writing-guidelines.instructions.md' | **/*.md* | Markdown style, tone, and formatting rules |
-| '.github/instructions/writing-workflow.instructions.md' | **/*.md* | 4-stage article creation workflow (Research → Outline → Writing → Refine) |
-| '.github/instructions/economist-style-principles.instructions.md' | **/*.md* | The Economist-inspired writing principles: clarity, precision, active voice, concrete examples, and data-driven argumentation |
+## Writing Prompts (Tool-Agnostic)
+
+Modular prompts for AI-assisted writing live in `prompts/`. These work with any AI tool (VS Code Copilot, Cursor, Claude, ChatGPT, etc.).
+
+| Prompt | Purpose |
+|--------|---------|
+| `prompts/common/formatting.md` | MDX syntax, Mermaid diagrams, tables, code blocks |
+| `prompts/common/localization.md` | EN/ZH bilingual rules, 形不同而意同 principle |
+| `prompts/common/quality-standards.md` | Universal quality gates and checklists |
+| `prompts/styles/analytical.md` | Deep-dive technical analysis (Economist-inspired) |
+| `prompts/styles/tutorial.md` | Step-by-step practical guides |
+| `prompts/styles/experiential.md` | Personal insights and lessons learned |
+| `prompts/styles/announcement.md` | Project releases and updates |
+
+**Usage**: Always include all `common/` prompts + one style prompt based on article type. See `prompts/README.md` for details.
+
+> **Legacy**: The `.github/instructions/*.instructions.md` files are deprecated but retained for backward compatibility.
 
 ## Operational Directives
 
@@ -58,19 +65,64 @@ Use MCP tools if available, otherwise CLI:
 **When to write a spec:** Features affecting multiple areas, breaking changes, design decisions needing alignment.  
 **Skip specs for:** Bug fixes, trivial changes, self-explanatory refactors.
 
-## Content Authoring Standards
+## Article Writing Workflow
 
-**Core concept: Blog posts follow a four-stage, section-by-section writing process that balances depth with readability.**
+### Writing Style Selection
 
-- **Always determine the current date programmatically** for new articles (use `date +%Y-%m-%d` command, not training data memory). Pass the actual system date when scaffolding: `node scripts/drafts/scaffold.js "title" "YYYY-MM-DD"`.
-- Use the scaffold script to create `drafts/YYYY-MM-DD-slug/` with `research.md`, `outline.md`, and `progress.md` helpers.
-- Structure each article with the prescribed section lengths (Intro 300–500 words, Main sections 600–1000 words, Conclusion 250–400 words).
-- Highlight each section's main idea in bold at first mention, add short takeaways, and prefer diagrams/tables over long code blocks (≤10 lines when unavoidable).
-- **Mermaid diagrams**: Style all nodes with explicit colors (`fill,stroke,color`) for light/dark theme compatibility.
-- **MDX syntax**: Use JSX-style comments `{/* comment */}` not HTML comments `<!-- comment -->`. Add `{/* truncate */}` after the introduction to control blog list previews.
-- **Bold formatting in Chinese**: When using multiple bold sections on the same line in Chinese text, add a space before the second `**` to ensure proper rendering (e.g., `这与 **语法属性（Syntactic Properties）** 形成对比`).
-- **Bold formatting with quotes**: When bolding text that contains double quotes, add spaces inside the bold markers (e.g., `** "quoted text" **` not `**"quoted text"**`) to prevent MDX parsing issues.
-- Introduce links on first reference only, aiming for official sources and meaningful anchor text.
+Choose based on article type:
+
+| Style | Use Case | Workflow |
+|-------|----------|----------|
+| **Analytical** | Technical deep-dives, industry analysis | Research → Outline → Writing → Refine |
+| **Tutorial** | Step-by-step guides, how-tos | Outline → Writing → Refine |
+| **Experiential** | Lessons learned, personal insights | Outline → Writing → Refine |
+| **Announcement** | Project releases, updates | Writing → Refine |
+
+### Creating an Article
+
+Just tell the AI what you want to write about. Example prompts:
+- *"I want to write a tutorial about building React hooks"*
+- *"Help me write an announcement for Crawlab 2.0"*
+- *"I'd like to share my lessons learned from 5 years of open source"*
+
+The AI will:
+1. **Create article spec** via LeanSpec MCP tools (with appropriate `style:` and `lang:` tags)
+2. **Load prompts**: Read `prompts/common/*` + the chosen `prompts/styles/*.md`
+3. **Scaffold files** if needed (for research/outline)
+4. **Write directly** to final MDX paths
+5. **Update spec status** as work progresses
+
+### Collaborative Writing: AI Behavior
+
+**Always collaborate—never generate full articles autonomously.** Pause for human input at these checkpoints:
+
+| Stage | You Do | Then Ask User For |
+|-------|--------|-------------------|
+| **Topic** | Suggest structure, identify style | Their angle, specific examples to include |
+| **Research** | Gather sources, find data | Key points they want to make, experiences to reference |
+| **Outline** | Propose structure | Approval, reordering, sections to add/remove |
+| **Writing** | Draft ONE section | Feedback before writing next section |
+| **Refine** | Polish, translate | Final review, tone adjustments |
+
+**Prompt the user with questions like:**
+- *"What specific angle or argument do you want to make?"*
+- *"Any personal experiences or examples you want me to include?"*
+- *"Here's the outline—should I adjust any sections before writing?"*
+- *"I've drafted section 1. Review it and let me know what to change before I continue."*
+
+**Never assume**—ask when uncertain about the user's perspective, tone preference, or which examples to use.
+
+### Content Standards (Quick Reference)
+
+- **Section lengths**: Intro 300-500 words, Main 600-1000 words, Conclusion 250-400 words
+- **Visual-first**: Prefer Mermaid diagrams and tables over prose; code ≤10 lines
+- **Mermaid styling**: Always use explicit `fill,stroke,color` for theme compatibility
+- **MDX comments**: Use `{/* comment */}` not `<!-- comment -->`
+- **Truncate marker**: Add `{/* truncate */}` after introduction
+- **Bold in Chinese**: Add space before second `**` on same line
+- **Links**: Introduce on first reference only, prefer official sources
+
+See `prompts/common/*.md` for complete formatting and localization rules.
 
 ### 4-Stage Workflow Quick Reference
 
