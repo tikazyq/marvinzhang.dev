@@ -137,6 +137,7 @@ specs/NNN-article-slug/
 | **Outline** | Generate structure in Outline section | Author approval/edits |
 | **Writing** | Draft ONE section at a time | Feedback before next section |
 | **Refine** | Polish, translate to Chinese | Final review |
+| **WeChat Export** | Run `pnpm wechat <slug> --zh -o` | Author publishes to WeChat |
 
 **AI should ask:**
 - *"I see you want to write about X. Should I create a spec using the blog-article template?"*
@@ -167,9 +168,35 @@ Update the Progress table in the spec as you complete each stage:
 | Outline | ⬜ → 🔄 → ✅ |
 | Writing (per section) | ⬜ → 🔄 → ✅ |
 | Chinese Translation | ⬜ → 🔄 → ✅ |
+| WeChat Export | ⬜ → 🔄 → ✅ |
 | Final Review | ⬜ → 🔄 → ✅ |
 
 When all stages are ✅, run `lean-spec update <spec> --status complete`.
+
+## WeChat Export Workflow
+
+After the Chinese translation is complete, export for WeChat publishing:
+
+```bash
+# Export specific article (Chinese only) and open output folder
+pnpm wechat <slug> --zh -o
+
+# Examples
+pnpm wechat introducing-leanspec --zh -o
+pnpm wechat sdd-tools --zh -o
+```
+
+**What gets converted:**
+- Mermaid diagrams → PNG images (white background)
+- Docusaurus admonitions → Standard markdown blockquotes
+- Relative links → Absolute URLs
+- Footer added with blog link
+
+**Output location:** `.temp/wechat/`
+- `*-zh-wechat.md` — Ready to paste into WeChat editor
+- `images/*.png` — Upload these to WeChat image library
+
+See [scripts/WECHAT.md](scripts/WECHAT.md) for full documentation.
 
 ## Localization & Draft Workflow
 
@@ -210,5 +237,6 @@ When all stages are ✅, run `lean-spec update <spec> --status complete`.
 | Dev preview | `pnpm dev` | Smoke testing |
 | Chinese formatting | `pnpm run validate:zh-bold-source` | Before committing Chinese posts |
 | Auto-fix Chinese | `pnpm run validate:zh-bold-source:fix` | To fix formatting issues |
+| WeChat export | `pnpm wechat <slug> --zh -o` | After Chinese translation complete |
 
 **Spec status flow:** `planned` → `in-progress` (before coding) → `complete` (after done)
