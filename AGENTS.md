@@ -94,6 +94,30 @@ The AI will:
 
 ### Collaborative Writing: AI Behavior
 
+**Two collaboration modes:**
+
+#### Mode 1: Questionnaire-First (Recommended for Announcements/Experiential)
+
+More efficient for articles requiring personal input:
+
+```
+1. AI creates spec with questionnaire.md
+2. Author fills out questionnaire async
+3. Author says "questionnaire complete"
+4. AI writes article based on answers
+```
+
+All artifacts live in the spec folder:
+```
+specs/NNN-article-slug/
+├── README.md           # Spec metadata and status
+├── questionnaire.md    # AI generates, author fills
+├── research.md         # Optional: AI-gathered sources
+└── outline.md          # Generated from questionnaire
+```
+
+#### Mode 2: Interactive Chat (For Research-Heavy/Analytical)
+
 **Always collaborate—never generate full articles autonomously.** Pause for human input at these checkpoints:
 
 | Stage | You Do | Then Ask User For |
@@ -135,21 +159,23 @@ See `prompts/common/*.md` for complete formatting and localization rules.
 
 ## Localization & Draft Workflow
 
-**Core concept: Maintain synchronized bilingual content and move drafts through the archive flow when publishing.**
+**Core concept: Specs manage article planning; final MDX files live in blog folders.**
 
 - Every English post must have a matching Chinese translation with the same slug and metadata.
-- Draft Markdown lives in the final location (`blog/...` and `i18n/zh/...`) and will be visible in the preview environment; move the scaffold folder to `drafts/archive/` at publication.
+- **Planning artifacts** (questionnaire, research, outline) live in `specs/NNN-slug/`
+- **Draft MDX** lives in final location (`blog/...` and `i18n/zh/...`) and will be visible in preview
+- On publication: update spec status to `complete`, optionally archive to `specs/archived/`
 - Keep frontmatter aligned (title, tags, date, authors) and ensure translations reflect updates made to the English version.
 - **形不同而意同 (Same Meaning, Different Form)**: Chinese articles must read naturally and idiomatically, not as literal translations. Adapt sentence structures, expressions, and rhetoric to feel native to Chinese readers while preserving core concepts and technical accuracy.
 - **Chinese articles must include English term annotations**: Add capitalized English translations in parentheses at first mention of technical terms (e.g., `可计算性理论（Computability Theory）`, `大型语言模型（Large Language Model，LLM）`), and use Chinese punctuation throughout (，、：instead of , ・ :).
 - **Chinese articles must include English names for famous people**: Add English names in parentheses at first mention of notable individuals (e.g., `艾兹格·迪杰斯特拉（Edsger Dijkstra）`, `亨利·戈登·莱斯（Henry Gordon Rice）`, `艾伦·图灵（Alan Turing）`).
 - **Chinese punctuation consistency**: Always use Chinese commas (，) instead of English commas (,) throughout Chinese articles, including in technical explanations and sentence structures.
 
-| Step | English Path | Chinese Path |
-| --- | --- | --- |
-| Drafting | `blog/YYYY-MM-DD-slug.mdx` | `i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx` |
-| Research assets | `drafts/YYYY-MM-DD-slug/` | Shared resources |
-| Post-publication archive | `drafts/archive/YYYY-MM-DD-slug/` | Shared resources |
+| Artifact | Location |
+|----------|----------|
+| Planning (questionnaire, research, outline) | `specs/NNN-article-slug/` |
+| English draft | `blog/YYYY-MM-DD-slug.mdx` |
+| Chinese draft | `i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx` |
 
 **Slug naming convention**: Keep slugs concise (prefer 2-4 words). Examples: `sdd-tools-practices`, `ai-coding-guide`, `spec-driven-basics`. Avoid long descriptive slugs like `implementing-spec-driven-development-tools-and-workflows-in-practice`.
 
