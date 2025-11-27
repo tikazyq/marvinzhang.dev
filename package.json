@@ -35,7 +35,10 @@
     "validate:zh-bold:skip-build": "node scripts/validate-zh-bold-formatting.js --skip-build",
     "validate:zh-bold-source": "node scripts/validate-zh-bold-formatting-source.js",
     "validate:zh-bold-source:fix": "node scripts/validate-zh-bold-formatting-source.js --fix",
-    "validate:zh-bold-source:file": "node scripts/validate-zh-bold-formatting-source.js --file"
+    "validate:zh-bold-source:file": "node scripts/validate-zh-bold-formatting-source.js --file",
+    "migrate:images": "node scripts/migrate-images.js",
+    "migrate:images:list": "node scripts/migrate-images.js --list",
+    "migrate:images:execute": "node scripts/migrate-images.js --execute"
   },
   "dependencies": {
     "@docusaurus/core": "3.8.1",
