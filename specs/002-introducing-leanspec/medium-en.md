@@ -49,7 +49,7 @@ So I built LeanSpec. And then I used LeanSpec to build LeanSpec.
 
 LeanSpec isn't just tooling—it's built on five first principles that guide every design decision:
 
-![Diagram 1](https://marvinzhang.dev/img/blog/2025-11-27-introducing-leanspec/medium/diagram-en-1.png)
+![](https://marvinzhang.dev/img/blog/2025-11-27-introducing-leanspec/medium/diagram-en-1.png)
 
 **Context Economy**: Specs must fit in working memory—both human and AI. Target under 300 lines. If you can't read it in 10 minutes, it's too long.
 
