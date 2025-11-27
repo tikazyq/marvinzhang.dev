@@ -5,11 +5,21 @@
 			"command": "npx",
 			"args": [
 				"@playwright/mcp@0.0.37",
-        "--headless",
-        "--viewport-size", "1280,720"
+				"--headless",
+				"--viewport-size",
+				"1280,720"
 			],
 			"cwd": "${workspaceFolder}",
 			"envFile": "",
+			"env": {}
+		},
+		"leanspec-mcp": {
+			"type": "stdio",
+			"command": "npx",
+			"args": [
+				"@leanspec/mcp@0.2.7"
+			],
+			"cwd": "${workspaceFolder}",
 			"env": {}
 		}
 	},
