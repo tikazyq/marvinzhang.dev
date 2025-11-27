@@ -18,10 +18,17 @@ const glob = require('glob');
  *   pnpm wechat --zh                # Process Chinese articles only
  *   pnpm wechat --open              # Open output directory after processing
  *   pnpm wechat --list              # List available articles
+ * 
+ * Output:
+ *   - Mermaid diagrams: static/img/blog/{slug}/wechat/*.png (permanent)
+ *   - WeChat markdown: specs/{spec-folder}/wechat-{locale}.md (if spec exists)
+ *   - Fallback output: .temp/wechat/ (for articles without specs)
  */
 
 const TEMP_DIR = '.temp/mermaid';
 const WECHAT_DIR = '.temp/wechat';
+const STATIC_IMG_DIR = 'static/img/blog';
+const SPECS_DIR = 'specs';
 const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 const BASE_URL = 'https://marvinzhang.dev';
 const CACHE_FILE = '.temp/mermaid/.extraction-cache.json';
@@ -77,9 +84,9 @@ Examples:
   pnpm wechat --force                 # Force full rebuild
 
 Output:
-  .temp/wechat/
-  ├── images/           PNG diagrams (white background)
-  └── *-wechat.md       WeChat-ready markdown files
+  static/img/blog/{slug}/wechat/      PNG diagrams (permanent, Git LFS tracked)
+  specs/{spec-folder}/                WeChat markdown (if spec exists)
+  .temp/wechat/                       Fallback for articles without specs
 `);
   process.exit(0);
 }
@@ -114,6 +121,38 @@ const loadCache = () => {
 const saveCache = (cache) => {
   ensureDir(path.dirname(CACHE_FILE));
   fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
+};
+
+// Find matching spec folder for an article
+const findSpecFolder = (articleSlug, articleFileName) => {
+  if (!fs.existsSync(SPECS_DIR)) return null;
+  
+  const specFolders = fs.readdirSync(SPECS_DIR).filter(f => {
+    const fullPath = path.join(SPECS_DIR, f);
+    return fs.statSync(fullPath).isDirectory() && f !== 'archived';
+  });
+  
+  // Extract slug from filename (remove date prefix like 2025-11-27-)
+  const slugFromFileName = articleFileName.replace(/^\d{4}-\d{2}-\d{2}-/, '');
+  
+  // Exact match: spec folder should be like "002-introducing-leanspec" for article "introducing-leanspec"
+  for (const folder of specFolders) {
+    // Spec folders are like "002-introducing-leanspec"
+    const specSlug = folder.replace(/^\d+-/, '');
+    
+    // Exact match only
+    if (specSlug === slugFromFileName || specSlug === articleSlug) {
+      return path.join(SPECS_DIR, folder);
+    }
+  }
+  
+  return null;
+};
+
+// Get the static image directory for an article
+const getStaticImageDir = (articleFileName) => {
+  // Use the full filename (with date) as the folder name
+  return path.join(STATIC_IMG_DIR, articleFileName, 'wechat');
 };
 
 // Find all blog articles with Mermaid diagrams
@@ -253,29 +292,46 @@ const processArticles = async () => {
     verbose(`   File: ${article.filePath}`);
     verbose(`   Diagrams: ${article.diagramCount}`);
     
-    // Extract and render diagrams
+    // Determine output locations
+    const staticImageDir = getStaticImageDir(article.fileName);
+    const specFolder = findSpecFolder(article.slug, article.fileName);
+    
+    // Ensure directories exist
+    ensureDir(staticImageDir);
+    
+    verbose(`   📁 Images: ${staticImageDir}`);
+    if (specFolder) {
+      verbose(`   📁 Spec: ${specFolder}`);
+    }
+    
+    // Extract and render diagrams to static folder
     const diagramFiles = [];
     
     for (let i = 0; i < article.diagrams.length; i++) {
-      const diagramFileName = `${article.fileName}-${article.locale}-${i + 1}`;
-      const mmdPath = `${TEMP_DIR}/${diagramFileName}.mmd`;
-      const pngPath = `${WECHAT_DIR}/images/${diagramFileName}.png`;
+      const diagramFileName = `diagram-${article.locale}-${i + 1}`;
+      const mmdPath = `${TEMP_DIR}/${article.fileName}-${article.locale}-${i + 1}.mmd`;
+      const pngPath = `${staticImageDir}/${diagramFileName}.png`;
       
-      // Save .mmd file
+      // Save .mmd file (temporary)
       fs.writeFileSync(mmdPath, article.diagrams[i]);
       
-      // Generate PNG
+      // Generate PNG to static folder
       try {
         execSync(
           `npx mmdc -i "${mmdPath}" -o "${pngPath}" -t default -b white --outputFormat png -p puppeteer.config.json`,
           { stdio: 'pipe' }
         );
+        
+        // Path relative to WeChat markdown location
+        const relativePath = `/${staticImageDir.replace(/^static\//, '')}/${diagramFileName}.png`;
+        
         diagramFiles.push({
           index: i + 1,
           name: diagramFileName,
-          path: `images/${diagramFileName}.png`
+          staticPath: pngPath,
+          relativePath: relativePath
         });
-        verbose(`   ✅ Diagram ${i + 1} rendered`);
+        verbose(`   ✅ Diagram ${i + 1} rendered → ${pngPath}`);
       } catch (err) {
         error(`Failed to render diagram ${i + 1} in ${article.fileName}`);
         verbose(`   Error: ${err.message}`);
@@ -286,7 +342,7 @@ const processArticles = async () => {
     const content = fs.readFileSync(article.filePath, 'utf8');
     const { content: markdownContent } = matter(content);
     
-    // Replace mermaid blocks with image references
+    // Replace mermaid blocks with image references (using absolute URLs for WeChat)
     let diagramIndex = 0;
     let processedContent = markdownContent.replace(
       /```mermaid\n([\s\S]*?)```/g,
@@ -294,7 +350,9 @@ const processArticles = async () => {
         const diagram = diagramFiles[diagramIndex];
         diagramIndex++;
         if (diagram) {
-          return `![Diagram ${diagram.index}](${diagram.path})`;
+          // Use absolute URL for WeChat, no alt text for cleaner output
+          const absoluteUrl = `${BASE_URL}${diagram.relativePath}`;
+          return `![](${absoluteUrl})`;
         }
         return match;
       }
@@ -330,25 +388,47 @@ const processArticles = async () => {
     
     processedContent += footer;
     
-    // Save WeChat-ready markdown
-    const outputPath = `${WECHAT_DIR}/${article.fileName}-${article.locale}-wechat.md`;
+    // Determine output path: spec folder if exists, otherwise .temp/wechat
+    let outputPath;
+    let outputLocation;
+    
+    if (specFolder) {
+      outputPath = `${specFolder}/wechat-${article.locale}.md`;
+      outputLocation = 'spec';
+    } else {
+      outputPath = `${WECHAT_DIR}/${article.fileName}-${article.locale}-wechat.md`;
+      outputLocation = 'temp';
+    }
+    
     fs.writeFileSync(outputPath, processedContent);
+    
+    // Also save to temp for easy access
+    const tempOutputPath = `${WECHAT_DIR}/${article.fileName}-${article.locale}-wechat.md`;
+    if (outputLocation === 'spec') {
+      fs.writeFileSync(tempOutputPath, processedContent);
+    }
     
     // Update cache
     newCache[article.filePath] = {
       mtime: article.mtime,
       processedAt: new Date().toISOString(),
-      diagramCount: article.diagramCount
+      diagramCount: article.diagramCount,
+      staticImageDir,
+      specFolder: specFolder || null
     };
     
     results.push({
       title: article.title,
       locale: article.locale,
       output: outputPath,
+      outputLocation,
+      specFolder,
+      staticImageDir,
       diagrams: diagramFiles.length
     });
     
-    log(`✅ ${article.locale.toUpperCase()}: ${article.fileName} (${diagramFiles.length} diagrams)`);
+    const locationEmoji = outputLocation === 'spec' ? '📋' : '📁';
+    log(`✅ ${article.locale.toUpperCase()}: ${article.fileName} (${diagramFiles.length} diagrams) ${locationEmoji}`);
   }
   
   // Save cache
@@ -356,33 +436,56 @@ const processArticles = async () => {
   
   // Summary
   console.log('\n' + '─'.repeat(50));
-  console.log(`📦 Output: ${path.resolve(WECHAT_DIR)}`);
+  
+  const specResults = results.filter(r => r.outputLocation === 'spec');
+  const tempResults = results.filter(r => r.outputLocation === 'temp');
+  
+  console.log(`📦 Static Images: ${path.resolve(STATIC_IMG_DIR)}`);
   console.log(`📄 Files: ${results.length}`);
   console.log(`🖼️  Images: ${results.reduce((sum, r) => sum + r.diagrams, 0)}`);
   
-  if (results.length > 0) {
-    console.log('\n📋 Generated files:');
-    results.forEach(r => {
+  if (specResults.length > 0) {
+    console.log(`\n📋 Saved to spec folders (${specResults.length}):`);
+    specResults.forEach(r => {
+      console.log(`   ${r.specFolder}/wechat-${r.locale}.md`);
+    });
+  }
+  
+  if (tempResults.length > 0) {
+    console.log(`\n📁 Saved to temp (no spec found) (${tempResults.length}):`);
+    tempResults.forEach(r => {
       console.log(`   ${path.basename(r.output)}`);
+    });
+  }
+  
+  if (results.length > 0) {
+    console.log(`\n🖼️  Image folders created:`);
+    const uniqueDirs = [...new Set(results.map(r => r.staticImageDir))];
+    uniqueDirs.forEach(dir => {
+      console.log(`   ${dir}`);
     });
   }
   
   // Open output directory if requested
   if (options.open && results.length > 0) {
-    const outputDir = path.resolve(WECHAT_DIR);
-    console.log(`\n📂 Opening ${outputDir}...`);
+    // Open the first spec folder if available, otherwise temp
+    const openDir = specResults.length > 0 
+      ? path.resolve(specResults[0].specFolder)
+      : path.resolve(WECHAT_DIR);
+    
+    console.log(`\n📂 Opening ${openDir}...`);
     
     try {
       const platform = process.platform;
       if (platform === 'darwin') {
-        execSync(`open "${outputDir}"`);
+        execSync(`open "${openDir}"`);
       } else if (platform === 'win32') {
-        execSync(`explorer "${outputDir}"`);
+        execSync(`explorer "${openDir}"`);
       } else {
-        execSync(`xdg-open "${outputDir}"`);
+        execSync(`xdg-open "${openDir}"`);
       }
     } catch {
-      info(`Could not open directory automatically. Path: ${outputDir}`);
+      info(`Could not open directory automatically. Path: ${openDir}`);
     }
   }
   
