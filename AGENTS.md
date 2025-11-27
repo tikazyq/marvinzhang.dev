@@ -216,6 +216,39 @@ pnpm wechat sdd-tools --zh -o
 
 See [scripts/WECHAT.md](scripts/WECHAT.md) for full documentation.
 
+## Medium Export Workflow
+
+After the English article is complete, export for Medium publishing:
+
+```bash
+# Export specific article (English only) and open output folder
+pnpm medium <slug> --en -o
+
+# Examples
+pnpm medium introducing-leanspec --en -o
+pnpm medium sdd-tools --en -o
+```
+
+**What gets converted:**
+- Mermaid diagrams → PNG images (hosted URLs)
+- Docusaurus admonitions → Blockquotes with emoji headers
+- MDX syntax → Standard markdown
+- H5/H6 headers → Bold text (Medium limitation)
+- Relative links → Absolute URLs
+- Frontmatter → Article header with tags
+- Footer added with original blog link
+
+**Output location:** `specs/{spec-folder}/` (if spec exists) or `.temp/medium/` (fallback)
+- `medium-en.md` — Ready to paste into Medium editor
+
+**Medium import steps:**
+1. Copy content from generated `.md` file
+2. Go to Medium.com → New Story
+3. Paste and review formatting
+4. Upload images manually if needed
+
+See [scripts/MEDIUM.md](scripts/MEDIUM.md) for full documentation.
+
 ## Localization & Draft Workflow
 
 **Core concept: Specs manage article planning; final MDX files live in blog folders.**
