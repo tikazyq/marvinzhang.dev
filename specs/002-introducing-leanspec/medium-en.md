@@ -1,5 +1,7 @@
 # Introducing LeanSpec: A Lightweight SDD Framework Built from First Principles
 
+*How I tamed vibe coding chaos with a methodology-first approach to Spec-Driven Development*
+
 Tags: #open-source #sdd #spec-driven-development #ai #development-workflow
 
 ---
