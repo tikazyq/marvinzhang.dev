@@ -174,6 +174,12 @@ Architecture mindset will be more important than pre-AI era. AI engineers/archit
 - **LangChain DeepAgents**: https://docs.langchain.com/oss/python/deepagents/overview (integrated framework: planning with `write_todos`, file system tools for context management, `task` tool for subagent spawning, LangGraph Store for persistent memory; inspired by Claude Code, Deep Research, Manus)
 - **Agent Skills**: https://agentskills.io/ (progressive disclosure format)
 - **LeanSpec**: https://leanspec.dev/ (spec-driven development)
+- **Claude Code Plan Mode**: https://code.claude.com/docs/en/common-workflows#use-plan-mode-for-safe-code-analysis
+  - Read-only mode for planning before implementation (spec-driven development pattern)
+  - Uses `AskUserQuestion` tool to gather requirements and clarify goals before proposing plan
+  - When to use: Multi-step implementation (many files), code exploration (research before changes), interactive development (iterate on direction)
+  - Example workflow: Complex auth refactor—analyze current code → gather requirements → create comprehensive plan → refine with follow-ups (backward compatibility, database migration)
+  - Activation: Shift+Tab during session, `claude --permission-mode plan`, or configure as default in `.claude/settings.json`
 - **SWE-agent**: https://github.com/SWE-agent/SWE-agent (65% on SWE-bench Verified, mini-SWE-agent)
 
 ### Industry Examples (2025-2026)
@@ -318,18 +324,19 @@ Architecture mindset will be more important than pre-AI era. AI engineers/archit
 
 ## Progress
 
-| Stage               | Status        | Notes                              |
-| ------------------- | ------------- | ---------------------------------- |
-| Questionnaire       | ✅ Complete    | Filled 2026-01-24                  |
-| Research            | ✅ Complete    | Latest benchmarks added 2026-01-24 |
-| Outline             | ✅ Complete    | Ready for approval                 |
-| Writing: Intro      | ⬜ Not started |                                    |
-| Writing: Section 1  | ⬜ Not started |                                    |
-| Writing: Section 2  | ⬜ Not started |                                    |
-| Writing: Section 3  | ⬜ Not started |                                    |
-| Writing: Conclusion | ⬜ Not started |                                    |
-| Chinese Translation | ⬜ Not started |                                    |
-| Final Review        | ⬜ Not started |                                    |
+| Stage               | Status        | Notes                                                  |
+| ------------------- | ------------- | ------------------------------------------------------ |
+| Questionnaire       | ✅ Complete    | Filled 2026-01-24                                      |
+| Research            | ✅ Complete    | Latest benchmarks added 2026-01-24                     |
+| Outline             | ✅ Complete    | Ready for approval                                     |
+| Writing: Intro      | ✅ Complete    | Completed 2026-01-24                                   |
+| Writing: Section 1  | ✅ Complete    | Completed 2026-01-24                                   |
+| Writing: Section 2  | ✅ Complete    | Completed 2026-01-24, refined w/ Claude Code Plan mode |
+| Writing: Section 3  | ✅ Complete    | Completed 2026-01-24                                   |
+| Writing: Conclusion | ✅ Complete    | Completed 2026-01-24                                   |
+| Chinese Translation | ⬜ Not started |                                                        |
+| WeChat Export       | ⬜ Not started |                                                        |
+| Final Review        | ⬜ Not started |                                                        |
 
 **Status Legend**: ⬜ Not started · 🔄 In progress · ✅ Complete
 
