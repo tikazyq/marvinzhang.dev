@@ -23,6 +23,10 @@ This article examines the 2025-2026 inflection point where AI agent development 
 - **Agent skills** enable progressive disclosure of knowledge
 - **Agent blackboards** coordinate progress through shared memory
 
+:::info Related Reading
+For foundational concepts on managing LLM context effectively, see [Context Engineering: The Art of Information Selection in AI Systems](/blog/context-engineering). For understanding how enterprise data infrastructure impacts AI agent reliability, explore [From Chatbots to Agents: Building Enterprise-Grade LLM Applications](/blog/enterprise-ai-application-architecture).
+:::
+
 The evidence suggests that successfully deploying enterprise AI agents requires shifting from "model superiority" to "architectural reliability." Production success stories consistently demonstrate that engineering discipline—understanding constraints, applying patterns, building robust architectures—matters more than raw model capability.
 
 ## The Quality Crisis in AI Agents
@@ -108,7 +112,11 @@ Four architectural patterns emerged from production deployments as essential qua
 
 [Claude Code's Plan mode](https://code.claude.com/docs/en/common-workflows#use-plan-mode-for-safe-code-analysis) exemplifies this pattern. The agent operates in read-only mode, using the `AskUserQuestion` tool to gather requirements and clarify goals before proposing any implementation plan. Consider a complex authentication refactor: Plan mode analyzes the current codebase, asks clarifying questions about backward compatibility and database migration requirements, then generates a comprehensive execution plan. The plan gets reviewed and refined through iterative questions before any code changes begin. This catches misalignments during the planning phase—when fixes cost minutes, not hours of debugging.
 
-[Amazon Kiro](https://aws.amazon.com/bedrock/agents/) provides project-level planning with dependency tracking. [LeanSpec](https://leanspec.dev/) offers lightweight spec management integrated with git for technical teams. [OpenSpec](https://github.com/openspec-dev/openspec) brings spec-driven workflows to open-source projects. All share the core pattern: persistent documents that outlive any single conversation context.
+[Amazon Kiro](https://aws.amazon.com/bedrock/agents/) provides project-level planning with dependency tracking. [LeanSpec](https://leanspec.dev/) offers lightweight spec management integrated with git for technical teams ([see introduction](/blog/introducing-leanspec)). [OpenSpec](https://github.com/openspec-dev/openspec) brings spec-driven workflows to open-source projects. All share the core pattern: persistent documents that outlive any single conversation context.
+
+:::info Dive Deeper into SDD
+For comprehensive methodology foundations, see [Spec-Driven Development: A Systematic Approach to Complex Features](/blog/spec-driven-development). For industrial tools and implementation practices, explore [Spec-Driven Development in 2025: Industrial Tools, Frameworks, and Best Practices](/blog/sdd-tools-practices).
+:::
 
 **Use cases**: Feature development maintaining coherent design across multiple sessions, API design coordinating between frontend and backend teams, system refactors preserving architectural requirements, cross-team coordination with shared specifications.
 
