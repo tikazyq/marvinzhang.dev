@@ -52,7 +52,7 @@ The quality crisis stems from fundamental LLM architecture constraints. As conve
 | **Goal divergence** | Design decisions drift from original requirements | Technical debt from misaligned implementations |
 | **Edge case brittleness** | Unusual scenarios trigger unpredictable behavior | Reliability issues despite high average performance |
 
-Long-running agents—multi-hour coding sessions, complex research tasks, iterative design workflows—hit context limits that short benchmark tests never exercise. A model scoring 74% on isolated coding problems might degrade to 40% effective accuracy over a 3-hour debugging session as context fills with dead-end attempts and intermediate state.
+Long-running agents—multi-hour coding sessions, complex research tasks, iterative design workflows—hit context limits that short benchmark tests never exercise. Models that score well on isolated problems show degraded performance over extended sessions as context fills with dead-end attempts and intermediate state.
 
 ### The Performance Plateau
 
@@ -68,7 +68,7 @@ graph LR
     style C fill:#e1f5fe,stroke:#01579b,color:#01579b
 ```
 
-Claude 4.5 Opus costs **2.7x more** than GPT-5.2 high reasoning mode for just a **7.8% performance gain** (74.4% vs 71.8%). This diminishing returns curve suggests we've hit architectural bottlenecks—not model limitations. OpenAI's marketing acknowledges this reality: GPT-5.2 is explicitly positioned as an "advanced frontier model **for professional work and long-running agents**," recognizing that architectural support matters for production deployment.
+Claude 4.5 Opus costs **1.4x more** than GPT-5.2 high reasoning mode ($0.72 vs $0.52 per million tokens) for just a **2.6 percentage point gain** (74.4% vs 71.8%). This diminishing returns curve suggests we've hit architectural bottlenecks—not model limitations. OpenAI's marketing acknowledges this reality: GPT-5.2 is explicitly positioned as an "advanced frontier model **for professional work and long-running agents**," recognizing that architectural support matters for production deployment.
 
 Similarly, the [OSWorld](https://os-world.github.io/) computer use benchmark shows dramatic 14-month progress—Claude 3.5 Sonnet launched at 14.9% in October 2024, while Claude Sonnet 4.5 now leads at 62.9%—yet still trails human performance of 72.36%. The persistent gap despite 4x improvement highlights that agent reliability requires more than raw model intelligence.
 
@@ -183,7 +183,7 @@ graph TB
     style Code3 fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
 ```
 
-[Amazon Kiro](https://aws.amazon.com/bedrock/agents/) provides project-level planning with dependency tracking. [LeanSpec](https://leanspec.dev/) offers lightweight spec management integrated with git for technical teams ([see introduction](/blog/introducing-leanspec)). [OpenSpec](https://github.com/openspec-dev/openspec) brings spec-driven workflows to open-source projects. All share the core pattern: persistent documents that outlive any single conversation context.
+[Amazon Kiro](https://aws.amazon.com/bedrock/agents/) provides project-level planning with dependency tracking. [LeanSpec](https://leanspec.dev/) offers lightweight spec management integrated with git for technical teams ([see introduction](/blog/introducing-leanspec)). All share the core pattern: persistent documents that outlive any single conversation context.
 
 :::info Dive Deeper into SDD
 For comprehensive methodology foundations, see [Spec-Driven Development: A Systematic Approach to Complex Features](/blog/spec-driven-development). For industrial tools and implementation practices, explore [Spec-Driven Development in 2025: Industrial Tools, Frameworks, and Best Practices](/blog/sdd-tools-practices).
