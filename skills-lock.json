@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-browser": {
+      "source": "codervisor/lean-spec",
+      "sourceType": "github",
+      "computedHash": "3aa8074455dca8b414738a5540deb8f724f6ad170bd576ecf4b5e7832944acf2"
+    },
+    "leanspec-sdd": {
+      "source": "codervisor/lean-spec",
+      "sourceType": "github",
+      "computedHash": "e7ebfb2196cbeda1f59830de0eb07f571ac149f8dd644f57137920f4c6c05178"
+    }
+  }
+}

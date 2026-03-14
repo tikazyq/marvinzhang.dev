@@ -32,6 +32,9 @@ Composable AI-assisted skills following the [agentskills.io](https://agentskills
 │   └── blog-announcement/   # 2-stage: Write → Refine
 │
 ├── blog-common/             # Convenience bundle (all foundation skills)
+│
+├── leanspec-sdd/            # Installed: Spec-Driven Development (codervisor/lean-spec)
+├── agent-browser/           # Installed: Browser-based agent capabilities (codervisor/lean-spec)
 └── README.md
 ```
 
@@ -99,9 +102,20 @@ Skills are structured for efficient context usage:
 2. **Instructions** (<3000 tokens): Main SKILL.md loaded when activated
 3. **References** (as needed): Detailed guides loaded only when required
 
+## Installed Skills (via `npx skills`)
+
+Installed from external repos using the [skills CLI](https://skills.sh):
+
+| Skill | Source | Purpose |
+|-------|--------|---------|
+| `leanspec-sdd` | `codervisor/lean-spec` | Spec-Driven Development methodology |
+| `agent-browser` | `codervisor/lean-spec` | Browser-based agent capabilities |
+
+Install: `npx skills add codervisor/lean-spec@leanspec-sdd --all -y`
+
 ## Integration with LeanSpec
 
-Article planning uses LeanSpec for tracking:
+Article planning uses LeanSpec for tracking (see `leanspec-sdd` skill for full protocol):
 
 ```bash
 lean-spec create "article-topic" --template=analytical  # or tutorial/experiential/announcement

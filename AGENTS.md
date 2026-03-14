@@ -34,6 +34,7 @@ Composable skills live in `.agents/skills/` (with symlinks at `.skills/` and `.c
 | Tier | Skills | Purpose |
 |------|--------|---------|
 | **Foundation** | formatting, localization, quality, writing-style, chat-driven | Composable building blocks |
+| **Installed** | leanspec-sdd, agent-browser | External skills (via `npx skills`) |
 | **Research** | research-technical, research-industry, research-content-gap | Standalone research capabilities |
 | **Analysis** | analysis-topic, analysis-article | Standalone analysis capabilities |
 | **Workflows** | blog-analytical, blog-tutorial, blog-experiential, blog-announcement | Article pipelines (compose foundation + research) |
