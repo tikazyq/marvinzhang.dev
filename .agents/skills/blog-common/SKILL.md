@@ -20,6 +20,7 @@ Loads all foundation skills for blog article writing on marvinzhang.dev.
 | `foundation/localization` | EN/ZH bilingual translation, 形不同而意同 principle |
 | `foundation/quality` | Validation commands, checklists, pre-publish gates |
 | `foundation/writing-style` | Economist-inspired principles, tone, voice |
+| `foundation/chat-driven` | Chat-first interaction (mobile/voice friendly) |
 
 ## When to Use
 

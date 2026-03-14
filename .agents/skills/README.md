@@ -13,7 +13,8 @@ Composable AI-assisted skills following the [agentskills.io](https://agentskills
 │   ├── formatting/          # MDX, Mermaid, code blocks
 │   ├── localization/        # EN/ZH bilingual, 形不同而意同
 │   ├── quality/             # Validation, checklists, gates
-│   └── writing-style/       # Economist principles, tone
+│   ├── writing-style/       # Economist principles, tone
+│   └── chat-driven/         # Chat-first interaction (mobile/voice)
 │
 ├── research/                # Tier 2a: Research capabilities
 │   ├── research-technical/  # Docs, repos, APIs, benchmarks
@@ -65,6 +66,7 @@ Independently loadable standards. Each handles one concern:
 | `localization` | ~70 | EN/ZH bilingual rules | Translation or bilingual work |
 | `quality` | ~70 | Validation, checklists | Pre-publish checks or audits |
 | `writing-style` | ~70 | Economist principles | Writing or style review |
+| `chat-driven` | ~120 | Chat-first interaction mode | Mobile, voice dictation, or any non-editor context |
 
 ### Tier 2: Capabilities (Research & Analysis)
 

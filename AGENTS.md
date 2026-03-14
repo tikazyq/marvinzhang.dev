@@ -33,7 +33,7 @@ Composable skills live in `.agents/skills/` (with symlinks at `.skills/` and `.c
 
 | Tier | Skills | Purpose |
 |------|--------|---------|
-| **Foundation** | formatting, localization, quality, writing-style | Composable building blocks |
+| **Foundation** | formatting, localization, quality, writing-style, chat-driven | Composable building blocks |
 | **Research** | research-technical, research-industry, research-content-gap | Standalone research capabilities |
 | **Analysis** | analysis-topic, analysis-article | Standalone analysis capabilities |
 | **Workflows** | blog-analytical, blog-tutorial, blog-experiential, blog-announcement | Article pipelines (compose foundation + research) |
@@ -92,15 +92,17 @@ lean-spec create "slug" --template=announcement  # Releases
 
 ## AI Behavior: Collaborative Writing
 
-**Never generate full articles autonomously.** Follow these checkpoints:
+**Never generate full articles autonomously.** All interaction happens in the chat — the AI writes all files. The author never needs to open an editor.
 
-| Stage | AI Does | Then Waits For |
-|-------|---------|----------------|
-| **Questionnaire** | Identify style, point to template | Author completes questionnaire |
-| **Research** | Gather sources, fill Research section | Author confirms key points |
-| **Outline** | Generate structure | Author approval/edits |
-| **Writing** | Draft ONE section at a time | Feedback before next section |
-| **Refine** | Polish, translate to Chinese | Final review |
+| Stage | AI Does | Author Does (in chat) |
+|-------|---------|----------------------|
+| **Questionnaire** | Asks 1-2 questions at a time in chat | Answers by voice/text |
+| **Research** | Gathers sources, summarizes key findings in chat | Confirms direction |
+| **Outline** | Shows proposed structure inline in chat | Approves/adjusts |
+| **Writing** | Drafts ONE section, shows in chat | Gives feedback |
+| **Refine** | Polishes, translates, shows changes | Final approval |
+
+**Chat-driven principle**: The chat box is the only input surface. AI captures all input from conversation and writes to files on behalf of the author. See `foundation/chat-driven` skill for full protocol.
 
 ## Quality Gates
 
