@@ -19,6 +19,7 @@ Load these alongside this workflow:
 - `foundation/formatting` — MDX, Mermaid, code blocks
 - `foundation/localization` — EN/ZH bilingual translation
 - `foundation/quality` — Validation commands, checklists
+- `foundation/chat-driven` — All interaction happens in chat
 
 ## When to Use
 
@@ -29,21 +30,19 @@ Load these alongside this workflow:
 
 **Example topics**: "Introducing LeanSpec", "Crawlab 2.0 Released"
 
-## Input Methods
+## Getting Started
 
-### Method 1: Questionnaire-Driven (Recommended)
+AI creates the spec, then gathers input through conversation:
 
 ```bash
 lean-spec create "project-name-announcement" --template=announcement
 ```
 
-Fill out: The News, Why It Matters, Key Features, Personal Story, Call to Action.
+AI asks questions from the conversation guide 1-2 at a time — covering the news, why it matters, key features, personal story, and CTA. Author answers in chat. AI writes everything to the spec.
 
-[See questionnaire: references/questionnaire.md]
+Alternatively, start writing directly if the author provides enough context upfront.
 
-### Method 2: Direct Writing
-
-Start writing directly if structure is clear.
+[See conversation guide: references/questionnaire.md]
 
 ## Workflow: 2 Stages
 

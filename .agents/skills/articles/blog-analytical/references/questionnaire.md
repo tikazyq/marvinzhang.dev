@@ -1,55 +1,41 @@
-# Analytical Article Questionnaire
+# Analytical Article — Conversation Guide
 
-Use this questionnaire to gather structured input before writing analytical articles. Fill this out in your spec file (created with `lean-spec create <name> --template=analytical`).
+AI asks these questions in chat, 1-2 at a time. Author answers by voice or text. AI captures answers and writes the spec.
 
 ## Core Thesis
-- **Main argument/insight**:
-  <!-- What's the central claim or insight of your analysis? -->
 
-- **Why now?** What makes this relevant today?
-  <!-- Timing, industry context, recent developments -->
-
-- **What's your unique perspective?**
-  <!-- What angle are you bringing that others haven't covered? -->
+1. **What's the central claim or insight of your analysis?**
+2. **Why now?** What makes this relevant today?
+3. **What's your unique perspective?** What angle haven't others covered?
 
 ## Evidence & Support
-- **Key data points or research**:
-  <!-- Benchmark results, statistics, measurements, research papers -->
 
-- **Case studies or examples**:
-  <!-- Real-world applications, companies, projects -->
-
-- **Expert opinions or references**:
-  <!-- Industry leaders, academic sources, official documentation -->
+4. **What key data points or research support your argument?** (benchmarks, statistics, papers)
+5. **Any case studies or real-world examples?** (companies, projects, implementations)
+6. **Expert sources to reference?** (industry leaders, official docs, academic sources)
 
 ## Counterarguments
-- **What's the opposing view?**
-  <!-- Acknowledge alternative perspectives fairly -->
 
-- **How do you address it?**
-  <!-- Your response to counterarguments -->
+7. **What's the opposing view?** What would a skeptic say?
+8. **How do you address it?**
 
 ## Implications
-- **So what?** What should readers do differently?
-  <!-- Practical takeaways and actionable insights -->
 
-- **Future trends**: Where is this heading?
-  <!-- Evolution, predictions, what to watch -->
+9. **So what?** What should readers do differently after reading?
+10. **Where is this heading?** Future trends, what to watch.
 
 ## Scope
-- **What's included** in this analysis?
-  <!-- Topics, aspects, depth covered -->
 
-- **What's explicitly excluded?**
-  <!-- Out of scope to set clear boundaries -->
+11. **What's included** in this analysis?
+12. **What's explicitly excluded?**
 
 ---
 
-## After Completing the Questionnaire
+## AI Behavior
 
-1. **Update spec progress**: Mark questionnaire stage as ✅ Complete
-2. **Signal to AI**: Say "questionnaire complete"
-3. **AI generates outline**: Review and approve before writing begins
-4. **Section-by-section writing**: AI drafts one section at a time with your feedback
-
-See the complete template at `.lean-spec/templates/articles/analytical.md`
+- Ask 1-2 questions at a time, not the full list
+- If the author gives a detailed answer, skip related follow-ups
+- If the author gives a brief answer, ask a focused follow-up
+- After gathering enough context, summarize what you captured and confirm
+- Write answers to the spec file — author never needs to touch it
+- Then proceed to outline generation

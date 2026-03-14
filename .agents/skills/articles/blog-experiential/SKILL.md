@@ -20,6 +20,7 @@ Load these alongside this workflow:
 - `foundation/localization` — EN/ZH bilingual translation
 - `foundation/quality` — Validation commands, checklists
 - `foundation/writing-style` — Economist principles, tone
+- `foundation/chat-driven` — All interaction happens in chat
 
 ## When to Use
 
@@ -30,15 +31,17 @@ Load these alongside this workflow:
 
 **Example topics**: "What I Learned from 5 Years in Open Source", "My Journey from Vibe Coding to SDD"
 
-## Questionnaire-First Workflow
+## Getting Started
+
+AI creates the spec, then gathers input through conversation:
 
 ```bash
 lean-spec create "article-slug" --template=experiential
 ```
 
-Fill out the questionnaire (context, challenge, approach, lessons, advice), then say "questionnaire complete".
+AI asks questions from the conversation guide 1-2 at a time — covering context, challenge, approach, lessons, and advice. Author answers in chat. AI writes everything to the spec.
 
-[See questionnaire: references/questionnaire.md]
+[See conversation guide: references/questionnaire.md]
 
 ## Workflow: 3 Stages
 

@@ -22,6 +22,7 @@ Load these alongside this workflow:
 - `foundation/writing-style` — Economist principles, tone
 - `research/research-technical` — Stage 1: source gathering
 - `research/research-industry` — Stage 1: market context (if applicable)
+- `foundation/chat-driven` — All interaction happens in chat
 
 ## When to Use
 
@@ -32,15 +33,17 @@ Load these alongside this workflow:
 
 **Example topics**: "Understanding Rice's Theorem", "SDD Ecosystem in 2026", "LLM Architecture Evolution"
 
-## Questionnaire-First Workflow
+## Getting Started
+
+AI creates the spec, then gathers input through conversation:
 
 ```bash
 lean-spec create "article-slug" --template=analytical
 ```
 
-Fill out the questionnaire (core thesis, evidence, counterarguments, practical implications, scope), then say "questionnaire complete".
+AI asks questions from the conversation guide 1-2 at a time — covering core thesis, evidence, counterarguments, implications, and scope. Author answers in chat. AI writes everything to the spec.
 
-[See questionnaire: references/questionnaire.md]
+[See conversation guide: references/questionnaire.md]
 
 ## Workflow: 4 Stages
 

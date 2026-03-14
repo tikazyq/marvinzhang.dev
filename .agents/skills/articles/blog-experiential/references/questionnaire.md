@@ -1,75 +1,43 @@
-# Experiential Article Questionnaire
+# Experiential Article — Conversation Guide
 
-Use this questionnaire to gather structured input before writing experiential articles. Fill this out in your spec file (created with `lean-spec create <name> --template=experiential`).
+AI asks these questions in chat, 1-2 at a time. Author answers by voice or text. AI captures answers and writes the spec.
 
 ## The Context
-- **What project/experience are you reflecting on?**
-  <!-- Project name, situation, context -->
 
-- **Timeline**: When did this happen? How long?
-  <!-- Be specific: "Q3 2025, 6 months" -->
-
-- **Your role**: What were you responsible for?
-  <!-- Your position, responsibilities, authority -->
-
-- **Scale**: Team size, project scope, stakes?
-  <!-- Context helps readers assess applicability -->
+1. **What project or experience are you reflecting on?**
+2. **When did this happen and how long did it last?**
+3. **What was your role?** What were you responsible for?
+4. **What was the scale?** Team size, project scope, stakes?
 
 ## The Challenge
-- **What problem did you face?**
-  <!-- The core difficulty or obstacle -->
 
-- **What made it difficult?**
-  <!-- Technical complexity, organizational issues, constraints -->
-
-- **Initial assumptions that proved wrong?**
-  <!-- Misconceptions you had to overcome -->
-
-- **What was at stake?**
-  <!-- Business impact, user impact, team impact -->
+5. **What problem did you face?**
+6. **What made it difficult?** (technical complexity, constraints, organizational issues)
+7. **Any initial assumptions that proved wrong?**
 
 ## The Approach
-- **What did you try first?**
-  <!-- Initial strategy or solution -->
 
-- **What pivots did you make?**
-  <!-- Changes in direction, adjustments -->
-
-- **Key turning points?**
-  <!-- Breakthrough moments, realizations -->
-
-- **What ultimately worked?**
-  <!-- Final successful approach -->
+8. **What did you try first?**
+9. **What pivots did you make?** Key turning points or breakthroughs?
+10. **What ultimately worked?**
 
 ## Lessons Learned
-<!-- List 3-5 key takeaways with brief context -->
-1. 
 
-2. 
-
-3. 
-
-4. 
-
-5. 
+11. **What are 3-5 key takeaways?** (brief context for each)
 
 ## Advice for Others
-- **What would you tell someone facing a similar situation?**
-  <!-- Actionable guidance -->
 
-- **What would you do differently?**
-  <!-- Mistakes to avoid -->
-
-- **What would you do the same?**
-  <!-- Validated approaches -->
+12. **What would you tell someone facing a similar situation?**
+13. **What would you do differently?**
 
 ---
 
-## After Completing the Questionnaire
+## AI Behavior
 
-1. **Update spec progress**: Mark questionnaire stage as ✅ Complete
-2. **Signal to AI**: Say "questionnaire complete"
-3. **AI generates outline**: Review and approve before writing begins
-4. **Section-by-section writing**: AI drafts one section at a time with your feedback
-
-See the complete template at `.lean-spec/templates/articles/experiential.md`
+- Ask 1-2 questions at a time, not the full list
+- Let the author tell the story naturally — follow their energy
+- If the author gives a detailed answer, skip related follow-ups
+- If the author gives a brief answer, ask a focused follow-up
+- After gathering enough context, summarize what you captured and confirm
+- Write answers to the spec file — author never needs to touch it
+- Then proceed to outline generation

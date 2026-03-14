@@ -1,57 +1,43 @@
-# Announcement Article Questionnaire
+# Announcement Article — Conversation Guide
 
-Use this questionnaire to gather structured input before writing announcement articles. Fill this out in your spec file (created with `lean-spec create <name> --template=announcement`).
+AI asks these questions in chat, 1-2 at a time. Author answers by voice or text. AI captures answers and writes the spec.
 
 ## The News
-- **What are you announcing?**
-  <!-- One sentence: what exists now that didn't before -->
 
-- **Version/release date?**
-  <!-- e.g., "v1.0.0, released Nov 27, 2025" -->
+1. **What are you announcing?** (one sentence: what exists now that didn't before)
+2. **Version and release date?**
 
 ## Why It Matters
-- **What problem does this solve?**
-  <!-- The pain point this addresses -->
 
-- **Who is the target audience?**
-  <!-- Be specific: "Solo devs using AI assistants" not "developers" -->
+3. **What problem does this solve?**
+4. **Who is the target audience?** (be specific: "solo devs using AI assistants" not "developers")
+5. **What's the unique angle?** Why this over alternatives?
 
-- **What's the unique angle?**
-  <!-- Why this over alternatives -->
+## Key Features
 
-## Key Features (pick 3-5)
-<!-- List the main features/capabilities with one-line benefits -->
-1. 
-2. 
-3. 
-4. 
-5. 
+6. **What are the 3-5 main features?** (one-line benefit for each)
 
 ## Personal Story
-- **Origin**: Why did you build this?
-  
-- **Journey**: How long? Key milestones?
-  
-- **Dogfooding**: Are you using it yourself? Results?
+
+7. **Why did you build this?** Origin story.
+8. **Are you using it yourself?** Dogfooding results?
 
 ## Call to Action
-- **Primary CTA**: What should readers do first?
-  
-- **Links**: GitHub, docs, demo, etc.
+
+9. **What should readers do first?** (primary CTA)
+10. **Links?** GitHub, docs, demo, etc.
 
 ## Tone
-<!-- Check one -->
-- [ ] Humble/practical: "I built this to solve my own problem"
-- [ ] Industry positioning: "Here's what's missing in the market"
-- [ ] Technical deep-dive: Focus on architecture/principles
+
+11. **What tone feels right?** Humble/practical, industry positioning, or technical deep-dive?
 
 ---
 
-## After Completing the Questionnaire
+## AI Behavior
 
-1. **Update spec progress**: Mark questionnaire stage as ✅ Complete
-2. **Signal to AI**: Say "questionnaire complete"
-3. **AI generates outline**: Review and approve before writing begins
-4. **Section-by-section writing**: AI drafts one section at a time with your feedback
-
-See the complete template at `.lean-spec/templates/articles/announcement.md`
+- Ask 1-2 questions at a time, not the full list
+- Announcements are usually quick — keep the conversation moving
+- If the author gives a detailed answer, skip related follow-ups
+- After gathering enough context, summarize what you captured and confirm
+- Write answers to the spec file — author never needs to touch it
+- Then proceed directly to writing (announcements skip outline stage)
