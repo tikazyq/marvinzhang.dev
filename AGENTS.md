@@ -11,38 +11,53 @@
 | **Languages**       | English (`blog/`) + Chinese (`i18n/zh/docusaurus-plugin-content-blog/`) |
 | **Package Manager** | `pnpm` only—never use `npm` or `yarn`                                   |
 
-## Agent Skills (agentskills.io Format)
+## Agent Skills
 
-Structured writing guidelines live in `.skills/` following the [Agent Skills](https://agentskills.io) format. Compatible with Claude, Cursor, GitHub Copilot, and other AI tools.
+Composable skills live in `.agents/skills/` (with symlinks at `.skills/` and `.claude/skills/`). See `.agents/skills/README.md` for full catalog.
 
-| Skill               | Purpose                                                    | Workflow                                       |
-| ------------------- | ---------------------------------------------------------- | ---------------------------------------------- |
-| `blog-common`       | Shared standards: formatting, localization, quality, style | Always load first                              |
-| `blog-analytical`   | Deep-dive technical analysis (Economist-inspired)          | 4-stage: Research → Outline → Writing → Refine |
-| `blog-tutorial`     | Step-by-step practical guides                              | 3-stage: Outline → Writing → Refine            |
-| `blog-experiential` | Personal insights and lessons learned                      | 3-stage: Outline → Writing → Refine            |
-| `blog-announcement` | Project releases and updates                               | 2-stage: Writing → Refine                      |
+### Skill Composition Guide
 
-**Usage**: Always load `blog-common` + one article-specific skill. AI tools with skills support auto-discover. See `.skills/README.md` for details.
+| Task | Skills to Load |
+|------|---------------|
+| Write analytical article | `blog-common` + `blog-analytical` |
+| Write tutorial | `blog-common` + `blog-tutorial` |
+| Write experiential article | `blog-common` + `blog-experiential` |
+| Write announcement | `blog-common` + `blog-announcement` |
+| Research a technology | `research-technical` |
+| Analyze market trends | `research-industry` |
+| "Should I write about X?" | `analysis-topic` |
+| Review a draft article | `analysis-article` |
+| Fix formatting / translate | Load individual `foundation/*` skills |
+
+### Tier Overview
+
+| Tier | Skills | Purpose |
+|------|--------|---------|
+| **Foundation** | formatting, localization, quality, writing-style | Composable building blocks |
+| **Research** | research-technical, research-industry, research-content-gap | Standalone research capabilities |
+| **Analysis** | analysis-topic, analysis-article | Standalone analysis capabilities |
+| **Workflows** | blog-analytical, blog-tutorial, blog-experiential, blog-announcement | Article pipelines (compose foundation + research) |
+| **Bundle** | blog-common | Convenience bundle (all foundation skills) |
 
 ## Directory Structure
 
 ```
 marvinzhang.dev/
+├── .agents/skills/          # Agent Skills (canonical location)
+│   ├── foundation/          # Tier 1: building blocks
+│   ├── research/            # Tier 2a: research capabilities
+│   ├── analysis/            # Tier 2b: analysis capabilities
+│   ├── articles/            # Tier 3: workflow orchestrators
+│   └── blog-common/         # Convenience bundle
+├── .skills/ → .agents/skills/   # Symlink for agentskills.io tools
+├── .claude/skills/ → ../.agents/skills/  # Symlink for Claude Code
 ├── blog/                    # Published MDX posts (English)
 ├── i18n/zh/.../             # Chinese translations
 ├── specs/                   # Active specs (planning artifacts)
-│   └── archived/            # Completed specs
-├── .skills/                 # Agent Skills (agentskills.io format)
-│   ├── blog-common/         # Shared standards for all articles
-│   └── articles/            # Article type-specific workflows
 ├── scripts/                 # Active utilities
-│   ├── archived/            # One-time migration scripts
-│   └── wechat.js            # WeChat export tool
 ├── src/                     # Docusaurus customizations
 ├── static/                  # Static assets
-├── .lean-spec/              # LeanSpec config & templates
-└── docs/                    # Minimal (Docusaurus requirement)
+└── .lean-spec/              # LeanSpec config & templates
 ```
 
 ## Operational Directives
@@ -54,238 +69,54 @@ marvinzhang.dev/
 
 **During work:**
 - Manage tasks via todo list tool (one in-progress at a time)
-- Write blog content directly to final MDX paths (visible in preview)
+- Write blog content directly to final MDX paths
 - Keep explanations skimmable—share deltas, not full plans
 
-## 🔧 LeanSpec Commands
+## LeanSpec Commands
 
-Use MCP tools if available, otherwise CLI:
+| Action         | Command                                     |
+| -------------- | ------------------------------------------- |
+| Project status | `lean-spec board`                           |
+| Create spec    | `lean-spec create <name> --template=<style>` |
+| Update         | `lean-spec update <spec> --status <status>` |
+| Search         | `lean-spec search "query"`                  |
 
-| Action         | Command                                     | Description                      |
-| -------------- | ------------------------------------------- | -------------------------------- |
-| Project status | `lean-spec board`                           | Kanban view + health metrics     |
-| List specs     | `lean-spec list`                            | All specs with metadata          |
-| Search         | `lean-spec search "query"`                  | Semantic search                  |
-| Create spec    | `lean-spec create <name>`                   | Auto-sequences, proper structure |
-| Update         | `lean-spec update <spec> --status <status>` | Validates transitions            |
-| Dependencies   | `lean-spec deps <spec>`                     | Visual dependency graph          |
-
-## Spec Workflow
-
-| Phase      | Actions                                                                 |
-| ---------- | ----------------------------------------------------------------------- |
-| **Before** | `board` → `search` → check if spec exists                               |
-| **During** | Update to `in-progress` → document decisions → link related specs       |
-| **After**  | Update to `complete` → document learnings → create follow-ups if needed |
-
-**When to write a spec:** Features affecting multiple areas, breaking changes, design decisions needing alignment.  
-**Skip specs for:** Bug fixes, trivial changes, self-explanatory refactors.
-
-## Article Writing Workflow
-
-### Creating an Article Spec
-
-**Use the style-specific template** for your article:
+### Article Spec Templates
 
 ```bash
-# For project releases, updates
-lean-spec create "my-project-release" --template=announcement
-
-# For step-by-step guides
-lean-spec create "react-hooks-guide" --template=tutorial
-
-# For technical deep-dives
-lean-spec create "rice-theorem-analysis" --template=analytical
-
-# For lessons learned, retrospectives
-lean-spec create "five-years-opensource" --template=experiential
+lean-spec create "slug" --template=analytical    # Deep-dives
+lean-spec create "slug" --template=tutorial      # How-to guides
+lean-spec create "slug" --template=experiential  # Lessons learned
+lean-spec create "slug" --template=announcement  # Releases
 ```
 
-Each template includes a **focused questionnaire** for that style—no need to delete unused sections.
-
-### Writing Style Selection
-
-| Style            | Template                  | Use Case                                |
-| ---------------- | ------------------------- | --------------------------------------- |
-| **Announcement** | `--template=announcement` | Project releases, updates               |
-| **Tutorial**     | `--template=tutorial`     | Step-by-step guides, how-tos            |
-| **Analytical**   | `--template=analytical`   | Technical deep-dives, industry analysis |
-| **Experiential** | `--template=experiential` | Lessons learned, personal insights      |
-
-### The Questionnaire-First Workflow
-
-**All articles start with the embedded questionnaire in the spec file.**
-
-```
-1. Create spec with blog-article template
-2. Fill out the questionnaire section for your style (delete unused styles)
-3. Tell AI "questionnaire complete" 
-4. AI generates outline, then writes section-by-section
-5. Update spec progress as each stage completes
-```
-
-**Spec structure** (single README.md file):
-```
-specs/NNN-article-slug/
-└── README.md
-    ├── Overview          # Topic summary
-    ├── Questionnaire     # Style-specific questions (author fills)
-    ├── Research          # AI fills during research phase
-    ├── Outline           # AI generates, author approves
-    ├── Progress          # Track writing stages
-    └── Prompts Reference # Links to relevant prompts
-```
-
-**Why questionnaire-first?**
-- Eliminates chat ping-pong for gathering context
-- Author can think deeply without time pressure
-- All inputs saved in git for future reference
-- One questionnaire replaces 5-10 chat exchanges
-
-### AI Behavior: Collaborative Writing
+## AI Behavior: Collaborative Writing
 
 **Never generate full articles autonomously.** Follow these checkpoints:
 
-| Stage             | AI Does                               | Then Waits For                 |
-| ----------------- | ------------------------------------- | ------------------------------ |
-| **Questionnaire** | Identify style, point to template     | Author completes questionnaire |
-| **Research**      | Gather sources, fill Research section | Author confirms key points     |
-| **Outline**       | Generate structure in Outline section | Author approval/edits          |
-| **Writing**       | Draft ONE section at a time           | Feedback before next section   |
-| **Refine**        | Polish, translate to Chinese          | Final review                   |
-| **WeChat Export** | Run `pnpm wechat <slug> --zh -o`      | Author publishes to WeChat     |
-
-**AI should ask:**
-- *"I see you want to write about X. Should I create a spec using the blog-article template?"*
-- *"Please fill out the questionnaire section, then say 'questionnaire complete'"*
-- *"Here's the proposed outline—should I adjust before writing?"*
-- *"Section 1 is drafted. Review and let me know changes before I continue."*
-
-### Content Standards (Quick Reference)
-
-- **Section lengths**: Intro 300-500 words, Main 600-1000 words, Conclusion 250-400 words
-- **Visual-first**: Prefer Mermaid diagrams and tables over prose; code ≤10 lines
-- **Mermaid styling**: Always use explicit `fill,stroke,color` for theme compatibility
-- **MDX comments**: Use `{/* comment */}` not `<!-- comment -->`
-- **Truncate marker**: Add `{/* truncate */}` after introduction
-- **Bold in Chinese**: Add space before second `**` on same line
-- **Links**: Introduce on first reference only, prefer official sources
-
-See `.skills/blog-common/references/*.md` for complete formatting and localization rules.
-
-### Progress Tracking
-
-Update the Progress table in the spec as you complete each stage:
-
-| Stage                 | Status Markers                             |
-| --------------------- | ------------------------------------------ |
-| Questionnaire         | ⬜ Not started → 🔄 In progress → ✅ Complete |
-| Research              | ⬜ → 🔄 → ✅                                  |
-| Outline               | ⬜ → 🔄 → ✅                                  |
-| Writing (per section) | ⬜ → 🔄 → ✅                                  |
-| Chinese Translation   | ⬜ → 🔄 → ✅                                  |
-| WeChat Export         | ⬜ → 🔄 → ✅                                  |
-| Final Review          | ⬜ → 🔄 → ✅                                  |
-
-When all stages are ✅, run `lean-spec update <spec> --status complete`.
-
-## WeChat Export Workflow
-
-After the Chinese translation is complete, export for WeChat publishing:
-
-```bash
-# Export specific article (Chinese only) and open output folder
-pnpm wechat <slug> --zh -o
-
-# Examples
-pnpm wechat introducing-leanspec --zh -o
-pnpm wechat sdd-tools --zh -o
-```
-
-**What gets converted:**
-- Mermaid diagrams → PNG images (white background)
-- Docusaurus admonitions → Standard markdown blockquotes
-- Relative links → Absolute URLs
-- Footer added with blog link
-
-**Output location:** `.temp/wechat/`
-- `*-zh-wechat.md` — Ready to paste into WeChat editor
-- `images/*.png` — Upload these to WeChat image library
-
-See [scripts/WECHAT.md](scripts/WECHAT.md) for full documentation.
-
-## Medium Export Workflow
-
-After the English article is complete, export for Medium publishing:
-
-```bash
-# Export specific article (English only) and open output folder
-pnpm medium <slug> --en -o
-
-# Examples
-pnpm medium introducing-leanspec --en -o
-pnpm medium sdd-tools --en -o
-```
-
-**What gets converted:**
-- Mermaid diagrams → PNG images (hosted URLs)
-- Docusaurus admonitions → Blockquotes with emoji headers
-- MDX syntax → Standard markdown
-- H5/H6 headers → Bold text (Medium limitation)
-- Relative links → Absolute URLs
-- Frontmatter → Article header with tags
-- Footer added with original blog link
-
-**Output location:** `specs/{spec-folder}/` (if spec exists) or `.temp/medium/` (fallback)
-- `medium-en.md` — Ready to paste into Medium editor
-
-**Medium import steps:**
-1. Copy content from generated `.md` file
-2. Go to Medium.com → New Story
-3. Paste and review formatting
-4. Upload images manually if needed
-
-See [scripts/MEDIUM.md](scripts/MEDIUM.md) for full documentation.
-
-## Localization & Draft Workflow
-
-**Core concept: Specs manage article planning; final MDX files live in blog folders.**
-
-- Every English post must have a matching Chinese translation with the same slug and metadata.
-- **Planning artifacts** (questionnaire, research, outline) live in `specs/NNN-slug/`
-- **Draft MDX** lives in final location (`blog/...` and `i18n/zh/...`) and will be visible in preview
-- On publication: update spec status to `complete`, optionally archive to `specs/archived/`
-- Keep frontmatter aligned (title, tags, date, authors) and ensure translations reflect updates made to the English version.
-- **形不同而意同 (Same Meaning, Different Form)**: Chinese articles must read naturally and idiomatically, not as literal translations. Adapt sentence structures, expressions, and rhetoric to feel native to Chinese readers while preserving core concepts and technical accuracy.
-- **Chinese articles must include English term annotations**: Add capitalized English translations in parentheses at first mention of technical terms (e.g., `可计算性理论（Computability Theory）`, `大型语言模型（Large Language Model，LLM）`), and use Chinese punctuation throughout (，、：instead of , ・ :).
-- **Chinese articles must include English names for famous people**: Add English names in parentheses at first mention of notable individuals (e.g., `艾兹格·迪杰斯特拉（Edsger Dijkstra）`, `亨利·戈登·莱斯（Henry Gordon Rice）`, `艾伦·图灵（Alan Turing）`).
-- **Chinese punctuation consistency**: Always use Chinese commas (，) instead of English commas (,) throughout Chinese articles, including in technical explanations and sentence structures.
-
-| Artifact                                    | Location                                                     |
-| ------------------------------------------- | ------------------------------------------------------------ |
-| Planning (questionnaire, research, outline) | `specs/NNN-article-slug/`                                    |
-| English draft                               | `blog/YYYY-MM-DD-slug.mdx`                                   |
-| Chinese draft                               | `i18n/zh/docusaurus-plugin-content-blog/YYYY-MM-DD-slug.mdx` |
-
-**Slug naming convention**: Keep slugs concise (prefer 2-4 words). Examples: `sdd-tools-practices`, `ai-coding-guide`, `spec-driven-basics`. Avoid long descriptive slugs like `implementing-spec-driven-development-tools-and-workflows-in-practice`.
-
-## Spec Relationships
-
-| Type         | Behavior                     | Use When                            |
-| ------------ | ---------------------------- | ----------------------------------- |
-| `related`    | Bidirectional, informational | Related topics, coordinated work    |
-| `depends_on` | Directional, blocking        | True dependency, work order matters |
-
-**Default:** Use `related`. Reserve `depends_on` for true blockers.
+| Stage | AI Does | Then Waits For |
+|-------|---------|----------------|
+| **Questionnaire** | Identify style, point to template | Author completes questionnaire |
+| **Research** | Gather sources, fill Research section | Author confirms key points |
+| **Outline** | Generate structure | Author approval/edits |
+| **Writing** | Draft ONE section at a time | Feedback before next section |
+| **Refine** | Polish, translate to Chinese | Final review |
 
 ## Quality Gates
 
 | Check              | Command                                | When                                  |
 | ------------------ | -------------------------------------- | ------------------------------------- |
 | Build              | `pnpm run build`                       | Before committing significant changes |
-| Dev preview        | `pnpm dev`                             | Smoke testing                         |
 | Chinese formatting | `pnpm run validate:zh-bold-source`     | Before committing Chinese posts       |
 | Auto-fix Chinese   | `pnpm run validate:zh-bold-source:fix` | To fix formatting issues              |
 | WeChat export      | `pnpm wechat <slug> --zh -o`           | After Chinese translation complete    |
+| Medium export      | `pnpm medium <slug> --en -o`           | After English article complete        |
 
-**Spec status flow:** `planned` → `in-progress` (before coding) → `complete` (after done)
+## Localization Quick Reference
+
+- **形不同而意同**: Chinese must read naturally, not as literal translations
+- **Technical terms**: Add English annotations: `可计算性理论（Computability Theory）`
+- **Famous people**: Add English names: `艾伦·图灵（Alan Turing）`
+- **Punctuation**: Use Chinese ，。：throughout
+
+Full guidelines in `foundation/localization` skill.
