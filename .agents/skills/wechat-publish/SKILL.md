@@ -1,30 +1,34 @@
 ---
 name: wechat-publish
-description: End-to-end automated publishing of blog articles to WeChat Official Account (微信公众号). Use when the user wants to publish a blog article to WeChat, automate WeChat MP login, upload images, fill the rich text editor, or save/publish drafts. Triggers include "publish to WeChat", "发布到微信", "微信公众号发布", "wechat publish", or any request involving mp.weixin.qq.com automation.
-allowed-tools: Bash(agent-browser:*), Bash(pnpm wechat*)
+description: Automated publishing of blog articles to WeChat Official Account (微信公众号). Generates WeChat-ready markdown, converts to styled content, and delivers via Telegram for easy copy-paste into 公众号助手 app. Triggers include "publish to WeChat", "发布到微信", "微信公众号发布", "wechat publish".
+allowed-tools: Bash(pnpm wechat*), Bash(curl*api.telegram.org*)
 metadata:
   author: marvinzhang
-  version: "1.0"
+  version: "2.0"
   tier: workflow
-  composes: "agent-browser"
 ---
 
 # WeChat Publish
 
-Automates the full pipeline: generate WeChat-ready markdown → browser login via QR → upload images → fill editor → save draft.
+Generates WeChat-ready content and delivers it via Telegram for publishing through the 公众号助手 app.
 
 ## End-to-End Workflow
 
 ```
-pnpm wechat <slug> --zh        ← Step 1: Generate markdown + images
+pnpm wechat <slug> --zh          ← Step 1: Generate markdown + images
         ↓
-agent-browser (QR login)       ← Step 2: User scans QR code
+Convert MD → styled content      ← Step 2: Apply WeChat formatting
         ↓
-Upload images to WeChat CDN    ← Step 3: Get CDN URLs
+Telegram: send content + images   ← Step 3: Deliver to user's phone
         ↓
-Fill rich text editor           ← Step 4: Inject HTML content
-        ↓
-Save draft / publish            ← Step 5: Done
+User: 公众号助手 → paste → publish ← Step 4: User publishes on mobile
+```
+
+## Environment Variables
+
+```bash
+TELEGRAM_BOT_TOKEN   # Bot token from @BotFather
+TELEGRAM_CHAT_ID     # User's numeric chat ID (from @userinfobot)
 ```
 
 ## Quick Start
@@ -37,189 +41,178 @@ When the user says "publish X to WeChat" or "发布 X 到微信公众号":
 pnpm wechat <article-slug> --zh --force
 ```
 
-This produces:
-- WeChat markdown: `.temp/wechat/<slug>-zh-wechat.md` (or `specs/*/wechat-zh.md`)
+Output:
+- WeChat markdown: `.temp/wechat/<slug>-zh-wechat.md`
 - Diagram PNGs: `static/img/blog/<slug>/wechat/*.png`
 - JSX screenshots: `static/img/blog/<slug>/wechat/*.png`
 
-### 2. Convert Markdown → WeChat HTML via markdown-nice
+### 2. Prepare Content for Mobile
 
-Use the locally running [markdown-nice](https://github.com/tikazyq/markdown-nice) instance to render markdown into WeChat-compatible styled HTML:
+Read the generated markdown and prepare it for the user:
+
+1. **Extract metadata** from the markdown frontmatter: title, author, tags
+2. **Extract article summary** (first 120 chars or custom digest)
+3. **Identify all images** that need to be sent separately
+4. **Split content** into chunks if it exceeds Telegram's 4096-char message limit
+
+### 3. Send via Telegram
+
+Send the content to the user in a structured sequence:
 
 ```bash
-# Start markdown-nice locally (if not already running)
-cd ~/markdown-nice && npm start  # Runs on http://localhost:3000
+# Send article metadata first
+curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+  -F "chat_id=${TELEGRAM_CHAT_ID}" \
+  --form-string "text=📝 WeChat 发布就绪
 
-# Open markdown-nice in browser
-agent-browser open "http://localhost:3000"
-agent-browser wait --load networkidle
-agent-browser snapshot -i
+标题：<title>
+作者：Marvin Zhang
+摘要：<digest>
 
-# Paste the WeChat markdown into the editor (left panel)
-agent-browser click @editor_panel
-agent-browser press Control+a
-# Read the markdown file content and type/paste it into the editor
-agent-browser type @editor_panel "<markdown-content>"
+请按以下步骤操作：
+1. 打开公众号助手 app
+2. 点击 + 新建图文
+3. 填写标题和作者
+4. 逐条复制下方内容粘贴到编辑器
+5. 保存图片到相册后插入文章" \
+  -F "parse_mode=HTML"
 
-# The right panel auto-renders styled HTML
-# Copy the rendered HTML from the preview panel
-agent-browser click @copy_btn  # Or use the "复制" button
+# Send images (each as a separate photo message)
+for img in .temp/wechat/images/*.png; do
+  curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
+    -F "chat_id=${TELEGRAM_CHAT_ID}" \
+    -F "photo=@${img}" \
+    -F "caption=$(basename $img)"
+done
+
+# Send article content (split into chunks if needed)
+curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+  -F "chat_id=${TELEGRAM_CHAT_ID}" \
+  --form-string "text=<article-content-chunk>" \
+  -F "parse_mode=HTML"
+
+# Send markdown file as document (for copy-paste)
+curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
+  -F "chat_id=${TELEGRAM_CHAT_ID}" \
+  -F "document=@.temp/wechat/<slug>-zh-wechat.md" \
+  -F "caption=完整 Markdown 文件 - 可在 markdown-nice 中渲染后复制"
 ```
 
-markdown-nice handles:
-- WeChat-compatible inline CSS styles
-- Code block syntax highlighting with WeChat-friendly themes
-- Proper image sizing and alignment
-- Chinese typography optimization
+### 4. User Publishes via 公众号助手
 
-See [references/wechat-styles.md](references/wechat-styles.md) for manual style reference when markdown-nice is unavailable.
+User workflow on mobile:
+1. Save images from Telegram to photo album
+2. Open 公众号助手 app → New article (新建图文)
+3. Set title and author
+4. Paste content into editor (or use markdown-nice to render first)
+5. Insert images from photo album
+6. Set cover image
+7. Preview → Publish
 
-### 3. QR Code Login
+## Content Formatting Strategy
+
+### Option A: Plain Markdown (Simple)
+
+Send the raw markdown. User pastes into [markdown-nice](https://github.com/tikazyq/markdown-nice) (web or mini-program) to get styled HTML, then copies into 公众号助手.
+
+### Option B: Pre-rendered Sections (Better)
+
+Split content into logical sections and send each as a Telegram message with basic HTML formatting (`<b>`, `<i>`, `<code>`, `<pre>`). User copies section by section.
+
+### Option C: markdown-nice Mini Program (Best)
+
+1. Send the markdown file via Telegram
+2. User opens markdown-nice 微信小程序
+3. Paste markdown → auto-renders with WeChat styles
+4. One-tap copy → paste into 公众号助手
+
+## Telegram API Helpers
+
+### Send Text (with chunking)
 
 ```bash
-# Open WeChat MP platform
-agent-browser --headed open "https://mp.weixin.qq.com/"
-agent-browser wait --load networkidle
+send_telegram_text() {
+  local text="$1"
+  local max_len=4096
 
-# Screenshot the QR code for the user to scan
-agent-browser screenshot /tmp/wechat-qr.png
+  if [ ${#text} -le $max_len ]; then
+    curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+      -F "chat_id=${TELEGRAM_CHAT_ID}" \
+      --form-string "text=${text}"
+  else
+    # Split by double newlines, send in chunks
+    echo "$text" | fold -s -w $max_len | while IFS= read -r chunk; do
+      curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+        -F "chat_id=${TELEGRAM_CHAT_ID}" \
+        --form-string "text=${chunk}"
+      sleep 1  # Rate limit
+    done
+  fi
+}
 ```
 
-**Show the screenshot to the user** and ask them to scan with WeChat. Then wait:
+### Send Image
 
 ```bash
-# Wait for login redirect (up to 120s)
-agent-browser wait --url "**/cgi-bin/home**" --timeout 120000
-
-# Save session for reuse
-agent-browser state save .temp/wechat-auth-state.json
+send_telegram_photo() {
+  local path="$1"
+  local caption="$2"
+  curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
+    -F "chat_id=${TELEGRAM_CHAT_ID}" \
+    -F "photo=@${path}" \
+    -F "caption=${caption}"
+}
 ```
 
-### 4. Upload Images to WeChat CDN
-
-For each image that needs to appear in the article:
+### Send Document
 
 ```bash
-# Navigate to media library
-agent-browser open "https://mp.weixin.qq.com/cgi-bin/filepage?type=2&begin=0&count=12"
-agent-browser wait --load networkidle
-agent-browser snapshot -i
-
-# Click upload button, use file chooser
-agent-browser click @upload_btn
-agent-browser file <image-path>
-agent-browser wait --load networkidle
-
-# Extract the CDN URL from the newly uploaded item
-agent-browser snapshot -i
-agent-browser get text @first_media_item
-```
-
-Replace image `src` attributes in the HTML with WeChat CDN URLs.
-
-### 5. Create Article in Editor
-
-```bash
-# Open the article editor
-agent-browser open "https://mp.weixin.qq.com/cgi-bin/appmsg?t=media/appmsg_edit&action=edit&type=77"
-agent-browser wait --load networkidle
-agent-browser snapshot -i
-
-# Fill title
-agent-browser fill @title_input "<article-title>"
-
-# Fill author
-agent-browser fill @author_input "Marvin Zhang"
-
-# Inject HTML content into the rich text editor
-agent-browser execute "document.querySelector('#edui_editor').innerHTML = arguments[0]" "<html-content>"
-
-# Set cover image (upload from local file)
-agent-browser click @cover_upload_btn
-agent-browser file <cover-image-path>
-agent-browser wait --load networkidle
-
-# Fill digest/summary
-agent-browser fill @digest_input "<article-summary>"
-
-# Save as draft
-agent-browser click @save_btn
-agent-browser wait 3000
-agent-browser screenshot /tmp/wechat-saved.png
-```
-
-Show the final screenshot to confirm success.
-
-## Important Notes
-
-### Selector Discovery
-
-WeChat MP's DOM changes frequently. **Always snapshot before interacting**:
-
-```bash
-agent-browser snapshot -i  # Discover current refs
-```
-
-Never assume fixed refs — re-snapshot after every navigation or DOM change.
-
-### Rich Text Editor Injection
-
-WeChat uses a custom contentEditable editor. Two approaches:
-
-1. **Direct innerHTML** (preferred): Inject via `agent-browser execute`
-2. **Clipboard fallback**: If innerHTML fails, copy HTML to clipboard and paste:
-   ```bash
-   agent-browser press Control+a
-   agent-browser press Control+v
-   ```
-
-### Session Reuse
-
-Save and restore login state to avoid repeated QR scans:
-
-```bash
-# Check for saved state first
-agent-browser state load .temp/wechat-auth-state.json
-agent-browser open "https://mp.weixin.qq.com/cgi-bin/home"
-# If redirected to login → state expired → re-scan QR
-```
-
-### Safety: Draft First
-
-**Always save as draft first**, never publish directly. Show the user a screenshot of the draft preview and ask for confirmation before publishing.
-
-### Publish (After User Confirmation)
-
-```bash
-agent-browser click @publish_btn
-agent-browser wait --load networkidle
-
-# Publishing requires a second QR scan for confirmation
-agent-browser screenshot /tmp/wechat-publish-qr.png
-# Show to user, wait for scan
-agent-browser wait --url "**/success**" --timeout 120000
+send_telegram_doc() {
+  local path="$1"
+  local caption="$2"
+  curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
+    -F "chat_id=${TELEGRAM_CHAT_ID}" \
+    -F "document=@${path}" \
+    -F "caption=${caption}"
+}
 ```
 
 ## Deep-Dive Documentation
 
 | Reference | When to Use |
 |-----------|-------------|
-| [references/wechat-styles.md](references/wechat-styles.md) | WeChat-compatible HTML/CSS inline styles |
-| [references/mp-editor.md](references/mp-editor.md) | WeChat MP editor DOM structure, selectors, gotchas |
-| [references/qr-login.md](references/qr-login.md) | QR code login flow details, session persistence |
-
-## Ready-to-Use Template
-
-| Template | Description |
-|----------|-------------|
-| [templates/wechat-publish.sh](templates/wechat-publish.sh) | Full end-to-end publish script |
+| [references/wechat-styles.md](references/wechat-styles.md) | WeChat-compatible HTML/CSS inline styles (for manual rendering) |
+| [references/telegram-delivery.md](references/telegram-delivery.md) | Telegram Bot API details, rate limits, formatting |
 
 ## Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
-| QR code not visible | Use `--headed` mode; ensure `agent-browser screenshot` captures the login area |
-| Login state expired | Delete `.temp/wechat-auth-state.json`, re-scan |
-| Editor content empty after inject | Use clipboard paste fallback instead of innerHTML |
-| Images not loading in preview | Ensure using absolute URLs (`https://marvinzhang.dev/img/...`) |
-| "Confirm identity" prompt | WeChat sometimes requires a second QR scan — screenshot and show to user |
+| Telegram `chat not found` | Use numeric chat ID, not @username. Send `/start` to bot first |
+| `chat_id=@xxx` curl error | Use `--form-string` for values starting with `@` |
+| Message too long | Split into chunks ≤4096 chars |
+| Images not sending | Check file path; max 10MB per photo |
+| Content formatting lost in paste | Use markdown-nice mini program for rendering |
+| 公众号助手 paste loses styles | Paste rendered HTML (from markdown-nice), not raw markdown |
+
+## Future: API-Based Publishing
+
+If the account is upgraded to a verified subscription or service account, the full API workflow becomes available:
+
+```bash
+# 1. Get access_token
+curl "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${APPID}&secret=${APPSECRET}"
+
+# 2. Upload image
+curl -F "media=@image.png" "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=${TOKEN}"
+
+# 3. Create draft
+curl -H "Content-Type: application/json" -d '{"articles":[...]}' \
+  "https://api.weixin.qq.com/cgi-bin/draft/add?access_token=${TOKEN}"
+
+# 4. Publish
+curl -H "Content-Type: application/json" -d '{"media_id":"..."}' \
+  "https://api.weixin.qq.com/cgi-bin/freepublish/submit?access_token=${TOKEN}"
+```
+
+See [WeChat Draft API docs](https://developers.weixin.qq.com/doc/subscription/api/draftbox/draftmanage/api_draft_add.html) for details.
