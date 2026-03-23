@@ -6,6 +6,212 @@ tags: ["ai", "agents", "architecture", "software-engineering", "open-source"]
 date: 2026-03-23
 ---
 
+import React from 'react';
+
+export const C = { bg: '#06080d', card: '#0d1117', border: '#1e2a3a', text: '#e2e8f0', textSub: '#94a3b8', blue: '#4d8eff', green: '#34d399', amber: '#fbbf24', rose: '#fb7185', purple: '#a78bfa', cyan: '#22d3ee' };
+
+export const ProtocolStack = () => {
+  const [active, setActive] = React.useState(null);
+  const layers = [
+    { id: 'L1', label: 'Human Endpoints', labelZh: '人类端点', color: C.blue, items: [
+      { name: 'Mobile', icon: '📱', desc: 'Intent dispatch · Approval · Notification-driven' },
+      { name: 'Terminal', icon: '⌨️', desc: 'Text streaming · Pipe composition · Persistent sessions' },
+      { name: 'IDE / Desktop', icon: '🖥️', desc: 'ACP access · Generative UI · Diff review' },
+      { name: 'Headless', icon: '🤖', desc: 'CI/CD · Webhooks · Bots · IoT' },
+    ]},
+    { id: 'L2', label: 'Agent↔Human Protocol', labelZh: 'Agent↔人类协议', color: C.purple, items: [
+      { name: 'ACP', icon: '🔌', desc: 'JetBrains + Zed — LSP for AI Agents' },
+      { name: 'A2UI', icon: '📐', desc: 'Google — Declarative UI spec' },
+      { name: 'AG-UI', icon: '🔄', desc: 'CopilotKit — Event-driven bidirectional' },
+      { name: 'GenUI', icon: '🎨', desc: 'Pattern — Static / Declarative / Open-ended' },
+    ]},
+    { id: 'L3', label: 'Agent Harness', labelZh: 'Agent Harness', color: C.amber, items: [
+      { name: 'Governance', icon: '🛡️', desc: 'evaluate(action, ctx, state) → Allow | Deny | Modify' },
+      { name: 'Runtime', icon: '⚙️', desc: 'Agent loop · Session · Recovery · Token budgeting' },
+      { name: 'Capability', icon: '🧰', desc: 'Tool / Skill / Agent hierarchy · Typed schemas' },
+      { name: 'Coordination', icon: '🔗', desc: 'Factory · Fractal · Generative adversarial patterns' },
+    ]},
+    { id: 'L4', label: 'Agent↔Agent/Tool', labelZh: 'Agent↔Agent/Tool', color: C.green, items: [
+      { name: 'MCP', icon: '🔧', desc: 'Anthropic — Agent↔Tool, "USB-C for AI"' },
+      { name: 'A2A', icon: '🌐', desc: 'Google / LF — Agent↔Agent delegation & mesh' },
+      { name: 'Agent Spec', icon: '📋', desc: 'Oracle — Framework-agnostic agent definition' },
+      { name: 'AP2', icon: '💳', desc: 'Google — Agent payment protocol' },
+    ]},
+    { id: 'L5', label: 'Execution Substrate', labelZh: '执行底座', color: C.cyan, items: [
+      { name: 'Cloud', icon: '☁️', desc: 'Per-agent isolated containers · Scale-to-zero' },
+      { name: 'Local', icon: '💻', desc: 'CLI local · File/Git direct access' },
+      { name: 'Hybrid', icon: '🔀', desc: 'On-device + cloud offload' },
+      { name: 'LLM', icon: '🧠', desc: 'Model routing · Haiku → Sonnet → Opus tiering' },
+    ]},
+  ];
+  return (
+    <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
+      <div style={{ textAlign: 'center', marginBottom: 16, color: C.textSub, fontSize: 13 }}>Click a layer to explore</div>
+      {layers.map((layer, i) => {
+        const isActive = active === layer.id;
+        return (
+          <div key={layer.id} style={{ marginBottom: i < layers.length - 1 ? 8 : 0 }}>
+            <div
+              onClick={() => setActive(isActive ? null : layer.id)}
+              style={{
+                background: isActive ? layer.color + '22' : C.card,
+                border: `1px solid ${isActive ? layer.color : C.border}`,
+                borderRadius: 8, padding: '12px 16px', cursor: 'pointer',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                transition: 'all 0.2s',
+              }}
+            >
+              <span style={{ color: layer.color, fontWeight: 600, fontSize: 14 }}>
+                {layer.id} · {layer.label}
+              </span>
+              <span style={{ color: C.textSub, fontSize: 12 }}>{isActive ? '▲' : '▼'}</span>
+            </div>
+            {isActive && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 8, marginTop: 8, padding: '0 4px' }}>
+                {layer.items.map(item => (
+                  <div key={item.name} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px' }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 4 }}>
+                      {item.icon} {item.name}
+                    </div>
+                    <div style={{ fontSize: 12, color: C.textSub, lineHeight: 1.4 }}>{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {i < layers.length - 1 && (
+              <div style={{ textAlign: 'center', color: C.textSub, fontSize: 11, padding: '2px 0' }}>↕</div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export const AutomationSpectrum = () => {
+  const [selected, setSelected] = React.useState(2);
+  const levels = [
+    { level: 0, name: 'Manual', human: 100, agent: 0, color: C.textSub, shift: 'Memory-driven', time: '4 hours', bugfix: 'Read Jira → search StackOverflow → trace code manually → write fix → wait for review.' },
+    { level: 1, name: 'Assisted', human: 80, agent: 20, color: C.purple, shift: 'Searching → generating', time: '2 hours', bugfix: 'Paste error to ChatGPT → copy-paste suggested fix → test manually.' },
+    { level: 2, name: 'Collaborative', human: 55, agent: 45, color: C.blue, shift: 'Writing → reviewing', time: '45 min', bugfix: 'Describe bug in Cursor chat → AI scans codebase → proposes inline fix → human approves with one click.', tag: 'MAINSTREAM' },
+    { level: 3, name: 'Semi-Autonomous', human: 25, agent: 75, color: C.amber, shift: 'Writing → describing intent', time: '10 min + 15 min agent', bugfix: 'Type one sentence in terminal → agent plans/executes/tests/commits → human approves PR on phone.', tag: 'FRONTIER' },
+    { level: 4, name: 'Fully Automatic', human: 5, agent: 95, color: C.green, shift: 'Approving → setting boundaries', time: '0 min + 8 min agent', bugfix: 'CI detects failure → headless agent diagnoses and fixes → governance auto-approves → auto-deploys to staging.' },
+    { level: 5, name: 'Orchestration', human: 2, agent: 98, color: C.cyan, shift: 'Defining workflows → defining goals', time: '30 min + 6 hrs mesh', bugfix: 'Human defines migration goal → architect agent designs plan → coding agents implement in parallel → security agent audits.' },
+  ];
+  const sel = levels[selected];
+  return (
+    <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
+      <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
+        {levels.map((l, i) => (
+          <div
+            key={i}
+            onClick={() => setSelected(i)}
+            style={{
+              flex: 1, textAlign: 'center', padding: '8px 4px', borderRadius: 6, cursor: 'pointer',
+              background: selected === i ? l.color + '33' : C.card,
+              border: `1px solid ${selected === i ? l.color : C.border}`,
+              transition: 'all 0.2s',
+            }}
+          >
+            <div style={{ fontSize: 13, fontWeight: 700, color: l.color }}>L{l.level}</div>
+            <div style={{ fontSize: 10, color: C.textSub, marginTop: 2 }}>{l.name}</div>
+            {l.tag && <div style={{ fontSize: 9, color: l.color, marginTop: 2, fontWeight: 600 }}>{l.tag}</div>}
+          </div>
+        ))}
+      </div>
+      <div style={{ background: C.card, borderRadius: 8, padding: 16, border: `1px solid ${sel.color}44` }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <span style={{ color: sel.color, fontSize: 18, fontWeight: 700 }}>L{sel.level} · {sel.name}</span>
+          <span style={{ color: C.textSub, fontSize: 12 }}>{sel.time}</span>
+        </div>
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ display: 'flex', height: 24, borderRadius: 6, overflow: 'hidden', border: `1px solid ${C.border}` }}>
+            <div style={{ width: `${sel.human}%`, background: C.blue + '88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#fff', fontWeight: 600, transition: 'width 0.4s' }}>
+              {sel.human > 10 ? `Human ${sel.human}%` : ''}
+            </div>
+            <div style={{ width: `${sel.agent}%`, background: sel.color + '88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#fff', fontWeight: 600, transition: 'width 0.4s' }}>
+              {sel.agent > 10 ? `Agent ${sel.agent}%` : ''}
+            </div>
+          </div>
+        </div>
+        <div style={{ fontSize: 12, color: C.textSub, marginBottom: 8 }}>
+          <strong style={{ color: C.text }}>Key shift:</strong> {sel.shift}
+        </div>
+        <div style={{ fontSize: 12, color: C.textSub, lineHeight: 1.5, background: C.bg, borderRadius: 6, padding: 12, border: `1px solid ${C.border}` }}>
+          <strong style={{ color: C.text }}>Bug fix example:</strong> {sel.bugfix}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ToolEcosystem = () => {
+  const [filter, setFilter] = React.useState('all');
+  const protocols = ['MCP', 'ACP', 'A2A', 'A2UI', 'AG-UI'];
+  const protocolColors = { MCP: C.green, ACP: C.blue, A2A: C.cyan, A2UI: C.amber, 'AG-UI': C.purple, AP2: C.rose };
+  const tools = [
+    { name: 'Claude Code', dev: 'Anthropic', type: 'CLI', levels: [2,3,4,5], protocols: ['MCP','ACP'], highlight: true },
+    { name: 'Gemini CLI', dev: 'Google', type: 'CLI', levels: [2,3,4], protocols: ['MCP','ACP'] },
+    { name: 'Codex CLI', dev: 'OpenAI', type: 'CLI', levels: [2,3,4], protocols: ['MCP','ACP'] },
+    { name: 'Aider', dev: 'Open Source', type: 'CLI', levels: [2,3], protocols: ['MCP'] },
+    { name: 'OpenCode', dev: 'Open Source', type: 'CLI', levels: [2,3], protocols: ['MCP','ACP'] },
+    { name: 'Cursor', dev: 'Cursor Inc', type: 'IDE', levels: [2,3], protocols: ['MCP'] },
+    { name: 'Windsurf', dev: 'Codeium', type: 'IDE', levels: [2,3], protocols: ['MCP'] },
+    { name: 'JetBrains AI', dev: 'JetBrains', type: 'IDE', levels: [2,3], protocols: ['MCP','ACP'] },
+    { name: 'Zed', dev: 'Zed Industries', type: 'IDE', levels: [2,3], protocols: ['MCP','ACP'] },
+    { name: 'GitHub Copilot', dev: 'GitHub/MS', type: 'IDE', levels: [1,2,3], protocols: ['MCP','ACP'] },
+    { name: 'Claude Code RC', dev: 'Anthropic', type: 'Mobile', levels: [3,4], protocols: ['AG-UI','A2UI'] },
+    { name: 'Pocket Agent', dev: 'Community', type: 'Mobile', levels: [3,4], protocols: ['AG-UI'] },
+    { name: 'CopilotKit', dev: 'CopilotKit', type: 'Framework', levels: [2,3,4,5], protocols: ['AG-UI','A2UI','MCP'] },
+    { name: 'Google ADK', dev: 'Google', type: 'Framework', levels: [3,4,5], protocols: ['A2A','A2UI','MCP'] },
+    { name: 'LangGraph', dev: 'LangChain', type: 'Framework', levels: [3,4,5], protocols: ['AG-UI','MCP'] },
+    { name: 'BeeAI', dev: 'IBM/LF', type: 'Platform', levels: [4,5], protocols: ['A2A','MCP'] },
+  ];
+  const typeIcons = { CLI: '⌨️', IDE: '🖥️', Mobile: '📱', Framework: '🔧', Platform: '🌐' };
+  const filtered = filter === 'all' ? tools : tools.filter(t => t.protocols.includes(filter));
+  return (
+    <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
+        <span
+          onClick={() => setFilter('all')}
+          style={{ padding: '4px 10px', borderRadius: 12, fontSize: 12, cursor: 'pointer', background: filter === 'all' ? C.text + '22' : C.card, color: filter === 'all' ? C.text : C.textSub, border: `1px solid ${filter === 'all' ? C.text + '44' : C.border}` }}
+        >All</span>
+        {protocols.map(p => (
+          <span
+            key={p}
+            onClick={() => setFilter(filter === p ? 'all' : p)}
+            style={{ padding: '4px 10px', borderRadius: 12, fontSize: 12, cursor: 'pointer', background: filter === p ? protocolColors[p] + '22' : C.card, color: filter === p ? protocolColors[p] : C.textSub, border: `1px solid ${filter === p ? protocolColors[p] : C.border}` }}
+          >{p}</span>
+        ))}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 8 }}>
+        {filtered.map(t => (
+          <div key={t.name} style={{ background: C.card, borderRadius: 8, padding: 12, border: `1px solid ${t.highlight ? C.blue + '66' : C.border}` }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: t.highlight ? C.blue : C.text }}>{typeIcons[t.type]} {t.name}</span>
+              <span style={{ fontSize: 10, color: C.textSub }}>{t.dev}</span>
+            </div>
+            <div style={{ display: 'flex', gap: 3, marginBottom: 6, flexWrap: 'wrap' }}>
+              {t.protocols.map(p => (
+                <span key={p} style={{ fontSize: 10, padding: '1px 6px', borderRadius: 8, background: protocolColors[p] + '22', color: protocolColors[p], border: `1px solid ${protocolColors[p]}44` }}>{p}</span>
+              ))}
+            </div>
+            <div style={{ display: 'flex', gap: 2 }}>
+              {[0,1,2,3,4,5].map(l => (
+                <div key={l} style={{ width: 18, height: 6, borderRadius: 3, background: t.levels.includes(l) ? C.green + 'aa' : C.border + '44' }} />
+              ))}
+              <span style={{ fontSize: 9, color: C.textSub, marginLeft: 4 }}>L{Math.min(...t.levels)}-L{Math.max(...t.levels)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: 11, color: C.textSub, marginTop: 12, textAlign: 'center' }}>
+        Showing {filtered.length} of {tools.length} tools {filter !== 'all' && `· filtered by ${filter}`}
+      </div>
+    </div>
+  );
+};
+
 Six protocols. Six automation levels. Seventeen tools. Twelve predictions. One interactive map that ties them all together.
 
 The [AI Agent Interaction Landscape](https://agent-landscape.vercel.app) is an open-source, bilingual SPA I built to make sense of how AI agents interact with developers, editors, tools, and each other in 2026. This article walks through the key frameworks it introduces—and the insights that emerged from building it.
@@ -26,87 +232,17 @@ For foundational concepts on AI agent architecture patterns, see [AI Agents: Eng
 
 The core of the landscape is a five-layer protocol stack. Each layer addresses a different boundary in the agent interaction model.
 
-### Layer 1: Human Endpoints
+Click any layer below to explore its components:
 
-Four surfaces where developers interact with agents:
-
-| Endpoint | Mode | Key Pattern |
-|----------|------|-------------|
-| **Mobile** | Async control | Intent dispatch, approval, notification-driven |
-| **Terminal** | Full development | Text streaming, pipe composition, persistent sessions |
-| **IDE / Desktop** | Rich review | ACP access, generative UI, diff review |
-| **Headless** | Unattended | CI/CD, webhooks, bots, IoT |
-
-The insight here isn't that these are four alternatives—they're four **projections** of the same agent system. A developer might dispatch an intent from their phone on a train, have the agent execute via terminal on a remote machine, review the diff in their IDE at the office, and let headless agents handle CI overnight. Same system, different views.
-
-### Layer 2: Agent-Human Protocols
-
-Three protocols standardise how agents communicate with humans:
-
-- **ACP** (Agent Client Protocol) by JetBrains + Zed — the "LSP for AI agents." A standard interface between editors and AI agents, making the "which editor supports which agent" question irrelevant.
-- **A2UI** by Google — declarative UI specification that lets agents produce native renders on Web, Flutter, SwiftUI, and Compose.
-- **AG-UI** by CopilotKit — event-driven bidirectional sync between agents and frontends, handling state synchronisation and tool call events.
-
-Plus a **Generative UI** pattern that maps the control-freedom tradeoff across three modes: static (AG-UI), declarative (A2UI), and open-ended (MCP Apps).
-
-### Layer 3: The Agent Harness
-
-This is where the engineering happens—four subsystems that make agents production-ready:
-
-- **Governance**: `evaluate(action, ctx, state) → Allow | Deny | Modify`. Interceptor patterns, rule crystallisation, budget/rate/safety boundaries.
-- **Runtime**: Agent loop state machines, session management, recovery. Plan → Approve → Execute → Review cycles with token budgeting and exponential backoff.
-- **Capability**: Tool / Skill / Agent hierarchy with typed schemas (Pydantic/Zod). Skill evolver repair and hot-reload.
-- **Coordination**: Factory, fractal, and generative adversarial patterns for multi-agent orchestration.
-
-As automation increases from L2 to L5, the harness weight grows: none → Capability → +Governance → +Runtime → +Coordination. At L4-L5, the harness **is** the product—it's the only thing between autonomous agents and production.
-
-### Layer 4: Agent-Agent/Tool Protocols
-
-Four protocols for machine-to-machine communication:
-
-| Protocol | Owner | Purpose |
-|----------|-------|---------|
-| **MCP** | Anthropic | Agent↔Tool — "USB-C for AI." JSON-RPC servers/clients |
-| **A2A** | Google / Linux Foundation | Agent↔Agent — delegation, discovery, mesh |
-| **Agent Spec** | Oracle | Framework-agnostic agent definition |
-| **AP2** | Google | Agent payment — cart mandates, scoped contracts |
-
-MCP is the most mature (1.0 shipped), but A2A is catching up fast with AgentCard metadata and cross-organisation mesh support.
-
-### Layer 5: Execution Substrate
-
-Where agents actually run:
-
-- **Cloud**: Per-agent isolated containers (Codespaces, DevBox, Sealos). Scale-to-zero.
-- **Local**: CLI local with direct file/Git access (Claude Code, Codex, Gemini CLI).
-- **Hybrid**: On-device + cloud offload, following the Apple Intelligence pattern.
-- **LLM**: Model routing and token budgeting. Haiku → Sonnet → Opus tiering.
+<ProtocolStack />
 
 ## The L0→L5 Automation Spectrum
 
-Perhaps the most useful framework in the landscape is the six-level automation spectrum, modelled after autonomous driving levels:
+Perhaps the most useful framework in the landscape is the six-level automation spectrum, modelled after autonomous driving levels. Select any level below to see the human/agent split and a concrete bug fix example:
 
-| Level | Name | Human/Agent | Key Shift |
-|-------|------|-------------|-----------|
-| **L0** | Manual | 100% / 0% | Memory-driven |
-| **L1** | Assisted | 80% / 20% | Searching → generating answers |
-| **L2** | Collaborative | 55% / 45% | Writing code → reviewing changes |
-| **L3** | Semi-Autonomous | 25% / 75% | Writing code → describing intent |
-| **L4** | Fully Automatic | 5% / 95% | Approving steps → setting boundaries |
-| **L5** | Orchestration | 2% / 98% | Defining workflows → defining goals |
+<AutomationSpectrum />
 
 The industry mainstream sits at **L2** (collaborative), with the frontier pushing into **L3** (semi-autonomous). The jump from L2 to L3 is where the real paradigm shift happens: the developer stops writing code and starts describing intent. The jump from L3 to L4 is even more radical—the developer stops being in the loop at all, and sets governance boundaries instead.
-
-### The Same Bug, Six Ways
-
-To make the abstraction concrete, the landscape shows the same bug fix at every level:
-
-- **L0** (4 hours): Read Jira, search StackOverflow, trace code manually, write fix, wait for review.
-- **L1** (2 hours): Paste error to ChatGPT, copy-paste the suggested fix, test manually.
-- **L2** (45 minutes): Describe bug in Cursor chat, AI scans codebase, proposes inline fix, human approves with one click.
-- **L3** (10 min human + 15 min agent): Type one sentence in terminal, agent plans/executes/tests/commits, human approves PR on phone.
-- **L4** (0 min human + 8 min agent): CI detects failure, headless agent diagnoses and fixes, governance auto-approves, auto-deploys to staging.
-- **L5** (30 min goal-setting + 6 hours agent mesh): Human defines migration goal, architect agent designs plan, coding agents implement in parallel, security agent audits.
 
 The pattern is clear: human time drops exponentially, but the **weight of each remaining human decision increases**. A 30-second approval at L4 can greenlight 8 hours of agent work.
 
@@ -126,26 +262,9 @@ Total: **~3.5 hours** of human time, **~11 hours** of agent time, across 3 devic
 
 ## The Tool Ecosystem: 17 Products Mapped
 
-The landscape maps 17 tools across their protocol support and automation range:
+The landscape maps 17 tools across their protocol support and automation range. Filter by protocol to see how the ecosystem clusters:
 
-**CLI Agents** dominate the L2-L5 range:
-- **Claude Code** (Anthropic) — L2-L5, MCP + ACP. 1M token context. The current frontier leader.
-- **Gemini CLI** (Google) — L2-L4, MCP + ACP. Plan Mode and Conductor architecture.
-- **Codex CLI** (OpenAI) — L2-L4, MCP + ACP.
-- **Aider** (Open Source) — L2-L3, MCP. AI pair programming.
-- **OpenCode** (Open Source) — L2-L3, MCP + ACP. ACP-compatible.
-
-**IDEs** cluster at L1-L3:
-- Cursor, Windsurf, JetBrains AI, Zed, GitHub Copilot. All now support MCP; JetBrains and Zed lead with native ACP.
-
-**Mobile** targets L3-L4:
-- Claude Code Remote Control, Pocket Agent, Moshi. The phone as async control surface.
-
-**Frameworks** reach L5:
-- CopilotKit (AG-UI creator), Google ADK (A2A + A2UI), LangGraph (stateful orchestration).
-
-**Platforms** at L4-L5:
-- BeeAI by IBM/Linux Foundation. Open-source agent orchestration.
+<ToolEcosystem />
 
 The key observation: **protocol support determines automation ceiling**. Tools with only MCP cap out around L3. Adding ACP enables IDE integration. Adding A2A + AG-UI unlocks L4-L5 multi-agent mesh.
 

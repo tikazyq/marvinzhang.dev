@@ -6,6 +6,212 @@ tags: ["ai", "agents", "architecture", "software-engineering", "open-source"]
 date: 2026-03-23
 ---
 
+import React from 'react';
+
+export const C = { bg: '#06080d', card: '#0d1117', border: '#1e2a3a', text: '#e2e8f0', textSub: '#94a3b8', blue: '#4d8eff', green: '#34d399', amber: '#fbbf24', rose: '#fb7185', purple: '#a78bfa', cyan: '#22d3ee' };
+
+export const ProtocolStack = () => {
+  const [active, setActive] = React.useState(null);
+  const layers = [
+    { id: 'L1', label: '人类端点', color: C.blue, items: [
+      { name: '移动端', icon: '📱', desc: '意图下发 · 审批 · 通知驱动' },
+      { name: '终端', icon: '⌨️', desc: '文本流 · 管道组合 · 持久会话' },
+      { name: 'IDE / 桌面', icon: '🖥️', desc: 'ACP 接入 · 生成式 UI · Diff 审查' },
+      { name: '无头端', icon: '🤖', desc: 'CI/CD · Webhook · Bot · IoT' },
+    ]},
+    { id: 'L2', label: 'Agent↔人类协议', color: C.purple, items: [
+      { name: 'ACP', icon: '🔌', desc: 'JetBrains + Zed — AI Agent 的 LSP' },
+      { name: 'A2UI', icon: '📐', desc: 'Google — 声明式 UI 规范' },
+      { name: 'AG-UI', icon: '🔄', desc: 'CopilotKit — 事件驱动双向同步' },
+      { name: 'GenUI', icon: '🎨', desc: '模式 — 静态 / 声明式 / 开放式' },
+    ]},
+    { id: 'L3', label: 'Agent Harness', color: C.amber, items: [
+      { name: '治理', icon: '🛡️', desc: 'evaluate(action, ctx, state) → Allow | Deny | Modify' },
+      { name: '运行时', icon: '⚙️', desc: 'Agent 循环 · 会话管理 · 故障恢复 · Token 预算' },
+      { name: '能力', icon: '🧰', desc: 'Tool / Skill / Agent 层级 · 类型化 Schema' },
+      { name: '协调', icon: '🔗', desc: '工厂模式 · 分形模式 · 生成对抗模式' },
+    ]},
+    { id: 'L4', label: 'Agent↔Agent/Tool', color: C.green, items: [
+      { name: 'MCP', icon: '🔧', desc: 'Anthropic — Agent↔Tool，"AI 的 USB-C"' },
+      { name: 'A2A', icon: '🌐', desc: 'Google / LF — Agent↔Agent 委托与网格' },
+      { name: 'Agent Spec', icon: '📋', desc: 'Oracle — 框架无关的 Agent 定义' },
+      { name: 'AP2', icon: '💳', desc: 'Google — Agent 支付协议' },
+    ]},
+    { id: 'L5', label: '执行底座', color: C.cyan, items: [
+      { name: '云端', icon: '☁️', desc: '每个 Agent 独立容器 · 缩容至零' },
+      { name: '本地', icon: '💻', desc: 'CLI 本地 · 文件/Git 直接访问' },
+      { name: '混合', icon: '🔀', desc: '端侧 + 云端卸载' },
+      { name: 'LLM', icon: '🧠', desc: '模型路由 · Haiku → Sonnet → Opus 分层' },
+    ]},
+  ];
+  return (
+    <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
+      <div style={{ textAlign: 'center', marginBottom: 16, color: C.textSub, fontSize: 13 }}>点击层级以展开详情</div>
+      {layers.map((layer, i) => {
+        const isActive = active === layer.id;
+        return (
+          <div key={layer.id} style={{ marginBottom: i < layers.length - 1 ? 8 : 0 }}>
+            <div
+              onClick={() => setActive(isActive ? null : layer.id)}
+              style={{
+                background: isActive ? layer.color + '22' : C.card,
+                border: `1px solid ${isActive ? layer.color : C.border}`,
+                borderRadius: 8, padding: '12px 16px', cursor: 'pointer',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                transition: 'all 0.2s',
+              }}
+            >
+              <span style={{ color: layer.color, fontWeight: 600, fontSize: 14 }}>
+                {layer.id} · {layer.label}
+              </span>
+              <span style={{ color: C.textSub, fontSize: 12 }}>{isActive ? '▲' : '▼'}</span>
+            </div>
+            {isActive && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 8, marginTop: 8, padding: '0 4px' }}>
+                {layer.items.map(item => (
+                  <div key={item.name} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px' }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 4 }}>
+                      {item.icon} {item.name}
+                    </div>
+                    <div style={{ fontSize: 12, color: C.textSub, lineHeight: 1.4 }}>{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {i < layers.length - 1 && (
+              <div style={{ textAlign: 'center', color: C.textSub, fontSize: 11, padding: '2px 0' }}>↕</div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export const AutomationSpectrum = () => {
+  const [selected, setSelected] = React.useState(2);
+  const levels = [
+    { level: 0, name: '人工', human: 100, agent: 0, color: C.textSub, shift: '记忆驱动', time: '4 小时', bugfix: '读 Jira → 搜 StackOverflow → 手动追踪代码 → 编写修复 → 等待审查。' },
+    { level: 1, name: '辅助', human: 80, agent: 20, color: C.purple, shift: '搜索答案 → 生成答案', time: '2 小时', bugfix: '把错误粘贴到 ChatGPT → 复制建议的修复 → 手动测试。' },
+    { level: 2, name: '协作', human: 55, agent: 45, color: C.blue, shift: '编写代码 → 审查变更', time: '45 分钟', bugfix: '在 Cursor 聊天中描述 Bug → AI 扫描代码库 → 提出行内修复 → 人类一键批准。', tag: '主流' },
+    { level: 3, name: '半自动', human: 25, agent: 75, color: C.amber, shift: '编写代码 → 描述意图', time: '人类 10 分钟 + Agent 15 分钟', bugfix: '在终端输入一句话 → Agent 规划/执行/测试/提交 → 人类在手机上批准 PR。', tag: '前沿' },
+    { level: 4, name: '全自动', human: 5, agent: 95, color: C.green, shift: '逐步审批 → 设定边界', time: '人类 0 分钟 + Agent 8 分钟', bugfix: 'CI 检测到失败 → 无头 Agent 诊断并修复 → 治理层自动批准 → 自动部署到 Staging。' },
+    { level: 5, name: '自主编排', human: 2, agent: 98, color: C.cyan, shift: '定义工作流 → 定义目标', time: '30 分钟 + 6 小时网格', bugfix: '人类定义迁移目标 → 架构 Agent 设计方案 → 编码 Agent 并行实现 → 安全 Agent 审计。' },
+  ];
+  const sel = levels[selected];
+  return (
+    <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
+      <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
+        {levels.map((l, i) => (
+          <div
+            key={i}
+            onClick={() => setSelected(i)}
+            style={{
+              flex: 1, textAlign: 'center', padding: '8px 4px', borderRadius: 6, cursor: 'pointer',
+              background: selected === i ? l.color + '33' : C.card,
+              border: `1px solid ${selected === i ? l.color : C.border}`,
+              transition: 'all 0.2s',
+            }}
+          >
+            <div style={{ fontSize: 13, fontWeight: 700, color: l.color }}>L{l.level}</div>
+            <div style={{ fontSize: 10, color: C.textSub, marginTop: 2 }}>{l.name}</div>
+            {l.tag && <div style={{ fontSize: 9, color: l.color, marginTop: 2, fontWeight: 600 }}>{l.tag}</div>}
+          </div>
+        ))}
+      </div>
+      <div style={{ background: C.card, borderRadius: 8, padding: 16, border: `1px solid ${sel.color}44` }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <span style={{ color: sel.color, fontSize: 18, fontWeight: 700 }}>L{sel.level} · {sel.name}</span>
+          <span style={{ color: C.textSub, fontSize: 12 }}>{sel.time}</span>
+        </div>
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ display: 'flex', height: 24, borderRadius: 6, overflow: 'hidden', border: `1px solid ${C.border}` }}>
+            <div style={{ width: `${sel.human}%`, background: C.blue + '88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#fff', fontWeight: 600, transition: 'width 0.4s' }}>
+              {sel.human > 10 ? `人类 ${sel.human}%` : ''}
+            </div>
+            <div style={{ width: `${sel.agent}%`, background: sel.color + '88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#fff', fontWeight: 600, transition: 'width 0.4s' }}>
+              {sel.agent > 10 ? `Agent ${sel.agent}%` : ''}
+            </div>
+          </div>
+        </div>
+        <div style={{ fontSize: 12, color: C.textSub, marginBottom: 8 }}>
+          <strong style={{ color: C.text }}>关键转变：</strong> {sel.shift}
+        </div>
+        <div style={{ fontSize: 12, color: C.textSub, lineHeight: 1.5, background: C.bg, borderRadius: 6, padding: 12, border: `1px solid ${C.border}` }}>
+          <strong style={{ color: C.text }}>Bug 修复示例：</strong> {sel.bugfix}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ToolEcosystem = () => {
+  const [filter, setFilter] = React.useState('all');
+  const protocols = ['MCP', 'ACP', 'A2A', 'A2UI', 'AG-UI'];
+  const protocolColors = { MCP: C.green, ACP: C.blue, A2A: C.cyan, A2UI: C.amber, 'AG-UI': C.purple, AP2: C.rose };
+  const tools = [
+    { name: 'Claude Code', dev: 'Anthropic', type: 'CLI', levels: [2,3,4,5], protocols: ['MCP','ACP'], highlight: true },
+    { name: 'Gemini CLI', dev: 'Google', type: 'CLI', levels: [2,3,4], protocols: ['MCP','ACP'] },
+    { name: 'Codex CLI', dev: 'OpenAI', type: 'CLI', levels: [2,3,4], protocols: ['MCP','ACP'] },
+    { name: 'Aider', dev: '开源', type: 'CLI', levels: [2,3], protocols: ['MCP'] },
+    { name: 'OpenCode', dev: '开源', type: 'CLI', levels: [2,3], protocols: ['MCP','ACP'] },
+    { name: 'Cursor', dev: 'Cursor Inc', type: 'IDE', levels: [2,3], protocols: ['MCP'] },
+    { name: 'Windsurf', dev: 'Codeium', type: 'IDE', levels: [2,3], protocols: ['MCP'] },
+    { name: 'JetBrains AI', dev: 'JetBrains', type: 'IDE', levels: [2,3], protocols: ['MCP','ACP'] },
+    { name: 'Zed', dev: 'Zed Industries', type: 'IDE', levels: [2,3], protocols: ['MCP','ACP'] },
+    { name: 'GitHub Copilot', dev: 'GitHub/MS', type: 'IDE', levels: [1,2,3], protocols: ['MCP','ACP'] },
+    { name: 'Claude Code RC', dev: 'Anthropic', type: '移动', levels: [3,4], protocols: ['AG-UI','A2UI'] },
+    { name: 'Pocket Agent', dev: '社区', type: '移动', levels: [3,4], protocols: ['AG-UI'] },
+    { name: 'CopilotKit', dev: 'CopilotKit', type: '框架', levels: [2,3,4,5], protocols: ['AG-UI','A2UI','MCP'] },
+    { name: 'Google ADK', dev: 'Google', type: '框架', levels: [3,4,5], protocols: ['A2A','A2UI','MCP'] },
+    { name: 'LangGraph', dev: 'LangChain', type: '框架', levels: [3,4,5], protocols: ['AG-UI','MCP'] },
+    { name: 'BeeAI', dev: 'IBM/LF', type: '平台', levels: [4,5], protocols: ['A2A','MCP'] },
+  ];
+  const typeIcons = { CLI: '⌨️', IDE: '🖥️', '移动': '📱', '框架': '🔧', '平台': '🌐' };
+  const filtered = filter === 'all' ? tools : tools.filter(t => t.protocols.includes(filter));
+  return (
+    <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
+        <span
+          onClick={() => setFilter('all')}
+          style={{ padding: '4px 10px', borderRadius: 12, fontSize: 12, cursor: 'pointer', background: filter === 'all' ? C.text + '22' : C.card, color: filter === 'all' ? C.text : C.textSub, border: `1px solid ${filter === 'all' ? C.text + '44' : C.border}` }}
+        >全部</span>
+        {protocols.map(p => (
+          <span
+            key={p}
+            onClick={() => setFilter(filter === p ? 'all' : p)}
+            style={{ padding: '4px 10px', borderRadius: 12, fontSize: 12, cursor: 'pointer', background: filter === p ? protocolColors[p] + '22' : C.card, color: filter === p ? protocolColors[p] : C.textSub, border: `1px solid ${filter === p ? protocolColors[p] : C.border}` }}
+          >{p}</span>
+        ))}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 8 }}>
+        {filtered.map(t => (
+          <div key={t.name} style={{ background: C.card, borderRadius: 8, padding: 12, border: `1px solid ${t.highlight ? C.blue + '66' : C.border}` }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: t.highlight ? C.blue : C.text }}>{typeIcons[t.type]} {t.name}</span>
+              <span style={{ fontSize: 10, color: C.textSub }}>{t.dev}</span>
+            </div>
+            <div style={{ display: 'flex', gap: 3, marginBottom: 6, flexWrap: 'wrap' }}>
+              {t.protocols.map(p => (
+                <span key={p} style={{ fontSize: 10, padding: '1px 6px', borderRadius: 8, background: protocolColors[p] + '22', color: protocolColors[p], border: `1px solid ${protocolColors[p]}44` }}>{p}</span>
+              ))}
+            </div>
+            <div style={{ display: 'flex', gap: 2 }}>
+              {[0,1,2,3,4,5].map(l => (
+                <div key={l} style={{ width: 18, height: 6, borderRadius: 3, background: t.levels.includes(l) ? C.green + 'aa' : C.border + '44' }} />
+              ))}
+              <span style={{ fontSize: 9, color: C.textSub, marginLeft: 4 }}>L{Math.min(...t.levels)}-L{Math.max(...t.levels)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: 11, color: C.textSub, marginTop: 12, textAlign: 'center' }}>
+        显示 {filtered.length} / {tools.length} 款工具 {filter !== 'all' && `· 按 ${filter} 筛选`}
+      </div>
+    </div>
+  );
+};
+
 六大协议。六个自动化级别。十七款工具。十二项预测。一张交互式全景图将它们串联起来。
 
 [AI Agent 交互全景图](https://agent-landscape.vercel.app)是我构建的一个开源双语单页应用，旨在厘清 2026 年 AI Agent 如何与开发者、编辑器、工具以及彼此之间进行交互。本文将梳理其中引入的关键框架——以及构建过程中涌现的洞察。
@@ -24,89 +230,17 @@ date: 2026-03-23
 
 ## 协议栈：五大层级
 
-全景图的核心是一个五层协议栈。每一层解决 Agent 交互模型中的不同边界问题。
+全景图的核心是一个五层协议栈。每一层解决 Agent 交互模型中的不同边界问题。点击任意层级以展开详情：
 
-### 第一层：人类端点
-
-开发者与 Agent 交互的四个界面：
-
-| 端点 | 模式 | 关键模式 |
-|------|------|----------|
-| **移动端** | 异步控制 | 意图下发、审批、通知驱动 |
-| **终端** | 完整开发 | 文本流、管道组合、持久会话 |
-| **IDE / 桌面** | 富审查 | ACP 接入、生成式 UI、Diff 审查 |
-| **无头端** | 无人值守 | CI/CD、Webhook、Bot、IoT |
-
-这里的洞察不是说它们是四个替代方案——它们是同一 Agent 系统的四种 **投影** 。开发者可以在火车上用手机下发意图，让 Agent 在远程机器上通过终端执行，在办公室用 IDE 审查 Diff，然后让无头 Agent 在夜间处理 CI。同一个系统，不同的视角。
-
-### 第二层：Agent-人类协议
-
-三个协议标准化了 Agent 与人类的通信方式：
-
-- **ACP**（Agent Client Protocol），由 JetBrains + Zed 联合开发——"AI Agent 的 LSP"。编辑器与 AI Agent 之间的标准接口，让"哪个编辑器支持哪个 Agent"这个问题变得无关紧要。
-- **A2UI**，由 Google 开发——声明式 UI 规范，让 Agent 在 Web、Flutter、SwiftUI 和 Compose 上生成原生渲染。
-- **AG-UI**，由 CopilotKit 开发——Agent 与前端之间的事件驱动双向同步，处理状态同步和工具调用事件。
-
-另有一种 **生成式 UI** 模式，沿控制-自由度权衡映射出三种模式：静态（AG-UI）、声明式（A2UI）和开放式（MCP Apps）。
-
-### 第三层：Agent Harness
-
-这是工程真正发生的地方——四个子系统让 Agent 达到生产就绪：
-
-- **治理（Governance）** ：`evaluate(action, ctx, state) → Allow | Deny | Modify`。拦截器模式、规则结晶、预算/速率/安全边界。
-- **运行时（Runtime）** ：Agent 循环状态机、会话管理、故障恢复。Plan → Approve → Execute → Review 周期，配合 Token 预算和指数退避。
-- **能力（Capability）** ：Tool / Skill / Agent 层级体系，带类型化 Schema（Pydantic/Zod）。技能进化修复和热重载。
-- **协调（Coordination）** ：工厂模式、分形模式和生成对抗模式，用于多 Agent 编排。
-
-随着自动化从 L2 提升到 L5，Harness 的权重逐步增加：无 → Capability → +Governance → +Runtime → +Coordination。在 L4-L5 级别，Harness **就是** 产品——它是自主 Agent 与生产环境之间唯一的屏障。
-
-### 第四层：Agent-Agent/Tool 协议
-
-四个机器间通信协议：
-
-| 协议 | 组织 | 用途 |
-|------|------|------|
-| **MCP** | Anthropic | Agent↔Tool——"AI 的 USB-C"。JSON-RPC 服务端/客户端 |
-| **A2A** | Google / Linux 基金会 | Agent↔Agent——委托、发现、网格 |
-| **Agent Spec** | Oracle | 框架无关的 Agent 定义 |
-| **AP2** | Google | Agent 支付——购物车指令、作用域合约 |
-
-MCP 最为成熟（1.0 已发布），但 A2A 凭借 AgentCard 元数据和跨组织网格支持正在快速追赶。
-
-### 第五层：执行底座
-
-Agent 实际运行的地方：
-
-- **云端** ：每个 Agent 独立容器（Codespaces、DevBox、Sealos）。缩容至零。
-- **本地** ：CLI 本地直接访问文件/Git（Claude Code、Codex、Gemini CLI）。
-- **混合** ：端侧 + 云端卸载，遵循 Apple Intelligence 模式。
-- **LLM** ：模型路由和 Token 预算管理。Haiku → Sonnet → Opus 分层。
+<ProtocolStack />
 
 ## L0→L5 自动化光谱
 
-全景图中最实用的框架，或许是参照自动驾驶等级建模的六级自动化光谱：
+全景图中最实用的框架，或许是参照自动驾驶等级建模的六级自动化光谱。选择任意级别，查看人类/Agent 分工和具体的 Bug 修复示例：
 
-| 级别 | 名称 | 人类/Agent | 关键转变 |
-|------|------|-----------|----------|
-| **L0** | 人工操作 | 100% / 0% | 记忆驱动 |
-| **L1** | 工具辅助 | 80% / 20% | 搜索答案 → 生成答案 |
-| **L2** | 人机协作 | 55% / 45% | 编写代码 → 审查变更 |
-| **L3** | 半自动 | 25% / 75% | 编写代码 → 描述意图 |
-| **L4** | 全自动 | 5% / 95% | 逐步审批 → 设定边界 |
-| **L5** | 自主编排 | 2% / 98% | 定义工作流 → 定义目标 |
+<AutomationSpectrum />
 
 行业主流停留在 **L2** （协作），前沿正在推进到 **L3** （半自动）。从 L2 到 L3 是真正的范式转变：开发者不再编写代码，而是描述意图。从 L3 到 L4 更为激进——开发者完全退出循环，转而设定治理边界。
-
-### 同一个 Bug，六种修法
-
-为了让抽象变得具体，全景图展示了同一个 Bug 修复在各级别的呈现：
-
-- **L0** （4 小时）：读 Jira、搜 StackOverflow、手动追踪代码路径、编写修复、等待审查。
-- **L1** （2 小时）：把错误粘贴到 ChatGPT、复制建议的修复、手动测试。
-- **L2** （45 分钟）：在 Cursor 聊天中描述 Bug，AI 扫描代码库，提出行内修复，人类一键批准。
-- **L3** （人类 10 分钟 + Agent 15 分钟）：在终端输入一句话，Agent 规划/执行/测试/提交，人类在手机上批准 PR。
-- **L4** （人类 0 分钟 + Agent 8 分钟）：CI 检测到失败，无头 Agent 诊断并修复，治理层自动批准，自动部署到 Staging。
-- **L5** （30 分钟目标设定 + 6 小时 Agent 网格）：人类定义迁移目标，架构 Agent 设计方案，编码 Agent 并行实现，安全 Agent 审计。
 
 模式清晰可见：人类时间呈指数下降，但 **每个剩余人类决策的权重在增加** 。L4 级别一次 30 秒的审批，可以为 8 小时的 Agent 工作开绿灯。
 
@@ -126,26 +260,9 @@ Agent 实际运行的地方：
 
 ## 工具生态：17 款产品全景
 
-全景图按协议支持和自动化范围映射了 17 款工具：
+全景图按协议支持和自动化范围映射了 17 款工具。按协议筛选，查看生态系统的聚类方式：
 
-**CLI Agent** 主导 L2-L5 区间：
-- **Claude Code** （Anthropic）—— L2-L5，MCP + ACP。百万 Token 上下文。当前前沿领跑者。
-- **Gemini CLI** （Google）—— L2-L4，MCP + ACP。Plan Mode 和 Conductor 架构。
-- **Codex CLI** （OpenAI）—— L2-L4，MCP + ACP。
-- **Aider** （开源）—— L2-L3，MCP。AI 结对编程。
-- **OpenCode** （开源）—— L2-L3，MCP + ACP。兼容 ACP。
-
-**IDE** 聚集在 L1-L3：
-- Cursor、Windsurf、JetBrains AI、Zed、GitHub Copilot。全部支持 MCP；JetBrains 和 Zed 在原生 ACP 方面领先。
-
-**移动端** 瞄准 L3-L4：
-- Claude Code Remote Control、Pocket Agent、Moshi。手机作为异步控制界面。
-
-**框架** 延伸至 L5：
-- CopilotKit（AG-UI 创建者）、Google ADK（A2A + A2UI）、LangGraph（有状态编排）。
-
-**平台** 定位 L4-L5：
-- BeeAI，IBM / Linux 基金会。开源 Agent 编排平台。
+<ToolEcosystem />
 
 核心观察： **协议支持决定自动化上限** 。仅支持 MCP 的工具大约在 L3 封顶。加入 ACP 可实现 IDE 集成。加入 A2A + AG-UI 才能解锁 L4-L5 多 Agent 网格。
 
