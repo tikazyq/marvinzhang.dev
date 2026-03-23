@@ -8,7 +8,7 @@ date: 2026-03-23
 
 import React from 'react';
 
-export const C = { bg: '#06080d', card: '#0d1117', border: '#1e2a3a', text: '#e2e8f0', textSub: '#94a3b8', blue: '#4d8eff', green: '#34d399', amber: '#fbbf24', rose: '#fb7185', purple: '#a78bfa', cyan: '#22d3ee' };
+export const C = { bg: '#06080d', card: '#0d1117', border: '#1e2a3a', text: '#e2e8f0', textSub: '#94a3b8', blue: '#4d8eff', green: '#34d399', amber: '#fbbf24', rose: '#fb7185', purple: '#a78bfa', cyan: '#22d3ee', dim: '#64748b' };
 
 export const ProtocolStack = () => {
   const [active, setActive] = React.useState(null);
@@ -91,42 +91,44 @@ export const ProtocolStack = () => {
 export const AutomationSpectrum = () => {
   const [selected, setSelected] = React.useState(2);
   const levels = [
-    { level: 0, name: 'Manual', short: 'Manual', human: 100, agent: 0, color: C.textSub, shift: 'Memory-driven', time: '4 hours', bugfix: 'Read Jira → search StackOverflow → trace code manually → write fix → wait for review.' },
-    { level: 1, name: 'Assisted', short: 'Assist', human: 80, agent: 20, color: C.purple, shift: 'Searching → generating', time: '2 hours', bugfix: 'Paste error to ChatGPT → copy-paste suggested fix → test manually.' },
-    { level: 2, name: 'Collaborative', short: 'Collab', human: 55, agent: 45, color: C.blue, shift: 'Writing → reviewing', time: '45 min', bugfix: 'Describe bug in Cursor chat → AI scans codebase → proposes inline fix → human approves with one click.', tag: 'MAINSTREAM' },
-    { level: 3, name: 'Semi-Autonomous', short: 'Semi', human: 25, agent: 75, color: C.amber, shift: 'Writing → describing intent', time: '10 min + 15 min agent', bugfix: 'Type one sentence in terminal → agent plans/executes/tests/commits → human approves PR on phone.', tag: 'FRONTIER' },
-    { level: 4, name: 'Fully Automatic', short: 'Auto', human: 5, agent: 95, color: C.green, shift: 'Approving → setting boundaries', time: '0 min + 8 min agent', bugfix: 'CI detects failure → headless agent diagnoses and fixes → governance auto-approves → auto-deploys to staging.' },
-    { level: 5, name: 'Orchestration', short: 'Orch', human: 2, agent: 98, color: C.cyan, shift: 'Defining workflows → defining goals', time: '30 min + 6 hrs mesh', bugfix: 'Human defines migration goal → architect agent designs plan → coding agents implement in parallel → security agent audits.' },
+    { level: 0, name: 'Manual', human: 100, agent: 0, color: C.dim, shift: 'Memory-driven', time: '4 hours', bugfix: 'Read Jira → search StackOverflow → trace code manually → write fix → wait for review.', tag: '' },
+    { level: 1, name: 'Assisted', human: 80, agent: 20, color: C.rose, shift: 'Searching → generating', time: '2 hours', bugfix: 'Paste error to ChatGPT → copy-paste suggested fix → test manually.', tag: '' },
+    { level: 2, name: 'Collaborative', human: 55, agent: 45, color: C.blue, shift: 'Writing → reviewing', time: '45 min', bugfix: 'Describe bug in Cursor chat → AI scans codebase → proposes inline fix → human approves with one click.', tag: '★ MAINSTREAM' },
+    { level: 3, name: 'Semi-Autonomous', human: 25, agent: 75, color: C.amber, shift: 'Writing → describing intent', time: '10 min + 15 min agent', bugfix: 'Type one sentence in terminal → agent plans/executes/tests/commits → human approves PR on phone.', tag: '★ FRONTIER' },
+    { level: 4, name: 'Fully Automatic', human: 5, agent: 95, color: C.green, shift: 'Approving → setting boundaries', time: '0 min + 8 min agent', bugfix: 'CI detects failure → headless agent diagnoses and fixes → governance auto-approves → auto-deploys to staging.', tag: '' },
+    { level: 5, name: 'Orchestration', human: 2, agent: 98, color: C.purple, shift: 'Defining workflows → defining goals', time: '30 min + 6 hrs mesh', bugfix: 'Human defines migration goal → architect agent designs plan → coding agents implement in parallel → security agent audits.', tag: '' },
   ];
   const sel = levels[selected];
   return (
     <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 4, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginBottom: 16 }}>
         {levels.map((l, i) => (
           <div
             key={i}
             onClick={() => setSelected(i)}
             style={{
-              textAlign: 'center', padding: '8px 2px', borderRadius: 6, cursor: 'pointer',
+              textAlign: 'center', padding: '6px 4px', borderRadius: 6, cursor: 'pointer',
               background: selected === i ? l.color + '33' : C.card,
-              border: `1px solid ${selected === i ? l.color : C.border}`,
-              transition: 'all 0.2s', minWidth: 0, overflow: 'hidden',
+              border: `2px solid ${selected === i ? l.color : C.border}`,
+              transition: 'all 0.2s',
             }}
           >
-            <div style={{ fontSize: 13, fontWeight: 700, color: l.color }}>L{l.level}</div>
-            <div style={{ fontSize: 9, color: C.textSub, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.short}</div>
-            {l.tag && <div style={{ fontSize: 8, color: l.color, marginTop: 2, fontWeight: 600 }}>{l.tag}</div>}
+            <span style={{ fontSize: 13, fontWeight: 700, color: l.color }}>L{l.level}</span>
+            <span style={{ fontSize: 11, color: selected === i ? C.text : C.textSub, marginLeft: 6 }}>{l.name}</span>
           </div>
         ))}
       </div>
       <div style={{ background: C.card, borderRadius: 8, padding: 16, border: `1px solid ${sel.color}44` }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, flexWrap: 'wrap', gap: 4 }}>
           <span style={{ color: sel.color, fontSize: 18, fontWeight: 700 }}>L{sel.level} · {sel.name}</span>
-          <span style={{ color: C.textSub, fontSize: 12 }}>{sel.time}</span>
+          <span style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            {sel.tag && <span style={{ fontSize: 10, color: sel.color, fontWeight: 600 }}>{sel.tag}</span>}
+            <span style={{ color: C.textSub, fontSize: 12 }}>{sel.time}</span>
+          </span>
         </div>
         <div style={{ marginBottom: 12 }}>
           <div style={{ display: 'flex', height: 24, borderRadius: 6, overflow: 'hidden', border: `1px solid ${C.border}` }}>
-            <div style={{ width: `${sel.human}%`, background: C.blue + '88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#fff', fontWeight: 600, transition: 'width 0.4s' }}>
+            <div style={{ width: `${sel.human}%`, background: C.dim + 'cc', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#fff', fontWeight: 600, transition: 'width 0.4s' }}>
               {sel.human > 10 ? `Human ${sel.human}%` : ''}
             </div>
             <div style={{ width: `${sel.agent}%`, background: sel.color + '88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#fff', fontWeight: 600, transition: 'width 0.4s' }}>
@@ -149,64 +151,62 @@ export const ToolEcosystem = () => {
   const [filter, setFilter] = React.useState('all');
   const protocols = ['MCP', 'ACP', 'A2A', 'A2UI', 'AG-UI'];
   const protocolColors = { MCP: C.green, ACP: C.blue, A2A: C.cyan, A2UI: C.amber, 'AG-UI': C.purple, AP2: C.rose };
-  const tools = [
-    { name: 'Claude Code', dev: 'Anthropic', type: 'CLI', levels: [2,3,4,5], protocols: ['MCP','ACP'], highlight: true },
-    { name: 'Gemini CLI', dev: 'Google', type: 'CLI', levels: [2,3,4], protocols: ['MCP','ACP'] },
-    { name: 'Codex CLI', dev: 'OpenAI', type: 'CLI', levels: [2,3,4], protocols: ['MCP','ACP'] },
-    { name: 'Aider', dev: 'Open Source', type: 'CLI', levels: [2,3], protocols: ['MCP'] },
-    { name: 'OpenCode', dev: 'Open Source', type: 'CLI', levels: [2,3], protocols: ['MCP','ACP'] },
-    { name: 'Cursor', dev: 'Cursor Inc', type: 'IDE', levels: [2,3], protocols: ['MCP'] },
-    { name: 'Windsurf', dev: 'Codeium', type: 'IDE', levels: [2,3], protocols: ['MCP'] },
-    { name: 'JetBrains AI', dev: 'JetBrains', type: 'IDE', levels: [2,3], protocols: ['MCP','ACP'] },
-    { name: 'Zed', dev: 'Zed Industries', type: 'IDE', levels: [2,3], protocols: ['MCP','ACP'] },
-    { name: 'GitHub Copilot', dev: 'GitHub/MS', type: 'IDE', levels: [1,2,3], protocols: ['MCP','ACP'] },
-    { name: 'Claude Code RC', dev: 'Anthropic', type: 'Mobile', levels: [3,4], protocols: ['AG-UI','A2UI'] },
-    { name: 'Pocket Agent', dev: 'Community', type: 'Mobile', levels: [3,4], protocols: ['AG-UI'] },
-    { name: 'CopilotKit', dev: 'CopilotKit', type: 'Framework', levels: [2,3,4,5], protocols: ['AG-UI','A2UI','MCP'] },
-    { name: 'Google ADK', dev: 'Google', type: 'Framework', levels: [3,4,5], protocols: ['A2A','A2UI','MCP'] },
-    { name: 'LangGraph', dev: 'LangChain', type: 'Framework', levels: [3,4,5], protocols: ['AG-UI','MCP'] },
-    { name: 'BeeAI', dev: 'IBM/LF', type: 'Platform', levels: [4,5], protocols: ['A2A','MCP'] },
+  const categories = [
+    { label: 'CLI Agents', icon: '⌨️', tools: [
+      { name: 'Claude Code', dev: 'Anthropic', levels: '2-5', protocols: ['MCP','ACP'], highlight: true },
+      { name: 'Gemini CLI', dev: 'Google', levels: '2-4', protocols: ['MCP','ACP'] },
+      { name: 'Codex CLI', dev: 'OpenAI', levels: '2-4', protocols: ['MCP','ACP'] },
+      { name: 'Aider', dev: 'OSS', levels: '2-3', protocols: ['MCP'] },
+      { name: 'OpenCode', dev: 'OSS', levels: '2-3', protocols: ['MCP','ACP'] },
+    ]},
+    { label: 'IDEs', icon: '🖥️', tools: [
+      { name: 'Cursor', dev: 'Cursor', levels: '2-3', protocols: ['MCP'] },
+      { name: 'Windsurf', dev: 'Codeium', levels: '2-3', protocols: ['MCP'] },
+      { name: 'JetBrains AI', dev: 'JetBrains', levels: '2-3', protocols: ['MCP','ACP'] },
+      { name: 'Zed', dev: 'Zed', levels: '2-3', protocols: ['MCP','ACP'] },
+      { name: 'Copilot', dev: 'GitHub', levels: '1-3', protocols: ['MCP','ACP'] },
+    ]},
+    { label: 'Mobile', icon: '📱', tools: [
+      { name: 'Claude Code RC', dev: 'Anthropic', levels: '3-4', protocols: ['AG-UI','A2UI'] },
+      { name: 'Pocket Agent', dev: 'Community', levels: '3-4', protocols: ['AG-UI'] },
+    ]},
+    { label: 'Frameworks & Platforms', icon: '🔧', tools: [
+      { name: 'CopilotKit', dev: 'CopilotKit', levels: '2-5', protocols: ['AG-UI','A2UI','MCP'] },
+      { name: 'Google ADK', dev: 'Google', levels: '3-5', protocols: ['A2A','A2UI','MCP'] },
+      { name: 'LangGraph', dev: 'LangChain', levels: '3-5', protocols: ['AG-UI','MCP'] },
+      { name: 'BeeAI', dev: 'IBM/LF', levels: '4-5', protocols: ['A2A','MCP'] },
+    ]},
   ];
-  const typeIcons = { CLI: '⌨️', IDE: '🖥️', Mobile: '📱', Framework: '🔧', Platform: '🌐' };
-  const filtered = filter === 'all' ? tools : tools.filter(t => t.protocols.includes(filter));
+  const allTools = categories.flatMap(c => c.tools);
+  const filteredCategories = filter === 'all' ? categories : categories.map(c => ({ ...c, tools: c.tools.filter(t => t.protocols.includes(filter)) })).filter(c => c.tools.length > 0);
+  const totalShown = filteredCategories.reduce((n, c) => n + c.tools.length, 0);
   return (
     <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
-        <span
-          onClick={() => setFilter('all')}
-          style={{ padding: '4px 10px', borderRadius: 12, fontSize: 12, cursor: 'pointer', background: filter === 'all' ? C.text + '22' : C.card, color: filter === 'all' ? C.text : C.textSub, border: `1px solid ${filter === 'all' ? C.text + '44' : C.border}` }}
-        >All</span>
+        <span onClick={() => setFilter('all')} style={{ padding: '4px 10px', borderRadius: 12, fontSize: 12, cursor: 'pointer', background: filter === 'all' ? C.text + '22' : C.card, color: filter === 'all' ? C.text : C.textSub, border: `1px solid ${filter === 'all' ? C.text + '44' : C.border}` }}>All</span>
         {protocols.map(p => (
-          <span
-            key={p}
-            onClick={() => setFilter(filter === p ? 'all' : p)}
-            style={{ padding: '4px 10px', borderRadius: 12, fontSize: 12, cursor: 'pointer', background: filter === p ? protocolColors[p] + '22' : C.card, color: filter === p ? protocolColors[p] : C.textSub, border: `1px solid ${filter === p ? protocolColors[p] : C.border}` }}
-          >{p}</span>
+          <span key={p} onClick={() => setFilter(filter === p ? 'all' : p)} style={{ padding: '4px 10px', borderRadius: 12, fontSize: 12, cursor: 'pointer', background: filter === p ? protocolColors[p] + '22' : C.card, color: filter === p ? protocolColors[p] : C.textSub, border: `1px solid ${filter === p ? protocolColors[p] : C.border}` }}>{p}</span>
         ))}
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 8 }}>
-        {filtered.map(t => (
-          <div key={t.name} style={{ background: C.card, borderRadius: 8, padding: 12, border: `1px solid ${t.highlight ? C.blue + '66' : C.border}` }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: t.highlight ? C.blue : C.text }}>{typeIcons[t.type]} {t.name}</span>
-              <span style={{ fontSize: 10, color: C.textSub }}>{t.dev}</span>
+      {filteredCategories.map(cat => (
+        <div key={cat.label} style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 11, color: C.textSub, fontWeight: 600, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 }}>{cat.icon} {cat.label}</div>
+          {cat.tools.map(t => (
+            <div key={t.name} style={{ display: 'flex', alignItems: 'center', padding: '6px 8px', borderBottom: `1px solid ${C.border}`, gap: 8 }}>
+              <span style={{ fontSize: 12, fontWeight: 600, color: t.highlight ? C.blue : C.text, flex: '1 1 auto', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.name}</span>
+              <span style={{ fontSize: 10, color: C.textSub, flexShrink: 0 }}>{t.dev}</span>
+              <span style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
+                {t.protocols.map(p => (
+                  <span key={p} style={{ fontSize: 9, padding: '0 4px', borderRadius: 6, background: protocolColors[p] + '22', color: protocolColors[p] }}>{p}</span>
+                ))}
+              </span>
+              <span style={{ fontSize: 10, color: C.textSub, flexShrink: 0 }}>L{t.levels}</span>
             </div>
-            <div style={{ display: 'flex', gap: 3, marginBottom: 6, flexWrap: 'wrap' }}>
-              {t.protocols.map(p => (
-                <span key={p} style={{ fontSize: 10, padding: '1px 6px', borderRadius: 8, background: protocolColors[p] + '22', color: protocolColors[p], border: `1px solid ${protocolColors[p]}44` }}>{p}</span>
-              ))}
-            </div>
-            <div style={{ display: 'flex', gap: 2 }}>
-              {[0,1,2,3,4,5].map(l => (
-                <div key={l} style={{ width: 18, height: 6, borderRadius: 3, background: t.levels.includes(l) ? C.green + 'aa' : C.border + '44' }} />
-              ))}
-              <span style={{ fontSize: 9, color: C.textSub, marginLeft: 4 }}>L{Math.min(...t.levels)}-L{Math.max(...t.levels)}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div style={{ fontSize: 11, color: C.textSub, marginTop: 12, textAlign: 'center' }}>
-        Showing {filtered.length} of {tools.length} tools {filter !== 'all' && `· filtered by ${filter}`}
+          ))}
+        </div>
+      ))}
+      <div style={{ fontSize: 11, color: C.textSub, textAlign: 'center' }}>
+        {totalShown} of {allTools.length} tools {filter !== 'all' && `· ${filter}`}
       </div>
     </div>
   );
