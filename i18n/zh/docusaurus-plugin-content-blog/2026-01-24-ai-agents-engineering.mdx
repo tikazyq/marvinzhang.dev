@@ -38,7 +38,7 @@ import TabItem from '@theme/TabItem';
 
 Triple Whale 的经验说明了这一挑战。尽管能够使用最先进的模型，他们最初的多智能体系统在生产环境中被证明"脆弱"。突破来自架构转型，而非更好的模型——他们将复杂性简化为配备 20 多种专用工具的单个超级智能体。[JetBrains](https://claude.com/customers) 构建了多智能体 IDE 编排系统，[Remote](https://blog.langchain.com/customers-remote/) 开发了基于 LangGraph 的客户入职流程，[Intercom](https://claude.com/customers) 达到 86% 的问题解决率——所有这些都需要模型本身无法提供的架构模式。
 
-最近的研究确认了根本原因。2026 年 1 月发表的论文["智能体不确定性量化"（Agentic Uncertainty Quantification）](https://arxiv.org/abs/2601.15703)描述了一种 **"幻觉螺旋"（Spiral of Hallucination）**，早期认知错误在多步推理链中不可逆转地传播。配套论文["智能体置信度校准"（Agentic Confidence Calibration）](https://arxiv.org/abs/2601.15778)发现 **"失败时的过度自信仍然是高风险场景部署的根本障碍"** 。模型不仅会犯错——它们还会自信地给出错误答案，阻碍生产部署。
+最近的研究确认了根本原因。2026 年 1 月发表的论文["智能体不确定性量化"（Agentic Uncertainty Quantification）](https://arxiv.org/abs/2601.15703)描述了一种 **"幻觉螺旋"（Spiral of Hallucination）**，早期认知错误在多步推理链中不可逆转地传播。配套论文["智能体置信度校准"（Agentic Confidence Calibration）](https://arxiv.org/abs/2601.15778)发现 ** "失败时的过度自信仍然是高风险场景部署的根本障碍" ** 。模型不仅会犯错——它们还会自信地给出错误答案，阻碍生产部署。
 
 ### 根本原因：上下文限制
 
@@ -67,7 +67,7 @@ graph LR
     style C fill:#e1f5fe,stroke:#01579b,color:#01579b
 ```
 
-Claude 4.5 Opus 的成本比 GPT-5.2 高推理模式 **高 1.4 倍**（每百万 tokens 0.72 美元 vs 0.52 美元），但仅获得 **2.6 个百分点的增益**（74.4% vs 71.8%）。这种递减收益曲线表明，我们遇到了架构瓶颈——而非模型限制。OpenAI 的营销策略认可了这一现实：GPT-5.2 被明确定位为"面向专业工作和 **长期运行智能体** 的先进前沿模型"，承认架构支持对于生产部署至关重要。
+Claude 4.5 Opus 的成本比 GPT-5.2 高推理模式 **高 1.4 倍**（每百万 tokens 0.72 美元 vs 0.52 美元），但仅获得 **2.6 个百分点的增益 **（74.4% vs 71.8%）。这种递减收益曲线表明，我们遇到了架构瓶颈——而非模型限制。OpenAI 的营销策略认可了这一现实：GPT-5.2 被明确定位为"面向专业工作和 **长期运行智能体** 的先进前沿模型"，承认架构支持对于生产部署至关重要。
 
 类似地，[OSWorld](https://os-world.github.io/) 计算机使用基准显示了 14 个月的巨大进步——Claude 3.5 Sonnet 于 2024 年 10 月发布时成绩为 14.9%，而 Claude Sonnet 4.5 目前以 62.9% 领先——但仍落后于人类 72.36% 的表现。尽管提升了 4 倍，持续存在的差距凸显了智能体可靠性需要的不仅仅是原始模型智能。
 
