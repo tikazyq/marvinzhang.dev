@@ -33,6 +33,9 @@ const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 const BASE_URL = 'https://marvinzhang.dev';
 const CACHE_FILE = '.temp/mermaid/.extraction-cache.json';
 const DIAGRAM_PATTERN = /```mermaid\n([\s\S]*?)```/g;
+const JSX_COMPONENT_PATTERN = /<(ProtocolStack|AutomationSpectrum|ToolEcosystem)\s*\/>/g;
+const JSX_EXPORT_PATTERN = /^export const (C|ProtocolStack|AutomationSpectrum|ToolEcosystem)\b[\s\S]*?^};?\s*$/gm;
+const JSX_IMPORT_PATTERN = /^import React from 'react';\s*$/gm;
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -155,30 +158,37 @@ const getStaticImageDir = (articleFileName) => {
   return path.join(STATIC_IMG_DIR, articleFileName, 'wechat');
 };
 
-// Find all blog articles with Mermaid diagrams
+// Find all blog articles with Mermaid diagrams or JSX components
 const findArticlesWithDiagrams = () => {
   const articles = [];
-  
+
   BLOG_DIRS.forEach((blogDir) => {
     if (!fs.existsSync(blogDir)) return;
-    
+
     const markdownFiles = glob.sync(`${blogDir}/**/*.{md,mdx}`);
-    
+
     markdownFiles.forEach((filePath) => {
       const content = fs.readFileSync(filePath, 'utf8');
       const { data: frontmatter, content: markdownContent } = matter(content);
-      
+
       const diagrams = [];
       let match;
       const pattern = /```mermaid\n([\s\S]*?)```/g;
       while ((match = pattern.exec(markdownContent)) !== null) {
         diagrams.push(match[1].trim());
       }
-      
-      if (diagrams.length > 0) {
+
+      // Detect JSX components
+      const jsxComponents = [];
+      const jsxPattern = /<(ProtocolStack|AutomationSpectrum|ToolEcosystem)\s*\/>/g;
+      while ((match = jsxPattern.exec(markdownContent)) !== null) {
+        jsxComponents.push(match[1]);
+      }
+
+      if (diagrams.length > 0 || jsxComponents.length > 0) {
         const locale = blogDir.includes('/zh/') ? 'zh' : 'en';
         const fileName = path.parse(filePath).name;
-        
+
         articles.push({
           filePath,
           fileName,
@@ -187,13 +197,14 @@ const findArticlesWithDiagrams = () => {
           slug: frontmatter.slug || fileName,
           diagramCount: diagrams.length,
           diagrams,
+          jsxComponents,
           frontmatter,
           mtime: fs.statSync(filePath).mtime.toISOString()
         });
       }
     });
   });
-  
+
   return articles;
 };
 
@@ -202,31 +213,36 @@ if (options.list) {
   const articles = findArticlesWithDiagrams();
   
   if (articles.length === 0) {
-    info('No articles with Mermaid diagrams found.');
+    info('No articles with Mermaid diagrams or JSX components found.');
     process.exit(0);
   }
-  
-  console.log('\n📚 Articles with Mermaid Diagrams:\n');
-  
+
+  console.log('\n📚 Articles with Mermaid Diagrams / JSX Components:\n');
+
   const enArticles = articles.filter(a => a.locale === 'en');
   const zhArticles = articles.filter(a => a.locale === 'zh');
-  
+
+  const formatArticle = (a) => {
+    const parts = [];
+    if (a.diagramCount > 0) parts.push(`${a.diagramCount} diagrams`);
+    if (a.jsxComponents.length > 0) parts.push(`${a.jsxComponents.length} JSX: ${a.jsxComponents.join(', ')}`);
+    return `   ${a.fileName} (${parts.join(', ')})`;
+  };
+
   if (enArticles.length > 0) {
     console.log('🇬🇧 English:');
-    enArticles.forEach(a => {
-      console.log(`   ${a.fileName} (${a.diagramCount} diagrams)`);
-    });
+    enArticles.forEach(a => console.log(formatArticle(a)));
     console.log();
   }
-  
+
   if (zhArticles.length > 0) {
     console.log('🇨🇳 Chinese:');
-    zhArticles.forEach(a => {
-      console.log(`   ${a.fileName} (${a.diagramCount} diagrams)`);
-    });
+    zhArticles.forEach(a => console.log(formatArticle(a)));
   }
-  
-  console.log(`\n📊 Total: ${articles.length} articles, ${articles.reduce((sum, a) => sum + a.diagramCount, 0)} diagrams`);
+
+  const totalDiagrams = articles.reduce((sum, a) => sum + a.diagramCount, 0);
+  const totalJsx = articles.reduce((sum, a) => sum + a.jsxComponents.length, 0);
+  console.log(`\n📊 Total: ${articles.length} articles, ${totalDiagrams} diagrams, ${totalJsx} JSX components`);
   process.exit(0);
 }
 
@@ -338,10 +354,36 @@ const processArticles = async () => {
       }
     }
     
+    // Screenshot JSX components if present
+    const jsxImageFiles = [];
+    if (article.jsxComponents.length > 0) {
+      verbose(`   🖼️  Screenshotting ${article.jsxComponents.length} JSX component(s)...`);
+      try {
+        execSync(
+          `node scripts/screenshot-jsx-components.js ${article.slug} --locale ${article.locale}`,
+          { stdio: options.verbose ? 'inherit' : 'pipe' }
+        );
+      } catch (err) {
+        // Script may exit non-zero due to server cleanup — check if PNGs were created
+        verbose(`   ⚠️  Screenshot script exited with error (checking if PNGs exist...)`);
+      }
+      // Collect generated screenshots (regardless of exit code)
+      for (const compName of article.jsxComponents) {
+        const pngPath = `${staticImageDir}/${compName}-${article.locale}.png`;
+        if (fs.existsSync(pngPath)) {
+          const relativePath = `/${staticImageDir.replace(/^static\//, '')}/${compName}-${article.locale}.png`;
+          jsxImageFiles.push({ name: compName, staticPath: pngPath, relativePath });
+          verbose(`   ✅ ${compName} → ${pngPath}`);
+        } else {
+          verbose(`   ⚠️  ${compName} screenshot not found at ${pngPath}`);
+        }
+      }
+    }
+
     // Process markdown content
     const content = fs.readFileSync(article.filePath, 'utf8');
     const { content: markdownContent } = matter(content);
-    
+
     // Replace mermaid blocks with image references (using absolute URLs for WeChat)
     let diagramIndex = 0;
     let processedContent = markdownContent.replace(
@@ -357,7 +399,24 @@ const processArticles = async () => {
         return match;
       }
     );
-    
+
+    // Replace JSX component tags with image references
+    processedContent = processedContent.replace(
+      /<(ProtocolStack|AutomationSpectrum|ToolEcosystem)\s*\/>/g,
+      (match, compName) => {
+        const img = jsxImageFiles.find(f => f.name === compName);
+        if (img) {
+          const absoluteUrl = `${BASE_URL}${img.relativePath}`;
+          return `![${compName}](${absoluteUrl})`;
+        }
+        return ''; // Remove tag if no screenshot available
+      }
+    );
+
+    // Remove JSX export blocks and React import (not needed in WeChat markdown)
+    processedContent = processedContent.replace(/^import React from 'react';\s*\n/gm, '');
+    processedContent = processedContent.replace(/^export const (?:C|ProtocolStack|AutomationSpectrum|ToolEcosystem)\b[\s\S]*?^};\s*\n/gm, '');
+
     // Remove truncate markers
     processedContent = processedContent.replace(/\{\/\*\s*truncate\s*\*\/\}/g, '');
     
@@ -424,11 +483,15 @@ const processArticles = async () => {
       outputLocation,
       specFolder,
       staticImageDir,
-      diagrams: diagramFiles.length
+      diagrams: diagramFiles.length,
+      jsxScreenshots: jsxImageFiles.length
     });
-    
+
+    const parts = [];
+    if (diagramFiles.length > 0) parts.push(`${diagramFiles.length} diagrams`);
+    if (jsxImageFiles.length > 0) parts.push(`${jsxImageFiles.length} JSX`);
     const locationEmoji = outputLocation === 'spec' ? '📋' : '📁';
-    log(`✅ ${article.locale.toUpperCase()}: ${article.fileName} (${diagramFiles.length} diagrams) ${locationEmoji}`);
+    log(`✅ ${article.locale.toUpperCase()}: ${article.fileName} (${parts.join(', ')}) ${locationEmoji}`);
   }
   
   // Save cache
@@ -442,7 +505,7 @@ const processArticles = async () => {
   
   console.log(`📦 Static Images: ${path.resolve(STATIC_IMG_DIR)}`);
   console.log(`📄 Files: ${results.length}`);
-  console.log(`🖼️  Images: ${results.reduce((sum, r) => sum + r.diagrams, 0)}`);
+  console.log(`🖼️  Diagrams: ${results.reduce((sum, r) => sum + r.diagrams, 0)}, JSX Screenshots: ${results.reduce((sum, r) => sum + r.jsxScreenshots, 0)}`);
   
   if (specResults.length > 0) {
     console.log(`\n📋 Saved to spec folders (${specResults.length}):`);
