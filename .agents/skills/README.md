@@ -33,6 +33,8 @@ Composable AI-assisted skills following the [agentskills.io](https://agentskills
 │
 ├── blog-common/             # Convenience bundle (all foundation skills)
 │
+├── wechat-publish/          # Publishing: WeChat Official Account automation
+│
 ├── leanspec-sdd/            # Installed: Spec-Driven Development (codervisor/lean-spec)
 ├── agent-browser/           # Installed: Browser-based agent capabilities (codervisor/lean-spec)
 └── README.md
@@ -56,6 +58,7 @@ Skills are designed to be mixed and matched. Here's what to load for common task
 | Translate EN → ZH | `foundation/localization` |
 | Style review only | `foundation/writing-style` |
 | Quality audit only | `foundation/quality` |
+| Publish article to WeChat | `wechat-publish` (composes `agent-browser`) |
 
 ## Three-Tier Architecture
 
