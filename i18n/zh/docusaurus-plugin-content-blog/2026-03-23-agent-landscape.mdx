@@ -91,31 +91,31 @@ export const ProtocolStack = () => {
 export const AutomationSpectrum = () => {
   const [selected, setSelected] = React.useState(2);
   const levels = [
-    { level: 0, name: '人工', human: 100, agent: 0, color: C.textSub, shift: '记忆驱动', time: '4 小时', bugfix: '读 Jira → 搜 StackOverflow → 手动追踪代码 → 编写修复 → 等待审查。' },
-    { level: 1, name: '辅助', human: 80, agent: 20, color: C.purple, shift: '搜索答案 → 生成答案', time: '2 小时', bugfix: '把错误粘贴到 ChatGPT → 复制建议的修复 → 手动测试。' },
-    { level: 2, name: '协作', human: 55, agent: 45, color: C.blue, shift: '编写代码 → 审查变更', time: '45 分钟', bugfix: '在 Cursor 聊天中描述 Bug → AI 扫描代码库 → 提出行内修复 → 人类一键批准。', tag: '主流' },
-    { level: 3, name: '半自动', human: 25, agent: 75, color: C.amber, shift: '编写代码 → 描述意图', time: '人类 10 分钟 + Agent 15 分钟', bugfix: '在终端输入一句话 → Agent 规划/执行/测试/提交 → 人类在手机上批准 PR。', tag: '前沿' },
-    { level: 4, name: '全自动', human: 5, agent: 95, color: C.green, shift: '逐步审批 → 设定边界', time: '人类 0 分钟 + Agent 8 分钟', bugfix: 'CI 检测到失败 → 无头 Agent 诊断并修复 → 治理层自动批准 → 自动部署到 Staging。' },
-    { level: 5, name: '自主编排', human: 2, agent: 98, color: C.cyan, shift: '定义工作流 → 定义目标', time: '30 分钟 + 6 小时网格', bugfix: '人类定义迁移目标 → 架构 Agent 设计方案 → 编码 Agent 并行实现 → 安全 Agent 审计。' },
+    { level: 0, name: '人工', short: '人工', human: 100, agent: 0, color: C.textSub, shift: '记忆驱动', time: '4 小时', bugfix: '读 Jira → 搜 StackOverflow → 手动追踪代码 → 编写修复 → 等待审查。' },
+    { level: 1, name: '辅助', short: '辅助', human: 80, agent: 20, color: C.purple, shift: '搜索答案 → 生成答案', time: '2 小时', bugfix: '把错误粘贴到 ChatGPT → 复制建议的修复 → 手动测试。' },
+    { level: 2, name: '协作', short: '协作', human: 55, agent: 45, color: C.blue, shift: '编写代码 → 审查变更', time: '45 分钟', bugfix: '在 Cursor 聊天中描述 Bug → AI 扫描代码库 → 提出行内修复 → 人类一键批准。', tag: '主流' },
+    { level: 3, name: '半自动', short: '半自动', human: 25, agent: 75, color: C.amber, shift: '编写代码 → 描述意图', time: '人类 10 分钟 + Agent 15 分钟', bugfix: '在终端输入一句话 → Agent 规划/执行/测试/提交 → 人类在手机上批准 PR。', tag: '前沿' },
+    { level: 4, name: '全自动', short: '全自动', human: 5, agent: 95, color: C.green, shift: '逐步审批 → 设定边界', time: '人类 0 分钟 + Agent 8 分钟', bugfix: 'CI 检测到失败 → 无头 Agent 诊断并修复 → 治理层自动批准 → 自动部署到 Staging。' },
+    { level: 5, name: '自主编排', short: '编排', human: 2, agent: 98, color: C.cyan, shift: '定义工作流 → 定义目标', time: '30 分钟 + 6 小时网格', bugfix: '人类定义迁移目标 → 架构 Agent 设计方案 → 编码 Agent 并行实现 → 安全 Agent 审计。' },
   ];
   const sel = levels[selected];
   return (
     <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
-      <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 4, marginBottom: 16 }}>
         {levels.map((l, i) => (
           <div
             key={i}
             onClick={() => setSelected(i)}
             style={{
-              flex: 1, textAlign: 'center', padding: '8px 4px', borderRadius: 6, cursor: 'pointer',
+              textAlign: 'center', padding: '8px 2px', borderRadius: 6, cursor: 'pointer',
               background: selected === i ? l.color + '33' : C.card,
               border: `1px solid ${selected === i ? l.color : C.border}`,
-              transition: 'all 0.2s',
+              transition: 'all 0.2s', minWidth: 0, overflow: 'hidden',
             }}
           >
             <div style={{ fontSize: 13, fontWeight: 700, color: l.color }}>L{l.level}</div>
-            <div style={{ fontSize: 10, color: C.textSub, marginTop: 2 }}>{l.name}</div>
-            {l.tag && <div style={{ fontSize: 9, color: l.color, marginTop: 2, fontWeight: 600 }}>{l.tag}</div>}
+            <div style={{ fontSize: 9, color: C.textSub, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.short}</div>
+            {l.tag && <div style={{ fontSize: 8, color: l.color, marginTop: 2, fontWeight: 600 }}>{l.tag}</div>}
           </div>
         ))}
       </div>

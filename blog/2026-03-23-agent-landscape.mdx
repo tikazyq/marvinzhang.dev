@@ -91,31 +91,31 @@ export const ProtocolStack = () => {
 export const AutomationSpectrum = () => {
   const [selected, setSelected] = React.useState(2);
   const levels = [
-    { level: 0, name: 'Manual', human: 100, agent: 0, color: C.textSub, shift: 'Memory-driven', time: '4 hours', bugfix: 'Read Jira → search StackOverflow → trace code manually → write fix → wait for review.' },
-    { level: 1, name: 'Assisted', human: 80, agent: 20, color: C.purple, shift: 'Searching → generating', time: '2 hours', bugfix: 'Paste error to ChatGPT → copy-paste suggested fix → test manually.' },
-    { level: 2, name: 'Collaborative', human: 55, agent: 45, color: C.blue, shift: 'Writing → reviewing', time: '45 min', bugfix: 'Describe bug in Cursor chat → AI scans codebase → proposes inline fix → human approves with one click.', tag: 'MAINSTREAM' },
-    { level: 3, name: 'Semi-Autonomous', human: 25, agent: 75, color: C.amber, shift: 'Writing → describing intent', time: '10 min + 15 min agent', bugfix: 'Type one sentence in terminal → agent plans/executes/tests/commits → human approves PR on phone.', tag: 'FRONTIER' },
-    { level: 4, name: 'Fully Automatic', human: 5, agent: 95, color: C.green, shift: 'Approving → setting boundaries', time: '0 min + 8 min agent', bugfix: 'CI detects failure → headless agent diagnoses and fixes → governance auto-approves → auto-deploys to staging.' },
-    { level: 5, name: 'Orchestration', human: 2, agent: 98, color: C.cyan, shift: 'Defining workflows → defining goals', time: '30 min + 6 hrs mesh', bugfix: 'Human defines migration goal → architect agent designs plan → coding agents implement in parallel → security agent audits.' },
+    { level: 0, name: 'Manual', short: 'Manual', human: 100, agent: 0, color: C.textSub, shift: 'Memory-driven', time: '4 hours', bugfix: 'Read Jira → search StackOverflow → trace code manually → write fix → wait for review.' },
+    { level: 1, name: 'Assisted', short: 'Assist', human: 80, agent: 20, color: C.purple, shift: 'Searching → generating', time: '2 hours', bugfix: 'Paste error to ChatGPT → copy-paste suggested fix → test manually.' },
+    { level: 2, name: 'Collaborative', short: 'Collab', human: 55, agent: 45, color: C.blue, shift: 'Writing → reviewing', time: '45 min', bugfix: 'Describe bug in Cursor chat → AI scans codebase → proposes inline fix → human approves with one click.', tag: 'MAINSTREAM' },
+    { level: 3, name: 'Semi-Autonomous', short: 'Semi', human: 25, agent: 75, color: C.amber, shift: 'Writing → describing intent', time: '10 min + 15 min agent', bugfix: 'Type one sentence in terminal → agent plans/executes/tests/commits → human approves PR on phone.', tag: 'FRONTIER' },
+    { level: 4, name: 'Fully Automatic', short: 'Auto', human: 5, agent: 95, color: C.green, shift: 'Approving → setting boundaries', time: '0 min + 8 min agent', bugfix: 'CI detects failure → headless agent diagnoses and fixes → governance auto-approves → auto-deploys to staging.' },
+    { level: 5, name: 'Orchestration', short: 'Orch', human: 2, agent: 98, color: C.cyan, shift: 'Defining workflows → defining goals', time: '30 min + 6 hrs mesh', bugfix: 'Human defines migration goal → architect agent designs plan → coding agents implement in parallel → security agent audits.' },
   ];
   const sel = levels[selected];
   return (
     <div style={{ background: C.bg, borderRadius: 12, padding: 16, margin: '24px 0', border: `1px solid ${C.border}` }}>
-      <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 4, marginBottom: 16 }}>
         {levels.map((l, i) => (
           <div
             key={i}
             onClick={() => setSelected(i)}
             style={{
-              flex: 1, textAlign: 'center', padding: '8px 4px', borderRadius: 6, cursor: 'pointer',
+              textAlign: 'center', padding: '8px 2px', borderRadius: 6, cursor: 'pointer',
               background: selected === i ? l.color + '33' : C.card,
               border: `1px solid ${selected === i ? l.color : C.border}`,
-              transition: 'all 0.2s',
+              transition: 'all 0.2s', minWidth: 0, overflow: 'hidden',
             }}
           >
             <div style={{ fontSize: 13, fontWeight: 700, color: l.color }}>L{l.level}</div>
-            <div style={{ fontSize: 10, color: C.textSub, marginTop: 2 }}>{l.name}</div>
-            {l.tag && <div style={{ fontSize: 9, color: l.color, marginTop: 2, fontWeight: 600 }}>{l.tag}</div>}
+            <div style={{ fontSize: 9, color: C.textSub, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.short}</div>
+            {l.tag && <div style={{ fontSize: 8, color: l.color, marginTop: 2, fontWeight: 600 }}>{l.tag}</div>}
           </div>
         ))}
       </div>
