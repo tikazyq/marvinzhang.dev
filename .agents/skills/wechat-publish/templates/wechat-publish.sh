@@ -1,34 +1,32 @@
 #!/bin/bash
-# Template: WeChat Official Account End-to-End Publishing
-# Purpose: Generate WeChat-ready content, login via QR, and publish
-# Usage: ./wechat-publish.sh <article-slug> [--zh|--en] [--publish]
+# Template: WeChat Publishing via Telegram Delivery
+# Purpose: Generate WeChat-ready content and deliver to user's phone via Telegram
+# Usage: ./wechat-publish.sh <article-slug> [--zh|--en]
 #
-# Prerequisites:
-#   - agent-browser installed and available
-#   - pnpm wechat script configured
-#   - markdown-nice running locally (for MD→HTML rendering)
+# Environment variables (required):
+#   TELEGRAM_BOT_TOKEN - Bot token from @BotFather
+#   TELEGRAM_CHAT_ID   - User's numeric chat ID
 #
 # Workflow:
 #   1. Generate WeChat markdown via pnpm wechat
-#   2. Render MD→HTML via markdown-nice
-#   3. Login to mp.weixin.qq.com via QR scan
-#   4. Create article with rendered content
-#   5. Save as draft (or publish with --publish flag)
+#   2. Send images to Telegram
+#   3. Send markdown content to Telegram
+#   4. User copies into 公众号助手 app
 
 set -euo pipefail
 
-SLUG="${1:?Usage: $0 <article-slug> [--zh|--en] [--publish]}"
+SLUG="${1:?Usage: $0 <article-slug> [--zh|--en]}"
 LOCALE="zh"
-PUBLISH=false
-STATE_FILE=".temp/wechat-auth-state.json"
-QR_SCREENSHOT="/tmp/wechat-qr.png"
+: "${TELEGRAM_BOT_TOKEN:?Set TELEGRAM_BOT_TOKEN environment variable}"
+: "${TELEGRAM_CHAT_ID:?Set TELEGRAM_CHAT_ID environment variable}"
+
+TG_API="https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}"
 
 # Parse args
 for arg in "$@"; do
     case $arg in
         --en) LOCALE="en" ;;
         --zh) LOCALE="zh" ;;
-        --publish) PUBLISH=true ;;
     esac
 done
 
@@ -37,93 +35,79 @@ echo "=== WeChat Publishing: $SLUG ($LOCALE) ==="
 # ================================================================
 # STEP 1: Generate WeChat-ready markdown
 # ================================================================
-echo "[1/5] Generating WeChat markdown..."
+echo "[1/3] Generating WeChat markdown..."
 pnpm wechat "$SLUG" --"$LOCALE" --force
 
 # Find the generated markdown
 WECHAT_MD=$(find .temp/wechat -name "*${SLUG}*${LOCALE}*wechat.md" 2>/dev/null | head -1)
-if [[ -z "$WECHAT_MD" ]]; then
-    # Try specs directory
-    WECHAT_MD=$(find specs -name "wechat-${LOCALE}.md" -path "*${SLUG}*" 2>/dev/null | head -1)
-fi
-
 if [[ -z "$WECHAT_MD" ]]; then
     echo "ERROR: Could not find generated WeChat markdown for $SLUG"
     exit 1
 fi
 echo "  Found: $WECHAT_MD"
 
-# ================================================================
-# STEP 2: Render MD→HTML via markdown-nice
-# ================================================================
-echo "[2/5] Rendering MD→HTML via markdown-nice..."
-# TODO: Integrate with local markdown-nice instance
-# For now, the HTML conversion will be done by Claude during execution
-WECHAT_HTML=".temp/wechat/${SLUG}-${LOCALE}-wechat.html"
-echo "  HTML output: $WECHAT_HTML"
+# Extract title from first H1
+TITLE=$(grep -m1 '^# ' "$WECHAT_MD" | sed 's/^# //')
+echo "  Title: $TITLE"
 
 # ================================================================
-# STEP 3: Login to WeChat MP
+# STEP 2: Send images to Telegram
 # ================================================================
-echo "[3/5] Logging in to WeChat MP..."
+echo "[2/3] Sending images to Telegram..."
 
-if [[ -f "$STATE_FILE" ]]; then
-    echo "  Trying saved session..."
-    agent-browser state load "$STATE_FILE"
-    agent-browser open "https://mp.weixin.qq.com/cgi-bin/home"
-    agent-browser wait --load networkidle
-
-    URL=$(agent-browser get url)
-    if echo "$URL" | grep -q "cgi-bin/home"; then
-        echo "  Session restored successfully"
-    else
-        echo "  Session expired, need QR scan"
-        rm -f "$STATE_FILE"
-        # Fall through to QR login
-    fi
+IMG_DIR=".temp/wechat/images"
+if [[ -d "$IMG_DIR" ]]; then
+    for img in "$IMG_DIR"/*.png; do
+        [[ -f "$img" ]] || continue
+        echo "  Sending: $(basename "$img")"
+        curl -s -X POST "${TG_API}/sendPhoto" \
+            -F "chat_id=${TELEGRAM_CHAT_ID}" \
+            -F "photo=@${img};type=image/png" \
+            -F "caption=$(basename "$img")" > /dev/null
+        sleep 1
+    done
 fi
 
-if [[ ! -f "$STATE_FILE" ]]; then
-    agent-browser --headed open "https://mp.weixin.qq.com/"
-    agent-browser wait --load networkidle
-    agent-browser screenshot "$QR_SCREENSHOT"
-
-    echo ""
-    echo "  ================================================"
-    echo "  Please scan the QR code to login:"
-    echo "  Screenshot saved to: $QR_SCREENSHOT"
-    echo "  ================================================"
-    echo ""
-
-    # Wait for login (up to 120 seconds)
-    agent-browser wait --url "**/cgi-bin/home**" --timeout 120000
-    agent-browser state save "$STATE_FILE"
-    echo "  Login successful, session saved"
+# Also check for wechat-specific images
+WECHAT_IMG_DIR="static/img/blog/${SLUG}/wechat"
+if [[ -d "$WECHAT_IMG_DIR" ]]; then
+    for img in "$WECHAT_IMG_DIR"/*.png; do
+        [[ -f "$img" ]] || continue
+        echo "  Sending: $(basename "$img")"
+        curl -s -X POST "${TG_API}/sendPhoto" \
+            -F "chat_id=${TELEGRAM_CHAT_ID}" \
+            -F "photo=@${img};type=image/png" \
+            -F "caption=$(basename "$img")" > /dev/null
+        sleep 1
+    done
 fi
 
 # ================================================================
-# STEP 4: Create article
+# STEP 3: Send content to Telegram
 # ================================================================
-echo "[4/5] Creating article in WeChat editor..."
+echo "[3/3] Sending content to Telegram..."
 
-agent-browser open "https://mp.weixin.qq.com/cgi-bin/appmsg?t=media/appmsg_edit&action=edit&type=77"
-agent-browser wait --load networkidle
-agent-browser snapshot -i
+# Send instructions
+curl -s -X POST "${TG_API}/sendMessage" \
+    -F "chat_id=${TELEGRAM_CHAT_ID}" \
+    --form-string "text=📝 WeChat 发布就绪
 
-# TODO: Fill title, author, content, cover image
-# These steps require dynamic ref discovery via snapshot
-echo "  Editor opened — fill content via agent-browser commands"
+标题：${TITLE}
+作者：Marvin Zhang
 
-# ================================================================
-# STEP 5: Save or publish
-# ================================================================
-if [[ "$PUBLISH" == true ]]; then
-    echo "[5/5] Publishing article..."
-    echo "  WARNING: Publishing requires a second QR scan for confirmation"
-else
-    echo "[5/5] Saving as draft..."
-    echo "  To publish later, use --publish flag or publish from WeChat dashboard"
-fi
+步骤：
+1. 打开公众号助手 → 新建图文
+2. 填写标题和作者
+3. 打开下方 Markdown 文件
+4. 用 markdown-nice 渲染后复制粘贴
+5. 插入上方图片
+6. 预览 → 发布" > /dev/null
+
+# Send markdown file as document
+curl -s -X POST "${TG_API}/sendDocument" \
+    -F "chat_id=${TELEGRAM_CHAT_ID}" \
+    -F "document=@${WECHAT_MD}" \
+    -F "caption=Markdown 源文件 - 用 markdown-nice 渲染" > /dev/null
 
 echo ""
-echo "=== Done ==="
+echo "=== Done! Check Telegram for content ==="
