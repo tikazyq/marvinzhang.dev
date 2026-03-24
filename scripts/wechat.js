@@ -552,7 +552,16 @@ const processArticles = async () => {
     }
   }
   
-  console.log('\n🎉 Done!\n');
+  // Generate WeChat HTML files
+  console.log('');
+  try {
+    const slugArg = options.article || '';
+    execSync(`node scripts/generate-wechat-html.js ${slugArg}`, { stdio: 'inherit' });
+  } catch {
+    console.error('⚠️  WeChat HTML generation had errors (non-fatal)');
+  }
+
+  console.log('🎉 Done!\n');
 };
 
 // Run
