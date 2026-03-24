@@ -20,33 +20,33 @@ const SPECS_DIR = 'specs';
 const OUTPUT_DIR = 'static/wechat';
 const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 
-// WeChat inline styles — "极客蓝" (Geek Blue) theme
-// Based on: https://github.com/openclaw/skills wechat-article-formatter-pro
+// WeChat inline styles — mdnice 风格，匹配已发布微信公众号文章样式
+// Primary accent: rgb(53, 148, 247) / #3594F7
 const S = {
-  body: 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:16px;line-height:1.8;color:#333;word-wrap:break-word;max-width:677px;margin:0 auto;',
-  h1: 'font-size:24px;font-weight:600;margin:20px 0 12px;padding-bottom:10px;border-bottom:3px solid #1890FF;color:#000;',
-  h2: 'font-size:17px;font-weight:bold;margin:14px 0 8px;padding:8px 12px;color:#1890FF;background-color:#E6F7FF;border-radius:8px;border-left:4px solid #1890FF;text-align:justify;',
-  h3: 'font-size:18px;font-weight:600;margin:14px 0 8px;color:#1890FF;',
-  h4: 'font-size:16px;font-weight:600;margin:12px 0 6px;color:#1890FF;',
-  p: 'margin:8px 0;text-align:justify;',
-  strong: 'font-weight:600;color:#1890FF;',
+  body: 'font-family:Optima,PingFangSC-light,PingFangTC-light,"PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC",serif;font-size:16px;line-height:1.5em;color:#000;word-break:break-word;overflow-wrap:break-word;text-align:left;padding:0 10px;',
+  h1: 'font-size:24px;font-weight:600;margin:30px 0 15px;padding-bottom:10px;border-bottom:4px solid rgb(64,184,250);color:rgb(64,184,250);',
+  h2: 'font-size:20px;font-weight:bold;margin:30px 0 15px;padding:0;color:rgb(64,184,250);background-color:transparent;border-bottom:4px solid rgb(64,184,250);line-height:1.5em;',
+  h3: 'font-size:18px;font-weight:bold;margin:30px 0 15px;padding:0;color:rgb(43,43,43);line-height:1.5em;text-align:center;',
+  h4: 'font-size:16px;font-weight:600;margin:20px 0 10px;color:rgb(43,43,43);',
+  p: 'font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;',
+  strong: 'font-weight:bold;color:rgb(53,148,247);',
   em: 'font-style:italic;',
-  a: 'color:#1890FF;text-decoration:none;',
-  img: 'max-width:100%;height:auto;display:block;margin:8px auto;border-radius:6px;',
-  blockquote: 'margin:10px 0;padding:8px 12px;background:#E6F7FF;border-left:4px solid #1890FF;color:#666;border-radius:0 8px 8px 0;',
-  blockquotep: 'margin:0;',
-  code: 'background:#E6F7FF;padding:2px 6px;border-radius:3px;font-size:14px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono","Courier New",monospace;color:#1890FF;',
-  pre: 'background:#282c34;padding:12px;border-radius:8px;overflow-x:auto;margin:10px 0;border-left:3px solid #1890FF;',
-  precode: 'background:none;padding:0;border-radius:0;font-size:14px;line-height:1.6;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono","Courier New",monospace;color:#abb2bf;',
-  table: 'width:100%;border-collapse:collapse;margin:10px 0;font-size:14px;overflow:hidden;',
-  th: 'padding:8px;text-align:left;border:1px solid #e0e0e0;background:#E6F7FF;color:#1890FF;font-weight:600;',
-  td: 'padding:8px;text-align:left;border:1px solid #e0e0e0;',
-  ul: 'padding-left:22px;margin:8px 0;',
-  ol: 'padding-left:22px;margin:8px 0;',
-  li: 'margin-bottom:4px;',
-  hr: 'border:none;border-top:2px dashed #BAE0FF;margin:16px 0;',
+  a: 'color:rgb(53,148,247);text-decoration:none;',
+  img: 'max-width:100%;width:100%;height:auto;display:block;margin:0;',
+  blockquote: 'margin:20px 0;padding:10px 10px 10px 20px;background-color:rgba(64,184,250,0.1);border:1px solid rgba(64,184,255,0.4);border-radius:8px;color:rgb(43,43,43);',
+  blockquotep: 'margin:0;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);',
+  code: 'background-color:rgba(27,31,35,0.05);padding:2px 4px;border-radius:3px;font-size:14px;font-family:"Operator Mono",Consolas,Monaco,Menlo,monospace;color:rgb(53,148,247);letter-spacing:0;',
+  pre: 'background-color:rgb(30,30,30);padding:15px;border-radius:5px;overflow-x:auto;margin:10px 0;',
+  precode: 'background:none;padding:0;border-radius:0;font-size:14px;line-height:1.6;font-family:"Operator Mono",Consolas,Monaco,Menlo,monospace;color:#abb2bf;',
+  table: 'width:100%;border-collapse:collapse;margin:10px 0;font-size:14px;',
+  th: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);background:rgb(240,240,240);color:rgb(89,89,89);font-weight:bold;font-size:14px;line-height:1.5em;letter-spacing:0.02em;min-width:85px;',
+  td: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);font-size:14px;line-height:1.5em;letter-spacing:0.02em;color:rgb(89,89,89);min-width:85px;',
+  ul: 'padding-left:0;margin:8px 0;list-style:disc;',
+  ol: 'padding-left:0;margin:8px 0;',
+  li: 'margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);',
+  hr: 'border:none;border-top:2px solid rgba(64,184,250,0.4);margin:10px 0;',
   // Info box (for ℹ️ blocks)
-  infobox: 'margin:10px 0;padding:8px 12px;background:#E6F7FF;border-left:4px solid #1890FF;color:#333;border-radius:0 8px 8px 0;',
+  infobox: 'margin:20px 0;padding:10px 10px 10px 20px;background-color:rgba(64,184,250,0.1);border:1px solid rgba(64,184,255,0.4);border-radius:8px;color:rgb(43,43,43);',
 };
 
 function createRenderer() {
@@ -77,8 +77,8 @@ function createRenderer() {
     },
     blockquote({ tokens }) {
       const body = this.parser.parse(tokens);
-      // Replace paragraph margins inside blockquotes with tighter spacing
-      const tightBody = body.replace(/style="[^"]*"/g, `style="${S.blockquotep}"`);
+      // Only replace <p> styles inside blockquotes, preserve other element styles (links, strong, etc.)
+      const tightBody = body.replace(/<p style="[^"]*">/g, `<p style="${S.blockquotep}">`);
       return `<blockquote style="${S.blockquote}">${tightBody}</blockquote>\n`;
     },
     code({ text, lang }) {
