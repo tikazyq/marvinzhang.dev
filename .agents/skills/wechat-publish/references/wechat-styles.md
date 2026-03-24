@@ -130,6 +130,27 @@ The `pnpm wechat` script converts Docusaurus admonitions to emoji-prefixed block
 </table>
 ```
 
+### Table Styling Known Issues
+
+When using **md2weixin-core** (theme-based rendering via `pnpm wechat:html`), tables have spacing/styling issues that require post-processing:
+
+1. **H3-to-table gap**: The theme's `<h3>` has `margin-bottom: 20px` which creates a visible gap before tables. Post-process with:
+   ```js
+   html.replace(/<h3 style="([^"]+)">([\s\S]*?)<\/h3><table/g, (match, style, inner) => {
+     const newStyle = style.replace('margin-bottom: 20px', 'margin-bottom: 4px');
+     return '<h3 style="' + newStyle + '">' + inner + '</h3><table';
+   });
+   ```
+
+2. **Theme styles override**: md2weixin-core applies its own theme CSS (e.g., `quanzhanlan`), which overrides table/heading margins. These cannot be controlled via markdown — only via HTML post-processing after `getHtml()` returns.
+
+3. **Preferred approach**: Use `generate-wechat-html.js` (custom marked renderer) instead of md2weixin-core for full style control. The custom renderer in `scripts/generate-wechat-html.js` uses the styles defined in this file and gives precise control over all element spacing.
+
+| Rendering Method | Style Control | Table Support |
+|---|---|---|
+| `generate-wechat-html.js` (custom) | Full — all inline styles customizable | Good — uses styles from this file |
+| `md2weixin-core` (theme-based) | Limited — theme dictates styles | Requires post-processing for spacing |
+
 ## Images
 
 ```html
