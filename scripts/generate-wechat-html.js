@@ -116,7 +116,11 @@ function createRenderer() {
       return `<${tag} style="${style}">${body}</${tag}>\n`;
     },
     listitem({ tokens }) {
-      const text = this.parser.parse(tokens);
+      // Use parseInline-like approach: parse block tokens but strip wrapping <p> tags
+      // to avoid double spacing (published WeChat articles use <section> inside <li>, not <p>)
+      let text = this.parser.parse(tokens);
+      // Remove wrapping <p> tags and their styles, keep inner content
+      text = text.replace(/<p style="[^"]*">([\s\S]*?)<\/p>/g, '$1').trim();
       return `<li style="${S.li}">${text}</li>\n`;
     },
     hr() {
