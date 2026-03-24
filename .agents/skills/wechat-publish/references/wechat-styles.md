@@ -1,6 +1,8 @@
-# WeChat-Compatible HTML/CSS Styles
+# WeChat-Compatible HTML/CSS Styles — 极客蓝 (Geek Blue) Theme
 
 WeChat's editor strips most CSS classes and external stylesheets. All styles **must be inline**.
+
+**Theme**: 极客蓝 (Geek Blue) — primary color `#1890FF`, accent backgrounds `#E6F7FF`.
 
 **Related**: [mp-editor.md](mp-editor.md) for editor DOM structure, [SKILL.md](../SKILL.md) for quick start.
 
@@ -28,11 +30,15 @@ WeChat's editor strips most CSS classes and external stylesheets. All styles **m
 ### Headings
 
 ```html
-<h2 style="margin-top: 2em; margin-bottom: 0.8em; font-size: 1.3em; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 0.3em;">
+<h1 style="font-size: 24px; font-weight: 600; margin: 30px 0 20px; padding-bottom: 15px; border-bottom: 3px solid #1890FF; color: #000;">
+  Page Title
+</h1>
+
+<h2 style="font-size: 17px; font-weight: bold; margin: 20px 0 12px; padding: 12px 16px; color: #1890FF; background-color: #E6F7FF; border-radius: 8px; border-left: 4px solid #1890FF; text-align: justify;">
   Section Title
 </h2>
 
-<h3 style="margin-top: 1.5em; margin-bottom: 0.6em; font-size: 1.15em; font-weight: bold;">
+<h3 style="font-size: 18px; font-weight: 600; margin: 25px 0 15px; color: #1890FF;">
   Subsection Title
 </h3>
 ```
@@ -40,7 +46,7 @@ WeChat's editor strips most CSS classes and external stylesheets. All styles **m
 ### Body Text
 
 ```html
-<p style="margin: 1em 0; line-height: 1.8; font-size: 15px; color: #333;">
+<p style="margin: 15px 0; text-align: justify;">
   Paragraph text here.
 </p>
 ```
@@ -48,19 +54,19 @@ WeChat's editor strips most CSS classes and external stylesheets. All styles **m
 ### Bold & Emphasis
 
 ```html
-<strong style="font-weight: bold; color: #000;">Bold text</strong>
+<strong style="font-weight: 600; color: #1890FF;">Bold text</strong>
 <em style="font-style: italic;">Italic text</em>
 ```
 
 ### Lists
 
 ```html
-<ul style="margin: 1em 0; padding-left: 2em;">
-  <li style="margin: 0.5em 0; line-height: 1.8; font-size: 15px; color: #333;">Item</li>
+<ul style="padding-left: 22px; margin: 15px 0;">
+  <li style="margin-bottom: 8px;">Item</li>
 </ul>
 
-<ol style="margin: 1em 0; padding-left: 2em;">
-  <li style="margin: 0.5em 0; line-height: 1.8; font-size: 15px; color: #333;">Item</li>
+<ol style="padding-left: 22px; margin: 15px 0;">
+  <li style="margin-bottom: 8px;">Item</li>
 </ol>
 ```
 
@@ -69,7 +75,7 @@ WeChat's editor strips most CSS classes and external stylesheets. All styles **m
 ### Inline Code
 
 ```html
-<code style="background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-size: 13px; font-family: Menlo, Monaco, Consolas, monospace; color: #c7254e;">
+<code style="background: #E6F7FF; padding: 2px 6px; border-radius: 3px; font-size: 14px; font-family: 'SF Mono', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; color: #1890FF;">
   variable_name
 </code>
 ```
@@ -79,8 +85,8 @@ WeChat's editor strips most CSS classes and external stylesheets. All styles **m
 WeChat does not support syntax highlighting natively. Use a pre-styled block:
 
 ```html
-<pre style="background-color: #2d2d2d; color: #ccc; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 13px; line-height: 1.6; margin: 1em 0;">
-<code style="font-family: Menlo, Monaco, Consolas, monospace; white-space: pre;">
+<pre style="background: #282c34; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 20px 0; border-left: 3px solid #1890FF;">
+<code style="background: none; padding: 0; border-radius: 0; font-size: 14px; line-height: 1.6; font-family: 'SF Mono', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; color: #abb2bf;">
 def hello():
     print("Hello, WeChat!")
 </code>
@@ -92,51 +98,35 @@ def hello():
 ### Standard Blockquote
 
 ```html
-<blockquote style="margin: 1em 0; padding: 12px 16px; border-left: 4px solid #ddd; background-color: #f9f9f9; color: #666;">
-  <p style="margin: 0; line-height: 1.8; font-size: 15px;">Quote text</p>
+<blockquote style="margin: 20px 0; padding: 12px 15px; background: #E6F7FF; border-left: 4px solid #1890FF; color: #666; border-radius: 0 8px 8px 0;">
+  <p style="margin: 0;">Quote text</p>
 </blockquote>
 ```
 
 ### Admonition Variants
 
-The `pnpm wechat` script converts Docusaurus admonitions to emoji-prefixed blockquotes. Style them with distinct left borders:
+The `pnpm wechat` script converts Docusaurus admonitions to emoji-prefixed blockquotes. All use the unified 极客蓝 blockquote style:
 
 ```html
-<!-- Tip (green) -->
-<blockquote style="margin: 1em 0; padding: 12px 16px; border-left: 4px solid #00b894; background-color: #f0fff4;">
-  <p style="margin: 0;">💡 <strong>提示</strong>：Tip content here</p>
-</blockquote>
-
-<!-- Warning (orange) -->
-<blockquote style="margin: 1em 0; padding: 12px 16px; border-left: 4px solid #fdcb6e; background-color: #fffbf0;">
-  <p style="margin: 0;">⚠️ <strong>注意</strong>：Warning content here</p>
-</blockquote>
-
-<!-- Info (blue) -->
-<blockquote style="margin: 1em 0; padding: 12px 16px; border-left: 4px solid #74b9ff; background-color: #f0f7ff;">
-  <p style="margin: 0;">ℹ️ <strong>信息</strong>：Info content here</p>
-</blockquote>
-
-<!-- Danger (red) -->
-<blockquote style="margin: 1em 0; padding: 12px 16px; border-left: 4px solid #ff7675; background-color: #fff5f5;">
-  <p style="margin: 0;">🚨 <strong>危险</strong>：Danger content here</p>
+<blockquote style="margin: 20px 0; padding: 12px 15px; background: #E6F7FF; border-left: 4px solid #1890FF; color: #666; border-radius: 0 8px 8px 0;">
+  <p style="margin: 0;">💡 <strong style="font-weight: 600; color: #1890FF;">提示</strong>：Tip content here</p>
 </blockquote>
 ```
 
 ## Tables
 
 ```html
-<table style="width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 14px;">
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; overflow: hidden;">
   <thead>
-    <tr style="background-color: #f5f5f5;">
-      <th style="border: 1px solid #ddd; padding: 8px 12px; text-align: left; font-weight: bold;">Header</th>
-      <th style="border: 1px solid #ddd; padding: 8px 12px; text-align: left; font-weight: bold;">Header</th>
+    <tr>
+      <th style="padding: 12px; text-align: left; border: 1px solid #e0e0e0; background: #E6F7FF; color: #1890FF; font-weight: 600;">Header</th>
+      <th style="padding: 12px; text-align: left; border: 1px solid #e0e0e0; background: #E6F7FF; color: #1890FF; font-weight: 600;">Header</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="border: 1px solid #ddd; padding: 8px 12px;">Cell</td>
-      <td style="border: 1px solid #ddd; padding: 8px 12px;">Cell</td>
+      <td style="padding: 12px; text-align: left; border: 1px solid #e0e0e0;">Cell</td>
+      <td style="padding: 12px; text-align: left; border: 1px solid #e0e0e0;">Cell</td>
     </tr>
   </tbody>
 </table>
@@ -175,20 +165,20 @@ WeChat articles **cannot contain external hyperlinks** in most account types. Co
 
 ## Complete Style Map
 
-Summary of markdown element → inline style mapping:
+Summary of markdown element → inline style mapping (极客蓝 theme, primary `#1890FF`):
 
 | Markdown | HTML Tag | Key Inline Styles |
 |----------|----------|-------------------|
-| `# H1` | `<h1>` | `font-size: 1.5em; font-weight: bold; margin: 1.5em 0 0.8em` |
-| `## H2` | `<h2>` | `font-size: 1.3em; border-bottom: 1px solid #eee` |
-| `### H3` | `<h3>` | `font-size: 1.15em; font-weight: bold` |
-| Paragraph | `<p>` | `line-height: 1.8; font-size: 15px; color: #333` |
-| `**bold**` | `<strong>` | `font-weight: bold; color: #000` |
-| `` `code` `` | `<code>` | `background: #f5f5f5; padding: 2px 6px; font-size: 13px` |
-| Code fence | `<pre><code>` | `background: #2d2d2d; color: #ccc; padding: 16px` |
-| `> quote` | `<blockquote>` | `border-left: 4px solid #ddd; background: #f9f9f9` |
-| `- item` | `<ul><li>` | `padding-left: 2em; margin: 0.5em 0` |
-| Table | `<table>` | `border-collapse: collapse; width: 100%` |
-| Image | `<img>` | `max-width: 100%; height: auto` |
-| Link | `<span>` | Footnote reference (no clickable links) |
-| `---` | `<hr>` | `border: none; border-top: 1px solid #eee; margin: 2em 0` |
+| `# H1` | `<h1>` | `font-size: 24px; font-weight: 600; border-bottom: 3px solid #1890FF` |
+| `## H2` | `<h2>` | `font-size: 17px; background: #E6F7FF; border-left: 4px solid #1890FF; color: #1890FF` |
+| `### H3` | `<h3>` | `font-size: 18px; font-weight: 600; color: #1890FF` |
+| Paragraph | `<p>` | `margin: 15px 0; text-align: justify` |
+| `**bold**` | `<strong>` | `font-weight: 600; color: #1890FF` |
+| `` `code` `` | `<code>` | `background: #E6F7FF; color: #1890FF; font-size: 14px` |
+| Code fence | `<pre><code>` | `background: #282c34; color: #abb2bf; border-left: 3px solid #1890FF` |
+| `> quote` | `<blockquote>` | `border-left: 4px solid #1890FF; background: #E6F7FF; border-radius: 0 8px 8px 0` |
+| `- item` | `<ul><li>` | `padding-left: 22px; margin-bottom: 8px` |
+| Table | `<table>` | `border-collapse: collapse; width: 100%; th: background #E6F7FF` |
+| Image | `<img>` | `max-width: 100%; height: auto; border-radius: 6px` |
+| Link | `<a>` | `color: #1890FF; text-decoration: none` |
+| `---` | `<hr>` | `border: none; border-top: 2px dashed #BAE0FF; margin: 30px 0` |
