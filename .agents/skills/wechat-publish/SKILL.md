@@ -109,17 +109,38 @@ User workflow on mobile:
 6. Set cover image
 7. Preview → Publish
 
-## Content Formatting Strategy
+## HTML Rendering Methods
 
-### Option A: Plain Markdown (Simple)
+Two methods are available for converting WeChat markdown to styled HTML:
 
-Send the raw markdown. User pastes into [markdown-nice](https://github.com/tikazyq/markdown-nice) (web or mini-program) to get styled HTML, then copies into 公众号助手.
+### Method A: Custom Renderer (Recommended)
 
-### Option B: Pre-rendered Sections (Better)
+Uses `scripts/generate-wechat-html.js` with `marked` library. Full control over all inline styles.
 
-Split content into logical sections and send each as a Telegram message with basic HTML formatting (`<b>`, `<i>`, `<code>`, `<pre>`). User copies section by section.
+```bash
+node scripts/generate-wechat-html.js <slug>
+# Output: static/wechat/<slug>.html
+```
 
-### Option C: markdown-nice Mini Program (Best)
+- Styles defined in the script's `S` object (matches `references/wechat-styles.md`)
+- Tables, headings, spacing all fully customizable
+- Send the output HTML file via Telegram for copy-paste into 公众号助手
+
+### Method B: md2weixin-core (Theme-based)
+
+Uses `md2weixin-core` npm package with pre-built themes (e.g., `quanzhanlan`).
+
+```js
+const { getHtml } = require('md2weixin-core');
+const html = await getHtml({ markdown, theme: 'quanzhanlan', font: 'cx' });
+```
+
+- Faster setup, nice themes out of the box
+- **Limitation**: Theme CSS overrides element styles (margins, padding) — cannot be controlled via markdown
+- **Known issue**: `<h3>` has `margin-bottom: 20px` creating excessive gap before tables — requires HTML post-processing after `getHtml()` returns (see `references/wechat-styles.md` > Tables > Known Issues)
+- Requires post-processing for production-quality output
+
+### Method C: markdown-nice Mini Program
 
 1. Send the markdown file via Telegram
 2. User opens markdown-nice 微信小程序
@@ -194,6 +215,8 @@ send_telegram_doc() {
 | Images not sending | Check file path; max 10MB per photo |
 | Content formatting lost in paste | Use markdown-nice mini program for rendering |
 | 公众号助手 paste loses styles | Paste rendered HTML (from markdown-nice), not raw markdown |
+| Table spacing/gap issues (md2weixin-core) | Theme CSS adds margins to headings before tables. Post-process HTML to reduce `margin-bottom` on `<h3>` preceding `<table>`. See `references/wechat-styles.md` > Tables > Known Issues |
+| Table styles not matching design | Use Method A (custom renderer) for full style control instead of md2weixin-core themes |
 
 ## Future: API-Based Publishing
 
