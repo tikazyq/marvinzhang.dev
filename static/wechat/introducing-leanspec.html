@@ -1,0 +1,238 @@
+<section style="font-size:16px;line-height:1.8;color:#333;word-wrap:break-word;"><p style="margin:16px 0;text-align:justify;">今年年初，我被 Claude Sonnet 3.7 的 AI 编程能力深深震撼。那时 &quot;Vibe Coding&quot; 这个词还没流行起来，但我做的正是这件事——让 AI 生成代码，我只负责引导对话。感觉像魔法一样神奇。直到问题开始浮现。</p>
+<p style="margin:16px 0;text-align:justify;">几周后，我注意到一些规律：代码冗余越来越多，实现方向偏离了最初的设想，AI 在不同会话之间丢失上下文导致返工不断增加。蜜月期结束了。我需要一套结构化的方法，但又不想引入那些拖慢开发速度的重型流程。</p>
+<p style="margin:16px 0;text-align:justify;">这段探索之旅让我先后尝试了 Kiro、Spec Kit、OpenSpec 等工具，最终促使我开发了 <a style="color:#2563eb;text-decoration:none;" href="https://github.com/codervisor/lean-spec">LeanSpec</a>——一个轻量级的规格驱动开发（Spec-Driven Development，SDD）框架。今天发布的 v0.2.7 版本，是三周内的第十个版本。这篇文章分享我为什么要做 LeanSpec、它有什么不同，以及如何快速上手。</p>
+<h2 style="font-size:22px;font-weight:bold;margin:28px 0 14px;color:#1a1a1a;border-bottom:2px solid #2563eb;padding-bottom:8px;">Vibe Coding 的隐性成本</h2>
+<p style="margin:16px 0;text-align:justify;">📝 <strong style="font-weight:bold;color:#2563eb;">Vibe Coding 的陷阱</strong></p>
+<blockquote style="margin:16px 0;padding:12px 20px;background:#f7f8fa;border-left:4px solid #2563eb;color:#555;"><p style="margin:16px 0;text-align:justify;">AI 编程助手的生产力惊人——直到它们开始出问题。缺乏结构化的上下文，AI 会生成看似合理但前后矛盾的代码，导致技术债务在每个会话中不断累积。</p>
+</blockquote>
+<p style="margin:16px 0;text-align:justify;">如果你深度使用过 AI 编程工具，大概率遇到过这些问题：</p>
+<table style="border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;">
+<thead>
+<tr>
+<th style="border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;">症状</th>
+<th style="border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;">根本原因</th>
+<th style="border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;">影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">代码冗余</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">AI 不记得之前的实现</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">重复逻辑散落在各处</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">意图偏移</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">上下文在会话间丢失</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">功能与你的设想渐行渐远</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">返工增多</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">缺少持久的单一信息源</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">反复解释相同的背景</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">架构不一致</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">缺乏结构化指导</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">组件之间无法顺畅协作</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:16px 0;text-align:justify;">业界的解决方案是 <strong style="font-weight:bold;color:#2563eb;">规格驱动开发（Spec-Driven Development，SDD）</strong>——先写规格文档，再写代码，为 AI（和人类）提供持久的上下文。但当我考察现有工具时，发现了一个空白地带。</p>
+<p style="margin:16px 0;text-align:justify;">ℹ️ <strong style="font-weight:bold;color:#2563eb;">延伸阅读</strong></p>
+<blockquote style="margin:16px 0;padding:12px 20px;background:#f7f8fa;border-left:4px solid #2563eb;color:#555;"><p style="margin:16px 0;text-align:justify;">刚接触 SDD？可以先阅读我的基础文章 <a style="color:#2563eb;text-decoration:none;" href="https://marvinzhang.dev/zh/blog/spec-driven-development">规格驱动开发：复杂功能的系统化方法</a> 了解方法论基础，或者看 <a style="color:#2563eb;text-decoration:none;" href="https://marvinzhang.dev/zh/blog/sdd-tools-practices">2025 年 SDD 工具全景</a> 了解业界工具的全面对比。想不安装任何工具就体验方法论？试试 <a style="color:#2563eb;text-decoration:none;" href="https://www.lean-spec.dev/docs/tutorials/sdd-without-toolkit">不用工具实践 SDD</a> 教程。</p>
+</blockquote>
+<h2 style="font-size:22px;font-weight:bold;margin:28px 0 14px;color:#1a1a1a;border-bottom:2px solid #2563eb;padding-bottom:8px;">为什么要做 LeanSpec</h2>
+<p style="margin:16px 0;text-align:justify;">我在 SDD 领域的探索揭示了三类工具，每类都有不适合我的地方：</p>
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">厂商锁定</strong>：Kiro（亚马逊的 SDD IDE）集成度很高，但要求放弃现有工作流。我喜欢自己的工具组合，换 IDE 不在考虑范围内。</p>
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">认知负担过重</strong>：Spec Kit 提供了完整的结构，但其繁复的格式带来了很大的认知负担。即使有 AI 辅助撰写，理解和维护这些规格文档仍然耗费大量心智资源，对于独立开发者和小团队来说过于沉重。</p>
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">缺少项目管理</strong>：OpenSpec 最接近我理想中的样子——轻量且灵活——但缺乏跨项目管理几十个规格的能力。</p>
+<p style="margin:16px 0;text-align:justify;">我想要的是：<strong style="font-weight:bold;color:#2563eb;">一套方法论，而不只是一个工具</strong>。就像敏捷开发一样——一组人人可以采纳的原则，配合不碍事的轻量工具。</p>
+<p style="margin:16px 0;text-align:justify;">于是我做了 LeanSpec。然后用 LeanSpec 来开发 LeanSpec。</p>
+<h2 style="font-size:22px;font-weight:bold;margin:28px 0 14px;color:#1a1a1a;border-bottom:2px solid #2563eb;padding-bottom:8px;">第一性原理：设计基石</h2>
+<p style="margin:16px 0;text-align:justify;">LeanSpec 不只是工具链，它建立在五条第一性原理（First Principles）之上，指导每一个设计决策：</p>
+<p style="margin:16px 0;text-align:justify;"><img style="max-width:100%;height:auto;display:block;margin:16px auto;border-radius:6px;" src="https://marvinzhang.dev/img/blog/2025-11-27-introducing-leanspec/wechat/diagram-zh-1.png" alt="" />
+</p>
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">上下文经济（Context Economy）</strong>：规格必须装进工作记忆——无论人还是 AI。目标 300 行以内。如果 10 分钟读不完，就太长了。</p>
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">信噪比最大化（Signal-to-Noise）</strong>：每一行都要服务于决策。没有样板文件，没有填充内容，没有为了形式的形式。</p>
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">意图优先于实现（Intent Over Implementation）</strong>：记录 <em style="font-style:italic;">为什么</em>，而不只是 <em style="font-style:italic;">怎么做</em>。实现细节会变，意图不会。</p>
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">弥合鸿沟（Bridge the Gap）</strong>：规格同时服务于人和 AI。任何一方看不懂，这份规格就是失败的。</p>
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">渐进披露（Progressive Disclosure）</strong>：从简单开始，只在感到痛点时才增加结构。不做预设的复杂。</p>
+<p style="margin:16px 0;text-align:justify;">这些原则不只是文档——LeanSpec 的 <code style="background:#f0f2f5;padding:2px 6px;border-radius:3px;font-size:14px;font-family:Menlo,Monaco,Consolas,monospace;color:#c7254e;">validate</code> 命令会自动检查规格是否符合它们。</p>
+<h2 style="font-size:22px;font-weight:bold;margin:28px 0 14px;color:#1a1a1a;border-bottom:2px solid #2563eb;padding-bottom:8px;">核心功能</h2>
+<h3 style="font-size:18px;font-weight:bold;margin:24px 0 12px;color:#1a1a1a;">Web UI 可视化管理</h3>
+<p style="margin:16px 0;text-align:justify;">我最兴奋的功能：<code style="background:#f0f2f5;padding:2px 6px;border-radius:3px;font-size:14px;font-family:Menlo,Monaco,Consolas,monospace;color:#c7254e;">lean-spec ui</code> 启动完整的 Web 界面，让你可视化地管理规格。</p>
+<pre style="background:#282c34;color:#abb2bf;padding:16px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.6;"><code style="background:none;padding:0;border-radius:0;font-size:13px;font-family:Menlo,Monaco,Consolas,monospace;color:#abb2bf;"># 启动 Web UI
+npx lean-spec ui</code></pre>
+<p style="margin:16px 0;text-align:justify;">UI 提供看板视图、规格详情页（支持 Mermaid 图表渲染）和依赖关系可视化——全在浏览器里完成。适合规划会议或审查项目状态。</p>
+<p style="margin:16px 0;text-align:justify;"><img style="max-width:100%;height:auto;display:block;margin:16px auto;border-radius:6px;" src="https://raw.githubusercontent.com/codervisor/lean-spec-docs/main/static/img/ui/ui-board-view.png" alt="LeanSpec 看板视图" />
+</p>
+<p style="margin:16px 0;text-align:justify;"><img style="max-width:100%;height:auto;display:block;margin:16px auto;border-radius:6px;" src="https://raw.githubusercontent.com/codervisor/lean-spec-docs/main/static/img/ui/ui-spec-detail.png" alt="LeanSpec 规格详情页" />
+</p>
+<h3 style="font-size:18px;font-weight:bold;margin:24px 0 12px;color:#1a1a1a;">第一性原理校验</h3>
+<p style="margin:16px 0;text-align:justify;">LeanSpec 不只存储规格，还会对照第一性原理进行校验：</p>
+<pre style="background:#282c34;color:#abb2bf;padding:16px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.6;"><code style="background:none;padding:0;border-radius:0;font-size:13px;font-family:Menlo,Monaco,Consolas,monospace;color:#abb2bf;"># 校验规格是否符合第一性原理
+lean-spec validate
+
+# 输出示例：
+# specs/045-user-auth/README.md
+#   ⚠️  warning  Spec exceeds 300 lines (342)  context-economy
+#   ⚠️  warning  Missing overview section      structure
+# 
+# ✖ 2 warnings in 1 spec</code></pre>
+<p style="margin:16px 0;text-align:justify;">这能保持规格精简有意义，防止重型 SDD 工具常见的规格膨胀问题。</p>
+<h3 style="font-size:18px;font-weight:bold;margin:24px 0 12px;color:#1a1a1a;">智能搜索与项目管理</h3>
+<p style="margin:16px 0;text-align:justify;">查找相关规格不应该需要记住精确名称：</p>
+<pre style="background:#282c34;color:#abb2bf;padding:16px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.6;"><code style="background:none;padding:0;border-radius:0;font-size:13px;font-family:Menlo,Monaco,Consolas,monospace;color:#abb2bf;"># 跨所有规格的语义搜索
+lean-spec search "authentication flow"
+
+# 高级查询
+lean-spec search "status:in-progress tag:api"
+lean-spec search "created:&gt;2025-11-01"</code></pre>
+<p style="margin:16px 0;text-align:justify;">看板视图让项目状态一目了然：</p>
+<pre style="background:#282c34;color:#abb2bf;padding:16px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.6;"><code style="background:none;padding:0;border-radius:0;font-size:13px;font-family:Menlo,Monaco,Consolas,monospace;color:#abb2bf;">lean-spec board
+
+# 📋 LeanSpec Board
+# ─────────────────────────────────────
+# 📅 Planned (12)     🚧 In Progress (3)     ✅ Complete (47)
+# ─────────────────────────────────────</code></pre>
+<h3 style="font-size:18px;font-weight:bold;margin:24px 0 12px;color:#1a1a1a;">MCP Server：AI 集成</h3>
+<p style="margin:16px 0;text-align:justify;">LeanSpec 内置 MCP（Model Context Protocol）服务器，让 AI 助手可以直接与你的规格交互：</p>
+<pre style="background:#282c34;color:#abb2bf;padding:16px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.6;"><code style="background:none;padding:0;border-radius:0;font-size:13px;font-family:Menlo,Monaco,Consolas,monospace;color:#abb2bf;">{
+  "mcpServers": {
+    "leanspec": {
+      "command": "npx",
+      "args": ["@leanspec/mcp"]
+    }
+  }
+}</code></pre>
+<p style="margin:16px 0;text-align:justify;">支持 Claude Code、Cursor、GitHub Copilot 等 MCP 兼容工具。AI 代理可以搜索规格、读取上下文、更新状态——全部通过编程接口完成。</p>
+<h3 style="font-size:18px;font-weight:bold;margin:24px 0 12px;color:#1a1a1a;">示例项目快速上手</h3>
+<p style="margin:16px 0;text-align:justify;">刚接触 SDD？从一个完整的示例开始：</p>
+<pre style="background:#282c34;color:#abb2bf;padding:16px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.6;"><code style="background:none;padding:0;border-radius:0;font-size:13px;font-family:Menlo,Monaco,Consolas,monospace;color:#abb2bf;"># 生成一个完整的教程项目
+npx lean-spec init --example dark-theme</code></pre>
+<p style="margin:16px 0;text-align:justify;">提供三个示例：<code style="background:#f0f2f5;padding:2px 6px;border-radius:3px;font-size:14px;font-family:Menlo,Monaco,Consolas,monospace;color:#c7254e;">dark-theme</code>、<code style="background:#f0f2f5;padding:2px 6px;border-radius:3px;font-size:14px;font-family:Menlo,Monaco,Consolas,monospace;color:#c7254e;">dashboard-widgets</code> 和 <code style="background:#f0f2f5;padding:2px 6px;border-radius:3px;font-size:14px;font-family:Menlo,Monaco,Consolas,monospace;color:#c7254e;">api-refactor</code>——分别演示不同的 SDD 模式。</p>
+<h2 style="font-size:22px;font-weight:bold;margin:28px 0 14px;color:#1a1a1a;border-bottom:2px solid #2563eb;padding-bottom:8px;">开发历程：用 LeanSpec 开发 LeanSpec</h2>
+<p style="margin:16px 0;text-align:justify;">这个项目最有意思的地方在于：初版发布后，<strong style="font-weight:bold;color:#2563eb;">LeanSpec 完全使用 LeanSpec 自身来开发</strong>。</p>
+<table style="border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;">
+<thead>
+<tr>
+<th style="border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;">里程碑</th>
+<th style="border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;">日期</th>
+<th style="border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;">第一行代码</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">2025 年 10 月 23 日</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">从基础的规格增删改查开始</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;">v0.1.0（首次发布）</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">2025 年 11 月 2 日</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">从零到发布仅用 10 天</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;">v0.2.0（生产就绪）</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">2025 年 11 月 10 日</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">第一性原理校验，完整 CLI</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;">v0.2.7（当前版本）</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">2025 年 11 月 26 日</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">24 天内发布 10 个版本</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:16px 0;text-align:justify;">在 LeanSpec 项目内部，已经创建了超过 120 个规格——涵盖功能实现、架构决策、复盘反思，甚至营销策略。反馈循环非常紧凑：发现痛点 → 写规格 → 实现 → 用真实场景验证。</p>
+<p style="margin:16px 0;text-align:justify;">我还把 LeanSpec 应用到了其他项目：</p>
+<ul style="margin:16px 0;padding-left:2em;"><li style="margin:6px 0;"><a style="color:#2563eb;text-decoration:none;" href="https://github.com/crawlab-team/crawlab">Crawlab</a>（12k+ stars）—— 网络爬虫管理平台</li>
+<li style="margin:6px 0;">这个博客（marvinzhang.dev）</li>
+<li style="margin:6px 0;"><a style="color:#2563eb;text-decoration:none;" href="https://github.com/codervisor">codervisor</a> 组织下即将发布的新项目</li>
+</ul>
+<p style="margin:16px 0;text-align:justify;">在所有项目中，规律都是一致的：规格提供了跨会话存续的上下文，AI 能持续对齐我的意图，我花在反复解释上的时间大幅减少。</p>
+<h2 style="font-size:22px;font-weight:bold;margin:28px 0 14px;color:#1a1a1a;border-bottom:2px solid #2563eb;padding-bottom:8px;">LeanSpec 的独特之处</h2>
+<p style="margin:16px 0;text-align:justify;">如果你读过我的 <a style="color:#2563eb;text-decoration:none;" href="https://marvinzhang.dev/zh/blog/sdd-tools-practices">SDD 工具分析</a>，就知道我评估过这个领域的六个主要工具。LeanSpec 的定位是这样的：</p>
+<table style="border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;">
+<thead>
+<tr>
+<th style="border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;">维度</th>
+<th style="border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;">重型工具</th>
+<th style="border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;">LeanSpec</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">学习曲线</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">数天到数周</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">几分钟</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">规格开销</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">大量前期工作</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">边写边补</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">Token 成本</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">通常 &gt;2,000</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">目标 &lt;300 行</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">灵活性</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">结构刚性</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">适应你的工作流</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">厂商锁定</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">常见</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">不存在</td>
+</tr>
+<tr>
+<td style="border:1px solid #ddd;padding:10px 12px;"><strong style="font-weight:bold;color:#2563eb;">理念</strong></td>
+<td style="border:1px solid #ddd;padding:10px 12px;">工具优先</td>
+<td style="border:1px solid #ddd;padding:10px 12px;">方法论优先</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:16px 0;text-align:justify;">LeanSpec 的 &quot;Lean&quot; 有多重含义：</p>
+<ul style="margin:16px 0;padding-left:2em;"><li style="margin:6px 0;"><strong style="font-weight:bold;color:#2563eb;">方法论</strong>：像敏捷一样，是无论工具如何都能采纳的原则</li>
+<li style="margin:6px 0;"><strong style="font-weight:bold;color:#2563eb;">认知负担</strong>：低开销，快速上手</li>
+<li style="margin:6px 0;"><strong style="font-weight:bold;color:#2563eb;">Token 经济</strong>：规格保持精简，能装进 AI 的上下文窗口</li>
+<li style="margin:6px 0;"><strong style="font-weight:bold;color:#2563eb;">灵活性</strong>：适应你的工作流，而不是反过来</li>
+</ul>
+<h2 style="font-size:22px;font-weight:bold;margin:28px 0 14px;color:#1a1a1a;border-bottom:2px solid #2563eb;padding-bottom:8px;">快速上手</h2>
+<p style="margin:16px 0;text-align:justify;">5 分钟内试用 LeanSpec：</p>
+<pre style="background:#282c34;color:#abb2bf;padding:16px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.6;"><code style="background:none;padding:0;border-radius:0;font-size:13px;font-family:Menlo,Monaco,Consolas,monospace;color:#abb2bf;"># 全局安装
+npm install -g lean-spec
+
+# 在项目中初始化
+lean-spec init
+
+# 创建第一个规格
+lean-spec create user-authentication
+
+# 启动 Web UI
+lean-spec ui</code></pre>
+<p style="margin:16px 0;text-align:justify;">或者试试示例项目：</p>
+<pre style="background:#282c34;color:#abb2bf;padding:16px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.6;"><code style="background:none;padding:0;border-radius:0;font-size:13px;font-family:Menlo,Monaco,Consolas,monospace;color:#abb2bf;">npx lean-spec init --example dark-theme</code></pre>
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">已经在用 Spec Kit 或 OpenSpec？</strong> 参考 <a style="color:#2563eb;text-decoration:none;" href="https://www.lean-spec.dev/docs/guide/migration">迁移指南</a>——迁移过程很顺畅。</p>
+<h2 style="font-size:22px;font-weight:bold;margin:28px 0 14px;color:#1a1a1a;border-bottom:2px solid #2563eb;padding-bottom:8px;">未来规划</h2>
+<p style="margin:16px 0;text-align:justify;">LeanSpec 仍在活跃迭代中。当前开发重点包括：</p>
+<ul style="margin:16px 0;padding-left:2em;"><li style="margin:6px 0;">VS Code 插件，实现内联规格管理（<a style="color:#2563eb;text-decoration:none;" href="https://web.lean-spec.dev/specs/17">规格 17</a>）</li>
+<li style="margin:6px 0;">AI 聊天界面，实现交互式规格辅助（<a style="color:#2563eb;text-decoration:none;" href="https://web.lean-spec.dev/specs/94">规格 94</a>）</li>
+<li style="margin:6px 0;">全面的国际化支持（<a style="color:#2563eb;text-decoration:none;" href="https://web.lean-spec.dev/specs/91">规格 91</a>）</li>
+<li style="margin:6px 0;">GitHub 多项目集成（<a style="color:#2563eb;text-decoration:none;" href="https://web.lean-spec.dev/specs/98">规格 98</a>）</li>
+</ul>
+<p style="margin:16px 0;text-align:justify;">我做 LeanSpec 是为了解决自己的问题——Vibe Coding 带来的代码质量下降、AI 会话间的上下文丢失、重型 SDD 工具的认知负担。如果你也面临类似的挑战，希望它对你同样有帮助。</p>
+<hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
+<p style="margin:16px 0;text-align:justify;"><strong style="font-weight:bold;color:#2563eb;">链接：</strong></p>
+<ul style="margin:16px 0;padding-left:2em;"><li style="margin:6px 0;">📦 <a style="color:#2563eb;text-decoration:none;" href="https://github.com/codervisor/lean-spec">GitHub</a></li>
+<li style="margin:6px 0;">📚 <a style="color:#2563eb;text-decoration:none;" href="https://www.lean-spec.dev/">文档</a></li>
+<li style="margin:6px 0;">📊 <a style="color:#2563eb;text-decoration:none;" href="https://www.npmjs.com/package/lean-spec">npm 包</a></li>
+</ul>
+<p style="margin:16px 0;text-align:justify;">有问题、反馈或功能建议？欢迎提 issue 或发起 <a style="color:#2563eb;text-decoration:none;" href="https://github.com/codervisor/lean-spec/discussions">讨论</a>。每一条我都会看。</p>
+<hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
+<p style="margin:16px 0;text-align:justify;">📝 <strong style="font-weight:bold;color:#2563eb;">本文同步发布于我的个人技术博客</strong> <a style="color:#2563eb;text-decoration:none;" href="https://marvinzhang.dev/zh/blog/introducing-leanspec">marvinzhang.dev</a></p>
+<p style="margin:16px 0;text-align:justify;">🔗 <strong style="font-weight:bold;color:#2563eb;">完整文章链接：</strong> <a style="color:#2563eb;text-decoration:none;" href="https://marvinzhang.dev/zh/blog/introducing-leanspec">https://marvinzhang.dev/zh/blog/introducing-leanspec</a></p>
+<p style="margin:16px 0;text-align:justify;">💬 <strong style="font-weight:bold;color:#2563eb;">欢迎访问我的博客了解更多技术文章！</strong></p>
+</section>
