@@ -20,31 +20,33 @@ const SPECS_DIR = 'specs';
 const OUTPUT_DIR = 'static/wechat';
 const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 
-// WeChat inline styles
+// WeChat inline styles — "极客蓝" (Geek Blue) theme
+// Based on: https://github.com/openclaw/skills wechat-article-formatter-pro
 const S = {
-  body: 'font-size:16px;line-height:1.8;color:#333;word-wrap:break-word;',
-  h1: 'font-size:24px;font-weight:bold;margin:32px 0 16px;color:#1a1a1a;',
-  h2: 'font-size:22px;font-weight:bold;margin:28px 0 14px;color:#1a1a1a;border-bottom:2px solid #2563eb;padding-bottom:8px;',
-  h3: 'font-size:18px;font-weight:bold;margin:24px 0 12px;color:#1a1a1a;',
-  h4: 'font-size:16px;font-weight:bold;margin:20px 0 10px;color:#1a1a1a;',
-  p: 'margin:16px 0;text-align:justify;',
-  strong: 'font-weight:bold;color:#2563eb;',
+  body: 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:16px;line-height:1.8;color:#333;word-wrap:break-word;max-width:677px;margin:0 auto;',
+  h1: 'font-size:24px;font-weight:600;margin:30px 0 20px;padding-bottom:15px;border-bottom:3px solid #1890FF;color:#000;',
+  h2: 'font-size:17px;font-weight:bold;margin:20px 0 12px;padding:12px 16px;color:#1890FF;background-color:#E6F7FF;border-radius:8px;border-left:4px solid #1890FF;text-align:justify;',
+  h3: 'font-size:18px;font-weight:600;margin:25px 0 15px;color:#1890FF;',
+  h4: 'font-size:16px;font-weight:600;margin:20px 0 10px;color:#1890FF;',
+  p: 'margin:15px 0;text-align:justify;',
+  strong: 'font-weight:600;color:#1890FF;',
   em: 'font-style:italic;',
-  a: 'color:#2563eb;text-decoration:none;',
-  img: 'max-width:100%;height:auto;display:block;margin:16px auto;border-radius:6px;',
-  blockquote: 'margin:16px 0;padding:12px 20px;background:#f7f8fa;border-left:4px solid #2563eb;color:#555;',
-  code: 'background:#f0f2f5;padding:2px 6px;border-radius:3px;font-size:14px;font-family:Menlo,Monaco,Consolas,monospace;color:#c7254e;',
-  pre: 'background:#282c34;color:#abb2bf;padding:16px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.6;',
-  precode: 'background:none;padding:0;border-radius:0;font-size:13px;font-family:Menlo,Monaco,Consolas,monospace;color:#abb2bf;',
-  table: 'border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;',
-  th: 'border:1px solid #ddd;padding:10px 12px;background:#f7f8fa;font-weight:bold;text-align:left;',
-  td: 'border:1px solid #ddd;padding:10px 12px;',
-  ul: 'margin:16px 0;padding-left:2em;',
-  ol: 'margin:16px 0;padding-left:2em;',
-  li: 'margin:6px 0;',
-  hr: 'border:none;border-top:1px solid #e5e7eb;margin:32px 0;',
+  a: 'color:#1890FF;text-decoration:none;',
+  img: 'max-width:100%;height:auto;display:block;margin:15px auto;border-radius:6px;',
+  blockquote: 'margin:20px 0;padding:12px 15px;background:#E6F7FF;border-left:4px solid #1890FF;color:#666;border-radius:0 8px 8px 0;',
+  blockquotep: 'margin:0;',
+  code: 'background:#E6F7FF;padding:2px 6px;border-radius:3px;font-size:14px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono","Courier New",monospace;color:#1890FF;',
+  pre: 'background:#282c34;padding:15px;border-radius:8px;overflow-x:auto;margin:20px 0;border-left:3px solid #1890FF;',
+  precode: 'background:none;padding:0;border-radius:0;font-size:14px;line-height:1.6;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono","Courier New",monospace;color:#abb2bf;',
+  table: 'width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;overflow:hidden;',
+  th: 'padding:12px;text-align:left;border:1px solid #e0e0e0;background:#E6F7FF;color:#1890FF;font-weight:600;',
+  td: 'padding:12px;text-align:left;border:1px solid #e0e0e0;',
+  ul: 'padding-left:22px;margin:15px 0;',
+  ol: 'padding-left:22px;margin:15px 0;',
+  li: 'margin-bottom:8px;',
+  hr: 'border:none;border-top:2px dashed #BAE0FF;margin:30px 0;',
   // Info box (for ℹ️ blocks)
-  infobox: 'margin:16px 0;padding:12px 20px;background:#eef6ff;border-left:4px solid #2563eb;color:#333;border-radius:0 6px 6px 0;',
+  infobox: 'margin:20px 0;padding:12px 15px;background:#E6F7FF;border-left:4px solid #1890FF;color:#333;border-radius:0 8px 8px 0;',
 };
 
 function createRenderer() {
@@ -75,7 +77,9 @@ function createRenderer() {
     },
     blockquote({ tokens }) {
       const body = this.parser.parse(tokens);
-      return `<blockquote style="${S.blockquote}">${body}</blockquote>\n`;
+      // Replace paragraph margins inside blockquotes with tighter spacing
+      const tightBody = body.replace(/style="[^"]*"/g, `style="${S.blockquotep}"`);
+      return `<blockquote style="${S.blockquote}">${tightBody}</blockquote>\n`;
     },
     code({ text, lang }) {
       const escaped = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -165,9 +169,17 @@ function findWeChatMarkdownFiles(slugFilter) {
   return files;
 }
 
+function fixBoldMarkers(md) {
+  // Fix spaces inside bold markers: `** text **`, `**text **`, `** text**` → `**text**`
+  // Standard markdown requires no spaces adjacent to ** delimiters
+  return md.replace(/\*\*\s+(.*?)\s*\*\*/g, '**$1**')
+           .replace(/\*\*\s*(.*?)\s+\*\*/g, '**$1**');
+}
+
 function convertMarkdownToWeChatHTML(mdContent) {
+  const fixed = fixBoldMarkers(mdContent);
   const marked = new Marked({ renderer: createRenderer() });
-  const html = marked.parse(mdContent);
+  const html = marked.parse(fixed);
   return `<section style="${S.body}">${html}</section>`;
 }
 
