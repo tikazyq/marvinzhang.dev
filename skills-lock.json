@@ -6,6 +6,12 @@
       "sourceType": "github",
       "computedHash": "3aa8074455dca8b414738a5540deb8f724f6ad170bd576ecf4b5e7832944acf2"
     },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+    },
     "leanspec-sdd": {
       "source": "codervisor/lean-spec",
       "sourceType": "github",

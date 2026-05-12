@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cover — why I stopped using Mermaid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #efe6d2;
+    --ink: #161311;
+    --ox: #6f1410;
+    --rust: #8a3a20;
+    --rule: #161311;
+    --muted: #4a423a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#0e0c0a}
+  body{font-family:'Bodoni Moda',serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+
+  .canvas{
+    width:1200px; height:675px; background:var(--cream);
+    position:relative; overflow:hidden;
+    padding:36px 44px;
+  }
+
+  /* paper grain */
+  .canvas::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(rgba(22,19,17,0.05) 1px, transparent 1px) 0 0/3px 3px,
+      radial-gradient(rgba(22,19,17,0.04) 1px, transparent 1px) 1.5px 1.5px/3px 3px;
+    mix-blend-mode:multiply;
+    opacity:0.85;
+  }
+  /* vignette */
+  .canvas::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background: radial-gradient(ellipse at 50% 60%, transparent 55%, rgba(22,19,17,0.16) 100%);
+  }
+
+  /* top bar */
+  .topbar{
+    display:grid; grid-template-columns: 1fr auto 1fr; align-items:center;
+    padding-bottom:14px; border-bottom:1px solid var(--rule);
+    position:relative; z-index:2;
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    letter-spacing:0.22em; text-transform:uppercase; color:var(--ink);
+  }
+  .topbar .l{justify-self:start}
+  .topbar .c{justify-self:center; padding:0 14px}
+  .topbar .r{justify-self:end; color:var(--ox); font-weight:500}
+  .topbar .ornament{
+    display:inline-block; width:10px; height:10px; background:var(--ox);
+    transform:rotate(45deg); margin:0 10px; vertical-align:1px;
+  }
+
+  /* big number */
+  .marker{
+    position:absolute; left:44px; top:108px;
+    font-family:'Bodoni Moda',serif; font-style:italic; font-weight:400;
+    font-size:240px; line-height:0.85; color:var(--ox);
+    letter-spacing:-0.04em;
+    z-index:1;
+    font-variation-settings:"opsz" 96;
+  }
+  .marker .sub{
+    display:block; font-family:'JetBrains Mono',monospace;
+    font-style:normal; font-size:11px; letter-spacing:0.22em;
+    color:var(--ink); margin-top:18px; text-transform:uppercase;
+  }
+
+  /* title block */
+  .title-wrap{
+    position:absolute; left:340px; right:44px; top:120px;
+    z-index:2;
+  }
+  h1{
+    font-family:'Bodoni Moda',serif;
+    font-weight:900; font-size:108px; line-height:0.92;
+    letter-spacing:-0.025em; color:var(--ink);
+    font-variation-settings:"opsz" 96;
+  }
+  h1 .stop{
+    display:inline-block; font-style:italic; font-weight:400;
+    color:var(--ox); position:relative;
+  }
+  h1 .stop::after{
+    content:""; position:absolute; left:0; right:0; bottom:14px;
+    height:6px; background:var(--ox); opacity:0.85;
+  }
+  h1 .mermaid{
+    font-style:italic; font-weight:400; color:var(--ink);
+    border-bottom:6px solid var(--ink);
+    padding-bottom:0;
+  }
+  .kicker{
+    margin-top:22px; font-family:'Bodoni Moda',serif; font-style:italic;
+    font-size:22px; line-height:1.45; color:var(--muted); max-width:680px;
+    font-weight:400;
+  }
+  .kicker em{color:var(--ox); font-style:italic; font-weight:400; border-bottom:1px solid var(--ox);}
+
+  /* bottom strip */
+  .bottom{
+    position:absolute; left:44px; right:44px; bottom:32px;
+    display:grid; grid-template-columns: 1fr auto 1fr; align-items:end;
+    z-index:2;
+  }
+  .byline{
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    letter-spacing:0.22em; text-transform:uppercase; color:var(--ink);
+  }
+  .byline b{ color:var(--ox); font-weight:500 }
+  .seal{
+    justify-self:center; text-align:center;
+    font-family:'Bodoni Moda',serif; font-style:italic; font-size:14px;
+    color:var(--ink); letter-spacing:0.04em;
+  }
+  .seal .rule{
+    width:60px; height:1px; background:var(--ink); margin:6px auto;
+  }
+  .colophon{
+    justify-self:end; text-align:right;
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    letter-spacing:0.22em; text-transform:uppercase; color:var(--muted);
+  }
+  .colophon b{ color:var(--ink); font-weight:500 }
+
+  /* corner ornaments */
+  .corner-orn{
+    position:absolute; width:34px; height:34px; pointer-events:none; z-index:3;
+  }
+  .corner-orn.tl{top:24px; left:24px; border-left:1px solid var(--ink); border-top:1px solid var(--ink)}
+  .corner-orn.tr{top:24px; right:24px; border-right:1px solid var(--ink); border-top:1px solid var(--ink)}
+  .corner-orn.bl{bottom:24px; left:24px; border-left:1px solid var(--ink); border-bottom:1px solid var(--ink)}
+  .corner-orn.br{bottom:24px; right:24px; border-right:1px solid var(--ink); border-bottom:1px solid var(--ink)}
+
+  /* faint hash texture in upper right */
+  .hatch{
+    position:absolute; top:64px; right:44px; width:180px; height:42px;
+    background-image: repeating-linear-gradient(-45deg, var(--ink) 0 1px, transparent 1px 6px);
+    opacity:0.18; z-index:1;
+  }
+
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <span class="corner-orn tl"></span>
+  <span class="corner-orn tr"></span>
+  <span class="corner-orn bl"></span>
+  <span class="corner-orn br"></span>
+
+  <div class="topbar">
+    <div class="l">marvinzhang.dev · essays</div>
+    <div class="c"><span class="ornament"></span>tools &amp; craft<span class="ornament"></span></div>
+    <div class="r">No. 014 · 2026</div>
+  </div>
+
+  <div class="hatch"></div>
+
+  <div class="marker">
+    14
+    <span class="sub">field notes</span>
+  </div>
+
+  <div class="title-wrap">
+    <h1>
+      Why I <span class="stop">stopped</span><br>
+      using <span class="mermaid">Mermaid</span><br>
+      for architecture<br>
+      diagrams.
+    </h1>
+    <p class="kicker">
+      A short defense of <em>hand-coded HTML</em> as a diagram medium — and of letting the model see exactly what it draws.
+    </p>
+  </div>
+
+  <div class="bottom">
+    <div class="byline">
+      <b>by</b> &nbsp; Marvin Zhang &nbsp; · &nbsp; <b>read</b> &nbsp; 7 min
+    </div>
+    <div class="seal">
+      MZ
+      <div class="rule"></div>
+      mmxxvi
+    </div>
+    <div class="colophon">
+      <b>set in</b> Bodoni Moda &amp; JetBrains Mono
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
