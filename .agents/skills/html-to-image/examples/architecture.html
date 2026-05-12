@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>marvinzhang.dev — skill ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #1c1a15;
+    --paper: #f5f0e6;
+    --rule: #2a2620;
+    --accent: #a8431a;
+    --muted: #6e655a;
+    --soft: #e8dfcf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#ece4d3}
+  body{font-family:'Fraunces',Georgia,serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .canvas{
+    width:1360px;height:1080px;background:var(--paper);
+    padding:64px 80px 72px;
+    position:relative;
+    background-image:
+      radial-gradient(rgba(28,26,21,0.035) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+  .canvas::before{
+    content:""; position:absolute; inset:18px;
+    border:1px solid rgba(42,38,32,0.18);
+    pointer-events:none;
+  }
+  .canvas::after{
+    content:""; position:absolute; inset:24px;
+    border:1px solid rgba(42,38,32,0.10);
+    pointer-events:none;
+  }
+  header{
+    display:grid; grid-template-columns: 1fr auto; align-items:end;
+    padding-bottom:18px; border-bottom:1px solid var(--rule);
+    margin-bottom:36px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.22em;
+    text-transform:uppercase; color:var(--muted);
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+    font-size:54px; line-height:1; letter-spacing:-0.01em;
+    font-variation-settings:"opsz" 144;
+  }
+  h1 .amp{color:var(--accent);font-style:italic;font-weight:400}
+  .meta{
+    text-align:right; font-family:'JetBrains Mono',monospace; font-size:11px;
+    color:var(--muted); line-height:1.7;
+  }
+  .meta b{color:var(--ink); font-weight:500}
+
+  .legend{
+    display:flex; gap:28px; align-items:center;
+    font-family:'JetBrains Mono',monospace; font-size:10.5px;
+    color:var(--muted); letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .legend .sw{display:inline-block;width:14px;height:14px;margin-right:8px;vertical-align:-3px;border:1px solid var(--rule)}
+  .sw.author{background:var(--soft)}
+  .sw.skill{background:#fff}
+  .sw.bundle{background:var(--paper);border:1px dashed var(--accent)}
+  .sw.external{background:transparent;border:1px dotted var(--rule)}
+
+  .grid{
+    display:grid;
+    grid-template-columns: 220px 1fr 220px;
+    column-gap: 36px;
+    align-items:start;
+  }
+
+  .col-label{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px;
+    letter-spacing:0.18em; text-transform:uppercase; color:var(--muted);
+    padding-bottom:10px; border-bottom:1px solid rgba(42,38,32,0.25);
+    margin-bottom:18px;
+  }
+  .col-label .n{color:var(--accent); margin-right:8px;}
+
+  /* nodes */
+  .node{
+    background:#fff; border:1px solid var(--rule); padding:14px 16px;
+    margin-bottom:14px;
+    box-shadow: 3px 3px 0 0 rgba(28,26,21,0.08);
+  }
+  .node.author{background:var(--soft); box-shadow: 3px 3px 0 0 rgba(168,67,26,0.18)}
+  .node .nm{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:500;
+    color:var(--ink); letter-spacing:0.01em;
+  }
+  .node .ds{
+    font-family:'Fraunces',serif; font-size:13px; line-height:1.45;
+    color:var(--muted); margin-top:5px; font-style:italic;
+  }
+
+  /* center column: bundles */
+  .bundle{
+    border:1px dashed var(--accent);
+    padding:18px 20px 12px;
+    margin-bottom:18px;
+    position:relative;
+    background: rgba(168,67,26,0.025);
+  }
+  .bundle-title{
+    position:absolute; top:-10px; left:16px; background:var(--paper);
+    padding:0 8px;
+    font-family:'JetBrains Mono',monospace; font-size:10.5px;
+    letter-spacing:0.18em; text-transform:uppercase; color:var(--accent);
+  }
+  .bundle .members{
+    display:flex; flex-wrap:wrap; gap:8px 10px; margin-top:6px;
+  }
+  .pill{
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    padding:4px 9px; border:1px solid var(--rule); background:#fff;
+    color:var(--ink);
+  }
+  .pill.lift{ background:var(--soft) }
+  .bundle .desc{
+    font-family:'Fraunces',serif; font-style:italic; font-size:13px;
+    color:var(--muted); margin-top:10px; line-height:1.5;
+  }
+
+  .pipeline{
+    margin-top:22px; padding-top:18px; border-top:1px solid rgba(42,38,32,0.25);
+  }
+  .pipeline-title{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px;
+    letter-spacing:0.18em; text-transform:uppercase; color:var(--muted);
+    margin-bottom:14px;
+  }
+  .flow{
+    display:grid; grid-template-columns: repeat(7, auto); align-items:center; gap:10px;
+    font-family:'JetBrains Mono',monospace; font-size:11.5px;
+  }
+  .step{
+    border:1px solid var(--rule); padding:9px 12px; background:#fff;
+    white-space:nowrap;
+  }
+  .step.hi{ background:var(--soft); }
+  .arrow{ color:var(--accent); font-weight:700; }
+
+  footer{
+    position:absolute; left:80px; right:80px; bottom:40px;
+    display:flex; justify-content:space-between; align-items:end;
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    color:var(--muted); letter-spacing:0.08em;
+  }
+  footer .fig{color:var(--ink); font-weight:500}
+  footer em{font-style:normal; color:var(--accent)}
+
+  /* delivery column */
+  .delivery .node{ background:transparent; border:1px dotted var(--rule); box-shadow:none}
+
+  .corner{
+    position:absolute; width:18px; height:18px; border:1px solid var(--rule);
+  }
+  .corner.tl{top:-1px;left:-1px;border-right:none;border-bottom:none}
+  .corner.tr{top:-1px;right:-1px;border-left:none;border-bottom:none}
+  .corner.bl{bottom:-1px;left:-1px;border-right:none;border-top:none}
+  .corner.br{bottom:-1px;right:-1px;border-left:none;border-top:none}
+
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <header>
+    <div>
+      <div class="eyebrow">Figure 01 · skill topology · v2026.05</div>
+      <h1>The marvinzhang.dev <span class="amp">&</span> skill ecosystem</h1>
+    </div>
+    <div class="meta">
+      <b>repo</b> tikazyq/marvinzhang.dev<br>
+      <b>install</b> npx skills add &lt;source&gt;<br>
+      <b>plane</b> .agents/skills/ · skills-lock.json
+    </div>
+  </header>
+
+  <div class="legend">
+    <span><span class="sw author"></span>Author-owned</span>
+    <span><span class="sw skill"></span>Vendored skill</span>
+    <span><span class="sw bundle"></span>Convenience bundle</span>
+    <span><span class="sw external"></span>External surface</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- left column: author + foundation -->
+    <div>
+      <div class="col-label"><span class="n">A</span>Author plane</div>
+
+      <div class="node author">
+        <div class="nm">marvinzhang.dev</div>
+        <div class="ds">A bilingual long-form blog on engineering, AI, and product practice.</div>
+      </div>
+      <div class="node author">
+        <div class="nm">writing-style</div>
+        <div class="ds">Voice, cadence, depth — what makes a Marvin post feel like one.</div>
+      </div>
+      <div class="node author">
+        <div class="nm">formatting · localization · quality</div>
+        <div class="ds">Markdown shape, zh/en parity, editorial pass.</div>
+      </div>
+    </div>
+
+    <!-- middle column: skill bundles -->
+    <div>
+      <div class="col-label"><span class="n">B</span>Skill plane</div>
+
+      <div class="bundle">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <div class="bundle-title">blog-common · foundation bundle</div>
+        <div class="members">
+          <span class="pill lift">writing-style</span>
+          <span class="pill lift">formatting</span>
+          <span class="pill lift">localization</span>
+          <span class="pill lift">quality</span>
+        </div>
+        <div class="desc">Loads the foundation skills in one call so a long-form draft inherits the house style without explicit composition.</div>
+      </div>
+
+      <div class="bundle">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <div class="bundle-title">visual plane · pairs on every job</div>
+        <div class="members">
+          <span class="pill">frontend-design</span>
+          <span class="pill">html-to-image</span>
+        </div>
+        <div class="desc"><em style="color:var(--accent);font-style:italic">frontend-design</em> picks the aesthetic; <em style="color:var(--accent);font-style:italic">html-to-image</em> renders HTML/CSS into a crisp 2× PNG. Always together.</div>
+      </div>
+
+      <div class="bundle">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <div class="bundle-title">automation plane</div>
+        <div class="members">
+          <span class="pill">agent-browser</span>
+          <span class="pill">wechat-publish</span>
+          <span class="pill">leanspec-sdd</span>
+        </div>
+        <div class="desc">Headless browser, WeChat 公众号 delivery via Telegram, and spec-driven development for non-trivial features.</div>
+      </div>
+    </div>
+
+    <!-- right column: delivery -->
+    <div class="delivery">
+      <div class="col-label"><span class="n">C</span>Delivery surface</div>
+
+      <div class="node">
+        <div class="nm">/posts (zh · en)</div>
+        <div class="ds">Markdown frontmatter, language-paired files.</div>
+      </div>
+      <div class="node">
+        <div class="nm">cover · figures</div>
+        <div class="ds">PNG assets from the visual plane, dropped beside the post.</div>
+      </div>
+      <div class="node">
+        <div class="nm">公众号 (WeChat)</div>
+        <div class="ds">Hand-off via Telegram for paste into 公众号助手.</div>
+      </div>
+      <div class="node">
+        <div class="nm">marvinzhang.dev (Astro)</div>
+        <div class="ds">Static site build, deployed on push.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pipeline">
+    <div class="pipeline-title">Pipeline · a single post end-to-end</div>
+    <div class="flow">
+      <span class="step hi">draft</span>
+      <span class="arrow">→</span>
+      <span class="step">blog-common</span>
+      <span class="arrow">→</span>
+      <span class="step">frontend-design + html-to-image</span>
+      <span class="arrow">→</span>
+      <span class="step hi">publish · /posts + 公众号</span>
+    </div>
+  </div>
+
+  <footer>
+    <div><span class="fig">Fig. 01</span> &nbsp; Skills are versioned in <em>skills-lock.json</em> and resolved at session start.</div>
+    <div>html-to-image · architecture preset · 2× DPR</div>
+  </footer>
+
+</div>
+</body>
+</html>
