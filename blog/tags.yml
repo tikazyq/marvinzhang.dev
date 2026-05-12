@@ -272,3 +272,23 @@ team-collaboration:
   label: Team Collaboration
   permalink: /team-collaboration
   description: Team collaboration and coordination practices
+
+cybernetics:
+  label: Cybernetics
+  permalink: /cybernetics
+  description: Control, communication, and feedback in systems
+
+system-design:
+  label: System Design
+  permalink: /system-design
+  description: System-level design and architectural thinking
+
+vsm:
+  label: VSM
+  permalink: /vsm
+  description: Stafford Beer's Viable System Model
+
+ai-agents:
+  label: AI Agents
+  permalink: /ai-agents
+  description: AI agent systems, harnesses, and agent-driven workflows

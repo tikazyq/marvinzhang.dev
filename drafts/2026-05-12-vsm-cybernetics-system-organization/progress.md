@@ -28,30 +28,31 @@ Author-supplied prompt pre-settles thesis, outline, and citation targets, so the
 - [x] Citation set pinned (Wiener 1948, Ashby 1956, Conant & Ashby 1970, Beer 1972, Beer 1985, Goodhart 1975 / Strathern 1997)
 - [x] Outline written (see `outline.md`)
 - [x] Figure placeholder format defined
-- [ ] Outline confirmed by author
+- [x] Outline confirmed by author (restructured to 6 sections for accessibility)
 
 ### Phase 2 — Content writing (target: 3,700–4,100 EN words, 3,000–3,400 ZH characters)
 
-Outline restructured for accessibility: 7 sections → 6, with the old §3 (architecture-language survey) folded into §1, and a sustained concrete scenario (agent factory missing a competitor's feature) carrying every abstract term in §3.
+Outline restructured for accessibility: 7 sections → 6, with the old §3 (architecture-language survey) folded into §1, and a sustained concrete scenario (an engineering team whose agent pipeline missed a competitor's feature) carrying every abstract term in §3.
 
 | § | Section | EN draft | ZH draft |
 |---|---------|----------|----------|
-| 1 | Hook — scenario + the question no architecture language answers | ⬜ | ⬜ |
-| 2 | A brief history of cybernetics | ⬜ | ⬜ |
-| 3 | The five VSM levels + algedonic channel (each level revisits the scenario) | ⬜ | ⬜ |
-| 4 | Three counterintuitive points | ⬜ | ⬜ |
-| 5 | Why a projection isn't a model — Conant-Ashby and Goodhart | ⬜ | ⬜ |
-| 6 | A work in progress (footnote) | ⬜ | ⬜ |
-| — | Closing line | ⬜ | ⬜ |
+| 1 | Hook — scenario + the question no architecture language answers | ✅ | ✅ |
+| 2 | A brief history of cybernetics | ✅ | ✅ |
+| 3 | The five VSM levels + algedonic channel (each level revisits the scenario) | ✅ | ✅ |
+| 4 | Three counterintuitive points | ✅ | ✅ |
+| 5 | Why a projection isn't a model — Conant-Ashby and Goodhart | ✅ | ✅ |
+| 6 | A work in progress (footnote) | ✅ | ✅ |
+| — | Closing line | ✅ | ✅ |
 
 ### Phase 3 — Validation & finalisation
-- [ ] `pnpm run validate:zh-bold-source` clean
-- [ ] `pnpm run build` clean
-- [ ] All figure placeholders in correct format
-- [ ] All six core citations linked
-- [ ] Onsager mentioned exactly once, in §7, with no subsystem names
-- [ ] Three counterintuitive points are quotable
-- [ ] ZH reads native (形不同而意同), not literal
+- [x] `pnpm run validate:zh-bold-source` clean (53/53 files pass, 0 issues)
+- [x] `pnpm run build` clean for EN and ZH (no warnings on this article after tags.yml updates)
+- [x] All figure placeholders in correct format (Figure 1 in §3)
+- [x] All six core citations linked (Wikipedia anchors + bibliographic data inline)
+- [x] Onsager mentioned exactly once, in §6, with no subsystem names
+- [x] Three counterintuitive points are quotable
+- [x] ZH reads native (形不同而意同), not literal
+- [ ] `unlisted: true` preserved on both EN and ZH — author flips manually at publish
 
 ## Notes
 
