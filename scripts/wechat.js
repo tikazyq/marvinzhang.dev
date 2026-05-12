@@ -158,8 +158,8 @@ const getStaticImageDir = (articleFileName) => {
   return path.join(STATIC_IMG_DIR, articleFileName, 'wechat');
 };
 
-// Find all blog articles with Mermaid diagrams or JSX components
-const findArticlesWithDiagrams = () => {
+// Find all blog articles, with Mermaid/JSX detection metadata attached
+const findAllArticles = () => {
   const articles = [];
 
   BLOG_DIRS.forEach((blogDir) => {
@@ -178,35 +178,37 @@ const findArticlesWithDiagrams = () => {
         diagrams.push(match[1].trim());
       }
 
-      // Detect JSX components
       const jsxComponents = [];
       const jsxPattern = /<(ProtocolStack|AutomationSpectrum|ToolEcosystem)\s*\/>/g;
       while ((match = jsxPattern.exec(markdownContent)) !== null) {
         jsxComponents.push(match[1]);
       }
 
-      if (diagrams.length > 0 || jsxComponents.length > 0) {
-        const locale = blogDir.includes('/zh/') ? 'zh' : 'en';
-        const fileName = path.parse(filePath).name;
+      const locale = blogDir.includes('/zh/') ? 'zh' : 'en';
+      const fileName = path.parse(filePath).name;
 
-        articles.push({
-          filePath,
-          fileName,
-          locale,
-          title: frontmatter.title || fileName,
-          slug: frontmatter.slug || fileName,
-          diagramCount: diagrams.length,
-          diagrams,
-          jsxComponents,
-          frontmatter,
-          mtime: fs.statSync(filePath).mtime.toISOString()
-        });
-      }
+      articles.push({
+        filePath,
+        fileName,
+        locale,
+        title: frontmatter.title || fileName,
+        slug: frontmatter.slug || fileName,
+        diagramCount: diagrams.length,
+        diagrams,
+        jsxComponents,
+        frontmatter,
+        mtime: fs.statSync(filePath).mtime.toISOString()
+      });
     });
   });
 
   return articles;
 };
+
+// Articles with renderable visual content (Mermaid or JSX components).
+// Used in the default "process all changed articles" flow.
+const findArticlesWithDiagrams = () =>
+  findAllArticles().filter(a => a.diagrams.length > 0 || a.jsxComponents.length > 0);
 
 // List available articles
 if (options.list) {
@@ -255,10 +257,16 @@ const processArticles = async () => {
   ensureDir(`${WECHAT_DIR}/images`);
   
   const cache = loadCache();
-  const articles = findArticlesWithDiagrams();
-  
+  // When the user targets a specific article by slug, search the full blog set
+  // — including articles whose diagrams are already static PNGs and need no
+  // rendering. The default (no slug) flow stays scoped to Mermaid/JSX articles
+  // so the incremental-cache mode doesn't churn through unchanged content.
+  const articles = options.article ? findAllArticles() : findArticlesWithDiagrams();
+
   if (articles.length === 0) {
-    info('No articles with Mermaid diagrams found.');
+    info(options.article
+      ? 'No blog articles found.'
+      : 'No articles with Mermaid diagrams found.');
     return;
   }
   
@@ -438,6 +446,14 @@ const processArticles = async () => {
       /\[([^\]]+)\]\(\/blog\/([^)]+)\)/g,
       (match, linkText, postSlug) => `[${linkText}](${baseUrl}/blog/${postSlug})`
     );
+
+    // Convert relative static-image paths to absolute URLs (for pre-rendered
+    // PNGs embedded as `![alt](/img/blog/...)` — Mermaid/JSX images are
+    // already absolute by this point, so this pass only rewrites static refs)
+    processedContent = processedContent.replace(
+      /!\[([^\]]*)\]\(\/img\/([^)]+)\)/g,
+      (match, alt, imgPath) => `![${alt}](${BASE_URL}/img/${imgPath})`
+    );
     
     // Add footer
     const postUrl = `${baseUrl}/blog/${article.slug}`;
@@ -490,6 +506,7 @@ const processArticles = async () => {
     const parts = [];
     if (diagramFiles.length > 0) parts.push(`${diagramFiles.length} diagrams`);
     if (jsxImageFiles.length > 0) parts.push(`${jsxImageFiles.length} JSX`);
+    if (parts.length === 0) parts.push('text + static images');
     const locationEmoji = outputLocation === 'spec' ? '📋' : '📁';
     log(`✅ ${article.locale.toUpperCase()}: ${article.fileName} (${parts.join(', ')}) ${locationEmoji}`);
   }
