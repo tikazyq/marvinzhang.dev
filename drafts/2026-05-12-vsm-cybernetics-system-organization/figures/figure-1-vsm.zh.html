@@ -20,6 +20,7 @@
     --ink: #1f1f1f;
     --ink-soft: #525252;
     --ink-faint: #8a8a8a;
+    --line: #e0e0e0;
   }
 
   * { box-sizing: border-box; }
@@ -30,88 +31,54 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  .canvas {
-    width: 1360px;
-    padding: 56px 60px 52px 60px;
-    background: var(--canvas);
-  }
+  .canvas { width: 820px; padding: 44px 44px 36px 44px; background: var(--canvas); }
 
-  .header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 32px; gap: 32px; }
+  .header { margin-bottom: 22px; }
   .figno {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 16px; letter-spacing: 0.08em; color: var(--ink-faint);
+    font-size: 14px; letter-spacing: 0.08em; color: var(--ink-faint);
     text-transform: uppercase;
   }
-  h1 {
-    font-size: 34px; font-weight: 600; margin: 6px 0 0 0; color: var(--ink);
-    letter-spacing: -0.005em;
-  }
-  .subtitle {
-    font-size: 18px; color: var(--ink-soft); margin-top: 8px; max-width: 880px; line-height: 1.55;
-  }
+  h1 { font-size: 32px; font-weight: 600; margin: 6px 0 0 0; color: var(--ink); letter-spacing: -0.005em; line-height: 1.3; }
+  .subtitle { font-size: 17px; color: var(--ink-soft); margin-top: 10px; line-height: 1.6; }
+
   .legend {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; color: var(--ink-faint); letter-spacing: 0.06em;
-    text-transform: uppercase; text-align: right;
-  }
-  .legend .row { margin-top: 5px; font-family: 'Noto Sans SC', sans-serif; letter-spacing: 0.02em; text-transform: none; }
-  .swatch { display: inline-block; width: 12px; height: 12px; border: 1px solid; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
-
-  .diagram {
-    margin-top: 8px;
-    display: grid;
-    grid-template-columns: 60px 220px 1fr 1fr 300px;
-    grid-template-rows: repeat(5, 1fr);
-    gap: 18px;
-    position: relative;
-  }
-
-  .row { display: contents; }
-
-  .level-label {
-    grid-column: 2 / 3;
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 18px 20px;
-    border-radius: 12px;
-    border: 2px solid;
-    position: relative;
-    z-index: 2;
-  }
-  .level-label .sn {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 500;
-    font-size: 18px;
-    letter-spacing: 0.04em;
-  }
-  .level-label .name {
-    font-weight: 600;
-    font-size: 28px;
-    margin-top: 4px;
-    letter-spacing: -0.005em;
-  }
-  .level-label .gloss {
-    font-size: 15px;
-    margin-top: 8px;
-    color: var(--ink-soft);
-    line-height: 1.45;
-  }
-
-  .cell {
-    padding: 18px 20px;
-    border-radius: 12px;
+    display: flex; flex-wrap: wrap; gap: 18px;
+    margin-top: 14px;
+    padding: 12px 16px;
     background: #ffffff;
-    border: 1.5px solid #e0e0e0;
-    display: flex; flex-direction: column; justify-content: center;
-    position: relative; z-index: 2;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
   }
-  .cell .label {
-    font-size: 13px; letter-spacing: 0.02em;
-    color: var(--ink-faint);
-    margin-bottom: 6px;
+  .legend .item { display: flex; align-items: center; gap: 8px; }
+  .legend .sw { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid; flex-shrink: 0; }
+  .legend .sw.dash { border-style: dashed; }
+  .legend .stem-icon { width: 14px; height: 14px; flex-shrink: 0; position: relative; }
+  .legend .stem-icon::before {
+    content: ""; position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 3px; background: var(--err-stroke); transform: translateX(-50%);
+    border-radius: 2px;
   }
-  .cell .body {
-    font-size: 19px; color: var(--ink); line-height: 1.55;
-  }
+
+  .stack { position: relative; display: flex; flex-direction: column; gap: 12px; }
+
+  .algedonic { position: absolute; left: -4px; top: 0; bottom: 0; width: 16px; pointer-events: none; }
+  .algedonic .stem { position: absolute; left: 50%; top: 16px; bottom: 16px; width: 3px; background: var(--err-stroke); transform: translateX(-50%); border-radius: 2px; }
+  .algedonic .arrow { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 10px solid var(--err-stroke); }
+  .algedonic .anchor { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 11px; height: 11px; background: var(--err-stroke); border-radius: 50%; }
+  .algedonic .break { position: absolute; left: 50%; transform: translateX(-50%); width: 20px; height: 11px; background: var(--canvas); border-top: 2px solid var(--err-stroke); border-bottom: 2px solid var(--err-stroke); border-radius: 2px; }
+
+  .row { display: grid; grid-template-columns: 180px 1fr 1fr; gap: 12px; margin-left: 26px; }
+
+  .level-label { display: flex; flex-direction: column; justify-content: center; padding: 18px 16px; border-radius: 12px; border: 2px solid; }
+  .level-label .sn { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 18px; letter-spacing: 0.04em; }
+  .level-label .name { font-weight: 600; font-size: 26px; margin-top: 4px; letter-spacing: -0.005em; line-height: 1.1; }
+
+  .cell { padding: 18px 20px; border-radius: 12px; background: #ffffff; border: 1.5px solid var(--line); display: flex; flex-direction: column; justify-content: center; }
+  .cell .tag { font-size: 12px; letter-spacing: 0.04em; color: var(--ink-faint); margin-bottom: 6px; font-weight: 600; }
+  .cell .body { font-size: 17px; color: var(--ink); line-height: 1.55; }
 
   .lvl-s5 .level-label { background: var(--hi-fill);   border-color: var(--hi-stroke);   color: var(--hi-stroke); }
   .lvl-s4 .level-label { background: var(--info-fill); border-color: var(--info-stroke); color: var(--info-stroke); }
@@ -119,114 +86,16 @@
   .lvl-s2 .level-label { background: var(--ok-fill);   border-color: var(--ok-stroke);   color: var(--ok-stroke); }
   .lvl-s1 .level-label { background: var(--neutral-fill); border-color: var(--neutral-stroke); color: var(--neutral-stroke); }
 
-  .algedonic {
-    grid-column: 1 / 2;
-    grid-row: 1 / 6;
-    position: relative;
-    display: flex;
-    align-items: stretch;
-  }
-  .algedonic .stem {
-    position: absolute;
-    left: 50%;
-    top: 36px;
-    bottom: 36px;
-    width: 4px;
-    background: var(--err-stroke);
-    transform: translateX(-50%);
-    border-radius: 2px;
-  }
-  .algedonic .break {
-    position: absolute;
-    left: 50%; transform: translateX(-50%);
-    width: 26px; height: 14px;
-    background: var(--canvas);
-    border-top: 2px solid var(--err-stroke);
-    border-bottom: 2px solid var(--err-stroke);
-    border-radius: 2px;
-  }
-  .algedonic .arrow {
-    position: absolute;
-    left: 50%; top: 22px; transform: translateX(-50%);
-    width: 0; height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 14px solid var(--err-stroke);
-  }
-  .algedonic .anchor {
-    position: absolute;
-    left: 50%; bottom: 22px; transform: translateX(-50%);
-    width: 14px; height: 14px;
-    background: var(--err-stroke);
-    border-radius: 50%;
-  }
-  .algedonic .caption {
-    position: absolute;
-    left: -4px;
-    top: 50%;
-    transform: rotate(-90deg) translate(0, -50%);
-    transform-origin: left top;
-    font-size: 14px;
-    letter-spacing: 0.04em;
-    color: var(--err-stroke);
-    white-space: nowrap;
-    font-weight: 500;
-  }
+  .s3-star { margin-left: 26px; background: #fffaf0; border: 2px dashed var(--warn-stroke); border-radius: 12px; padding: 16px 20px; position: relative; }
+  .s3-star .head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+  .s3-star .badge { font-size: 12px; letter-spacing: 0.04em; color: var(--warn-stroke); font-weight: 600; }
+  .s3-star .label { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 600; color: var(--warn-stroke); }
+  .s3-star .name { font-size: 22px; font-weight: 600; color: var(--warn-stroke); }
+  .s3-star .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
+  .s3-star .role-cell { font-size: 15px; color: var(--ink); line-height: 1.6; }
+  .s3-star .role-cell .role-tag { font-size: 11px; letter-spacing: 0.04em; color: var(--warn-stroke); font-weight: 600; display: block; margin-bottom: 4px; }
 
-  .s3-star {
-    grid-column: 5 / 6;
-    grid-row: 3 / 4;
-    border-radius: 12px;
-    background: #fffaf0;
-    border: 2px dashed var(--warn-stroke);
-    padding: 18px 20px;
-    display: flex; flex-direction: column; justify-content: center;
-    z-index: 2;
-    position: relative;
-  }
-  .s3-star .label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--warn-stroke);
-    margin-bottom: 6px;
-    font-weight: 600;
-  }
-  .s3-star .name {
-    font-weight: 600; font-size: 24px; color: var(--warn-stroke);
-    margin-bottom: 10px;
-  }
-  .s3-star .role { font-size: 15px; color: var(--ink-soft); line-height: 1.6; }
-  .s3-star .role b { color: var(--ink); font-weight: 600; }
-  .s3-star::before {
-    content: "";
-    position: absolute;
-    left: -18px; top: 50%;
-    width: 18px; height: 0;
-    border-top: 2px dashed var(--warn-stroke);
-  }
-
-  .s3-star-caption {
-    grid-column: 5 / 6;
-    grid-row: 3 / 4;
-    align-self: start;
-    margin-top: -26px;
-    font-size: 13px;
-    letter-spacing: 0.04em;
-    color: var(--warn-stroke);
-    z-index: 3;
-    pointer-events: none;
-    font-weight: 500;
-  }
-
-  .footer {
-    margin-top: 26px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid #e5e5e5;
-    padding-top: 16px;
-    font-size: 13px;
-    color: var(--ink-faint);
-    letter-spacing: 0.02em;
-  }
+  .footer { margin-top: 22px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; font-size: 12px; color: var(--ink-faint); letter-spacing: 0.04em; }
   .footer .right { font-family: 'JetBrains Mono', monospace; }
 </style>
 </head>
@@ -234,120 +103,116 @@
   <div class="canvas">
 
     <div class="header">
-      <div>
-        <div class="figno">Figure 01 — 可生存系统模型</div>
-        <h1>五个层级，一条侧通道，一条警报通路</h1>
-        <div class="subtitle">
-          比尔的可生存系统模型映射到一个软件组织。每一层都活在某处——问题只是活在哪里。
-          左边是它在传统工程团队里历史上的角色，右边是在跑 AI 编程智能体的流水线里的对应。
-        </div>
+      <div class="figno">Figure 01 — 可生存系统模型</div>
+      <h1>五个层级，一条侧通道，一条警报通路</h1>
+      <div class="subtitle">
+        每一层都活在某处。左边是它在传统工程团队里历史上的角色，右边是在跑 AI 编程智能体的流水线里的对应。
       </div>
       <div class="legend">
-        <div class="row"><span class="swatch" style="background:var(--err-fill);border-color:var(--err-stroke);"></span>痛快通道（警报路径）</div>
-        <div class="row"><span class="swatch" style="background:#fffaf0;border-color:var(--warn-stroke);"></span>S3* — 侧通道</div>
-        <div class="row"><span class="swatch" style="background:#ffffff;border-color:#e5e5e5;"></span>子系统单元</div>
+        <div class="item"><span class="stem-icon"></span>痛快通道（警报路径）—— S1 → S5，绕过 S2 / S3 / S4</div>
+        <div class="item"><span class="sw dash" style="background:#fffaf0; border-color:var(--warn-stroke);"></span>S3* —— 侧通道（与 S3 平行，不是下属）</div>
       </div>
     </div>
 
-    <div class="diagram">
-
+    <div class="stack">
       <div class="algedonic">
         <div class="arrow"></div>
         <div class="stem"></div>
-        <div class="break" style="top: calc(20% + 10px);"></div>
-        <div class="break" style="top: calc(40% + 10px);"></div>
-        <div class="break" style="top: calc(60% + 10px);"></div>
+        <div class="break" style="top: 22%;"></div>
+        <div class="break" style="top: 42%;"></div>
+        <div class="break" style="top: 72%;"></div>
         <div class="anchor"></div>
-        <div class="caption">痛快通道 · S1 → S5，绕过 S2/S3/S4</div>
       </div>
 
-      <!-- S5 -->
       <div class="row lvl-s5">
         <div class="level-label">
           <div class="sn">S5</div>
           <div class="name">政策</div>
-          <div class="gloss">身份与目的——不可证伪的承诺。</div>
         </div>
         <div class="cell">
-          <div class="label">在传统团队中</div>
+          <div class="tag">传统团队</div>
           <div class="body">创始人发言、公司价值观、高管 All-Hands 反复强调的几个要点。</div>
         </div>
         <div class="cell">
-          <div class="label">在智能体流水线中</div>
-          <div class="body">AGENTS.md、CLAUDE.md、原则文档、架构决策记录（ADR）。</div>
+          <div class="tag">智能体流水线</div>
+          <div class="body">AGENTS.md、CLAUDE.md、原则文档、ADR。</div>
         </div>
       </div>
 
-      <!-- S4 -->
       <div class="row lvl-s4">
         <div class="level-label">
           <div class="sn">S4</div>
           <div class="name">情报</div>
-          <div class="gloss">朝外、朝前——什么本来应该出现在 backlog 上。</div>
         </div>
         <div class="cell">
-          <div class="label">在传统团队中</div>
-          <div class="body">产品、用户研究、销售情报、客户成功、竞品分析。</div>
+          <div class="tag">传统团队</div>
+          <div class="body">产品、用户研究、销售情报、客户成功。</div>
         </div>
         <div class="cell">
-          <div class="label">在智能体流水线中</div>
-          <div class="body"><i>几乎总是不存在的那部分。</i>没有任何器官在留意什么应进入 backlog。</div>
+          <div class="tag">智能体流水线</div>
+          <div class="body"><i>几乎总是不存在的那部分。</i></div>
         </div>
       </div>
 
-      <!-- S3 -->
       <div class="row lvl-s3">
         <div class="level-label">
           <div class="sn">S3</div>
           <div class="name">控制</div>
-          <div class="gloss">此时此地的调度、分配与监督。</div>
         </div>
         <div class="cell">
-          <div class="label">在传统团队中</div>
-          <div class="body">Scrum Master、工程经理——站会、迭代规划、产能分配、阻塞解除。</div>
+          <div class="tag">传统团队</div>
+          <div class="body">Scrum Master、工程经理、迭代规划、产能分配。</div>
         </div>
         <div class="cell">
-          <div class="label">在智能体流水线中</div>
-          <div class="body">DAG 计划器、工作分派策略、会话分诊——多数团队口中的"智能体工具"。</div>
-        </div>
-        <div class="s3-star-caption">侧通道 — 平行，不是下属</div>
-        <div class="s3-star">
-          <div class="label">S3*</div>
-          <div class="name">审计</div>
-          <div class="role"><b>传统场景：</b>SRE、QA、安全审计——在工程汇报链之外。<br/><b>智能体流水线：</b>对路由系统/计划器/监督逻辑的审计，独立于运行它们的人。</div>
+          <div class="tag">智能体流水线</div>
+          <div class="body">DAG 计划器、工作分派策略、会话分诊。</div>
         </div>
       </div>
 
-      <!-- S2 -->
+      <div class="s3-star">
+        <div class="head">
+          <span class="label">S3*</span>
+          <span class="name">审计</span>
+          <span class="badge">—— 侧通道</span>
+        </div>
+        <div class="role-grid">
+          <div class="role-cell">
+            <span class="role-tag">传统团队</span>
+            SRE、QA、安全审计——在工程汇报链之外。
+          </div>
+          <div class="role-cell">
+            <span class="role-tag">智能体流水线</span>
+            对路由系统 / 计划器 / 监督逻辑的审计，独立于运行它们的人。
+          </div>
+        </div>
+      </div>
+
       <div class="row lvl-s2">
         <div class="level-label">
           <div class="sn">S2</div>
           <div class="name">协调</div>
-          <div class="gloss">防止 S1 单元互相踩踏。</div>
         </div>
         <div class="cell">
-          <div class="label">在传统团队中</div>
-          <div class="body">分支策略、PR 评审队列、结对编程协议，以及不成文的规则。</div>
+          <div class="tag">传统团队</div>
+          <div class="body">分支策略、PR 评审队列、结对编程协议。</div>
         </div>
         <div class="cell">
-          <div class="label">在智能体流水线中</div>
-          <div class="body">Git worktree、沙盒化运行时、按请求作用域的 DB fixture、共享写路径上的锁。</div>
+          <div class="tag">智能体流水线</div>
+          <div class="body">Git worktree、沙盒化运行时、共享写路径的锁。</div>
         </div>
       </div>
 
-      <!-- S1 -->
       <div class="row lvl-s1">
         <div class="level-label">
           <div class="sn">S1</div>
           <div class="name">作业</div>
-          <div class="gloss">执行单元——真正在干活的那部分。</div>
         </div>
         <div class="cell">
-          <div class="label">在传统团队中</div>
+          <div class="tag">传统团队</div>
           <div class="body">写代码的开发者、跑测试的进程、执行部署的脚本。</div>
         </div>
         <div class="cell">
-          <div class="label">在智能体流水线中</div>
+          <div class="tag">智能体流水线</div>
           <div class="body">一次智能体会话——一次 coding agent 调用，交付一个合并请求。</div>
         </div>
       </div>
