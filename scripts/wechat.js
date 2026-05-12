@@ -425,8 +425,10 @@ const processArticles = async () => {
     processedContent = processedContent.replace(/^import React from 'react';\s*\n/gm, '');
     processedContent = processedContent.replace(/^export const (?:C|ProtocolStack|AutomationSpectrum|ToolEcosystem)\b[\s\S]*?^};\s*\n/gm, '');
 
-    // Remove truncate markers
-    processedContent = processedContent.replace(/\{\/\*\s*truncate\s*\*\/\}/g, '');
+    // Remove truncate markers and any other MDX/JSX comments. WeChat copy-paste
+    // surfaces these literally if they survive — `{/* ... */}` is treated as
+    // text once the file leaves the MDX renderer.
+    processedContent = processedContent.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
     
     // Convert admonitions
     processedContent = processedContent.replace(
@@ -455,12 +457,39 @@ const processArticles = async () => {
       (match, alt, imgPath) => `![${alt}](${BASE_URL}/img/${imgPath})`
     );
     
+    // Build a References section from all inline links in the body. WeChat
+    // 公众号 renders inline links inconsistently (and strips most external
+    // ones for unverified accounts), so a numbered list at the end with the
+    // URL printed on its own line lets readers see and copy every source.
+    const refs = [];
+    const seenUrls = new Set();
+    // URL portion allows one level of balanced parens so Wikipedia-style URLs
+    // like https://en.wikipedia.org/wiki/Variety_(cybernetics) are captured
+    // intact rather than truncated at the first inner `)`.
+    const linkPattern = /(^|[^!])\[([^\]]+)\]\(([^()]*(?:\([^()]*\)[^()]*)*)\)/g;
+    let linkMatch;
+    while ((linkMatch = linkPattern.exec(processedContent)) !== null) {
+      // Strip markdown emphasis (*italic*, **bold**, `code`) from the label so
+      // reference entries read as plain prose, not as raw markdown.
+      const text = linkMatch[2].trim().replace(/[\*_`]+/g, '').trim();
+      const url = linkMatch[3].trim();
+      // Skip anchor-only links and duplicates
+      if (!url || url.startsWith('#') || seenUrls.has(url)) continue;
+      seenUrls.add(url);
+      refs.push({ text, url });
+    }
+    if (refs.length > 0) {
+      const refHeader = article.locale === 'zh' ? '\n\n## 参考资料\n\n' : '\n\n## References\n\n';
+      const refList = refs.map((r, i) => `${i + 1}. ${r.text}\n   ${r.url}`).join('\n\n');
+      processedContent += refHeader + refList;
+    }
+
     // Add footer
     const postUrl = `${baseUrl}/blog/${article.slug}`;
     const footer = article.locale === 'zh'
       ? `\n\n---\n\n📝 **本文同步发布于我的个人技术博客** [marvinzhang.dev](${postUrl})\n\n🔗 **完整文章链接：** ${postUrl}\n\n💬 **欢迎访问我的博客了解更多技术文章！**`
       : `\n\n---\n\n📝 **Originally published on my personal blog** [marvinzhang.dev](${postUrl})\n\n🔗 **Full article link:** ${postUrl}\n\n💬 **Visit my blog for more tech articles!**`;
-    
+
     processedContent += footer;
     
     // Determine output path: spec folder if exists, otherwise .temp/wechat
