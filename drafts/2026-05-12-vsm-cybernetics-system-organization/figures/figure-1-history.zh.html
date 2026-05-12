@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 4 — 控制论简史</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;        --info-stroke: #01579b;
+    --warn-fill: #fff3e0;        --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;        --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;        --hi-stroke:   #7b1fa2;
+    --err-stroke:  #c62828;
+
+    --canvas: #fafafa;
+    --ink: #1f1f1f;
+    --ink-soft: #525252;
+    --ink-faint: #8a8a8a;
+    --line: #e0e0e0;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .canvas { width: 820px; padding: 44px 44px 36px 44px; background: var(--canvas); }
+
+  .header { margin-bottom: 32px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; letter-spacing: 0.08em; color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  h1 { font-size: 32px; font-weight: 600; margin: 6px 0 0 0; color: var(--ink); letter-spacing: -0.005em; line-height: 1.3; }
+  .subtitle { font-size: 17px; color: var(--ink-soft); margin-top: 10px; line-height: 1.6; }
+
+  .timeline { position: relative; padding-left: 100px; }
+  .timeline::before {
+    content: ""; position: absolute;
+    left: 84px; top: 14px; bottom: 14px;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--info-stroke), var(--hi-stroke), var(--warn-stroke), var(--ok-stroke));
+    border-radius: 2px;
+  }
+
+  .entry { position: relative; margin-bottom: 26px; }
+  .entry:last-child { margin-bottom: 0; }
+
+  .entry .year {
+    position: absolute; left: -100px; top: 16px; width: 76px;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600; font-size: 26px; color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+
+  .entry .dot {
+    position: absolute; left: -22px; top: 22px;
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 3px solid #ffffff; z-index: 2;
+  }
+  .entry.wiener .dot  { background: var(--info-stroke);  box-shadow: 0 0 0 2px var(--info-stroke); }
+  .entry.ashby .dot   { background: var(--hi-stroke);    box-shadow: 0 0 0 2px var(--hi-stroke); }
+  .entry.cashby .dot  { background: var(--warn-stroke);  box-shadow: 0 0 0 2px var(--warn-stroke); }
+  .entry.beer .dot    { background: var(--ok-stroke);    box-shadow: 0 0 0 2px var(--ok-stroke); }
+
+  .entry .card { border: 1.5px solid; border-radius: 12px; padding: 18px 22px; background: #ffffff; }
+  .entry.wiener .card { border-color: var(--info-stroke); background: #f4faff; }
+  .entry.ashby .card  { border-color: var(--hi-stroke);   background: #faf3fb; }
+  .entry.cashby .card { border-color: var(--warn-stroke); background: #fffaf2; }
+  .entry.beer .card   { border-color: var(--ok-stroke);   background: #f3faf4; }
+
+  .entry .author { font-size: 20px; font-weight: 600; color: var(--ink); letter-spacing: -0.005em; line-height: 1.3; }
+  .entry .work { font-size: 14px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  .entry .work i { font-style: italic; }
+  .entry .concept { font-size: 16px; color: var(--ink); margin-top: 12px; line-height: 1.7; }
+  .entry .concept b { font-weight: 600; }
+  .entry.wiener .concept b  { color: var(--info-stroke); }
+  .entry.ashby .concept b   { color: var(--hi-stroke); }
+  .entry.cashby .concept b  { color: var(--warn-stroke); }
+  .entry.beer .concept b    { color: var(--ok-stroke); }
+
+  .entry .quote {
+    margin-top: 8px; padding-left: 12px;
+    border-left: 3px solid var(--line);
+    font-size: 14px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .takeaway {
+    margin-top: 24px;
+    padding: 16px 20px; border-radius: 12px;
+    background: #fffdf0;
+    border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.7; color: var(--ink);
+  }
+  .takeaway b { color: var(--err-stroke); }
+
+  .footer {
+    margin-top: 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+  .footer .right { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+
+    <div class="header">
+      <div class="figno">Figure 01 — 控制论简史</div>
+      <h1>从反馈到可生存系统，1948–1985</h1>
+      <div class="subtitle">
+        四部著作，四十年时间。每一部都把前一部触不到的地方往前推一寸：反馈 → 控制器需要多大 → 控制器要长什么样 → 它怎样在组织规模上落地。
+      </div>
+    </div>
+
+    <div class="timeline">
+
+      <div class="entry wiener">
+        <div class="year">1948</div>
+        <div class="dot"></div>
+        <div class="card">
+          <div class="author">Norbert Wiener</div>
+          <div class="work"><i>Cybernetics: Or Control and Communication in the Animal and the Machine</i></div>
+          <div class="concept"><b>反馈是基本原语。</b>同一套数学，能描述恒温器、胰腺、市场、组织。</div>
+          <div class="quote">"控制与通信"成为一个跨学科主题——贯穿动物与机器。</div>
+        </div>
+      </div>
+
+      <div class="entry ashby">
+        <div class="year">1956</div>
+        <div class="dot"></div>
+        <div class="card">
+          <div class="author">W. Ross Ashby</div>
+          <div class="work"><i>An Introduction to Cybernetics</i></div>
+          <div class="concept"><b>可变性律。</b>控制器的可变性必须不小于被控对象的可变性——否则总有它吸收不了的扰动。</div>
+          <div class="quote">"只有可变性能摧毁可变性。"这是数量地板。</div>
+        </div>
+      </div>
+
+      <div class="entry cashby">
+        <div class="year">1970</div>
+        <div class="dot"></div>
+        <div class="card">
+          <div class="author">Roger Conant & W. Ross Ashby</div>
+          <div class="work"><i>Every Good Regulator of a System Must Be a Model of That System</i></div>
+          <div class="concept"><b>模型定理。</b>控制器内部必须有一种结构，能镜像它所控制的系统。艾什比说"多大"，这里说"长什么样"。</div>
+          <div class="quote">查表式响应不够。调节器本身必须是模型。</div>
+        </div>
+      </div>
+
+      <div class="entry beer">
+        <div class="year">1972<br/><span style="font-size:13px;color:var(--ink-soft);">& 1985</span></div>
+        <div class="dot"></div>
+        <div class="card">
+          <div class="author">Stafford Beer</div>
+          <div class="work"><i>Brain of the Firm</i>（1972）·<i>Diagnosing the System for Organizations</i>（1985）</div>
+          <div class="concept"><b>可生存系统模型（VSM）。</b>五个递归嵌套的子系统 + 审计 + 警报。控制论在组织规模上的样子。</div>
+          <div class="quote">不是用来照抄的蓝图——是用来诊断的镜子。</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="takeaway">
+      <b>那条没接住的线索。</b>控制论问的是：一个系统怎样在干扰中保住自己的身份。软件架构在过去二十年里问的是另一个问题：代码该如何切分。AI 智能体系统让前一个问题再也回避不下去。
+    </div>
+
+    <div class="footer">
+      <div>Wiener 1948 · Ashby 1956 · Conant & Ashby 1970 · Beer 1972, 1985</div>
+      <div class="right">marvinzhang.dev · figure-1-history</div>
+    </div>
+
+  </div>
+</body>
+</html>

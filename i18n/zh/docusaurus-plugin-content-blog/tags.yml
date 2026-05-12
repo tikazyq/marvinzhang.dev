@@ -272,3 +272,23 @@ team-collaboration:
   label: 团队协作
   permalink: /team-collaboration
   description: 团队协作和协调实践
+
+cybernetics:
+  label: 控制论
+  permalink: /cybernetics
+  description: 系统中的控制、通信与反馈
+
+system-design:
+  label: 系统设计
+  permalink: /system-design
+  description: 系统级设计与架构思维
+
+vsm:
+  label: VSM
+  permalink: /vsm
+  description: 斯塔福德·比尔的可生存系统模型
+
+ai-agents:
+  label: AI 智能体
+  permalink: /ai-agents
+  description: AI 智能体系统、harness 与智能体驱动的工作流

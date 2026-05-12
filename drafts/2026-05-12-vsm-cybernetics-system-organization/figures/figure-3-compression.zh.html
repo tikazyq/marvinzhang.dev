@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 2 — 结构压缩与投影压缩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-stroke: #01579b;
+    --warn-stroke: #e65100;
+    --ok-stroke:   #2e7d32;
+    --hi-stroke:   #7b1fa2;
+    --err-stroke:  #c62828;
+
+    --canvas: #fafafa;
+    --ink: #1f1f1f;
+    --ink-soft: #525252;
+    --ink-faint: #8a8a8a;
+    --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .canvas {
+    width: 820px;
+    padding: 44px 44px 36px 44px;
+    background: var(--canvas);
+  }
+
+  .header { margin-bottom: 26px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; letter-spacing: 0.08em; color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: 32px; font-weight: 600; margin: 6px 0 0 0; color: var(--ink);
+    letter-spacing: -0.005em; line-height: 1.3;
+  }
+  .subtitle {
+    font-size: 18px; color: var(--ink-soft); margin-top: 10px; line-height: 1.6;
+  }
+
+  .cards { display: flex; flex-direction: column; gap: 20px; }
+  .card {
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    background: #ffffff;
+    padding: 22px 24px;
+  }
+  .card .domain {
+    font-size: 13px; letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  .card .heading {
+    font-size: 24px; font-weight: 600; color: var(--ink);
+    margin-bottom: 16px;
+    letter-spacing: -0.005em;
+    line-height: 1.4;
+  }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .side {
+    border-radius: 10px;
+    padding: 18px 18px 16px 18px;
+  }
+  .side.projection { background: #fff3e0; border: 1.5px solid var(--warn-stroke); }
+  .side.structure  { background: #f3e5f5; border: 1.5px solid var(--hi-stroke); }
+
+  .side .tag {
+    font-size: 12px; letter-spacing: 0.04em;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .side.projection .tag { color: var(--warn-stroke); }
+  .side.structure .tag  { color: var(--hi-stroke); }
+
+  .number {
+    font-family: 'Inter', sans-serif;
+    font-size: 44px; font-weight: 700; color: var(--ink);
+    line-height: 1.0; margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .number .unit { font-size: 20px; font-weight: 500; color: var(--ink-soft); margin-left: 4px; }
+  .caption {
+    font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-top: 6px;
+  }
+
+  .bodycomp {
+    display: flex; height: 32px; border-radius: 6px; overflow: hidden;
+    margin-top: 4px; margin-bottom: 10px;
+    border: 1px solid var(--line);
+  }
+  .bodycomp .seg { display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: #fff; }
+  .bodycomp .muscle { background: #6d4c8a; }
+  .bodycomp .fat    { background: #b88c5a; }
+  .bodycomp .water  { background: #3b7ea1; }
+  .bodycomp .bone   { background: #888; }
+  .bodycomp-labels { display: flex; gap: 10px; font-size: 12px; color: var(--ink-soft); flex-wrap: wrap; margin-top: 2px; }
+  .bodycomp-labels .key { display: inline-flex; align-items: center; gap: 5px; }
+  .bodycomp-labels .sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  .freedom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+  .freedom-row { font-size: 13px; color: var(--ink); }
+  .freedom-row .name { font-weight: 500; color: var(--ink); }
+  .freedom-row .bar {
+    height: 7px; background: #f3e5f5; border-radius: 4px; margin-top: 4px; overflow: hidden;
+    border: 1px solid #e1d0ea;
+  }
+  .freedom-row .fill { height: 100%; background: var(--hi-stroke); border-radius: 4px; }
+  .freedom-row .meta { font-size: 11px; color: var(--ink-faint); margin-top: 2px; }
+
+  .matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .matrix .cell {
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+    background: #f0e3f5;
+    border: 1px solid #e1d0ea;
+  }
+  .matrix .cell.l1 { background: #f3e5f5; }
+  .matrix .cell.l2 { background: #dcc5ec; }
+  .matrix .cell.l3 { background: #b794d2; }
+  .matrix .cell.l4 { background: #7b1fa2; }
+  .matrix-legend {
+    font-size: 12px; color: var(--ink-soft); margin-top: 8px;
+    display: flex; justify-content: space-between;
+    letter-spacing: 0.04em;
+  }
+
+  .takeaway {
+    margin-top: 18px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: #fffdf0;
+    border-left: 4px solid var(--err-stroke);
+    font-size: 16px; line-height: 1.7; color: var(--ink);
+  }
+  .takeaway b { color: var(--err-stroke); }
+
+  .footer {
+    margin-top: 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+  .footer .right { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+
+    <div class="header">
+      <div class="figno">Figure 03 — 模型 vs. 测量</div>
+      <h1>结构压缩 vs 投影压缩</h1>
+      <div class="subtitle">
+        三件日常物事，三组对照。每一组左边是一个有用的数字，右边是这个数字所压缩的那个结构。
+        那个数字是真实的，是有用的，但 *不是* 它所压缩的那个对象本身。
+      </div>
+    </div>
+
+    <div class="cards">
+
+      <!-- 1. 身体成分 -->
+      <div class="card">
+        <div class="domain">身体</div>
+        <div class="heading">体重秤 ≠ 身体成分</div>
+        <div class="compare">
+          <div class="side projection">
+            <div class="tag">投影</div>
+            <div class="number">74<span class="unit">kg</span></div>
+            <div class="caption">一个数字。秤把你皮肤之下发生的一切，压缩成它。</div>
+          </div>
+          <div class="side structure">
+            <div class="tag">结构</div>
+            <div class="bodycomp">
+              <div class="seg muscle" style="width: 42%">42%</div>
+              <div class="seg fat"    style="width: 22%">22%</div>
+              <div class="seg water"  style="width: 30%">30%</div>
+              <div class="seg bone"   style="width: 6%"></div>
+            </div>
+            <div class="bodycomp-labels">
+              <span class="key"><span class="sw" style="background:#6d4c8a"></span>肌肉</span>
+              <span class="key"><span class="sw" style="background:#b88c5a"></span>脂肪</span>
+              <span class="key"><span class="sw" style="background:#3b7ea1"></span>水分</span>
+              <span class="key"><span class="sw" style="background:#888"></span>骨骼</span>
+            </div>
+            <div class="caption">数字往下走，镜子里的轮廓常常没什么变化。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 财务自由 -->
+      <div class="card">
+        <div class="domain">钱</div>
+        <div class="heading">薪资 ≠ 财务自由</div>
+        <div class="compare">
+          <div class="side projection">
+            <div class="tag">投影</div>
+            <div class="number">$180<span class="unit">k/年</span></div>
+            <div class="caption">一个数字。HR 写在 offer letter 上的那个。</div>
+          </div>
+          <div class="side structure">
+            <div class="tag">结构</div>
+            <div class="freedom-grid">
+              <div class="freedom-row">
+                <div class="name">负债压力</div>
+                <div class="bar"><div class="fill" style="width: 70%"></div></div>
+                <div class="meta">高</div>
+              </div>
+              <div class="freedom-row">
+                <div class="name">生活成本</div>
+                <div class="bar"><div class="fill" style="width: 85%"></div></div>
+                <div class="meta">高</div>
+              </div>
+              <div class="freedom-row">
+                <div class="name">被动收入</div>
+                <div class="bar"><div class="fill" style="width: 12%"></div></div>
+                <div class="meta">低</div>
+              </div>
+              <div class="freedom-row">
+                <div class="name">时间支配</div>
+                <div class="bar"><div class="fill" style="width: 25%"></div></div>
+                <div class="meta">低</div>
+              </div>
+            </div>
+            <div class="caption" style="margin-top:10px;">数字相同的两个工程师，自由度可以差到天上去。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 经验 -->
+      <div class="card">
+        <div class="domain">职业</div>
+        <div class="heading">工龄 ≠ 经验</div>
+        <div class="compare">
+          <div class="side projection">
+            <div class="tag">投影</div>
+            <div class="number">14<span class="unit">年</span></div>
+            <div class="caption">一个数字。LinkedIn 上显示的那个。</div>
+          </div>
+          <div class="side structure">
+            <div class="tag">结构</div>
+            <div class="matrix">
+              <div class="cell l4"></div><div class="cell l3"></div><div class="cell l2"></div><div class="cell l1"></div><div class="cell l1"></div>
+              <div class="cell l3"></div><div class="cell l4"></div><div class="cell l2"></div><div class="cell l1"></div><div class="cell"></div>
+              <div class="cell l2"></div><div class="cell l3"></div><div class="cell l4"></div><div class="cell l2"></div><div class="cell l1"></div>
+              <div class="cell l1"></div><div class="cell l2"></div><div class="cell l3"></div><div class="cell l4"></div><div class="cell l2"></div>
+            </div>
+            <div class="matrix-legend">
+              <span>← 浅</span>
+              <span>5 个领域</span>
+              <span>深 →</span>
+            </div>
+            <div class="caption" style="margin-top:8px;">十四年的复利成长，或者第一年的经验重复了十四遍。</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="takeaway">
+      <b>两种压缩都有用。</b> 出错的地方，是把投影——那个数字——当成结构本身。Conant-Ashby 要求调节器内部持有右边的东西；SLO 与各种仪表盘，都活在左边。
+    </div>
+
+    <div class="footer">
+      <div>Conant & Ashby（1970）·"每个良好的调节器必须是被控系统的模型"</div>
+      <div class="right">marvinzhang.dev · figure-3-compression</div>
+    </div>
+
+  </div>
+</body>
+</html>

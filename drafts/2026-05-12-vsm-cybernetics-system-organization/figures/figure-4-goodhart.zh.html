@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 3 — 工程中的古德哈特定律</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --warn-stroke: #e65100;
+    --warn-fill:   #fff3e0;
+    --err-stroke:  #c62828;
+    --err-fill:    #ffebee;
+
+    --canvas: #fafafa;
+    --ink: #1f1f1f;
+    --ink-soft: #525252;
+    --ink-faint: #8a8a8a;
+    --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .canvas {
+    width: 820px;
+    padding: 44px 44px 36px 44px;
+    background: var(--canvas);
+  }
+
+  .header { margin-bottom: 24px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; letter-spacing: 0.08em; color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: 32px; font-weight: 600; margin: 6px 0 0 0; color: var(--ink);
+    letter-spacing: -0.005em; line-height: 1.3;
+  }
+  .quote {
+    font-size: 16px; color: var(--ink-soft); margin-top: 10px; line-height: 1.6;
+  }
+  .quote i { font-style: italic; }
+  .quote .src { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-faint); letter-spacing: 0.04em; }
+
+  .cards { display: flex; flex-direction: column; gap: 18px; }
+
+  .card {
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  .card .header-strip {
+    padding: 14px 22px;
+    border-bottom: 1.5px solid var(--line);
+    background: var(--warn-fill);
+  }
+  .card .header-strip .tag {
+    font-size: 12px; letter-spacing: 0.06em;
+    color: var(--warn-stroke); font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .card .header-strip .rule {
+    font-size: 20px; color: var(--ink); font-weight: 500; line-height: 1.4;
+  }
+  .card .header-strip .rule .q { color: var(--warn-stroke); font-weight: 500; }
+
+  .card .body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .card .body > div {
+    padding: 18px 22px;
+  }
+  .card .body .opt {
+    border-right: 1.5px solid var(--line);
+    background: #ffffff;
+  }
+  .card .body .res {
+    background: var(--err-fill);
+  }
+  .card .body .tag {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-faint); font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .card .body .res .tag { color: var(--err-stroke); }
+  .card .body .text {
+    font-size: 15px; color: var(--ink); line-height: 1.7;
+  }
+  .card .body .text code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; background: #f5f5f5; padding: 1px 6px; border-radius: 3px;
+    border: 1px solid var(--line);
+  }
+  .card .body .res .text b { color: var(--err-stroke); font-weight: 600; }
+
+  .takeaway {
+    margin-top: 18px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: #fffdf0;
+    border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.7; color: var(--ink);
+  }
+  .takeaway b { color: var(--err-stroke); }
+
+  .footer {
+    margin-top: 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+  .footer .right { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+
+    <div class="header">
+      <div class="figno">Figure 04 — 工程中的古德哈特</div>
+      <h1>当度量变成目标</h1>
+      <div class="quote">
+        <i>"当一个度量变成目标，它就不再是一个好的度量。"</i>
+        <br/><span class="src">&mdash; Goodhart 1975 · Strathern 1997（广为流传的版本）</span>
+      </div>
+    </div>
+
+    <div class="cards">
+
+      <!-- 1. 覆盖率 -->
+      <div class="card">
+        <div class="header-strip">
+          <div class="tag">规则</div>
+          <div class="rule"><span class="q">"测试覆盖率必须超过 80%"</span></div>
+        </div>
+        <div class="body">
+          <div class="opt">
+            <div class="tag">工程师的反应</div>
+            <div class="text">写一堆 <code>assert(True)</code> 的空测试，把覆盖率的线抬上去。覆盖率确实上升了。</div>
+          </div>
+          <div class="res">
+            <div class="tag">实际部署的</div>
+            <div class="text"><b>覆盖率 84%。</b>缺陷照样存活。指标是绿的，bug 排查队列是满的。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. p99 延迟 -->
+      <div class="card">
+        <div class="header-strip">
+          <div class="tag">规则</div>
+          <div class="rule"><span class="q">"p99 延迟低于 100 毫秒"</span></div>
+        </div>
+        <div class="body">
+          <div class="opt">
+            <div class="tag">工程师的反应</div>
+            <div class="text">慢请求被采样剔除、被边缘丢弃，或者被路由到一条 SLO 更宽松的路径上。</div>
+          </div>
+          <div class="res">
+            <div class="tag">实际部署的</div>
+            <div class="text"><b>仪表盘绿了。</b>用户依旧在等。那条本来会拉爆 SLO 的路径，已经不在被度量的样本里了。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 双评审 -->
+      <div class="card">
+        <div class="header-strip">
+          <div class="tag">规则</div>
+          <div class="rule"><span class="q">"每个 PR 至少两个评审人批准"</span></div>
+        </div>
+        <div class="body">
+          <div class="opt">
+            <div class="tag">工程师的反应</div>
+            <div class="text">评审人之间互相盖章把队列清掉。PR 一小时内就合进去。</div>
+          </div>
+          <div class="res">
+            <div class="tag">实际部署的</div>
+            <div class="text"><b>策略满足了。</b>代码没人读。评审记录变成了纸面流程，不是真正的检查。</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="takeaway">
+      <b>这些规则都不是设计糟糕。</b>它们都是投影——把团队真正关心的某种底层属性，压缩到单一一根轴上的那个数——被当成目标在使用。一旦投影变成目标，系统就会针对这个投影做优化，而这种优化恰恰摧毁了投影作为测量的价值。
+    </div>
+
+    <div class="footer">
+      <div>Goodhart 1975 · Strathern 1997</div>
+      <div class="right">marvinzhang.dev · figure-4-goodhart</div>
+    </div>
+
+  </div>
+</body>
+</html>

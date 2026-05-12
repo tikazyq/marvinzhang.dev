@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 1 — 可生存系统模型与痛快通道</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;        --info-stroke: #01579b;
+    --warn-fill: #fff3e0;        --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;        --ok-stroke:   #2e7d32;
+    --err-fill:  #ffebee;        --err-stroke:  #c62828;
+    --hi-fill:   #f3e5f5;        --hi-stroke:   #7b1fa2;
+
+    --neutral-fill: #f5f5f5;
+    --neutral-stroke: #525252;
+    --canvas: #fafafa;
+    --ink: #1f1f1f;
+    --ink-soft: #525252;
+    --ink-faint: #8a8a8a;
+    --line: #e0e0e0;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .canvas { width: 820px; padding: 44px 44px 36px 44px; background: var(--canvas); }
+
+  .header { margin-bottom: 22px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; letter-spacing: 0.08em; color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  h1 { font-size: 32px; font-weight: 600; margin: 6px 0 0 0; color: var(--ink); letter-spacing: -0.005em; line-height: 1.3; }
+  .subtitle { font-size: 17px; color: var(--ink-soft); margin-top: 10px; line-height: 1.6; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 18px;
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .legend .item { display: flex; align-items: center; gap: 8px; }
+  .legend .sw { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid; flex-shrink: 0; }
+  .legend .sw.dash { border-style: dashed; }
+  .legend .stem-icon { width: 14px; height: 14px; flex-shrink: 0; position: relative; }
+  .legend .stem-icon::before {
+    content: ""; position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 3px; background: var(--err-stroke); transform: translateX(-50%);
+    border-radius: 2px;
+  }
+
+  .stack { position: relative; display: flex; flex-direction: column; gap: 12px; }
+
+  .algedonic { position: absolute; left: -4px; top: 0; bottom: 0; width: 16px; pointer-events: none; }
+  .algedonic .stem { position: absolute; left: 50%; top: 16px; bottom: 16px; width: 3px; background: var(--err-stroke); transform: translateX(-50%); border-radius: 2px; }
+  .algedonic .arrow { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 10px solid var(--err-stroke); }
+  .algedonic .anchor { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 11px; height: 11px; background: var(--err-stroke); border-radius: 50%; }
+  .algedonic .break { position: absolute; left: 50%; transform: translateX(-50%); width: 20px; height: 11px; background: var(--canvas); border-top: 2px solid var(--err-stroke); border-bottom: 2px solid var(--err-stroke); border-radius: 2px; }
+
+  .row { display: grid; grid-template-columns: 180px 1fr 1fr; gap: 12px; margin-left: 26px; }
+
+  .level-label { display: flex; flex-direction: column; justify-content: center; padding: 18px 16px; border-radius: 12px; border: 2px solid; }
+  .level-label .sn { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 18px; letter-spacing: 0.04em; }
+  .level-label .name { font-weight: 600; font-size: 26px; margin-top: 4px; letter-spacing: -0.005em; line-height: 1.1; }
+
+  .cell { padding: 18px 20px; border-radius: 12px; background: #ffffff; border: 1.5px solid var(--line); display: flex; flex-direction: column; justify-content: center; }
+  .cell .tag { font-size: 12px; letter-spacing: 0.04em; color: var(--ink-faint); margin-bottom: 6px; font-weight: 600; }
+  .cell .body { font-size: 17px; color: var(--ink); line-height: 1.55; }
+
+  .lvl-s5 .level-label { background: var(--hi-fill);   border-color: var(--hi-stroke);   color: var(--hi-stroke); }
+  .lvl-s4 .level-label { background: var(--info-fill); border-color: var(--info-stroke); color: var(--info-stroke); }
+  .lvl-s3 .level-label { background: var(--warn-fill); border-color: var(--warn-stroke); color: var(--warn-stroke); }
+  .lvl-s2 .level-label { background: var(--ok-fill);   border-color: var(--ok-stroke);   color: var(--ok-stroke); }
+  .lvl-s1 .level-label { background: var(--neutral-fill); border-color: var(--neutral-stroke); color: var(--neutral-stroke); }
+
+  .s3-star { margin-left: 26px; background: #fffaf0; border: 2px dashed var(--warn-stroke); border-radius: 12px; padding: 16px 20px; position: relative; }
+  .s3-star .head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+  .s3-star .badge { font-size: 12px; letter-spacing: 0.04em; color: var(--warn-stroke); font-weight: 600; }
+  .s3-star .label { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 600; color: var(--warn-stroke); }
+  .s3-star .name { font-size: 22px; font-weight: 600; color: var(--warn-stroke); }
+  .s3-star .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
+  .s3-star .role-cell { font-size: 15px; color: var(--ink); line-height: 1.6; }
+  .s3-star .role-cell .role-tag { font-size: 11px; letter-spacing: 0.04em; color: var(--warn-stroke); font-weight: 600; display: block; margin-bottom: 4px; }
+
+  .footer { margin-top: 22px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; font-size: 12px; color: var(--ink-faint); letter-spacing: 0.04em; }
+  .footer .right { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+
+    <div class="header">
+      <div class="figno">Figure 02 — 可生存系统模型</div>
+      <h1>五个层级，一条侧通道，一条警报通路</h1>
+      <div class="subtitle">
+        每一层都活在某处。左边是它在传统工程团队里历史上的角色，右边是在跑 AI 编程智能体的流水线里的对应。
+      </div>
+      <div class="legend">
+        <div class="item"><span class="stem-icon"></span>痛快通道（警报路径）—— S1 → S5，绕过 S2 / S3 / S4</div>
+        <div class="item"><span class="sw dash" style="background:#fffaf0; border-color:var(--warn-stroke);"></span>S3* —— 侧通道（与 S3 平行，不是下属）</div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="algedonic">
+        <div class="arrow"></div>
+        <div class="stem"></div>
+        <div class="break" style="top: 22%;"></div>
+        <div class="break" style="top: 42%;"></div>
+        <div class="break" style="top: 72%;"></div>
+        <div class="anchor"></div>
+      </div>
+
+      <div class="row lvl-s5">
+        <div class="level-label">
+          <div class="sn">S5</div>
+          <div class="name">政策</div>
+        </div>
+        <div class="cell">
+          <div class="tag">传统团队</div>
+          <div class="body">创始人发言、公司价值观、高管 All-Hands 反复强调的几个要点。</div>
+        </div>
+        <div class="cell">
+          <div class="tag">智能体流水线</div>
+          <div class="body">AGENTS.md、CLAUDE.md、原则文档、ADR。</div>
+        </div>
+      </div>
+
+      <div class="row lvl-s4">
+        <div class="level-label">
+          <div class="sn">S4</div>
+          <div class="name">情报</div>
+        </div>
+        <div class="cell">
+          <div class="tag">传统团队</div>
+          <div class="body">产品、用户研究、销售情报、客户成功。</div>
+        </div>
+        <div class="cell">
+          <div class="tag">智能体流水线</div>
+          <div class="body"><i>几乎总是不存在的那部分。</i></div>
+        </div>
+      </div>
+
+      <div class="row lvl-s3">
+        <div class="level-label">
+          <div class="sn">S3</div>
+          <div class="name">控制</div>
+        </div>
+        <div class="cell">
+          <div class="tag">传统团队</div>
+          <div class="body">Scrum Master、工程经理、迭代规划、产能分配。</div>
+        </div>
+        <div class="cell">
+          <div class="tag">智能体流水线</div>
+          <div class="body">DAG 计划器、工作分派策略、会话分诊。</div>
+        </div>
+      </div>
+
+      <div class="s3-star">
+        <div class="head">
+          <span class="label">S3*</span>
+          <span class="name">审计</span>
+          <span class="badge">—— 侧通道</span>
+        </div>
+        <div class="role-grid">
+          <div class="role-cell">
+            <span class="role-tag">传统团队</span>
+            SRE、QA、安全审计——在工程汇报链之外。
+          </div>
+          <div class="role-cell">
+            <span class="role-tag">智能体流水线</span>
+            对路由系统 / 计划器 / 监督逻辑的审计，独立于运行它们的人。
+          </div>
+        </div>
+      </div>
+
+      <div class="row lvl-s2">
+        <div class="level-label">
+          <div class="sn">S2</div>
+          <div class="name">协调</div>
+        </div>
+        <div class="cell">
+          <div class="tag">传统团队</div>
+          <div class="body">分支策略、PR 评审队列、结对编程协议。</div>
+        </div>
+        <div class="cell">
+          <div class="tag">智能体流水线</div>
+          <div class="body">Git worktree、沙盒化运行时、共享写路径的锁。</div>
+        </div>
+      </div>
+
+      <div class="row lvl-s1">
+        <div class="level-label">
+          <div class="sn">S1</div>
+          <div class="name">作业</div>
+        </div>
+        <div class="cell">
+          <div class="tag">传统团队</div>
+          <div class="body">写代码的开发者、跑测试的进程、执行部署的脚本。</div>
+        </div>
+        <div class="cell">
+          <div class="tag">智能体流水线</div>
+          <div class="body">一次智能体会话——一次 coding agent 调用，交付一个合并请求。</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div>来源：比尔，《企业之脑》（1972）·《组织系统诊断》（1985）</div>
+      <div class="right">marvinzhang.dev · figure-2-vsm</div>
+    </div>
+
+  </div>
+</body>
+</html>
