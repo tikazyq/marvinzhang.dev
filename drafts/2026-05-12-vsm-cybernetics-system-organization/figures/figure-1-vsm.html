@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Figure 1 — The Viable System Model with algedonic channel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Repo semantic palette (prompts/common/formatting.md) */
+    --info-fill: #e1f5fe;        --info-stroke: #01579b;
+    --warn-fill: #fff3e0;        --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;        --ok-stroke:   #2e7d32;
+    --err-fill:  #ffebee;        --err-stroke:  #c62828;
+    --hi-fill:   #f3e5f5;        --hi-stroke:   #7b1fa2;
+
+    --neutral-fill: #f5f5f5;
+    --neutral-stroke: #525252;
+    --canvas: #fafafa;
+    --ink: #1f1f1f;
+    --ink-soft: #525252;
+    --ink-faint: #8a8a8a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .canvas {
+    width: 1360px;
+    padding: 56px 60px 52px 60px;
+    background: var(--canvas);
+  }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.08em; color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: 26px; font-weight: 600; margin: 4px 0 0 0; color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    font-size: 14px; color: var(--ink-soft); margin-top: 6px; max-width: 760px;
+  }
+  .legend {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em;
+    text-transform: uppercase; text-align: right;
+  }
+  .legend .row { margin-top: 4px; }
+  .swatch { display: inline-block; width: 10px; height: 10px; border: 1px solid; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+
+  /* Diagram grid */
+  .diagram {
+    margin-top: 8px;
+    display: grid;
+    /* col 1: algedonic gutter | col 2: level label | col 3: traditional team | col 4: agent pipeline | col 5: S3* lane */
+    grid-template-columns: 52px 180px 1fr 1fr 240px;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 14px;
+    position: relative;
+  }
+
+  .row { display: contents; }
+
+  .level-label {
+    grid-column: 2 / 3;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1.5px solid;
+    position: relative;
+    z-index: 2;
+  }
+  .level-label .sn {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+  .level-label .name {
+    font-weight: 600;
+    font-size: 20px;
+    margin-top: 2px;
+    letter-spacing: -0.005em;
+  }
+  .level-label .gloss {
+    font-size: 12px;
+    margin-top: 4px;
+    color: var(--ink-soft);
+  }
+
+  .cell {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 2;
+  }
+  .cell .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  .cell .body {
+    font-size: 14px; color: var(--ink); line-height: 1.4;
+  }
+
+  /* Per-level color application */
+  .lvl-s5 .level-label { background: var(--hi-fill);   border-color: var(--hi-stroke);   color: var(--hi-stroke); }
+  .lvl-s4 .level-label { background: var(--info-fill); border-color: var(--info-stroke); color: var(--info-stroke); }
+  .lvl-s3 .level-label { background: var(--warn-fill); border-color: var(--warn-stroke); color: var(--warn-stroke); }
+  .lvl-s2 .level-label { background: var(--ok-fill);   border-color: var(--ok-stroke);   color: var(--ok-stroke); }
+  .lvl-s1 .level-label { background: var(--neutral-fill); border-color: var(--neutral-stroke); color: var(--neutral-stroke); }
+
+  /* Algedonic gutter (col 1) */
+  .algedonic {
+    grid-column: 1 / 2;
+    grid-row: 1 / 6;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+  }
+  .algedonic .stem {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    bottom: 30px;
+    width: 3px;
+    background: var(--err-stroke);
+    transform: translateX(-50%);
+    border-radius: 2px;
+  }
+  /* break marks across S4, S3, S2 indicate "bypass" */
+  .algedonic .break {
+    position: absolute;
+    left: 50%; transform: translateX(-50%);
+    width: 22px; height: 12px;
+    background: var(--canvas);
+    border-top: 1.5px solid var(--err-stroke);
+    border-bottom: 1.5px solid var(--err-stroke);
+    border-radius: 2px;
+  }
+  .algedonic .arrow {
+    position: absolute;
+    left: 50%; top: 18px; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid var(--err-stroke);
+  }
+  .algedonic .anchor {
+    position: absolute;
+    left: 50%; bottom: 18px; transform: translateX(-50%);
+    width: 12px; height: 12px;
+    background: var(--err-stroke);
+    border-radius: 50%;
+  }
+  .algedonic .caption {
+    position: absolute;
+    left: -2px;
+    top: 50%;
+    transform: rotate(-90deg) translate(0, -50%);
+    transform-origin: left top;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--err-stroke);
+    white-space: nowrap;
+  }
+
+  /* S3* side channel (col 5) - only on the S3 row */
+  .s3-star {
+    grid-column: 5 / 6;
+    grid-row: 3 / 4;
+    border-radius: 10px;
+    background: #fffaf0;
+    border: 1.5px dashed var(--warn-stroke);
+    padding: 12px 16px;
+    display: flex; flex-direction: column; justify-content: center;
+    z-index: 2;
+    position: relative;
+  }
+  .s3-star .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--warn-stroke);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .s3-star .name {
+    font-weight: 600; font-size: 17px; color: var(--warn-stroke);
+    margin-bottom: 6px;
+  }
+  .s3-star .role { font-size: 12px; color: var(--ink-soft); line-height: 1.45; }
+  .s3-star .role b { color: var(--ink); font-weight: 600; }
+  .s3-star::before {
+    /* Connector line from S3-row right edge to S3* */
+    content: "";
+    position: absolute;
+    left: -14px; top: 50%;
+    width: 14px; height: 0;
+    border-top: 1.5px dashed var(--warn-stroke);
+  }
+
+  /* "side channel" caption above S3* */
+  .s3-star-caption {
+    grid-column: 5 / 6;
+    grid-row: 3 / 4;
+    align-self: start;
+    margin-top: -22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--warn-stroke);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  /* Inter-level signal labels (the small text between rows) */
+  .signals {
+    grid-column: 3 / 5;
+    margin-top: -4px;
+    margin-bottom: -4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    z-index: 1;
+  }
+  .signal {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    background: var(--canvas);
+    padding: 0 8px;
+  }
+  .signal .arr { color: var(--ink-soft); margin: 0 4px; }
+
+  /* Footer */
+  .footer {
+    margin-top: 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+
+    <div class="header">
+      <div>
+        <div class="figno">Figure 01 — Viable System Model</div>
+        <h1>Five levels, one side channel, one alarm path</h1>
+        <div class="subtitle">
+          Beer's Viable System Model rendered against a software organisation. Every level lives somewhere; the question is where.
+          On the left, the role that has historically carried it. On the right, the equivalent in a pipeline driven by AI coding agents.
+        </div>
+      </div>
+      <div class="legend">
+        <div class="row"><span class="swatch" style="background:var(--err-fill);border-color:var(--err-stroke);"></span>Algedonic (alarm) path</div>
+        <div class="row"><span class="swatch" style="background:#fffaf0;border-color:var(--warn-stroke);"></span>S3* — side channel</div>
+        <div class="row"><span class="swatch" style="background:#ffffff;border-color:#e5e5e5;"></span>Subsystem cells</div>
+      </div>
+    </div>
+
+    <div class="diagram">
+
+      <!-- ALGEDONIC GUTTER, spans all 5 rows on col 1 -->
+      <div class="algedonic">
+        <div class="arrow"></div>
+        <div class="stem"></div>
+        <!-- break marks at S4 (row2), S3 (row3), S2 (row4) -->
+        <div class="break" style="top: calc(20% + 10px);"></div>
+        <div class="break" style="top: calc(40% + 10px);"></div>
+        <div class="break" style="top: calc(60% + 10px);"></div>
+        <div class="anchor"></div>
+        <div class="caption">Algedonic · S1 → S5, bypassing S2/S3/S4</div>
+      </div>
+
+      <!-- S5 -->
+      <div class="row lvl-s5">
+        <div class="level-label">
+          <div class="sn">S5</div>
+          <div class="name">Policy</div>
+          <div class="gloss">Identity, purpose — the unfalsifiable commitments.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In a traditional team</div>
+          <div class="body">Founder statements, company values, exec all-hands talking points.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In an agent pipeline</div>
+          <div class="body">AGENTS.md, CLAUDE.md, principles docs, architectural decision records.</div>
+        </div>
+      </div>
+
+      <!-- S4 -->
+      <div class="row lvl-s4">
+        <div class="level-label">
+          <div class="sn">S4</div>
+          <div class="name">Intelligence</div>
+          <div class="gloss">Outward and forward — what should be on the backlog.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In a traditional team</div>
+          <div class="body">Product, user research, sales intel, customer success, competitive analysis.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In an agent pipeline</div>
+          <div class="body"><i>Almost always the part that doesn't exist.</i> No organ for noticing what should enter the backlog.</div>
+        </div>
+      </div>
+
+      <!-- S3 -->
+      <div class="row lvl-s3">
+        <div class="level-label">
+          <div class="sn">S3</div>
+          <div class="name">Control</div>
+          <div class="gloss">Here-and-now scheduling, allocation, supervision.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In a traditional team</div>
+          <div class="body">Scrum master, engineering manager — standups, sprint planning, capacity allocation.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In an agent pipeline</div>
+          <div class="body">DAG planner, work-allocation policy, session triage — what most teams call "agent tooling".</div>
+        </div>
+        <!-- S3* lives in col 5 -->
+        <div class="s3-star-caption">side channel — parallel, not subordinate</div>
+        <div class="s3-star">
+          <div class="label">S3*</div>
+          <div class="name">Audit</div>
+          <div class="role"><b>Traditional:</b> SRE, QA, security review — outside the engineering reporting chain.<br/><b>Agent pipeline:</b> audit of routing/planner/supervisor, independent of the operators.</div>
+        </div>
+      </div>
+
+      <!-- S2 -->
+      <div class="row lvl-s2">
+        <div class="level-label">
+          <div class="sn">S2</div>
+          <div class="name">Coordination</div>
+          <div class="gloss">Keeps S1 units from clobbering each other.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In a traditional team</div>
+          <div class="body">Branch policies, PR review queue, paired-programming protocols, the unspoken rules.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In an agent pipeline</div>
+          <div class="body">Git worktrees, sandboxed runtimes, request-scoped DB fixtures, locks around shared writes.</div>
+        </div>
+      </div>
+
+      <!-- S1 -->
+      <div class="row lvl-s1">
+        <div class="level-label">
+          <div class="sn">S1</div>
+          <div class="name">Operations</div>
+          <div class="gloss">The executing unit — the part that actually does the work.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In a traditional team</div>
+          <div class="body">The developer writing code, the test running, the deploy executing.</div>
+        </div>
+        <div class="cell">
+          <div class="label">In an agent pipeline</div>
+          <div class="body">A single agent session — one coding-agent invocation that ships a pull request.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div>Source: Beer, <i>Brain of the Firm</i> (1972) · <i>Diagnosing the System for Organizations</i> (1985)</div>
+      <div>marvinzhang.dev · figure-1-vsm</div>
+    </div>
+
+  </div>
+</body>
+</html>
