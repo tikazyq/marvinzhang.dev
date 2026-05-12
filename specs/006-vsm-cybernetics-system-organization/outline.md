@@ -1,6 +1,6 @@
 # Outline — VSM × Cybernetics: How Systems Stay Viable
 
-> Aligned with the author; do not re-derive. Word counts are EN targets; ZH compresses to ~85% of EN length per repo localisation norms.
+> Aligned with the author; do not re-derive. Per-section word counts below are EN-only. Overall ZH length target (3,000–3,400 characters) and EN length target (3,400–3,800 words) are pinned in `research.md`.
 
 ---
 
@@ -86,7 +86,7 @@ Will show: five vertically stacked levels (S1 Operations at bottom, S5 Policy at
 - **S3 Control** — here-and-now scheduling and supervision. Anchor: DAG planner, executor, PR/session triage.
 - **S3\* Audit** — a bypass channel that watches S3 without going through it. Anchor: process compliance and appropriateness audit.
 - **S4 Intelligence** — looking outward and forward. Anchor: the system that ingests external requirements and opportunities — project management, RFC intake, user feedback. Whatever translates the world outside the factory into work inside it.
-- **S5 Policy** — identity and purpose. Anchor: CLAUDE.md, PRINCIPLES.md, ADRs — unfalsifiable commitments scattered across the codebase.
+- **S5 Policy** — identity and purpose. Anchor: agent-policy files such as AGENTS.md / CLAUDE.md, principles documents, ADRs — unfalsifiable commitments scattered across the codebase. (These are illustrative artefact *types*, not files that must exist in this repo.)
 - **Algedonic channel** — a direct line from S1 to S5 bypassing S2/S3/S4. The fire alarm — it does not follow procedure.
 
 **Cite**: Beer 1972 for the five-level model; Beer 1985 for the diagnostic stance and the algedonic channel as a structural element.
@@ -163,7 +163,7 @@ Closes the loop with Section 5's third point. The reason S5 cannot collapse into
 
 > I am currently testing this mapping on an agent factory project of my own. The biggest lesson has not been confirmation of VSM's completeness — it has been how visible the model makes what's missing. Particularly S4 and the algedonic channel, the two levels most often dismissed as *not needed*. A separate post will cover the implementation.
 
-No project name. No subsystem names. No tech stack. Cap at 200 words.
+Onsager **is** named, exactly once, in this footnote. What is suppressed is everything *below* the project name: no subsystem names, no tech stack, no implementation detail. Cap at 200 words.
 
 ---
 
