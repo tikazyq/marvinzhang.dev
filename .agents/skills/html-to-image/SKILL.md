@@ -47,7 +47,7 @@ This skill is the **pipeline**. It says nothing about visual style. Before writi
 - frontend-design → *what* the image should look like
 - html-to-image → *how* to render it crisply and deliver it
 
-Both apply on every job.
+Both apply on every job. `frontend-design` ships as a separate skill from Anthropic — install via `npx skills add anthropics/skills@frontend-design` (see [skills.sh/anthropics/skills/frontend-design](https://skills.sh/anthropics/skills/frontend-design)).
 
 ## Workflow
 
