@@ -31,9 +31,9 @@ Ashby's law tells you the controller must be big enough. It does not tell you wh
 
 Cybernetics could have stayed a mathematical discipline. [Stafford Beer](https://en.wikipedia.org/wiki/Stafford_Beer) took it sideways, into the management of organisations, starting in the late 1950s. His central question — *what does it take for an organisation to be viable, to remain itself, under sustained disturbance from its environment?* — was the Ashbyan question one ladder up. *Brain of the Firm* (1972) gave the first complete statement of the **[Viable System Model](https://en.wikipedia.org/wiki/Viable_system_model)**, a structural decomposition of any viable organisation into five recursively nested subsystems, plus an audit channel and an alarm channel. *Diagnosing the System for Organizations* (1985) refined the model and added the diagnostic stance that is the main reason the framework is useful today: VSM is not a blueprint to copy but a mirror to hold up against an organisation — a checklist of *parts that must exist somewhere*. Beer's contention was that an organisation missing any of these subsystems is not unhealthy. It is structurally precluded from staying alive under variety it has not already absorbed.
 
-![Vertical timeline showing the lineage from Wiener 1948 to Beer 1972/1985, with each thinker's central contribution: feedback as a primitive, the Law of Requisite Variety, the Every-Good-Regulator theorem, and the Viable System Model](/img/blog/2026-05-12-vsm-cybernetics-system-organization/figure-4-history.en.png)
+![Vertical timeline showing the lineage from Wiener 1948 to Beer 1972/1985, with each thinker's central contribution: feedback as a primitive, the Law of Requisite Variety, the Every-Good-Regulator theorem, and the Viable System Model](/img/blog/2026-05-12-vsm-cybernetics-system-organization/figure-1-history.en.png)
 
-*Figure 4: The cybernetic lineage in four works. Each one extends what the previous one couldn't quite reach — feedback as the primitive operation; how much control a system needs; what shape the control has to take; how it lives at organisational scale.*
+*Figure 1: The cybernetic lineage in four works. Each one extends what the previous one couldn't quite reach — feedback as the primitive operation; how much control a system needs; what shape the control has to take; how it lives at organisational scale.*
 
 Cybernetics does not ask *what is the system made of*. It asks *how does the system preserve its identity under disturbance*. That second question is what software architecture, for the last two decades, has not been asking — and what AI agent systems make it impossible to keep avoiding.
 
@@ -41,9 +41,9 @@ Cybernetics does not ask *what is the system made of*. It asks *how does the sys
 
 VSM decomposes any viable organisation into five subsystems plus two side channels. The five subsystems form a vertical stack from raw execution at the bottom to identity at the top; the audit channel watches one subsystem laterally, and the alarm channel cuts vertically from bottom to top, bypassing everything between. Beer's *Brain of the Firm* (1972) and *Diagnosing the System for Organizations* (1985) walk through both layers in detail. The translation that follows takes each level twice: first as it has historically lived in a software organisation, then as it shows up in a development pipeline running AI coding agents.
 
-![The Viable System Model with algedonic channel — five levels mapped against a traditional engineering team and an AI agent pipeline, with S3* as a parallel side channel and the algedonic alarm path bypassing S2, S3 and S4](/img/blog/2026-05-12-vsm-cybernetics-system-organization/figure-1-vsm.en.png)
+![The Viable System Model with algedonic channel — five levels mapped against a traditional engineering team and an AI agent pipeline, with S3* as a parallel side channel and the algedonic alarm path bypassing S2, S3 and S4](/img/blog/2026-05-12-vsm-cybernetics-system-organization/figure-2-vsm.en.png)
 
-*Figure 1: The Viable System Model with algedonic channel. Each level is shown as it has historically lived in an engineering team (left column) and as it shows up in a pipeline running AI coding agents (right column). S3\* is drawn as a parallel side channel — not a subordinate of S3 — and the algedonic path runs vertically from S1 directly to S5, bypassing everything between.*
+*Figure 2: The Viable System Model with algedonic channel. Each level is shown as it has historically lived in an engineering team (left column) and as it shows up in a pipeline running AI coding agents (right column). S3\* is drawn as a parallel side channel — not a subordinate of S3 — and the algedonic path runs vertically from S1 directly to S5, bypassing everything between.*
 
 ### S1 — Operations
 
@@ -115,9 +115,9 @@ The clearest way to see what Conant-Ashby requires is not through the formalism.
 
 The pattern is the same in all three: a single number that compresses a structured object down to a value on a single axis. The number is real, it is useful, and it is *not the thing*. Call the kind of compression that preserves the shape of the system **structural compression**. Call the kind that flattens the system onto a single axis **projective compression**. Both are useful. The error is treating the projection as if it were the structure.
 
-![Three life-grounded examples — body composition, financial freedom, experience — each shown twice: a single useful number on one side, the richer structure the number compresses on the other](/img/blog/2026-05-12-vsm-cybernetics-system-organization/figure-2-compression.en.png)
+![Three life-grounded examples — body composition, financial freedom, experience — each shown twice: a single useful number on one side, the richer structure the number compresses on the other](/img/blog/2026-05-12-vsm-cybernetics-system-organization/figure-3-compression.en.png)
 
-*Figure 2: Body, money, career — three everyday objects, each as a projection (left, a single number) and as the structure that number was compressing (right). The structure is what a controller can actually regulate; the projection is what shows up on a dashboard.*
+*Figure 3: Body, money, career — three everyday objects, each as a projection (left, a single number) and as the structure that number was compressing (right). The structure is what a controller can actually regulate; the projection is what shows up on a dashboard.*
 
 Conant-Ashby says, in this language, that a regulator must hold a *structural compression* of the system it regulates — not just a projection. A control loop driven by body weight is not a regulator of body composition. A management system driven by salary is not a regulator of financial freedom. A career system driven by tenure is not a regulator of experience. And — to anticipate the payoff — a software system driven by SLO dashboards is not a regulator of *what the system is for*.
 
@@ -131,9 +131,9 @@ The hard engineering rules every team has lived with for the last decade are tex
 - *"p99 latency must stay under 100 ms"* → slow requests get sampled out, dropped at the edge, or rerouted to a path with looser SLOs; the dashboard turns green, users still wait.
 - *"Every PR needs two approving reviewers"* → reviewers rubber-stamp each other; the policy is satisfied, [the code is unread](/blog/why-your-code-reviews-are-failing-and-how-to-fix-them).
 
-![Three engineering rules — coverage threshold, p99 latency SLO, two-reviewer requirement — each shown with the rule, the optimisation engineers actually perform, and the result that ships](/img/blog/2026-05-12-vsm-cybernetics-system-organization/figure-3-goodhart.en.png)
+![Three engineering rules — coverage threshold, p99 latency SLO, two-reviewer requirement — each shown with the rule, the optimisation engineers actually perform, and the result that ships](/img/blog/2026-05-12-vsm-cybernetics-system-organization/figure-4-goodhart.en.png)
 
-*Figure 3: A rule is set in good faith (top of each card). Engineers optimise for the rule (left). What ships is a green metric and an unchanged underlying problem (right). The pattern is structurally guaranteed once a projection becomes a target — a [well-documented phenomenon](https://jellyfish.co/blog/goodharts-law-in-software-engineering-and-how-to-avoid-gaming-your-metrics/) the industry has been working through for years.*
+*Figure 4: A rule is set in good faith (top of each card). Engineers optimise for the rule (left). What ships is a green metric and an unchanged underlying problem (right). The pattern is structurally guaranteed once a projection becomes a target — a [well-documented phenomenon](https://jellyfish.co/blog/goodharts-law-in-software-engineering-and-how-to-avoid-gaming-your-metrics/) the industry has been working through for years.*
 
 None of these rules was designed badly. Each is a projection — a single-axis compression of the underlying property the team cared about — being used as a target. Once a projection becomes a target, the system optimises for the projection, and the optimisation destroys the projection's value as a measurement. The harder the team pushes the metric, the further the underlying property drifts.
 
@@ -152,7 +152,7 @@ The implication for AI agent systems is doubly sharp. Language models, in their 
 
 ## A work in progress
 
-I am currently applying this framework to a project of my own — *Onsager* — that builds AI agent pipelines for software development. The biggest lesson has not been confirmation of VSM's completeness, but how visible the model makes what's missing. Two levels in particular — S4 and the algedonic channel, the ones most often dismissed as "not needed" — are precisely the ones whose absence reliably shows up later as the failure modes described in §4. The work is early, and what I have learned applies mainly to my own context, but the framework has been useful enough at the diagnostic stage that I want to flag it before the implementation post lands. That piece will come when it is ready.
+I am currently applying this framework to a project of my own — [*Onsager*](https://github.com/onsager-ai/onsager) — that builds AI agent pipelines for software development. The biggest lesson has not been confirmation of VSM's completeness, but how visible the model makes what's missing. Two levels in particular — S4 and the algedonic channel, the ones most often dismissed as "not needed" — are precisely the ones whose absence reliably shows up later as the failure modes described in §4. The work is early, and what I have learned applies mainly to my own context, but the framework has been useful enough at the diagnostic stage that I want to flag it before the implementation post lands. That piece will come when it is ready.
 
 ---
 
