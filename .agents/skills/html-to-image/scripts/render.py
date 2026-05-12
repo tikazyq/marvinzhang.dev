@@ -3,8 +3,8 @@
 Render an HTML file to PNG using Playwright at 2x DPR.
 
 Usage:
-    python render.py <html_path> [--preset NAME] [--width W --height H]
-                     [--out PATH] [--full-page] [--selector SEL]
+    python scripts/render.py <html_path> [--preset NAME] [--width W --height H]
+                             [--out PATH] [--full-page] [--selector SEL]
 
 Presets (viewport in CSS pixels; output is 2x):
     architecture   1360 x 1080   dense layered diagrams, leadership-grade
@@ -16,8 +16,8 @@ Presets (viewport in CSS pixels; output is 2x):
 The script:
   - Renders at device_scale_factor=2 (crisp on retina + PPT zoom)
   - Waits networkidle + 2000ms for web fonts to settle (critical for IBM Plex etc.)
-  - By default crops to .canvas if present, else .container, else full page.
-    Override with --selector or --full-page.
+  - By default crops to .canvas if present, else .container, else main,
+    else full page. Override with --selector or --full-page.
 """
 
 import argparse
@@ -47,7 +47,7 @@ async def render(html_path: Path, viewport: tuple[int, int], out_path: Path,
             viewport={"width": width, "height": height},
             device_scale_factor=2,
         )
-        await page.goto(f"file://{html_path.resolve()}")
+        await page.goto(html_path.resolve().as_uri())
         await page.wait_for_load_state("networkidle")
         # Web fonts (Google Fonts, etc.) often paint after networkidle.
         # 2000ms is empirically enough for IBM Plex / Inter / system fonts.
@@ -65,7 +65,8 @@ async def render(html_path: Path, viewport: tuple[int, int], out_path: Path,
         if target:
             await target.screenshot(path=str(out_path))
             box = await target.bounding_box()
-            css_dims = f"{int(box['width'])}x{int(box['height'])}"
+            css_dims = (f"{int(box['width'])}x{int(box['height'])}"
+                        if box else "unknown (element not visible)")
         else:
             await page.screenshot(path=str(out_path), full_page=True)
             css_dims = f"{width}x{height} (full page)"
@@ -101,11 +102,15 @@ def main() -> int:
         viewport = PRESETS[args.preset]
     elif args.width and args.height:
         viewport = (args.width, args.height)
+    elif args.width or args.height:
+        print("error: --width and --height must be given together", file=sys.stderr)
+        return 1
     else:
         viewport = PRESETS["architecture"]
         print(f"  (no preset/dims given, using 'architecture' default)")
 
     out_path = Path(args.out) if args.out else html_path.with_suffix(".png")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
 
     asyncio.run(render(html_path, viewport, out_path, args.full_page, args.selector))
     return 0

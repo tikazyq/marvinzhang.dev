@@ -9,7 +9,7 @@ A workflow for turning a hand-coded HTML file into a high-resolution PNG. The sk
 
 ## Setup
 
-`scripts/render.py` requires **Python 3** + the **Playwright Python package** + the **Chromium browser binaries** Playwright manages itself.
+`scripts/render.py` requires **Python 3.10+** (uses `X | Y` union and `tuple[int, int]` builtin-generic typing) + the **Playwright Python package** + the **Chromium browser binaries** Playwright manages itself.
 
 Quick check (this both imports the module and launches Chromium — if it prints `ready`, you're done):
 
