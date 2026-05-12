@@ -15,6 +15,8 @@ Then a competitor ships a feature. It is not a clever feature. Their users had b
 
 The honest answer is: no part. Not because someone forgot to build it, but because the team's architecture vocabulary has no word for it.
 
+{/* truncate */}
+
 Look at the four dominant architecture languages of the last two decades. **Layered architecture** describes which layer is allowed to call which; it has nothing to say about whether the stack as a whole is paying attention to the outside world. **Microservices** describes how to keep services from corrupting each other's state; ten cleanly decoupled services can collectively drift into irrelevance, and the architecture diagram will not show it. **Hexagonal** and **DDD** describe the boundary between a domain and the world around it, but the inside of the domain stays procedural — it has no opinion about what the domain *is*, only about what it *does*. Every one of these vocabularies answers the same question: *how is the code partitioned?* The question the team asked on Tuesday — *how does this system, as an organisation, stay alive?* — has always been answered, but somewhere else. PMs and scrum masters ran the day-to-day schedule. SRE and QA ran the audit. Product watched the market. Executives set direction. Incident responders pulled the alarm. The architecture languages did not need vocabulary for any of this because the human organisation around the code absorbed it.
 
 Cybernetics answered that question fifty years ago, and the answer was forgotten.
@@ -24,8 +26,6 @@ Norbert Wiener, Ross Ashby, and Stafford Beer worked out, between roughly 1948 a
 The premise of this article is narrow and concrete. The **Viable System Model** that Stafford Beer published in 1972, derived directly from Ashby's earlier theorems, is the diagnostic mirror best suited to AI agent systems. Not because VSM offers an architectural pattern to copy — it does not — but because it offers a vocabulary for naming the parts of a system that the dominant architecture languages have no words for. That is what the team on Tuesday was missing, and what every team running agents at scale will sooner or later go looking for.
 
 The rest of this article does four things. It walks briefly through the cybernetic lineage from Wiener to Beer. It applies VSM's five subsystems and its algedonic alarm channel to a generic AI-agent development pipeline. It states three counterintuitive diagnostic heuristics the field has not yet internalised. And it shows why Ashby's Law of Requisite Variety and the Conant-Ashby theorem — together — imply that the standard practice of governing AI agents with hard rules is structurally guaranteed to fail.
-
-{/* truncate */}
 
 ## A brief history of cybernetics
 
