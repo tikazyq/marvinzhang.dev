@@ -1,6 +1,4 @@
-<section style="font-family:Optima,PingFangSC-light,PingFangTC-light,"PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC",serif;font-size:16px;line-height:1.5em;color:#000;word-break:break-word;overflow-wrap:break-word;text-align:left;padding:0 10px;"><p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">{/* 中文译稿，逐节翻译。每节英文确认后立即翻译同一节。 <em style="font-style:italic;">/}
-{/</em> 文件名日期（2026-05-12）与前置数据日期保持一致。 */}</p>
-<p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">一个八人的工程师团队，把 <a style="color:rgb(53,148,247);text-decoration:none;" href="https://marvinzhang.dev/zh/blog/ai-agents-engineering">AI 编程智能体（AI Coding Agents）</a>接进了自己的开发流水线。智能体从队列顶端取走 JIRA 工单，提交合并请求的速度超过人工评审的速度。半年下来，仪表盘上的数字相当好看：测试覆盖率 84%，每个改动接口的 p99 延迟稳定在 100 毫秒以内，自从智能体上线后合并吞吐量翻了三倍。周五的复盘会越开越短，因为实在没什么可复盘的。</p>
+<section style="font-family:Optima,PingFangSC-light,PingFangTC-light,"PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC",serif;font-size:16px;line-height:1.5em;color:#000;word-break:break-word;overflow-wrap:break-word;text-align:left;padding:0 10px;"><p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">一个八人的工程师团队，把 <a style="color:rgb(53,148,247);text-decoration:none;" href="https://marvinzhang.dev/zh/blog/ai-agents-engineering">AI 编程智能体（AI Coding Agents）</a>接进了自己的开发流水线。智能体从队列顶端取走 JIRA 工单，提交合并请求的速度超过人工评审的速度。半年下来，仪表盘上的数字相当好看：测试覆盖率 84%，每个改动接口的 p99 延迟稳定在 100 毫秒以内，自从智能体上线后合并吞吐量翻了三倍。周五的复盘会越开越短，因为实在没什么可复盘的。</p>
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">直到有一天，竞争对手发布了一个新功能。算不上多巧妙的功能。竞争对手的用户已经在公开论坛上催了半年，团队自家用户在自家论坛上催了几乎一样长的时间。流水线里，没有一个人——也没有一个智能体——注意到这件事。竞争对手上线的消息周二午后落进 Slack 群，会议室一下子安静下来，因为所有人都在问同一个问题：我们这套系统里，到底哪一块本来应该接住这件事？</p>
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">诚实的回答是：没有这一块。不是有人忘了构建它，而是团队的架构语言里，根本没有一个词指向它。</p>
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">分层架构（Layered Architecture）、微服务（Microservices）、六边形架构（Hexagonal Architecture）、领域驱动设计（Domain-Driven Design，DDD）——这四种主导软件行业的架构语言，回答的都是同一个问题： <em style="font-style:italic;">代码该如何切分？</em> 它们没有一个能回答周二下午那个团队问的问题： <em style="font-style:italic;">这套系统，作为一个组织，靠什么活下去？</em> 这个问题一直有人在回答，只是答案不在架构图里，而在代码之外的人组织里：PM 和 Scrum Master 跑排期，SRE 与 QA 做审计，产品盯外部市场，高管定方向，On-Call 拉警报。架构语言之所以不需要给这些环节命名，是因为组织结构把它们都吸收掉了。</p>
@@ -83,6 +81,42 @@
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">我目前正在把这套框架应用到自己的一个项目——<a style="color:rgb(53,148,247);text-decoration:none;" href="https://github.com/onsager-ai/onsager"><em style="font-style:italic;">Onsager</em></a>——上，它要做的是为软件开发场景搭建一类 AI 智能体流水线。一路走下来最大的收获，并不是验证了 VSM 的完整性，而是这套模型让&quot;缺什么&quot;变得非常显眼。两个层级尤其如此——S4 和痛快通道，也正好是最常被人轻描淡写为&quot;用不到&quot;的两个——它们一旦缺席，迟早会以 §4 描述过的那些失败形态浮出水面。这件事还处在很早期，我学到的大部分东西仍然只适用于自己当前的语境，但 VSM 在诊断阶段已经足够有用，所以我想在实施细节那篇文章落地之前先把它标出来。具体的实施工作，等到能写出来再单开一篇。</p>
 <hr style="border:none;border-top:2px solid rgba(64,184,250,0.4);margin:10px 0;" />
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;"><em style="font-style:italic;">当系统的部件本身开始携带目的，我们需要的不是一种新的架构范式，而是一门被遗忘了很久的旧语言。</em></p>
+<h2 style="font-size:20px;font-weight:bold;margin:30px 0 15px;padding:0;color:rgb(64,184,250);background-color:transparent;border-bottom:4px solid rgb(64,184,250);line-height:1.5em;">参考资料</h2>
+<ol style="padding-left:0;margin:8px 0;"><li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">AI 编程智能体（AI Coding Agents）
+<a style="color:rgb(53,148,247);text-decoration:none;" href="https://marvinzhang.dev/zh/blog/ai-agents-engineering">https://marvinzhang.dev/zh/blog/ai-agents-engineering</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">Norbert Wiener
+<a style="color:rgb(53,148,247);text-decoration:none;" href="https://en.wikipedia.org/wiki/Norbert_Wiener">https://en.wikipedia.org/wiki/Norbert_Wiener</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">W. Ross Ashby
+<a style="color:rgb(53,148,247);text-decoration:none;" href="https://en.wikipedia.org/wiki/W._Ross_Ashby">https://en.wikipedia.org/wiki/W._Ross_Ashby</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">可变性律（Law of Requisite Variety）
+<a style="color:rgb(53,148,247);text-decoration:none;" href="https://en.wikipedia.org/wiki/Variety_(cybernetics)">https://en.wikipedia.org/wiki/Variety_(cybernetics)</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">一个系统的良好调节器必须是该系统的模型
+<a style="color:rgb(53,148,247);text-decoration:none;" href="https://en.wikipedia.org/wiki/Good_regulator">https://en.wikipedia.org/wiki/Good_regulator</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">Stafford Beer
+<a style="color:rgb(53,148,247);text-decoration:none;" href="https://en.wikipedia.org/wiki/Stafford_Beer">https://en.wikipedia.org/wiki/Stafford_Beer</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">可生存系统模型（Viable System Model）
+<a style="color:rgb(53,148,247);text-decoration:none;" href="https://en.wikipedia.org/wiki/Viable_system_model">https://en.wikipedia.org/wiki/Viable_system_model</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">轻量级规约框架
+<a style="color:rgb(53,148,247);text-decoration:none;" href="https://marvinzhang.dev/zh/blog/introducing-leanspec">https://marvinzhang.dev/zh/blog/introducing-leanspec</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">业内对失败 AI 智能体项目的调查
+<a style="color:rgb(53,148,247);text-decoration:none;" href="https://composio.dev/blog/why-ai-agent-pilots-fail-2026-integration-roadmap">https://composio.dev/blog/why-ai-agent-pilots-fail-2026-integration-roadmap</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">2026 年更宽阔的智能体生态版图
+   <a style="color:rgb(53,148,247);text-decoration:none;" href="https://marvinzhang.dev/zh/blog/agent-landscape">https://marvinzhang.dev/zh/blog/agent-landscape</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">SRE 转型实践笔记
+   <a style="color:rgb(53,148,247);text-decoration:none;" href="https://cloud.google.com/blog/products/devops-sre/how-to-start-and-assess-your-sre-journey">https://cloud.google.com/blog/products/devops-sre/how-to-start-and-assess-your-sre-journey</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">当一个度量变成目标，它就不再是一个好的度量
+   <a style="color:rgb(53,148,247);text-decoration:none;" href="https://en.wikipedia.org/wiki/Goodhart%27s_law">https://en.wikipedia.org/wiki/Goodhart%27s_law</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">代码没人读
+   <a style="color:rgb(53,148,247);text-decoration:none;" href="https://marvinzhang.dev/zh/blog/why-your-code-reviews-are-failing-and-how-to-fix-them">https://marvinzhang.dev/zh/blog/why-your-code-reviews-are-failing-and-how-to-fix-them</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">业内多年来反复在处理的一个现象
+   <a style="color:rgb(53,148,247);text-decoration:none;" href="https://jellyfish.co/blog/goodharts-law-in-software-engineering-and-how-to-avoid-gaming-your-metrics/">https://jellyfish.co/blog/goodharts-law-in-software-engineering-and-how-to-avoid-gaming-your-metrics/</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">Harness 工程
+   <a style="color:rgb(53,148,247);text-decoration:none;" href="https://github.com/ai-boost/awesome-harness-engineering">https://github.com/ai-boost/awesome-harness-engineering</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">AI 的最后一公里是基础设施，不是智能
+   <a style="color:rgb(53,148,247);text-decoration:none;" href="https://marvinzhang.dev/zh/blog/ai-last-mile-infrastructure">https://marvinzhang.dev/zh/blog/ai-last-mile-infrastructure</a></li>
+<li style="margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);">Onsager
+   <a style="color:rgb(53,148,247);text-decoration:none;" href="https://github.com/onsager-ai/onsager">https://github.com/onsager-ai/onsager</a></li>
+</ol>
 <hr style="border:none;border-top:2px solid rgba(64,184,250,0.4);margin:10px 0;" />
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">📝 <strong style="font-weight:bold;color:rgb(53,148,247);">本文同步发布于我的个人技术博客</strong> <a style="color:rgb(53,148,247);text-decoration:none;" href="https://marvinzhang.dev/zh/blog/vsm-cybernetics-system-organization">marvinzhang.dev</a></p>
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">🔗 <strong style="font-weight:bold;color:rgb(53,148,247);">完整文章链接：</strong> <a style="color:rgb(53,148,247);text-decoration:none;" href="https://marvinzhang.dev/zh/blog/vsm-cybernetics-system-organization">https://marvinzhang.dev/zh/blog/vsm-cybernetics-system-organization</a></p>
