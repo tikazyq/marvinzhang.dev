@@ -30,17 +30,18 @@ Author-supplied prompt pre-settles thesis, outline, and citation targets, so the
 - [x] Figure placeholder format defined
 - [ ] Outline confirmed by author
 
-### Phase 2 — Content writing (target: 3,400–3,800 EN words, 3,000–3,400 ZH characters)
+### Phase 2 — Content writing (target: 3,700–4,100 EN words, 3,000–3,400 ZH characters)
+
+Outline restructured for accessibility: 7 sections → 6, with the old §3 (architecture-language survey) folded into §1, and a sustained concrete scenario (agent factory missing a competitor's feature) carrying every abstract term in §3.
 
 | § | Section | EN draft | ZH draft |
 |---|---------|----------|----------|
-| 1 | Hook — the question no architecture language answers | ⬜ | ⬜ |
+| 1 | Hook — scenario + the question no architecture language answers | ⬜ | ⬜ |
 | 2 | A brief history of cybernetics | ⬜ | ⬜ |
-| 3 | Why mainstream architecture languages fail for agent systems | ⬜ | ⬜ |
-| 4 | The five VSM levels + algedonic channel | ⬜ | ⬜ |
-| 5 | Three counterintuitive points | ⬜ | ⬜ |
-| 6 | Conant-Ashby and Goodhart — why hard rules fail | ⬜ | ⬜ |
-| 7 | A work in progress (footnote) | ⬜ | ⬜ |
+| 3 | The five VSM levels + algedonic channel (each level revisits the scenario) | ⬜ | ⬜ |
+| 4 | Three counterintuitive points | ⬜ | ⬜ |
+| 5 | Why a projection isn't a model — Conant-Ashby and Goodhart | ⬜ | ⬜ |
+| 6 | A work in progress (footnote) | ⬜ | ⬜ |
 | — | Closing line | ⬜ | ⬜ |
 
 ### Phase 3 — Validation & finalisation
