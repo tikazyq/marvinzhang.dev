@@ -99,10 +99,6 @@ unlisted: true
 
 这一换，换来的不是一张更快的报表，而是"选择权"。同一份底座，如今用同一批表喂三种很不一样的负载：老的 BI 报表，要的是稳定一致的聚合；机器学习训练，要的是可回溯的原始明细；还有——我那天站上台的缘由——一个 AI agent。我们管它叫 Compass：你用大白话问一句，它就从数仓里把答案捞出来。让这个 agent 转起来的窍门，既平淡又关键：我们把 Athena 包成了一个工具——一个"Athena adapter"——于是 agent 既不写 SQL，也不必关心数据存在哪儿。它只管按一个稳定的约定去调用工具，剩下的交给底座。上面的模型随时能换，下面这个约定不能。
 
-![Compass AI 回答一句自然语言提问](/img/blog/2026-06-25-industrialization-of-intelligence/compass-ui.png)
-
-*Compass 实跑：一句大白话——"这周的执行通过率是多少？"——直接从数仓里把答案捞出来（97.69%，覆盖 72,631 条记录）。*
-
 ![Compass 数据底座架构](/img/blog/2026-06-25-industrialization-of-intelligence/compass-architecture.png)
 
 *数据底座剖面，取自我的幻灯片：上半是每小时的离线管线（AWS Glue → S3/Iceberg，分层 ODS → DWD → DWS）；下半是在线链路——一句自然语言从 Compass Chat UI 出发，经编排 Agent 和只读的 Athena adapter，落到一次 Athena 查询。*

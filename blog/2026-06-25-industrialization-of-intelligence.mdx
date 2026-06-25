@@ -99,10 +99,6 @@ This is the part I went upstairs to talk about. My team at HP builds a product �
 
 What that bought us was not a faster report. It was optionality. One foundation now serves three very different workloads off the same tables: the old BI reports, which want stable, consistent aggregates; machine-learning training, which wants raw, replayable detail; and — the reason I was on that stage — an AI agent. We call it Compass: you ask a question in plain language and it answers from the warehouse. The trick that makes the agent work is mundane and crucial. We wrapped Athena behind a tool — an "Athena adapter" — so the agent never writes SQL and never needs to know where the bytes live. It calls a tool with a stable contract; the foundation does the rest. The model on top is replaceable. The contract underneath is not.
 
-![Compass AI answering a natural-language question](/img/blog/2026-06-25-industrialization-of-intelligence/compass-ui.png)
-
-*Compass in action: a single plain-language question — "what is the pass rate across executions this week?" — answered from the warehouse (97.69%, across 72,631 records).*
-
 ![The Compass data-foundation architecture, from the talk](/img/blog/2026-06-25-industrialization-of-intelligence/compass-architecture.png)
 
 *The foundation in cross-section, straight from my slides: up top, an hourly offline pipeline (AWS Glue → S3/Iceberg, layered ODS → DWD → DWS); below, the online path — a natural-language question travels from the Compass Chat UI through an orchestrating agent and the read-only Athena adapter to an Athena query.*
