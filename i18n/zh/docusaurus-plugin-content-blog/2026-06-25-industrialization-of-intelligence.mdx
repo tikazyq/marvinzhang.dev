@@ -75,7 +75,15 @@ unlisted: true
 
 可在展台前站上十分钟，差距就露了出来。离真正的通用机器人，还远着呢——而差距最集中地卡在最难、也最没解决的那个部件上：手。一只现代人形机器人的手，是一丛执行器堆出来的奇迹——特斯拉最新的 Optimus，[光是手和前臂就塞了大约五十个执行器，而执行器占了整机物料成本的一半多](https://www.basenor.com/blogs/news/tesla-optimus-gen-3-hands-22-dof-50-actuators-explained)。灵巧手算不过账，根子就在这儿：这样一只手，只有到了没人摸到过的量产规模才便宜得下来——所以桌上那只 LinkerHand，至今还卖一辆小电驴的价。
 
+![LinkerHand L20 灵巧手](/img/blog/2026-06-25-industrialization-of-intelligence/linkerhand-l20.jpg)
+
+*LinkerHand L20 灵巧手——标价 ¥9,999，却仍是这行最难啃的部件。*
+
 还有一层更深的原因，它有名有姓——莫拉维克悖论（Moravec's paradox）。那些已经能拿数学奥赛金牌的模型，抓一个没见过的物件，还不如一个三岁小孩稳。原来推理才是容易的那头；难的是手眼协调——在不确定里抓取、失了手还能找补——这种本事不像文本，没法从网上扒下来。所以真正能挣钱的机器人，都是"窄"的。IFR 数过，[2024 年全球新装的工业机器人约 54.2 万台](https://ifr.org/ifr-press-releases/news/global-robot-demand-in-factories-doubles-over-10-years)——绝大多数是单一用途的机械臂，一半以上装在中国；而地球上最成功的那支机器人队伍，是[亚马逊已经过百万台的大军](https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model)，搬的是料箱，不是大山。连最看多的人都认这个形状：[摩根士丹利估计，到 2050 年约九成人形机器人干的还是重复、结构化的活](https://www.morganstanley.com/insights/articles/humanoid-robot-market-5-trillion-by-2050)，不是陪你聊天。
+
+![一台自主移动机器人在积木迷宫里找路](/img/blog/2026-06-25-industrialization-of-intelligence/amr-maze.jpg)
+
+*AWS 展台上，一台自主移动机器人在积木迷宫里找路——正是今天真正能落地的那种"窄"机器人。*
 
 而这里，正好绕回了我们的论点。让亚马逊那一百万台机器人变得有用的，不是一百万具聪明的身体，而是 [DeepFleet——一个拿自家物流数据训出来、跑在 Amazon SageMaker 上的基础模型，把整支车队的行进时间砍掉了约一成](https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model)。真正值钱的那点智能，长在**调度层**，不在那只爪子上。而全场最说明问题的展台，根本不是哪家机器人厂商——是德勤。我的老东家，一家咨询公司、最被人头绑死的那种生意，却在上海立了一支约二十人的物理 AI 团队：不做机器人，而是把造机器人的和要机器人的两头接起来，再靠自己的客户网络，推着方案落地。当一家四大之一押注于"做那层连接"、而不是"做那台机器"，它其实在告诉你：稀缺的那一层，到底在哪儿。
 
@@ -91,30 +99,13 @@ unlisted: true
 
 这一换，换来的不是一张更快的报表，而是"选择权"。同一份底座，如今用同一批表喂三种很不一样的负载：老的 BI 报表，要的是稳定一致的聚合；机器学习训练，要的是可回溯的原始明细；还有——我那天站上台的缘由——一个 AI agent。我们管它叫 Compass：你用大白话问一句，它就从数仓里把答案捞出来。让这个 agent 转起来的窍门，既平淡又关键：我们把 Athena 包成了一个工具——一个"Athena adapter"——于是 agent 既不写 SQL，也不必关心数据存在哪儿。它只管按一个稳定的约定去调用工具，剩下的交给底座。上面的模型随时能换，下面这个约定不能。
 
-```mermaid
-flowchart TB
-    BI["📊 BI 报表<br/>Power BI · 稳定聚合"]
-    ML["🧪 ML 训练<br/>原始明细 · 可回溯"]
-    AG["🤖 AI Agent · Compass<br/>自然语言问数"]
-    ADP["Athena adapter<br/>SQL 工具化 · 只读"]
+![Compass AI 回答一句自然语言提问](/img/blog/2026-06-25-industrialization-of-intelligence/compass-ui.png)
 
-    subgraph FND["🏗️ 一份数据底座 · S3 上的 Amazon Athena + Apache Iceberg"]
-        ORC["Step Functions + EventBridge<br/>编排调度"]
-        GLUE["AWS Glue<br/>接入 / ETL"]
-        LAKE["S3 + Iceberg<br/>ODS → DWD → DWS · 单一 Catalog"]
-        ATH["Amazon Athena<br/>查询引擎"]
-        ORC -.-> GLUE --> LAKE --> ATH
-    end
+*Compass 实跑：一句大白话——"这周的执行通过率是多少？"——直接从数仓里把答案捞出来（97.69%，覆盖 72,631 条记录）。*
 
-    BI --> ATH
-    ML --> LAKE
-    AG --> ADP --> ATH
-    AG -. "轨迹 · token · 评估" .-> LAKE
+![Compass 数据底座架构](/img/blog/2026-06-25-industrialization-of-intelligence/compass-architecture.png)
 
-    style FND fill:#e1f5fe,stroke:#01579b,color:#01579b
-    style AG fill:#fff3e0,stroke:#e65100,color:#e65100
-    style ADP fill:#fff3e0,stroke:#e65100,color:#e65100
-```
+*数据底座剖面，取自我的幻灯片：上半是每小时的离线管线（AWS Glue → S3/Iceberg，分层 ODS → DWD → DWS）；下半是在线链路——一句自然语言从 Compass Chat UI 出发，经编排 Agent 和只读的 Athena adapter，落到一次 Athena 查询。*
 
 下面这个想法，是我最想让在场的人带走的，而且它比我那次迁移大得多。到了智能体时代，"数据底座"这四个字，得装下比从前更多的东西。老定义——你的业务数据、系统数据、那些企业表——依然是原料，也依然最重要。但一个真正在跑的 agent 系统，会生出第二种同样吃重的数据：它自己运行时吐出的"尾气"，每一段推理、每一次工具调用、每一个烧掉的 token；它还需要第三种，来决定上面这一切到底可不可信：评估，那些告诉你 agent 到底对不对的 benchmark 和打分。**原料、仪表、质检**——一座工厂三样都得有，一座为 agent 而建的数据底座，也一样。
 

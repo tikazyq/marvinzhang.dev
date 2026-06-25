@@ -75,7 +75,15 @@ The third frontier drew the biggest crowd. Under banners reading *Physical AI* a
 
 Spend ten minutes at the booths, though, and the gap shows. We are a long way from a general-purpose robot, and the reason concentrates in the hardest, least-solved part: the hand. A modern humanoid hand is a thicket of actuators — Tesla's latest Optimus packs [about fifty of them into its hands and forearms, and actuators make up well over half the robot's bill of materials](https://www.basenor.com/blogs/news/tesla-optimus-gen-3-hands-22-dof-50-actuators-explained). That is why dexterity does not yet pencil out: a hand like that only gets cheap at a scale no one has reached, which is why the LinkerHand on the table still costs as much as a scooter.
 
+![The LinkerHand L20 dexterous hand](/img/blog/2026-06-25-industrialization-of-intelligence/linkerhand-l20.jpg)
+
+*The LinkerHand L20 dexterous hand — priced at ¥9,999, and still the field's hardest unsolved part.*
+
 There is a deeper reason, and it has a name — Moravec's paradox. The same models that now win mathematics-olympiad golds still cannot grasp an unfamiliar object as reliably as a toddler. Reasoning turned out to be the easy part; sensorimotor coordination — gripping under uncertainty, recovering from a slip — is the hard one, and unlike text, you cannot scrape it off the web. So the robots that actually earn their keep are narrow. The IFR counted [roughly 542,000 industrial robots installed in 2024](https://ifr.org/ifr-press-releases/news/global-robot-demand-in-factories-doubles-over-10-years) — overwhelmingly single-purpose arms, more than half of them in China — and the most successful robot fleet on the planet is [Amazon's, now past a million machines](https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model) that move totes, not mountains. Even the bulls agree on the shape of it: [Morgan Stanley expects about 90% of humanoids in 2050 to be doing repetitive, structured work](https://www.morganstanley.com/insights/articles/humanoid-robot-market-5-trillion-by-2050), not keeping you company.
+
+![An autonomous mobile robot navigating a brick maze](/img/blog/2026-06-25-industrialization-of-intelligence/amr-maze.jpg)
+
+*An autonomous mobile robot threading a maze of toy bricks at the AWS booth — the kind of narrow, navigation-only machine that actually ships today.*
 
 Here is the part that brings us back to the thesis. What makes Amazon's million robots useful is not a million clever bodies; it is [DeepFleet, a foundation model trained on the company's logistics data and run on Amazon SageMaker, which cut fleet travel time by about 10%](https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model). The intelligence that pays off lives in the **coordination layer**, not the gripper. And the most revealing booth on the floor was not a robot maker at all — it was Deloitte. My old employer, a consultancy, the most headcount-bound business there is, had stood up a roughly twenty-person Physical AI institute in Shanghai: not to build robots, but to wire the people who make them to the people who need them, and to shepherd deployments through its client network. When a Big Four firm bets on being the connective tissue rather than the machine, it is telling you where the scarce layer sits.
 
@@ -91,30 +99,13 @@ This is the part I went upstairs to talk about. My team at HP builds a product �
 
 What that bought us was not a faster report. It was optionality. One foundation now serves three very different workloads off the same tables: the old BI reports, which want stable, consistent aggregates; machine-learning training, which wants raw, replayable detail; and — the reason I was on that stage — an AI agent. We call it Compass: you ask a question in plain language and it answers from the warehouse. The trick that makes the agent work is mundane and crucial. We wrapped Athena behind a tool — an "Athena adapter" — so the agent never writes SQL and never needs to know where the bytes live. It calls a tool with a stable contract; the foundation does the rest. The model on top is replaceable. The contract underneath is not.
 
-```mermaid
-flowchart TB
-    BI["📊 BI reporting<br/>Power BI · stable aggregates"]
-    ML["🧪 ML training<br/>raw, replayable detail"]
-    AG["🤖 AI agent · Compass<br/>natural-language queries"]
-    ADP["Athena adapter<br/>SQL wrapped as a tool · read-only"]
+![Compass AI answering a natural-language question](/img/blog/2026-06-25-industrialization-of-intelligence/compass-ui.png)
 
-    subgraph FND["🏗️ One data foundation · Amazon Athena + Apache Iceberg on S3"]
-        ORC["Step Functions + EventBridge<br/>orchestration"]
-        GLUE["AWS Glue<br/>ingest / ETL"]
-        LAKE["S3 + Iceberg<br/>ODS → DWD → DWS · single Catalog"]
-        ATH["Amazon Athena<br/>query engine"]
-        ORC -.-> GLUE --> LAKE --> ATH
-    end
+*Compass in action: a single plain-language question — "what is the pass rate across executions this week?" — answered from the warehouse (97.69%, across 72,631 records).*
 
-    BI --> ATH
-    ML --> LAKE
-    AG --> ADP --> ATH
-    AG -. "traces · tokens · evaluations" .-> LAKE
+![The Compass data-foundation architecture, from the talk](/img/blog/2026-06-25-industrialization-of-intelligence/compass-architecture.png)
 
-    style FND fill:#e1f5fe,stroke:#01579b,color:#01579b
-    style AG fill:#fff3e0,stroke:#e65100,color:#e65100
-    style ADP fill:#fff3e0,stroke:#e65100,color:#e65100
-```
+*The foundation in cross-section, straight from my slides: up top, an hourly offline pipeline (AWS Glue → S3/Iceberg, layered ODS → DWD → DWS); below, the online path — a natural-language question travels from the Compass Chat UI through an orchestrating agent and the read-only Athena adapter to an Athena query.*
 
 Here is the idea I most wanted to leave the room with, and it is bigger than my migration. In the agent era, "the data foundation" has to mean more than it used to. The old definition — your business data, your system data, the enterprise tables — is still the raw material, and it still matters most. But a working agent system generates a second kind of data that is just as load-bearing: its own operational exhaust, every reasoning trace and tool call and token spent. And it needs a third kind that decides whether any of it can be trusted: evaluations — the benchmarks and scores that tell you the agent is actually right. **Raw materials, instrumentation, quality control.** A factory needs all three; so does a data foundation built for agents.
 
