@@ -71,6 +71,31 @@ This is the part I went upstairs to talk about. My team at HP builds a product �
 
 What that bought us was not a faster report. It was optionality. One foundation now serves three very different workloads off the same tables: the old BI reports, which want stable, consistent aggregates; machine-learning training, which wants raw, replayable detail; and — the reason I was on that stage — an AI agent. We call it Compass: you ask a question in plain language and it answers from the warehouse. The trick that makes the agent work is mundane and crucial. We wrapped Athena behind a tool — an "Athena adapter" — so the agent never writes SQL and never needs to know where the bytes live. It calls a tool with a stable contract; the foundation does the rest. The model on top is replaceable. The contract underneath is not.
 
+```mermaid
+flowchart TB
+    BI["📊 BI reporting<br/>Power BI · stable aggregates"]
+    ML["🧪 ML training<br/>raw, replayable detail"]
+    AG["🤖 AI agent · Compass<br/>natural-language queries"]
+    ADP["Athena adapter<br/>SQL wrapped as a tool · read-only"]
+
+    subgraph FND["🏗️ One data foundation · Amazon Athena + Apache Iceberg on S3"]
+        ORC["Step Functions + EventBridge<br/>orchestration"]
+        GLUE["AWS Glue<br/>ingest / ETL"]
+        LAKE["S3 + Iceberg<br/>ODS → DWD → DWS · single Catalog"]
+        ATH["Amazon Athena<br/>query engine"]
+        ORC -.-> GLUE --> LAKE --> ATH
+    end
+
+    BI --> ATH
+    ML --> LAKE
+    AG --> ADP --> ATH
+    AG -. "traces · tokens · evaluations" .-> LAKE
+
+    style FND fill:#e1f5fe,stroke:#01579b,color:#01579b
+    style AG fill:#fff3e0,stroke:#e65100,color:#e65100
+    style ADP fill:#fff3e0,stroke:#e65100,color:#e65100
+```
+
 Here is the idea I most wanted to leave the room with, and it is bigger than my migration. In the agent era, "the data foundation" has to mean more than it used to. The old definition — your business data, your system data, the enterprise tables — is still the raw material, and it still matters most. But a working agent system generates a second kind of data that is just as load-bearing: its own operational exhaust, every reasoning trace and tool call and token spent. And it needs a third kind that decides whether any of it can be trusted: evaluations — the benchmarks and scores that tell you the agent is actually right. **Raw materials, instrumentation, quality control.** A factory needs all three; so does a data foundation built for agents.
 
 Notice what that does to the picture. The foundation is no longer just the thing agents draw from; it is also the thing they feed. Remember the car from a few floors up — the one that turned every request it could not handle into data that retrained it. That is the same loop, generalized: agents consume the foundation to act, and produce data — traces, outcomes, evaluations — that improves the foundation, which improves the agents. The flywheel a keynote slide named and moved past is, in practice, the whole machine — and it runs on a data layer most teams have not built yet.
