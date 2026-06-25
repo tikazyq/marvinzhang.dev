@@ -48,9 +48,15 @@ That was the unglamorous argument I went to Shanghai to make: in the agent era, 
 
 Start with the most purely fun thing on the floor: an AWS demo that watched football. Feed it footage of a match and it broke the game down into tactics and per-player metrics — who pressed where, which passing lanes opened, how each player's positioning drifted across ninety minutes — by pairing computer vision with a vision-language model (VLM) that could put words to what the pixels meant.
 
+![The football analysis demo](/img/blog/2026-06-25-industrialization-of-intelligence/football-analysis.jpg)<br />
+*The football demo: computer vision rings every player up top, while a 2D tactical view and per-player cards turn the match into data below.*
+
 The clever part is not that the model can see. Frontier vision models clear that bar routinely now. The clever part is what the pipeline does with the seeing: it turns an unstructured ninety-minute video into structured, queryable rows. Swap the pitch for a factory line, a retail aisle, or a hospital ward and the move is identical — perception, industrialized, is the conversion of messy sensory signal into data you can store, query, and act on. The model is the commodity. The pipeline that grounds what it perceives into reliable data is the work.
 
 A second demo made the point sharper, because it had to act on what it heard, not just describe it. AWS showed an edge-cloud voice assistant for cars. On the vehicle, a spoken request becomes an embedding matched against known intents; anything recognized with high confidence runs locally and instantly, anything uncertain falls to a small language model (SLM) on the device, and only the genuinely unknown is escalated to the cloud, to a frontier model — Amazon Nova on Bedrock. A single confidence threshold, 0.97, decides which path a request takes.
+
+![The edge-cloud voice assistant architecture](/img/blog/2026-06-25-industrialization-of-intelligence/car-voice-assistant.jpg)<br />
+*The edge-cloud voice assistant in full: the car handles known intents locally and escalates only the unknowns to Amazon Nova in the cloud, which fine-tunes the on-device model and redeploys it — the flywheel.*
 
 What lifted it above a demo was the loop underneath. Every request the car could not handle became data: in the cloud, the new intent was extracted, the on-device SLM fine-tuned, the embeddings recomputed, and the improved model pushed back down to the fleet. The system got smarter from its own failures — from the exhaust of its own operation. That is perception becoming a flywheel, and the flywheel runs on data. Hold that picture; it is this article's whole argument in miniature, and we will meet it again one floor down.
 
