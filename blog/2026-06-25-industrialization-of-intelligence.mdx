@@ -1,0 +1,153 @@
+---
+slug: industrialization-of-intelligence
+title: "From Workshop to Factory: The Industrialization of Intelligence"
+authors: ["marvin"]
+tags: ["ai", "agents", "data-infrastructure", "data-architecture", "architecture", "systems-design", "enterprise"]
+date: 2026-06-25
+---
+
+![The AWS Summit in Shanghai](/img/blog/2026-06-25-industrialization-of-intelligence/summit-venue.jpg)<br />
+*The AWS Summit in Shanghai, 23–24 June 2026.*
+
+In June 2026, I gave what was almost certainly the least glamorous talk at the AWS Summit in Shanghai. I opened with a disclaimer: *our Nova is not the Nova from Amazon*. The Nova on my slides is an internal platform my team builds at HP; the Nova everyone else kept name-dropping is Amazon's frontier model. The room laughed at the collision — and then I spent the session on something no keynote would touch: how we moved a reporting stack off Power BI and onto Amazon Athena and Apache Iceberg. It was a thirty-minute, 300-level breakout, upstairs on the sixth floor, well away from the crowds.
+
+![The summit floor guide](/img/blog/2026-06-25-industrialization-of-intelligence/floor-guide.jpg)<br />
+*The floor guide: breakout talks — mine among them — on the sixth floor, the keynote on the fifth, the expo downstairs.*
+
+Down on the ground floor, the expo hall was selling the opposite of unglamorous. Unitree humanoids reached for objects under hot lights. A dexterous robotic hand, priced at ¥9,999, flashed a peace sign for the cameras. On one screen, a swarm of coding agents shipped software with no human in the loop; on another, an AI turned footage of a football match into tactics and player metrics. The spotlight was on intelligence learning to perceive the world, to make things, and to act in it.
+
+![The expo floor](/img/blog/2026-06-25-industrialization-of-intelligence/expo-floor.jpg)<br />
+*Down on the ground floor: the expo, where the crowds were.*
+
+That contrast is the argument of this piece. For two centuries, output scaled with headcount: more work meant more hands. AI is breaking that link — output is starting to scale with infrastructure (models, compute, and data) rather than people. This is the **industrialization of intelligence**, and like the first industrial revolution, it will be won not by whoever owns the flashiest machine but by whoever builds the floor those machines stand on. My boring migration is the proof in miniature: what made our reports better was not a smarter model but a new foundation underneath them — a refresh that once took four to six hours now finishes in one, and a report you could once only read became data anyone can now question in plain language.
+
+So this article works from the floor up. First, the three frontiers the show floor was celebrating — machines that **perceive**, **create**, and **act**. Then the layer beneath all three, the one I went to Shanghai to talk about: the **data foundation** that decides how high any of them can climb.
+
+{/* truncate */}
+
+## The Factory Knowledge Work Never Had
+
+The first industrial revolution is remembered for the steam engine, but its real trick was subtler: it broke the link between output and human muscle. Before it, you wove more cloth by sitting more weavers at more looms — output rose in lockstep with hands. The factory severed that line. Output came to depend on capital and infrastructure — power, machinery, rail — and a weaver's individual skill mattered less than the system they plugged into. Production stopped scaling with people and started scaling with the floor they stood on.
+
+Knowledge work never had that moment. To ship more software, you hired more engineers; to produce more analysis, more analysts; to sell more advice, more consultants. Output stayed stubbornly linear in headcount — which is why a consultancy's revenue is, at bottom, billable hours, the most headcount-bound business there is. Two and a half centuries after the spinning jenny, thinking for a living is still a workshop: skilled hands, one task at a time.
+
+AI is now doing to that workshop what the factory did to the weaver. [As I have argued before, LLMs are less a new tool than a new industrial revolution](/blog/llms-industrial-revolution) — and the tell is the same broken link. A swarm of coding agents ships more not by hiring but by adding compute and context; a perception pipeline sees more not by staffing up but by training on more data. Output is decoupling from headcount and re-coupling to infrastructure: models, compute, and data. This is the industrialization of intelligence, and it is already underway.
+
+Here is the plank the main stage underplayed — not by missing it, but by hurrying past it. The summit's banner read [*Agentic Now, Go Build*](https://aws.amazon.com/events/summits/shanghai/), and the keynotes delivered. Chu Ruisong, AWS's Asia-Pacific co-president, gave the moment its line: AI agents, he said, are becoming "one of the primary subjects of a new generation's relations of production." They talked plenty about infrastructure, but it was the agent's infrastructure. AWS's own blueprint stacked five layers — agent applications on top, then an agentic platform (runtime, memory, tools, orchestration), then, squarely in the middle, a data-and-knowledge layer of RAG, vector databases, and governance, then the models, then the silicon. Data was not missing; it was a labeled layer, and a separate slide called it, flatly, "the moat." Then the keynotes spent their energy on the two agent layers above it. That is the tell. Crown the agents if you like — but in every industrialization, the decisive asset is not the flashiest machine; it is the floor it stands on. Railroads made fortunes for whoever owned the track, not whoever admired the fastest locomotive. The floor for intelligence has three planks of unequal value. Compute is a commodity you rent by the hour; models are converging, quarter by quarter, toward a common frontier. The plank that is genuinely hard to copy — that compounds, that you own, that bends to your business — is data. The **data foundation**.
+
+![AWS's five-layer stack on the main stage](/img/blog/2026-06-25-industrialization-of-intelligence/keynote-value-pyramid.jpg)<br />
+*AWS's five-layer stack: agents on top, the agentic platform below, then a labeled data-and-knowledge layer in the middle — present and named, just not where the keynote spent its breath.*
+
+![Snowflake's AI Data Cloud booth](/img/blog/2026-06-25-industrialization-of-intelligence/snowflake-data-cloud.jpg)<br />
+*Snowflake's "AI Data Cloud" on the floor — the data layer had its champions; it just wasn't the keynote's headline.*
+
+That was the unglamorous argument I went to Shanghai to make: in the agent era, the data foundation sets the ceiling on everything above it. A smarter model cannot rescue an application starved of clean, governed, queryable data; a well-fed foundation can make an ordinary model look brilliant — [a case I made at length once before](/blog/enterprise-ai-application-architecture). So the interesting question on the show floor was never how clever the machines were. It was what floor they were standing on. The machines were everywhere — learning to perceive, to create, to act. Let us walk past each, and then look down.
+
+## Perceiving: Turning the World into Data
+
+Start with the most purely fun thing on the floor: an AWS demo that watched football. Feed it footage of a match and it broke the game down into tactics and per-player metrics — who pressed where, which passing lanes opened, how each player's positioning drifted across ninety minutes — by pairing computer vision with a vision-language model (VLM) that could put words to what the pixels meant.
+
+![The football analysis demo](/img/blog/2026-06-25-industrialization-of-intelligence/football-analysis.jpg)<br />
+*The football demo: computer vision rings every player up top, while a 2D tactical view and per-player cards turn the match into data below.*
+
+The clever part is not that the model can see. Frontier vision models clear that bar routinely now. The clever part is what the pipeline does with the seeing: it turns an unstructured ninety-minute video into structured, queryable rows. Swap the pitch for a factory line, a retail aisle, or a hospital ward and the move is identical — perception, industrialized, is the conversion of messy sensory signal into data you can store, query, and act on. The model is the commodity. The pipeline that grounds what it perceives into reliable data is the work.
+
+A second demo made the point sharper, because it had to act on what it heard, not just describe it. AWS showed an edge-cloud voice assistant for cars. On the vehicle, a spoken request becomes an embedding matched against known intents; anything recognized with high confidence runs locally and instantly, anything uncertain falls to a small language model (SLM) on the device, and only the genuinely unknown is escalated to the cloud, to a frontier model — Amazon Nova on Bedrock. A single confidence threshold, 0.97, decides which path a request takes.
+
+![The edge-cloud voice assistant architecture](/img/blog/2026-06-25-industrialization-of-intelligence/car-voice-assistant.jpg)<br />
+*The edge-cloud voice assistant in full: the car handles known intents locally and escalates only the unknowns to Amazon Nova in the cloud, which fine-tunes the on-device model and redeploys it — the flywheel.*
+
+What lifted it above a demo was the loop underneath. Every request the car could not handle became data: in the cloud, the new intent was extracted, the on-device SLM fine-tuned, the embeddings recomputed, and the improved model pushed back down to the fleet. The system got smarter from its own failures — from the exhaust of its own operation. That is perception becoming a flywheel, and the flywheel runs on data. Hold that picture; it is this article's whole argument in miniature, and we will meet it again one floor down.
+
+Both demos rhyme. Whether the output is an insight about a football match or an action inside a moving car, a perceiving machine is worth exactly as much as its ability to turn what it senses into structured, trustworthy, retrievable data. The seeing and the hearing are commodities. The grounding is the **moat**. If perception turns the world into data, the next frontier turns intent into artifacts.
+
+## Creating: One Person, a Whole Team
+
+The most arresting thing on the floor was a terminal. AWS showed a "Kiro Swarm" demo: a single operator on one laptop, directing an entire software org chart rendered as agents — architect, backend, frontend, devops, tester, reviewer, even a manager and a product owner. Each ran in its own pane, flickering between *thinking*, *working*, and *deep work*; they talked to one another in a shared team chat, @-mentioning teammates and listening to the channel the way a real team watches Slack. The slide put it bluntly: spec-driven development, brought to team collaboration — autonomous agents taking a job from requirement to committed code with no human in the loop, across long-running tasks and multiple repositories.
+
+![The Kiro Swarm demo: a board of role-specialized agents](/img/blog/2026-06-25-industrialization-of-intelligence/kiro-swarm.jpg)<br />
+*The Kiro Swarm demo — one operator directing a whole org chart of agents, talking to each other over a shared channel.*
+
+This is the thesis made literal. The org chart was not hired; it was instantiated. To ship more, the operator does not add people — they add agents and context. A whole team's worth of work, commanded by one person at one keyboard, was the cleanest specimen of output coming unstuck from headcount that I saw all week.
+
+And it is not only software. A few steps away sat Ki-Board, a small gadget labeled *For Kiro Buddies*, with a few buttons, a little status screen, and a ghost mascot serving as an electronic pet. An AWS engineer had built it end to end in two days with Kiro — choosing the hardware, writing the firmware, designing and fabricating the circuit board, modeling the enclosure, 3D-printing the case. Not only did the team scale sideways; the entire make-a-thing stack, software and hardware together, collapsed onto one person and an agent.
+
+![Ki-Board, a small hardware gadget built with Kiro](/img/blog/2026-06-25-industrialization-of-intelligence/ki-board.jpg)<br />
+*Ki-Board — idea to finished gadget in two days with Kiro, ghost mascot and all.*
+
+But look at what actually makes the swarm work, because it is the whole point of this article. Eight agents typing into the same project at once is not a team; it is a pile-up — unless they share something. In the Kiro demo that something is the spec: a single written source of truth every agent reads from and writes back to. [Spec-driven development](/blog/spec-driven-development) is not a productivity nicety here; it is the **load-bearing wall**. Take the shared spec away and the crew becomes eight strangers editing the same files. What conducts the orchestra is not the model. It is the shared, structured record the models stand on.
+
+So creation industrializes in both directions — one operator scaling out into a crew, and the whole production stack collapsing in to a single pair of hands — but only because a foundation underneath keeps the agents in step. Making things, it turns out, is the easy frontier. The last one asks something harder: not to perceive the world, nor to make things in it, but to act — to put intelligence into a body and let it loose.
+
+## Acting: Putting Intelligence into a Body
+
+The third frontier drew the biggest crowd. Under banners reading *Physical AI* and *Agent for Industries*, Unitree humanoids reached and gripped under the lights — *force-controlled dexterous hands, manipulate anything*, promised the screen behind them. A LinkerHand dexterous hand, priced at ¥9,999, held a peace sign for the cameras. An autonomous mobile robot picked its way through a maze of toy bricks. AgiBot's humanoids and Zoomlion's autonomous machines rounded out the floor. Intelligence was visibly reaching for a body.
+
+![A Unitree humanoid at the AWS Physical AI booth](/img/blog/2026-06-25-industrialization-of-intelligence/unitree-humanoid.jpg)<br />
+*A Unitree humanoid at the AWS "Physical AI" booth — the screen behind it promising "force-controlled dexterous hands."*
+
+Spend ten minutes at the booths, though, and the gap shows. We are a long way from a general-purpose robot, and the reason concentrates in the hardest, least-solved part: the hand. A modern humanoid hand is a thicket of actuators — Tesla's latest Optimus packs [about fifty of them into its hands and forearms, and actuators make up well over half the robot's bill of materials](https://www.basenor.com/blogs/news/tesla-optimus-gen-3-hands-22-dof-50-actuators-explained). That is why dexterity does not yet pencil out: a hand like that only gets cheap at a scale no one has reached, which is why the LinkerHand on the table still costs as much as a scooter.
+
+![The LinkerHand L20 dexterous hand](/img/blog/2026-06-25-industrialization-of-intelligence/linkerhand-l20.jpg)<br />
+*The LinkerHand L20 dexterous hand — priced at ¥9,999, and still the field's hardest unsolved part.*
+
+There is a deeper reason, and it has a name — Moravec's paradox. The same models that now win mathematics-olympiad golds still cannot grasp an unfamiliar object as reliably as a toddler. Reasoning turned out to be the easy part; sensorimotor coordination — gripping under uncertainty, recovering from a slip — is the hard one, and unlike text, you cannot scrape it off the web. So the robots that actually earn their keep are narrow. The IFR counted [roughly 542,000 industrial robots installed in 2024](https://ifr.org/ifr-press-releases/news/global-robot-demand-in-factories-doubles-over-10-years) — overwhelmingly single-purpose arms, more than half of them in China — and the most successful robot fleet on the planet is [Amazon's, now past a million machines](https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model) that move totes, not mountains. Even the bulls agree on the shape of it: [Morgan Stanley expects about 90% of humanoids in 2050 to be doing repetitive, structured work](https://www.morganstanley.com/insights/articles/humanoid-robot-market-5-trillion-by-2050), not keeping you company.
+
+![An autonomous mobile robot navigating a brick maze](/img/blog/2026-06-25-industrialization-of-intelligence/amr-maze.jpg)<br />
+*An autonomous mobile robot threading a maze of toy bricks at the AWS booth — the kind of narrow, navigation-only machine that actually ships today.*
+
+Here is the part that brings us back to the thesis. What makes Amazon's million robots useful is not a million clever bodies; it is [DeepFleet, a foundation model trained on the company's logistics data and run on Amazon SageMaker, which cut fleet travel time by about 10%](https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model). The intelligence that pays off lives in the **coordination layer**, not the gripper. And the most revealing booth on the floor was not a robot maker at all — it was Deloitte. My old employer, a consultancy, the most headcount-bound business there is, had stood up a roughly twenty-person Physical AI institute in Shanghai: not to build robots, but to wire the people who make them to the people who need them, and to shepherd deployments through its client network. When a Big Four firm bets on being the connective tissue rather than the machine, it is telling you where the scarce layer sits.
+
+![Deloitte's Asia-Pacific Physical AI booth](/img/blog/2026-06-25-industrialization-of-intelligence/deloitte-physical-ai.jpg)<br />
+*Deloitte's Asia-Pacific Physical AI booth — a consultancy positioning itself as the connective tissue, not the machine.*
+
+So even here, at the most physical frontier, the pattern holds. The body is the slow, narrow, expensive part; what turns a narrow robot into a working system is the layer beneath it — the coordination, the data, the connective tissue. Three frontiers — perceive, create, act — and each one, followed to its edge, arrives at the same unglamorous place. Time to stop walking the expo floor, and look at what holds it all up.
+
+## The Floor Everything Stands On
+
+![On stage at the AWS Summit in Shanghai](/img/blog/2026-06-25-industrialization-of-intelligence/on-stage.jpg)<br />
+*On stage in Shanghai — the slide behind me is the subject of this whole section: a product, and the data foundation beneath it.*
+
+This is the part I went upstairs to talk about. My team at HP builds a product — Nova, a platform for managing PC testing — and, beneath it, the data foundation that product runs on. A year ago that foundation was a Power BI stack: reporting and data processing fused into one tool, with the raw data trapped inside it. Complex reports took four to six hours to refresh, and there was no clean way to get the underlying data out for anything else. So we moved it — off Power BI, onto Amazon Athena and Apache Iceberg on S3, with Glue handling ingestion and Step Functions and EventBridge orchestrating the pipeline. The reports kept working the whole time — same dashboards, same schedules — while we swapped the engine beneath them. We changed the foundation; the floors above felt nothing. Unlocking data trapped in legacy systems — so agents can finally reach it — is precisely what AWS named the central challenge of the agent era at this very summit. I had spent the prior year picking that exact lock.
+
+What that bought us was not a faster report. It was optionality. One foundation now serves three very different workloads off the same tables: the old BI reports, which want stable, consistent aggregates; machine-learning training, which wants raw, replayable detail; and — the reason I was on that stage — an AI agent. We call it Compass: you ask a question in plain language and it answers from the warehouse. The trick that makes the agent work is mundane and crucial. We wrapped Athena behind a tool — an "Athena adapter" — so the agent never writes SQL and never needs to know where the bytes live. It calls a tool with a stable contract; the foundation does the rest. The model on top is replaceable. The contract underneath is not.
+
+![The Compass data-foundation architecture, from the talk](/img/blog/2026-06-25-industrialization-of-intelligence/compass-architecture.png)<br />
+*The foundation in cross-section, straight from my slides: up top, an hourly offline pipeline (AWS Glue → S3/Iceberg, layered ODS → DWD → DWS); below, the online path — a natural-language question travels from the Compass Chat UI through an orchestrating agent and the read-only Athena adapter to an Athena query.*
+
+Here is the idea I most wanted to leave the room with, and it is bigger than my migration. In the agent era, "the data foundation" has to mean more than it used to. The old definition — your business data, your system data, the enterprise tables — is still the raw material, and it still matters most. But a working agent system generates a second kind of data that is just as load-bearing: its own operational exhaust, every reasoning trace and tool call and token spent. And it needs a third kind that decides whether any of it can be trusted: evaluations — the benchmarks and scores that tell you the agent is actually right. **Raw materials, instrumentation, quality control.** A factory needs all three; so does a data foundation built for agents. I am not the only one drawing that third plank: at this summit AWS shipped a white paper on "evaluation-driven" agent development, with evaluation as a named stage of the lifecycle. Quality control is moving from afterthought to consensus.
+
+Notice what that does to the picture. The foundation is no longer just the thing agents draw from; it is also the thing they feed. Remember the car from a few floors up — the one that turned every request it could not handle into data that retrained it. That is the same loop, generalized: agents consume the foundation to act, and produce data — traces, outcomes, evaluations — that improves the foundation, which improves the agents. The keynote had a flywheel of its own — model capability and agentic engineering, each spinning up the other — and it put that at the center of the story. This is a different flywheel: agents and the data they throw off, turning each other. That second one is, in practice, the whole machine — and it runs on a data layer most teams have not built yet.
+
+This is why I keep calling the foundation the **moat**. Compute is rented; models converge; but the data that is yours — your business records, your agents' accumulated behavior, your hard-won evaluations — compounds, and no competitor can clone it. It is the one plank of the stack that bends to your business and grows more valuable the longer you run on it. AWS, to its credit, draws the same picture — data is a labeled layer in its own blueprint, sitting beneath the agents as their foundation. The line I used on stage was blunter — in the agent era, the data foundation sets the ceiling for everything above it. Invest in the floor, and you are investing in every AI capability you have not thought of yet.
+
+Which raises the only question that matters once you believe this: not whether to build the foundation, but how to build one an entire company can stand on.
+
+## From a Foundation to a Platform
+
+The honest answer is that one team's foundation is not enough. The third act of my talk was about what comes next — turning a project's data foundation into a shared platform the whole company stands on. The case for it is not idealism; it is arithmetic. When every team builds its own data layer, you get the same tables computed three different ways, disagreeing in three different meetings. Converge them onto one platform and three things happen — the three the keynote actually got right.
+
+![From foundation to a centralized data platform](/img/blog/2026-06-25-industrialization-of-intelligence/centralized-platform.png)<br />
+*The third act in a single slide, from my deck: on the left, today — every project builds its own data layer, N×M point-to-point wiring, duplicated and quarreling over definitions; on the right, after convergence — one shared layer with a single source of truth, every new tool standing on a foundation that already exists.*
+
+First, you stop rebuilding: one pipeline, one warehouse, instead of N teams each maintaining their own. Second, you get a single source of truth — one authoritative definition per metric, so "active user" means the same thing in finance as in product, and the cross-team arguments end. Third, and this is the one that compounds: every new AI tool you add lands faster and costs less, because it stands on a foundation that already exists. The platform gets cheaper to build on the more you build on it — output scaling with infrastructure again, not effort.
+
+![Amazon Bedrock AgentCore, billed as an Agentic Platform](/img/blog/2026-06-25-industrialization-of-intelligence/agentcore-platform.jpg)<br />
+*Amazon Bedrock AgentCore, billed on the expo floor as an "Agentic Platform" — the agent layer, productized. My talk's third act argued for the platform one floor below it: the data those agents run on.*
+
+This is also where governance stops being a tax and becomes the enabler. A line from the keynote put it well: trust and governance are the **accelerator, not the brake**. Once intelligence is industrialized, an ungoverned data layer is not a risk you manage later; it is a factory with no quality control, shipping defects at machine speed. Lineage, access control, auditability, one catalog — these are what make it safe to let agents loose at all. The platform is also, not coincidentally, the line between a pilot that demos well and a system that survives production.
+
+None of this is free, and the talk said so plainly. Centralizing on a batch foundation means data fresh to the hour or the day, not the millisecond; you trade real-time for cost, flexibility, and room to evolve. That is a conscious trade, not an oversight — and for the workloads that matter, governed and reusable beats instant. The teams that win the next decade will not be the ones that hired the most engineers or bought the largest model. They will be the ones that built the best floor — and then governed it well enough to let everyone build on top.
+
+## The View from the Sixth Floor
+
+![The summit atrium](/img/blog/2026-06-25-industrialization-of-intelligence/summit-atrium.jpg)<br />
+*The summit atrium — two days of robots, agents, and one quiet talk upstairs.*
+
+I have lived this shift in miniature. A few years ago my team's job was to make dashboards; today it is to build the data bedrock a fleet of AI agents will run on. The work that feels valuable has migrated downward — out of the reports and into the foundation beneath them. That is the story of this whole summit, compressed into one career.
+
+You could see the same migration on the floor below. My old employer, Deloitte — a firm that has sold human expertise by the hour for a century and a half — did not come to the summit selling robots. It came selling itself as the connective tissue between the people who build them and the people who need them. When the most headcount-bound business on earth starts repositioning around infrastructure, the direction of travel is hard to miss.
+
+None of this means people go away. Industrialization did not end work; it moved it — from the loom to the factory floor, from the spindle to the system. The AI version moves it too: from typing the code to specifying what gets built, from running the query to owning the data everyone queries, from doing the task to building and governing the floor the tasks run on. The scarce place to stand is no longer the work itself; it is the foundation beneath it — which is also, [as I have argued before](/blog/ai-last-mile-infrastructure), where seniority has been heading for years.
+
+So here is what I actually believe, after two days of robots and agents and one quiet talk upstairs. The machines that perceive, create, and act are real, and they are getting better fast. But the question that decides who wins is not how clever they get. It is who builds the floor they stand on — the data foundation that turns intelligence from a demo into an industry. The spotlight was downstairs. The answer was **up**.
