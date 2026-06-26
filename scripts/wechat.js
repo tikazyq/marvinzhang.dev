@@ -30,7 +30,9 @@ const WECHAT_DIR = '.temp/wechat';
 const STATIC_IMG_DIR = 'static/img/blog';
 const SPECS_DIR = 'specs';
 const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
-const BASE_URL = 'https://marvinzhang.dev';
+// Canonical host is www (apex 307-redirects to www). WeChat's image importer
+// does not follow that redirect, so absolute URLs must point straight at www.
+const BASE_URL = 'https://www.marvinzhang.dev';
 const CACHE_FILE = '.temp/mermaid/.extraction-cache.json';
 const DIAGRAM_PATTERN = /```mermaid\n([\s\S]*?)```/g;
 const JSX_COMPONENT_PATTERN = /<(ProtocolStack|AutomationSpectrum|ToolEcosystem)\s*\/>/g;
