@@ -128,10 +128,13 @@ Which raises the only question that matters once you believe this: not whether t
 
 The honest answer is that one team's foundation is not enough. The third act of my talk was about what comes next — turning a project's data foundation into a shared platform the whole company stands on. The case for it is not idealism; it is arithmetic. When every team builds its own data layer, you get the same tables computed three different ways, disagreeing in three different meetings. Converge them onto one platform and three things happen — the three the keynote actually got right.
 
-![Amazon Bedrock AgentCore, billed as an Agentic Platform](/img/blog/2026-06-25-industrialization-of-intelligence/agentcore-platform.jpg)<br />
-*Amazon Bedrock AgentCore, billed on the expo floor as an "Agentic Platform" — the agent layer, productized. My talk's third act argued for the platform one floor below it: the data those agents run on.*
+![From foundation to a centralized data platform](/img/blog/2026-06-25-industrialization-of-intelligence/centralized-platform.png)<br />
+*The third act in a single slide, from my deck: on the left, today — every project builds its own data layer, N×M point-to-point wiring, duplicated and quarreling over definitions; on the right, after convergence — one shared layer with a single source of truth, every new tool standing on a foundation that already exists.*
 
 First, you stop rebuilding: one pipeline, one warehouse, instead of N teams each maintaining their own. Second, you get a single source of truth — one authoritative definition per metric, so "active user" means the same thing in finance as in product, and the cross-team arguments end. Third, and this is the one that compounds: every new AI tool you add lands faster and costs less, because it stands on a foundation that already exists. The platform gets cheaper to build on the more you build on it — output scaling with infrastructure again, not effort.
+
+![Amazon Bedrock AgentCore, billed as an Agentic Platform](/img/blog/2026-06-25-industrialization-of-intelligence/agentcore-platform.jpg)<br />
+*Amazon Bedrock AgentCore, billed on the expo floor as an "Agentic Platform" — the agent layer, productized. My talk's third act argued for the platform one floor below it: the data those agents run on.*
 
 This is also where governance stops being a tax and becomes the enabler. A line from the keynote put it well: trust and governance are the **accelerator, not the brake**. Once intelligence is industrialized, an ungoverned data layer is not a risk you manage later; it is a factory with no quality control, shipping defects at machine speed. Lineage, access control, auditability, one catalog — these are what make it safe to let agents loose at all. The platform is also, not coincidentally, the line between a pilot that demos well and a system that survives production.
 
