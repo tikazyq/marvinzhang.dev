@@ -198,8 +198,25 @@ function generateHTMLFile(wechatFile) {
     : `${wechatFile.slug}-${wechatFile.locale}.html`;
   const outputPath = path.join(OUTPUT_DIR, outputName);
 
+  // Wrap the inline-styled body in a minimal UTF-8 document so the file
+  // renders correctly when opened directly (e.g. on mobile). Selecting-all and
+  // copying still yields just the rendered <section> for pasting into 公众号.
+  const lang = wechatFile.locale === 'zh' ? 'zh-CN' : 'en';
+  const fullDoc = `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>${wechatFile.slug}</title>
+</head>
+<body>
+${htmlBody}
+</body>
+</html>
+`;
+
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  fs.writeFileSync(outputPath, htmlBody, 'utf-8');
+  fs.writeFileSync(outputPath, fullDoc, 'utf-8');
 
   return outputPath;
 }
