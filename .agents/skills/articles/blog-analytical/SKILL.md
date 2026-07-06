@@ -35,13 +35,15 @@ Load these alongside this workflow:
 
 ## Getting Started
 
-AI creates the spec, then gathers input through conversation:
+For a deep article, AI scaffolds the draft workspace, then gathers input through conversation:
 
 ```bash
-lean-spec create "article-slug" --template=analytical
+node scripts/drafts/scaffold.js "Article Title" "YYYY-MM-DD"
 ```
 
-AI asks questions from the conversation guide 1-2 at a time — covering core thesis, evidence, counterarguments, implications, and scope. Author answers in chat. AI writes everything to the spec.
+This creates `drafts/{YYYY-MM-DD-slug}/` with the research/outline/progress three-piece kit plus unlisted MDX drafts in `blog/` and `i18n/zh/`. The three-piece kit is the default path for deep articles, not a hard requirement — lightweight posts (news, short announcements) can skip the scaffold and be driven directly in chat.
+
+AI asks questions from the conversation guide 1-2 at a time — covering core thesis, evidence, counterarguments, implications, and scope. Author answers in chat. AI writes everything to the draft workspace.
 
 [See conversation guide: references/questionnaire.md]
 
@@ -52,7 +54,7 @@ AI asks questions from the conversation guide 1-2 at a time — covering core th
 **Use `research-technical` and optionally `research-industry` skills.**
 
 Deliverables:
-- `specs/{spec-number}-{slug}/research.md` with 5+ authoritative sources
+- `drafts/{YYYY-MM-DD-slug}/research.md` with 5+ authoritative sources
 - Unique value proposition identified
 - Target complexity level defined
 
@@ -63,7 +65,7 @@ Generate structural blueprint:
 - 2-4 main sections (600-1000 words each): One concept per section with visual element
 - Conclusion (250-400 words): Synthesis, takeaways, future implications
 
-Deliverables: `specs/{spec-number}-{slug}/outline.md`
+Deliverables: `drafts/{YYYY-MM-DD-slug}/outline.md`
 
 ### Stage 3: Writing (3-6 interactions)
 

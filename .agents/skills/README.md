@@ -35,8 +35,7 @@ Composable AI-assisted skills following the [agentskills.io](https://agentskills
 │
 ├── wechat-publish/          # Publishing: WeChat Official Account automation
 │
-├── leanspec-sdd/            # Installed: Spec-Driven Development (codervisor/lean-spec)
-├── agent-browser/           # Installed: Browser-based agent capabilities (codervisor/lean-spec)
+├── agent-browser/           # Installed: Browser automation CLI (vercel-labs/agent-browser)
 └── README.md
 ```
 
@@ -111,20 +110,19 @@ Installed from external repos using the [skills CLI](https://skills.sh):
 
 | Skill | Source | Purpose |
 |-------|--------|---------|
-| `leanspec-sdd` | `codervisor/lean-spec` | Spec-Driven Development methodology |
-| `agent-browser` | `codervisor/lean-spec` | Browser-based agent capabilities |
+| `agent-browser` | `vercel-labs/agent-browser` | Browser automation CLI |
 
-Install: `npx skills add codervisor/lean-spec@leanspec-sdd --all -y`
+Install: `npx skills add vercel-labs/agent-browser --skill agent-browser -y`
 
-## Integration with LeanSpec
+## Drafts Workflow
 
-Article planning uses LeanSpec for tracking (see `leanspec-sdd` skill for full protocol):
+Deep articles are drafted in `drafts/{date-slug}/` using the research → outline → progress three-piece kit. Scaffold a new workspace:
 
 ```bash
-lean-spec create "article-topic" --template=analytical  # or tutorial/experiential/announcement
-lean-spec board                                          # Project status
-lean-spec update "article-topic" --status in-progress    # Track progress
+node scripts/drafts/scaffold.js "Article Title" "YYYY-MM-DD"
 ```
+
+This creates `drafts/{date-slug}/` (research.md, outline.md, progress.md from `templates/drafts/`) plus unlisted MDX drafts in `blog/` and `i18n/zh/`. The three-piece kit is the default path for deep articles, not a hard requirement — lightweight posts can be driven directly in chat.
 
 ## Quality Standards
 

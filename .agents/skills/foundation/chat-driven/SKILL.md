@@ -33,7 +33,7 @@ Instead of creating a questionnaire file and asking the author to fill it out:
 
 **Don't**:
 ```
-I've created the questionnaire in specs/005-topic/README.md.
+I've created the questionnaire in drafts/{date-slug}/research.md.
 Please fill out the questionnaire section, then say "questionnaire complete".
 ```
 
@@ -47,7 +47,7 @@ First: What's the core idea you want to communicate?
 **Rules**:
 - Ask 1-2 questions at a time (not a wall of 10 questions)
 - Adapt question depth to the answer — short answer → follow up; detailed answer → move on
-- After gathering enough context, write the spec file yourself
+- After gathering enough context, write the draft file yourself
 - Confirm with a brief summary: "Here's what I captured — anything to adjust?"
 
 ### Reviewing Content (Replaces "Check the File")
@@ -56,7 +56,7 @@ When presenting outlines, drafts, or plans for review:
 
 **Don't**:
 ```
-I've written the outline to specs/005-topic/outline.md.
+I've written the outline to drafts/{date-slug}/outline.md.
 Please review and let me know your thoughts.
 ```
 
@@ -129,7 +129,7 @@ On mobile, sessions may be interrupted. The AI should:
 
 When the AI writes files on behalf of the author:
 1. Write content directly to the correct file path
-2. Briefly confirm what was written: "Saved the research notes to `specs/005-topic/research.md`"
+2. Briefly confirm what was written: "Saved the research notes to `drafts/{date-slug}/research.md`"
 3. Don't show full file contents unless asked — just confirm + summarize
 4. For article sections, show the section in chat first, get approval, then write to MDX
 

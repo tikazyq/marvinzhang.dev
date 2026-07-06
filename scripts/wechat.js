@@ -21,14 +21,14 @@ const glob = require('glob');
  * 
  * Output:
  *   - Mermaid diagrams: static/img/blog/{slug}/wechat/*.png (permanent)
- *   - WeChat markdown: specs/{spec-folder}/wechat-{locale}.md (if spec exists)
- *   - Fallback output: .temp/wechat/ (for articles without specs)
+ *   - WeChat markdown: drafts/{date-slug}/wechat-{locale}.md (if a draft workspace exists)
+ *   - Fallback output: .temp/wechat/ (for articles without a draft workspace)
  */
 
 const TEMP_DIR = '.temp/mermaid';
 const WECHAT_DIR = '.temp/wechat';
 const STATIC_IMG_DIR = 'static/img/blog';
-const SPECS_DIR = 'specs';
+const DRAFTS_DIR = 'drafts';
 const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 // Canonical host is www (apex 307-redirects to www). WeChat's image importer
 // does not follow that redirect, so absolute URLs must point straight at www.
@@ -90,8 +90,8 @@ Examples:
 
 Output:
   static/img/blog/{slug}/wechat/      PNG diagrams (permanent, Git LFS tracked)
-  specs/{spec-folder}/                WeChat markdown (if spec exists)
-  .temp/wechat/                       Fallback for articles without specs
+  drafts/{date-slug}/                 WeChat markdown (if a draft workspace exists)
+  .temp/wechat/                       Fallback for articles without a draft workspace
 `);
   process.exit(0);
 }
@@ -128,29 +128,28 @@ const saveCache = (cache) => {
   fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
 };
 
-// Find matching spec folder for an article
-const findSpecFolder = (articleSlug, articleFileName) => {
-  if (!fs.existsSync(SPECS_DIR)) return null;
-  
-  const specFolders = fs.readdirSync(SPECS_DIR).filter(f => {
-    const fullPath = path.join(SPECS_DIR, f);
-    return fs.statSync(fullPath).isDirectory() && f !== 'archived';
+// Find matching draft workspace folder for an article
+const findDraftFolder = (articleSlug, articleFileName) => {
+  if (!fs.existsSync(DRAFTS_DIR)) return null;
+
+  const draftFolders = fs.readdirSync(DRAFTS_DIR).filter(f => {
+    const fullPath = path.join(DRAFTS_DIR, f);
+    return fs.statSync(fullPath).isDirectory() && f !== 'archive';
   });
-  
+
   // Extract slug from filename (remove date prefix like 2025-11-27-)
   const slugFromFileName = articleFileName.replace(/^\d{4}-\d{2}-\d{2}-/, '');
-  
-  // Exact match: spec folder should be like "002-introducing-leanspec" for article "introducing-leanspec"
-  for (const folder of specFolders) {
-    // Spec folders are like "002-introducing-leanspec"
-    const specSlug = folder.replace(/^\d+-/, '');
-    
-    // Exact match only
-    if (specSlug === slugFromFileName || specSlug === articleSlug) {
-      return path.join(SPECS_DIR, folder);
+
+  // Draft folders are named {YYYY-MM-DD-slug}, matching the article filename
+  for (const folder of draftFolders) {
+    const folderSlug = folder.replace(/^\d{4}-\d{2}-\d{2}-/, '');
+
+    // Exact match on the full date-slug folder name, or on the slug alone
+    if (folder === articleFileName || folderSlug === slugFromFileName || folderSlug === articleSlug) {
+      return path.join(DRAFTS_DIR, folder);
     }
   }
-  
+
   return null;
 };
 
@@ -320,14 +319,14 @@ const processArticles = async () => {
     
     // Determine output locations
     const staticImageDir = getStaticImageDir(article.fileName);
-    const specFolder = findSpecFolder(article.slug, article.fileName);
-    
+    const draftFolder = findDraftFolder(article.slug, article.fileName);
+
     // Ensure directories exist
     ensureDir(staticImageDir);
-    
+
     verbose(`   📁 Images: ${staticImageDir}`);
-    if (specFolder) {
-      verbose(`   📁 Spec: ${specFolder}`);
+    if (draftFolder) {
+      verbose(`   📁 Draft: ${draftFolder}`);
     }
     
     // Extract and render diagrams to static folder
@@ -494,41 +493,41 @@ const processArticles = async () => {
 
     processedContent += footer;
     
-    // Determine output path: spec folder if exists, otherwise .temp/wechat
+    // Determine output path: draft folder if exists, otherwise .temp/wechat
     let outputPath;
     let outputLocation;
-    
-    if (specFolder) {
-      outputPath = `${specFolder}/wechat-${article.locale}.md`;
-      outputLocation = 'spec';
+
+    if (draftFolder) {
+      outputPath = `${draftFolder}/wechat-${article.locale}.md`;
+      outputLocation = 'draft';
     } else {
       outputPath = `${WECHAT_DIR}/${article.fileName}-${article.locale}-wechat.md`;
       outputLocation = 'temp';
     }
-    
+
     fs.writeFileSync(outputPath, processedContent);
-    
+
     // Also save to temp for easy access
     const tempOutputPath = `${WECHAT_DIR}/${article.fileName}-${article.locale}-wechat.md`;
-    if (outputLocation === 'spec') {
+    if (outputLocation === 'draft') {
       fs.writeFileSync(tempOutputPath, processedContent);
     }
-    
+
     // Update cache
     newCache[article.filePath] = {
       mtime: article.mtime,
       processedAt: new Date().toISOString(),
       diagramCount: article.diagramCount,
       staticImageDir,
-      specFolder: specFolder || null
+      draftFolder: draftFolder || null
     };
-    
+
     results.push({
       title: article.title,
       locale: article.locale,
       output: outputPath,
       outputLocation,
-      specFolder,
+      draftFolder,
       staticImageDir,
       diagrams: diagramFiles.length,
       jsxScreenshots: jsxImageFiles.length
@@ -538,7 +537,7 @@ const processArticles = async () => {
     if (diagramFiles.length > 0) parts.push(`${diagramFiles.length} diagrams`);
     if (jsxImageFiles.length > 0) parts.push(`${jsxImageFiles.length} JSX`);
     if (parts.length === 0) parts.push('text + static images');
-    const locationEmoji = outputLocation === 'spec' ? '📋' : '📁';
+    const locationEmoji = outputLocation === 'draft' ? '📋' : '📁';
     log(`✅ ${article.locale.toUpperCase()}: ${article.fileName} (${parts.join(', ')}) ${locationEmoji}`);
   }
   
@@ -548,22 +547,22 @@ const processArticles = async () => {
   // Summary
   console.log('\n' + '─'.repeat(50));
   
-  const specResults = results.filter(r => r.outputLocation === 'spec');
+  const draftResults = results.filter(r => r.outputLocation === 'draft');
   const tempResults = results.filter(r => r.outputLocation === 'temp');
-  
+
   console.log(`📦 Static Images: ${path.resolve(STATIC_IMG_DIR)}`);
   console.log(`📄 Files: ${results.length}`);
   console.log(`🖼️  Diagrams: ${results.reduce((sum, r) => sum + r.diagrams, 0)}, JSX Screenshots: ${results.reduce((sum, r) => sum + r.jsxScreenshots, 0)}`);
-  
-  if (specResults.length > 0) {
-    console.log(`\n📋 Saved to spec folders (${specResults.length}):`);
-    specResults.forEach(r => {
-      console.log(`   ${r.specFolder}/wechat-${r.locale}.md`);
+
+  if (draftResults.length > 0) {
+    console.log(`\n📋 Saved to draft folders (${draftResults.length}):`);
+    draftResults.forEach(r => {
+      console.log(`   ${r.draftFolder}/wechat-${r.locale}.md`);
     });
   }
-  
+
   if (tempResults.length > 0) {
-    console.log(`\n📁 Saved to temp (no spec found) (${tempResults.length}):`);
+    console.log(`\n📁 Saved to temp (no draft found) (${tempResults.length}):`);
     tempResults.forEach(r => {
       console.log(`   ${path.basename(r.output)}`);
     });
@@ -579,9 +578,9 @@ const processArticles = async () => {
   
   // Open output directory if requested
   if (options.open && results.length > 0) {
-    // Open the first spec folder if available, otherwise temp
-    const openDir = specResults.length > 0 
-      ? path.resolve(specResults[0].specFolder)
+    // Open the first draft folder if available, otherwise temp
+    const openDir = draftResults.length > 0
+      ? path.resolve(draftResults[0].draftFolder)
       : path.resolve(WECHAT_DIR);
     
     console.log(`\n📂 Opening ${openDir}...`);

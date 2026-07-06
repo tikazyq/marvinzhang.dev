@@ -57,15 +57,15 @@ pnpm medium:list
 
 ## Output
 
-Output is saved to the spec folder if one exists for the article, otherwise to `.temp/medium/`:
+Output is saved to the draft workspace folder if one exists for the article, otherwise to `.temp/medium/`:
 
 ```
-# If spec exists (e.g., specs/002-introducing-leanspec/)
-specs/{spec-folder}/
+# If a draft workspace exists (e.g., drafts/2026-05-12-vsm-cybernetics-system-organization/)
+drafts/{date-slug}/
 ├── medium-en.md           # English Medium-ready markdown
 └── medium-zh.md           # Chinese Medium-ready markdown
 
-# Fallback (no matching spec)
+# Fallback (no matching draft workspace)
 .temp/medium/
 └── *-medium.md            # Medium-ready markdown
 
@@ -75,8 +75,8 @@ static/img/blog/{slug}/medium/
 ```
 
 Output files:
-- `medium-en.md` - English article ready for Medium (in spec folder)
-- `medium-zh.md` - Chinese article ready for Medium (in spec folder)
+- `medium-en.md` - English article ready for Medium (in draft folder)
+- `medium-zh.md` - Chinese article ready for Medium (in draft folder)
 - `*-en-medium.md` / `*-zh-medium.md` - Fallback format in `.temp/medium/`
 
 ## Medium Import Instructions
