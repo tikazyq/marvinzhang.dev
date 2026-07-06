@@ -79,7 +79,7 @@ Structure:
 ### Clear Call-to-Action
 ```markdown
 ## Get Started
-1. Install: `npm install <package>`
+1. Install: `pnpm add <package>`
 2. Read docs: [example.com/docs](https://example.com/docs)
 ```
 

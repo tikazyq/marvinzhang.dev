@@ -33,7 +33,7 @@ Instead of creating a questionnaire file and asking the author to fill it out:
 
 **Don't**:
 ```
-I've created the questionnaire in drafts/{date-slug}/research.md.
+I've created the questionnaire in drafts/{date-slug}/questionnaire.md.
 Please fill out the questionnaire section, then say "questionnaire complete".
 ```
 

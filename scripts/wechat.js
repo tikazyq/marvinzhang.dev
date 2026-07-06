@@ -128,26 +128,16 @@ const saveCache = (cache) => {
   fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
 };
 
-// Find matching draft workspace folder for an article
-const findDraftFolder = (articleSlug, articleFileName) => {
+// Find matching draft workspace folder for an article.
+// Draft folders are named {YYYY-MM-DD-slug}, identical to the article filename,
+// so match strictly on the full date-slug — a slug-only fallback could route
+// output to a same-slug workspace from a different date.
+const findDraftFolder = (articleFileName) => {
   if (!fs.existsSync(DRAFTS_DIR)) return null;
 
-  const draftFolders = fs.readdirSync(DRAFTS_DIR).filter(f => {
-    const fullPath = path.join(DRAFTS_DIR, f);
-    return fs.statSync(fullPath).isDirectory() && f !== 'archive';
-  });
-
-  // Extract slug from filename (remove date prefix like 2025-11-27-)
-  const slugFromFileName = articleFileName.replace(/^\d{4}-\d{2}-\d{2}-/, '');
-
-  // Draft folders are named {YYYY-MM-DD-slug}, matching the article filename
-  for (const folder of draftFolders) {
-    const folderSlug = folder.replace(/^\d{4}-\d{2}-\d{2}-/, '');
-
-    // Exact match on the full date-slug folder name, or on the slug alone
-    if (folder === articleFileName || folderSlug === slugFromFileName || folderSlug === articleSlug) {
-      return path.join(DRAFTS_DIR, folder);
-    }
+  const candidate = path.join(DRAFTS_DIR, articleFileName);
+  if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
+    return candidate;
   }
 
   return null;
@@ -319,7 +309,7 @@ const processArticles = async () => {
     
     // Determine output locations
     const staticImageDir = getStaticImageDir(article.fileName);
-    const draftFolder = findDraftFolder(article.slug, article.fileName);
+    const draftFolder = findDraftFolder(article.fileName);
 
     // Ensure directories exist
     ensureDir(staticImageDir);
