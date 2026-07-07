@@ -63,7 +63,7 @@
 <div class="header">
   <div class="figno">图 02 — 两个新选型判据</div>
   <h1>agent 跑的循环，以及技术栈控制着什么</h1>
-  <div class="subtitle">一个任务里这个循环要闭合几十到几百次。技术栈决定它的延迟，也决定分叉处有多少正确性是机器可判定的。</div>
+  <div class="subtitle">一个任务里这个循环要闭合几十到几百次。技术栈决定一轮要多久，也决定分叉处有多少对错能由机器直接裁决。</div>
 </div>
 
 <svg class="diagram" width="772" height="368" viewBox="0 0 772 368" font-family="Inter, 'Noto Sans SC', sans-serif">
@@ -118,7 +118,7 @@
   <!-- latency bracket under the edit->signals span -->
   <path d="M 6 336 L 6 344 L 766 344 L 766 336" fill="none" stroke="#e65100" stroke-width="2.5"/>
   <text x="386" y="362" text-anchor="middle" font-size="12.5" font-weight="600" fill="#e65100"
-        font-family="'JetBrains Mono', monospace">循环延迟 = 一次「修改 → 可信反馈」的端到端耗时</text>
+        font-family="'JetBrains Mono', monospace">反馈周期 = 一次「修改 → 可信反馈」的端到端耗时</text>
 </svg>
       <div class="density">
         <div class="cell good"><b>密集信号：</b>一条 <code>tsc</code> 报错零成本、确定性、机器可读——同一缺陷、同一消息、同一行号。LLM 产出代码的编译错误中 94% 是类型检查失败。</div>
