@@ -32,7 +32,12 @@
 - [x] 站内链接 4 篇旧文;pnpm build 双 locale 通过
 - **Gate**: ⛔ 等作者对 EN 稿反馈后进 Stage 4(润色 + 中文翻译)
 
-### ⏳ Stage 4: Refine (incl. zh translation) — NOT STARTED
+### 🔄 Stage 4: Refine — 中文翻译已完成 (2026-07-07)，润色等作者评论
+- [x] 中文全文翻译(形不同而意同:自然中文表达,非逐句直译;2021 旧文引语还原为中文原话;技术名词首现附英文)
+- [x] zh 标题定为《AI Agent 时代的 Web 技术选型》(可改);frontmatter tags 与 EN 对齐
+- [x] validate:zh-bold-source 通过(55/55);注意:仓库"加粗前后空格"约定中 `**X **，` 形式在 CommonMark 下渲染为字面星号(老文章亦存在此问题),本篇改用不触发歧义的写法,渲染已抽查为 0 残留星号
+- [x] pnpm build 双 locale 通过
+- [ ] 作者评论后统一润色(EN + ZH)
 
 ## Work Session Log
 - **2026-07-06** by Claude (Stage 1 agent): scaffold 工作区;精读 2021-02-03-typescript / 2021-03-02-frontend-engineering / 2021-03-24-golang / 2021-11-19-csharp / 2021-02-22-vue3;完成旧文清单与成色评估;启动 4 路外部证据研究(Bun 现状与 Anthropic 收购、Hono 采用度多口径、typescript-go 进展、agent-friendly stack 既有讨论饱和度)。
