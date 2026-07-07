@@ -12,15 +12,6 @@
 			"cwd": "${workspaceFolder}",
 			"envFile": "",
 			"env": {}
-		},
-		"leanspec-mcp": {
-			"type": "stdio",
-			"command": "npx",
-			"args": [
-				"@leanspec/mcp@0.2.7"
-			],
-			"cwd": "${workspaceFolder}",
-			"env": {}
 		}
 	},
 	"inputs": []

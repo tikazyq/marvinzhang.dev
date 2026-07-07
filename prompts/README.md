@@ -6,7 +6,7 @@ This directory contains **modular, tool-agnostic prompts** for AI-assisted blog 
 
 1. **Choose a style** based on your article type
 2. **Combine prompts**: Always include `common/` modules + your chosen style
-3. **Create a spec** for the article using LeanSpec
+3. **Scaffold a draft workspace** for the article (`node scripts/drafts/scaffold.js "Article Title" "YYYY-MM-DD"`)
 4. **Reference prompts** when working with AI assistants
 
 ## Directory Structure
@@ -95,22 +95,16 @@ If your editor supports context files (Cursor, etc.), add prompts to context:
 - Add `prompts/common/*.md` files
 - Add your chosen style file
 
-## LeanSpec Integration
+## Drafts Workflow Integration
 
-Each article should be tracked as a LeanSpec spec:
+Deep articles are drafted in a `drafts/{date-slug}/` workspace using the research → outline → progress three-piece kit:
 
 ```bash
-# Create article spec
-lean-spec create "my-article-topic" --tags article,style:analytical,lang:bilingual
-
-# Update progress
-lean-spec update "my-article-topic" --status in-progress
-
-# Mark complete
-lean-spec update "my-article-topic" --status complete
+# Scaffold a draft workspace (three-piece kit + unlisted MDX drafts)
+node scripts/drafts/scaffold.js "My Article Topic" "YYYY-MM-DD"
 ```
 
-Article specs use the `article` template (defined in `.leanspec/templates/`).
+Track progress in the generated `progress.md`. The three-piece kit is the default path for deep articles, not a hard requirement — lightweight posts can be written directly. Templates live in `templates/drafts/`.
 
 ## Common + Style Combination
 
@@ -144,5 +138,5 @@ The previous `.github/instructions/*.instructions.md` files have been removed. T
 |-----|-----|
 | `writing-guidelines.instructions.md` | Split into `common/formatting.md` + `common/localization.md` |
 | `economist-style-principles.instructions.md` | `styles/analytical.md` |
-| `writing-workflow.instructions.md` | LeanSpec templates + style-specific workflows |
+| `writing-workflow.instructions.md` | Drafts three-piece kit + style-specific workflows |
 | `.github/LOCALIZATION_GUIDE.md` | `common/LOCALIZATION_GUIDE.md` |

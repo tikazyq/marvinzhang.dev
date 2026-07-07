@@ -23,6 +23,7 @@ Composable skills live in `.agents/skills/` (with symlinks at `.skills/` and `.c
 | Write tutorial | `blog-common` + `blog-tutorial` |
 | Write experiential article | `blog-common` + `blog-experiential` |
 | Write announcement | `blog-common` + `blog-announcement` |
+| Start a deep-article draft | `scripts/drafts/scaffold.js` → `drafts/{date-slug}/` three-piece kit |
 | Research a technology | `research-technical` |
 | Analyze market trends | `research-industry` |
 | "Should I write about X?" | `analysis-topic` |
@@ -34,7 +35,7 @@ Composable skills live in `.agents/skills/` (with symlinks at `.skills/` and `.c
 | Tier | Skills | Purpose |
 |------|--------|---------|
 | **Foundation** | formatting, localization, quality, writing-style, chat-driven | Composable building blocks |
-| **Installed** | leanspec-sdd, agent-browser | External skills (via `npx skills`) |
+| **Installed** | agent-browser | External skills (via `npx skills`) |
 | **Research** | research-technical, research-industry, research-content-gap | Standalone research capabilities |
 | **Analysis** | analysis-topic, analysis-article | Standalone analysis capabilities |
 | **Workflows** | blog-analytical, blog-tutorial, blog-experiential, blog-announcement | Article pipelines (compose foundation + research) |
@@ -54,42 +55,45 @@ marvinzhang.dev/
 ├── .claude/skills/ → ../.agents/skills/  # Symlink for Claude Code
 ├── blog/                    # Published MDX posts (English)
 ├── i18n/zh/.../             # Chinese translations
-├── specs/                   # Active specs (planning artifacts)
+├── drafts/                  # Deep-article draft workspaces
+│   └── {date-slug}/         # research.md + outline.md + progress.md (three-piece kit)
+├── templates/drafts/        # Templates for the three-piece kit
 ├── scripts/                 # Active utilities
+│   └── drafts/scaffold.js   # Scaffolds a draft workspace + unlisted MDX drafts
 ├── src/                     # Docusaurus customizations
-├── static/                  # Static assets
-└── .lean-spec/              # LeanSpec config & templates
+└── static/                  # Static assets
 ```
 
 ## Operational Directives
 
 **Before touching files:**
-1. Use `lean-spec board` to see project state
-2. Use `lean-spec search` to find related specs
-3. Never create spec files manually—use `lean-spec create`
+1. Check `drafts/` for an existing workspace on the topic
+2. For a new deep article, scaffold one—never hand-create the workspace: `node scripts/drafts/scaffold.js "Article Title" "YYYY-MM-DD"`
+3. Lightweight posts (news, short announcements) can skip the scaffold and be written directly
 
 **During work:**
 - Manage tasks via todo list tool (one in-progress at a time)
 - Write blog content directly to final MDX paths
 - Keep explanations skimmable—share deltas, not full plans
 
-## LeanSpec Commands
+## Drafts Workflow
 
-| Action         | Command                                     |
-| -------------- | ------------------------------------------- |
-| Project status | `lean-spec board`                           |
-| Create spec    | `lean-spec create <name> --template=<style>` |
-| Update         | `lean-spec update <spec> --status <status>` |
-| Search         | `lean-spec search "query"`                  |
-
-### Article Spec Templates
+Deep articles are drafted in `drafts/{date-slug}/` using the three-piece kit (research → outline → progress). Scaffold a new workspace:
 
 ```bash
-lean-spec create "slug" --template=analytical    # Deep-dives
-lean-spec create "slug" --template=tutorial      # How-to guides
-lean-spec create "slug" --template=experiential  # Lessons learned
-lean-spec create "slug" --template=announcement  # Releases
+node scripts/drafts/scaffold.js "Article Title" "YYYY-MM-DD"
 ```
+
+This creates:
+
+| Artifact | Purpose |
+| -------- | ------- |
+| `drafts/{date-slug}/research.md` | Sources and findings (Stage 1) |
+| `drafts/{date-slug}/outline.md`  | Structure and plan (Stage 2) |
+| `drafts/{date-slug}/progress.md` | Writing progress tracking |
+| `blog/{date-slug}.mdx` + zh counterpart | Unlisted MDX drafts (`unlisted: true`) |
+
+The three-piece kit is the default path for deep articles, not a hard requirement—lightweight posts can be driven directly in chat. Reference example: `drafts/2026-05-12-vsm-cybernetics-system-organization/`. Templates live in `templates/drafts/`.
 
 ## AI Behavior: Collaborative Writing
 

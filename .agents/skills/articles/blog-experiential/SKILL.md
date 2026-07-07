@@ -33,13 +33,15 @@ Load these alongside this workflow:
 
 ## Getting Started
 
-AI creates the spec, then gathers input through conversation:
+For a deep article, AI scaffolds the draft workspace, then gathers input through conversation:
 
 ```bash
-lean-spec create "article-slug" --template=experiential
+node scripts/drafts/scaffold.js "Article Title" "YYYY-MM-DD"
 ```
 
-AI asks questions from the conversation guide 1-2 at a time — covering context, challenge, approach, lessons, and advice. Author answers in chat. AI writes everything to the spec.
+This creates `drafts/{YYYY-MM-DD-slug}/` with the research/outline/progress three-piece kit plus unlisted MDX drafts in `blog/` and `i18n/zh/`. The three-piece kit is the default path for deep articles, not a hard requirement — lightweight posts (news, short announcements) can skip the scaffold and be driven directly in chat.
+
+AI asks questions from the conversation guide 1-2 at a time — covering context, challenge, approach, lessons, and advice. Author answers in chat. AI writes everything to the draft workspace.
 
 [See conversation guide: references/questionnaire.md]
 
@@ -56,7 +58,7 @@ Narrative arc: Context → Challenge → Approach → Outcome → Lessons
 - The Outcome (400-600 words): Results, unexpected learnings
 - Lessons & Takeaways (400-600 words): 3-5 concrete lessons
 
-Deliverables: `specs/{spec-number}-{slug}/outline.md`
+Deliverables: `drafts/{YYYY-MM-DD-slug}/outline.md`
 
 ### Stage 2: Writing (3-5 interactions)
 

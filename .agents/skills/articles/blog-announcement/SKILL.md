@@ -28,19 +28,19 @@ Load these alongside this workflow:
 - Major milestone announcements
 - Tool and library introductions
 
-**Example topics**: "Introducing LeanSpec", "Crawlab 2.0 Released"
+**Example topics**: "Introducing a New Open-Source Tool", "Crawlab 2.0 Released"
 
 ## Getting Started
 
-AI creates the spec, then gathers input through conversation:
+Announcements are often lightweight — if the author provides enough context upfront, start writing directly in chat. For a more involved announcement, scaffold a draft workspace first:
 
 ```bash
-lean-spec create "project-name-announcement" --template=announcement
+node scripts/drafts/scaffold.js "Article Title" "YYYY-MM-DD"
 ```
 
-AI asks questions from the conversation guide 1-2 at a time — covering the news, why it matters, key features, personal story, and CTA. Author answers in chat. AI writes everything to the spec.
+This creates `drafts/{YYYY-MM-DD-slug}/` with the research/outline/progress three-piece kit plus unlisted MDX drafts in `blog/` and `i18n/zh/`. The three-piece kit is the default path for deep articles, not a hard requirement.
 
-Alternatively, start writing directly if the author provides enough context upfront.
+AI asks questions from the conversation guide 1-2 at a time — covering the news, why it matters, key features, personal story, and CTA. Author answers in chat. AI writes everything to the draft workspace.
 
 [See conversation guide: references/questionnaire.md]
 
@@ -70,7 +70,7 @@ Structure:
 ### Lead with Value
 ```markdown
 ❌ "After months of hard work, we're excited to announce something amazing..."
-✅ "LeanSpec reduced our feature development time by 50%."
+✅ "Our new CLI reduced feature development time by 50%."
 ```
 
 ### Scannable Format
@@ -79,8 +79,8 @@ Structure:
 ### Clear Call-to-Action
 ```markdown
 ## Get Started
-1. Install: `npm install leanspec`
-2. Read docs: [leanspec.dev/docs](https://leanspec.dev/docs)
+1. Install: `pnpm add <package>`
+2. Read docs: [example.com/docs](https://example.com/docs)
 ```
 
 ### Minimal Technical Depth

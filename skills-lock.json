@@ -2,20 +2,16 @@
   "version": 1,
   "skills": {
     "agent-browser": {
-      "source": "codervisor/lean-spec",
+      "source": "vercel-labs/agent-browser",
       "sourceType": "github",
-      "computedHash": "3aa8074455dca8b414738a5540deb8f724f6ad170bd576ecf4b5e7832944acf2"
+      "skillPath": "skills/agent-browser/SKILL.md",
+      "computedHash": "ecc7641aea05f85ca3b11e7759d32aaf52fe05946ab4b63739c7bf78a41237a2"
     },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
-    },
-    "leanspec-sdd": {
-      "source": "codervisor/lean-spec",
-      "sourceType": "github",
-      "computedHash": "e7ebfb2196cbeda1f59830de0eb07f571ac149f8dd644f57137920f4c6c05178"
     }
   }
 }

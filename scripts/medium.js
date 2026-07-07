@@ -31,7 +31,7 @@ const glob = require('glob');
 const TEMP_DIR = '.temp/mermaid';
 const FALLBACK_DIR = '.temp/medium';
 const STATIC_IMG_DIR = 'static/img/blog';
-const SPECS_DIR = 'specs';
+const DRAFTS_DIR = 'drafts';
 const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 const BASE_URL = 'https://marvinzhang.dev';
 const CACHE_FILE = '.temp/medium/.extraction-cache.json';
@@ -86,8 +86,8 @@ Examples:
   pnpm medium --force                 # Force full rebuild
 
 Output:
-  specs/{spec-folder}/medium-{locale}.md   Medium markdown (if spec exists)
-  .temp/medium/                            Fallback for articles without specs
+  drafts/{date-slug}/medium-{locale}.md    Medium markdown (if a draft workspace exists)
+  .temp/medium/                            Fallback for articles without a draft workspace
   static/img/blog/{slug}/medium/           PNG diagrams (permanent)
 
 Medium Import Tips:
@@ -136,29 +136,18 @@ const getStaticImageDir = (articleFileName) => {
   return path.join(STATIC_IMG_DIR, articleFileName, 'medium');
 };
 
-// Find matching spec folder for an article
-const findSpecFolder = (articleSlug, articleFileName) => {
-  if (!fs.existsSync(SPECS_DIR)) return null;
-  
-  const specFolders = fs.readdirSync(SPECS_DIR).filter(f => {
-    const fullPath = path.join(SPECS_DIR, f);
-    return fs.statSync(fullPath).isDirectory() && f !== 'archived';
-  });
-  
-  // Extract slug from filename (remove date prefix like 2025-11-27-)
-  const slugFromFileName = articleFileName.replace(/^\d{4}-\d{2}-\d{2}-/, '');
-  
-  // Exact match: spec folder should be like "002-introducing-leanspec" for article "introducing-leanspec"
-  for (const folder of specFolders) {
-    // Spec folders are like "002-introducing-leanspec"
-    const specSlug = folder.replace(/^\d+-/, '');
-    
-    // Exact match only
-    if (specSlug === slugFromFileName || specSlug === articleSlug) {
-      return path.join(SPECS_DIR, folder);
-    }
+// Find matching draft workspace folder for an article.
+// Draft folders are named {YYYY-MM-DD-slug}, identical to the article filename,
+// so match strictly on the full date-slug — a slug-only fallback could route
+// output to a same-slug workspace from a different date.
+const findDraftFolder = (articleFileName) => {
+  if (!fs.existsSync(DRAFTS_DIR)) return null;
+
+  const candidate = path.join(DRAFTS_DIR, articleFileName);
+  if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
+    return candidate;
   }
-  
+
   return null;
 };
 
@@ -442,16 +431,16 @@ const processArticles = async () => {
     
     // Determine output locations
     const staticImageDir = getStaticImageDir(article.fileName);
-    const specFolder = findSpecFolder(article.slug, article.fileName);
-    
+    const draftFolder = findDraftFolder(article.fileName);
+
     // Ensure directories exist
     if (article.diagramCount > 0) {
       ensureDir(staticImageDir);
     }
-    
+
     verbose(`   📁 Images: ${staticImageDir}`);
-    if (specFolder) {
-      verbose(`   📁 Spec: ${specFolder}`);
+    if (draftFolder) {
+      verbose(`   📁 Draft: ${draftFolder}`);
     }
     
     // Extract and render diagrams
@@ -535,45 +524,45 @@ const processArticles = async () => {
     // Clean up extra blank lines
     processedContent = processedContent.replace(/\n{3,}/g, '\n\n');
     
-    // Determine output path: spec folder if exists, otherwise fallback
+    // Determine output path: draft folder if exists, otherwise fallback
     let outputPath;
     let outputLocation;
-    
-    if (specFolder) {
-      outputPath = `${specFolder}/medium-${article.locale}.md`;
-      outputLocation = 'spec';
+
+    if (draftFolder) {
+      outputPath = `${draftFolder}/medium-${article.locale}.md`;
+      outputLocation = 'draft';
     } else {
       outputPath = `${FALLBACK_DIR}/${article.fileName}-${article.locale}-medium.md`;
       outputLocation = 'temp';
     }
-    
+
     fs.writeFileSync(outputPath, processedContent);
-    
-    // Also save to fallback for easy access if saved to spec
+
+    // Also save to fallback for easy access if saved to a draft folder
     const fallbackOutputPath = `${FALLBACK_DIR}/${article.fileName}-${article.locale}-medium.md`;
-    if (outputLocation === 'spec') {
+    if (outputLocation === 'draft') {
       fs.writeFileSync(fallbackOutputPath, processedContent);
     }
-    
+
     // Update cache
     newCache[article.filePath] = {
       mtime: article.mtime,
       processedAt: new Date().toISOString(),
       diagramCount: article.diagramCount,
-      specFolder: specFolder || null
+      draftFolder: draftFolder || null
     };
-    
+
     results.push({
       title: article.title,
       locale: article.locale,
       output: outputPath,
       outputLocation,
-      specFolder,
+      draftFolder,
       staticImageDir: article.diagramCount > 0 ? staticImageDir : null,
       diagrams: diagramFiles.length
     });
-    
-    const locationEmoji = outputLocation === 'spec' ? '📋' : '📁';
+
+    const locationEmoji = outputLocation === 'draft' ? '📋' : '📁';
     const diagramInfo = article.diagramCount > 0 ? ` (${diagramFiles.length} diagrams)` : '';
     log(`✅ ${article.locale.toUpperCase()}: ${article.fileName}${diagramInfo} ${locationEmoji}`);
   }
@@ -584,24 +573,24 @@ const processArticles = async () => {
   // Summary
   console.log('\n' + '─'.repeat(50));
   
-  const specResults = results.filter(r => r.outputLocation === 'spec');
+  const draftResults = results.filter(r => r.outputLocation === 'draft');
   const tempResults = results.filter(r => r.outputLocation === 'temp');
   const totalDiagrams = results.reduce((sum, r) => sum + r.diagrams, 0);
-  
+
   console.log(`📦 Files: ${results.length}`);
   if (totalDiagrams > 0) {
     console.log(`🖼️  Images: ${totalDiagrams}`);
   }
-  
-  if (specResults.length > 0) {
-    console.log(`\n📋 Saved to spec folders (${specResults.length}):`);
-    specResults.forEach(r => {
-      console.log(`   ${r.specFolder}/medium-${r.locale}.md`);
+
+  if (draftResults.length > 0) {
+    console.log(`\n📋 Saved to draft folders (${draftResults.length}):`);
+    draftResults.forEach(r => {
+      console.log(`   ${r.draftFolder}/medium-${r.locale}.md`);
     });
   }
-  
+
   if (tempResults.length > 0) {
-    console.log(`\n📁 Saved to temp (no spec found) (${tempResults.length}):`);
+    console.log(`\n📁 Saved to temp (no draft found) (${tempResults.length}):`);
     tempResults.forEach(r => {
       console.log(`   ${path.basename(r.output)}`);
     });
@@ -625,9 +614,9 @@ const processArticles = async () => {
   
   // Open output directory if requested
   if (options.open && results.length > 0) {
-    // Open the first spec folder if available, otherwise fallback
-    const openDir = specResults.length > 0 
-      ? path.resolve(specResults[0].specFolder)
+    // Open the first draft folder if available, otherwise fallback
+    const openDir = draftResults.length > 0
+      ? path.resolve(draftResults[0].draftFolder)
       : path.resolve(FALLBACK_DIR);
     console.log(`\n📂 Opening ${openDir}...`);
     

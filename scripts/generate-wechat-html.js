@@ -16,7 +16,7 @@ const glob = require('glob');
  */
 
 const WECHAT_DIR = '.temp/wechat';
-const SPECS_DIR = 'specs';
+const DRAFTS_DIR = 'drafts';
 const OUTPUT_DIR = 'static/wechat';
 const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 
@@ -148,18 +148,18 @@ function findWeChatMarkdownFiles(slugFilter) {
     }
   }
 
-  // Check specs/*/wechat-*.md
-  const specFiles = glob.sync(`${SPECS_DIR}/*/wechat-*.md`);
-  for (const f of specFiles) {
+  // Check drafts/*/wechat-*.md
+  const draftFiles = glob.sync(`${DRAFTS_DIR}/*/wechat-*.md`);
+  for (const f of draftFiles) {
     const basename = path.basename(f);
     const match = basename.match(/^wechat-(zh|en)\.md$/);
     if (match) {
       const locale = match[1];
-      // Derive slug from spec folder name (strip numeric prefix)
-      const specFolder = path.basename(path.dirname(f));
-      const slug = specFolder.replace(/^\d+-/, '');
+      // Derive slug from draft folder name (strip date prefix like 2025-11-27-)
+      const draftFolder = path.basename(path.dirname(f));
+      const slug = draftFolder.replace(/^\d{4}-\d{2}-\d{2}-/, '');
       if (!slugFilter || slug.includes(slugFilter)) {
-        // Avoid duplicates (prefer spec version)
+        // Avoid duplicates (prefer draft version)
         const existing = files.findIndex(e => e.slug === slug && e.locale === locale);
         if (existing >= 0) {
           files[existing] = { path: f, slug, locale };
