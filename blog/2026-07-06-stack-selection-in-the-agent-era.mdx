@@ -92,7 +92,7 @@ The community's pragmatic consensus — `bun install` for development speed, Nod
 
 If the two criteria are real, they should be usable. Here is the plane they define, with placements that are qualitative judgments from the evidence above — not scores.
 
-![A two-axis plane — loop latency versus verification signal density. TS 7 native, Go, C# and Hono + Zod sit in or near the joint-DX sweet spot; Rust, Kotlin, Java and TS on the JS-based tsc are trustworthy but slower; PHP, Ruby, plain JavaScript and typical Python setups are fast but sparse on signals; C/C++ lands in agent hard mode; Bun today is furthest right with a reliability discount.](/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-6-quadrant.en.png)
+![A two-axis plane — loop latency versus verification signal density, judged on the incremental inner loop. Rust tops signal density with a mid-plane check loop; TS 7 native, Dart (thin training data), Bun, Go, C#, Java and Hono + Zod populate the sweet-spot region; Kotlin, Swift and TS on the JS-based tsc are trustworthy but slower; Python and PHP are fast with middling signals, Ruby and plain JavaScript fast but sparse; C/C++ lands in agent hard mode.](/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-6-quadrant.en.png)
 
 The chart is only the summary; the procedure is the point. Used honestly, it takes three steps.
 
@@ -100,7 +100,7 @@ The chart is only the summary; the procedure is the point. Used honestly, it tak
 
 **Step two: score each axis twice — once for your humans, once for your agents — and expect the two scores to disagree.** The same explicit, annotation-dense codebase that hands an agent rich signals can be the codebase your senior engineers dread reviewing. Where the scores conflict, that is not a defect in the framework; it is the actual decision you have to make, now stated plainly. My 2021 Golang article's closing three questions — fit to the business, fit to the team, cost to learn — are the human half of this scorecard, unchanged.
 
-**Step three: compare only within the training-data mainstream.** The axes assume first-draft quality is roughly saturated across candidates. Put an exquisite niche language on this chart and it will look better than it performs, because its real handicap — a weak first draft on every round — appears on neither axis. This is the legitimate core of the training-data objection, absorbed here as a usage boundary.
+**Step three: compare only within the training-data mainstream.** The axes assume first-draft quality is roughly saturated across candidates. Put an exquisite niche language on this chart and it will look better than it performs, because its real handicap — a weak first draft on every round — appears on neither axis. That is exactly what the asterisk on Dart marks: near the sweet spot on pure axes, thin in the corpus. This is the legitimate core of the training-data objection, absorbed here as a usage boundary.
 
 What this framework refuses to produce is a sentence of the form "X is the best language for the agent era." I declined to write that sentence about Go in 2021 — any language that achieves broad adoption, I argued then, is not a bad language — and the intervening five years have only strengthened the refusal. Criteria travel; crowns do not.
 
