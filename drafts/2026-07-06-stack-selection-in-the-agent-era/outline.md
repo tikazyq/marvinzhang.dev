@@ -8,8 +8,8 @@
 
 | Field | Value |
 | ----- | ----- |
-| **Slug** | `web-stack-selection-in-the-agent-era`(沿用) |
-| **EN title (primary)** | Web Stack Selection in the Agent Era |
+| **Slug** | `stack-selection-in-the-agent-era`(沿用) |
+| **EN title (primary)** | Stack Selection in the Agent Era |
 | **EN title (alt)** | The Referee Has Changed: Stack Selection for Humans and Agents |
 | **ZH title (primary)** | 《AI Agent 时代的 Web 技术选型》 |
 | **ZH title (alt)** | 《裁判换了:从人类 DX 到人机联合 DX》 |
@@ -138,7 +138,7 @@
 
 1. 论点 = 弱形式("判据升格",非"目标整体迁移")✅ research 推荐
 2. 结构 = B 骨 C 皮 ✅ 作者已确认
-3. Slug 沿用 web-stack-selection-in-the-agent-era;标题候选见 Metadata,Stage 4 前可改
+3. Slug 沿用 stack-selection-in-the-agent-era;标题候选见 Metadata,Stage 4 前可改
 4. 利益披露:加(§7)
 5. 训练数据反方:独立小节正面处理(§5 反方 1)
 6. 线索⑤(塌缩)用于结尾;线索⑥(度量失真)压缩为 §5 反方 3
@@ -147,7 +147,7 @@
 
 ## Writing checklist(Stage 3)
 
-- [ ] EN 正文写入 blog/2026-07-06-web-stack-selection-in-the-agent-era.mdx(保持 unlisted: true)
+- [ ] EN 正文写入 blog/2026-07-06-stack-selection-in-the-agent-era.mdx(保持 unlisted: true)
 - [ ] 所有外部数字仅取自 research.md 已核验条目,冲突口径按 research 备注处理
 - [ ] 站内链接:/golang /typescript /csharp /frontend-engineering(/vue3 视行文需要)
 - [ ] 代码片段 ≤2 个、每个 ≤10 行,不增强论证即删

@@ -1,9 +1,9 @@
 # Progress Tracking
 
 ## Project Overview
-- **Article**: 回望 2021 语言之争 × AI 时代选型标准 (working title: Web Stack Selection in the Agent Era)
-- **Slug (frontmatter)**: `web-stack-selection-in-the-agent-era`(暂定,待作者拍板)
-- **Workspace / 文件名**: `2026-07-06-web-stack-selection-in-the-agent-era`(日期前缀仅用于文件名与工作区,不属于 slug)
+- **Article**: 回望 2021 语言之争 × AI 时代选型标准 (working title: Stack Selection in the Agent Era)
+- **Slug (frontmatter)**: `stack-selection-in-the-agent-era`(暂定,待作者拍板)
+- **Workspace / 文件名**: `2026-07-06-stack-selection-in-the-agent-era`(日期前缀仅用于文件名与工作区,不属于 slug)
 - **Start Date**: 2026-07-06
 - **Current Status**: Research (Stage 1) — in progress
 - **Methodology**: blog-analytical 4 阶段 (Research → Outline → Writing → Refine),本轮只做 Stage 1
@@ -26,7 +26,7 @@
 - [x] outline.md 完成:7 节 section map、每节 beats、视觉元素规划、开放问题按 research 建议值落为 Assumptions(作者可否决)
 
 ### ✅ Stage 3: Writing (EN) — COMPLETE (2026-07-07),等待作者反馈
-- [x] EN 正文 ~4,600 词写入 blog/2026-07-06-web-stack-selection-in-the-agent-era.mdx(unlisted: true)
+- [x] EN 正文 ~4,600 词写入 blog/2026-07-06-stack-selection-in-the-agent-era.mdx(unlisted: true)
 - [x] 7 节全部完成:会师冷开场 / 判据考古(表) / 两个新变量(mermaid 循环图) / 三组证据(表 + 1 个 Hono RPC 片段) / 反方三连(Bun 双刃表,复刻 Golang 篇格式) / 两轴框架(quadrantChart) / 塌缩结尾 + 利益披露
 - [x] 全部外部数字取自 research.md 已核验条目,冲突口径按备注处理(下载量只做相对断言)
 - [x] 站内链接 4 篇旧文;pnpm build 双 locale 通过

@@ -8,10 +8,10 @@
 
 | Field | Value |
 | ----- | ----- |
-| **Workspace** | `drafts/2026-07-06-web-stack-selection-in-the-agent-era/` |
-| **Slug (暂定)** | `web-stack-selection-in-the-agent-era` |
-| **EN MDX** | `blog/2026-07-06-web-stack-selection-in-the-agent-era.mdx` (`unlisted: true`) |
-| **ZH MDX** | `i18n/zh/docusaurus-plugin-content-blog/2026-07-06-web-stack-selection-in-the-agent-era.mdx` (`unlisted: true`) |
+| **Workspace** | `drafts/2026-07-06-stack-selection-in-the-agent-era/` |
+| **Slug (暂定)** | `stack-selection-in-the-agent-era` |
+| **EN MDX** | `blog/2026-07-06-stack-selection-in-the-agent-era.mdx` (`unlisted: true`) |
+| **ZH MDX** | `i18n/zh/docusaurus-plugin-content-blog/2026-07-06-stack-selection-in-the-agent-era.mdx` (`unlisted: true`) |
 | **Target Audience** | 中高级 web 工程师、技术决策者、关注 AI 辅助开发的读者 |
 | **Language** | 双语(先英文后中文,循仓库 i18n 结构) |
 | **Started** | 2026-07-06 |
@@ -295,7 +295,7 @@
 
 1. **论点强度**:文章主张按"弱形式"写(判据升格/重新排序,可辩护)还是坚持"强形式"(优化目标整体迁移,更有冲击力但反例可击)?研究结论倾向弱形式。
 2. **大纲方向**:A / B / C,或采纳"B 为骨 C 为皮"的混合?
-3. **标题与 slug**:当前占位 slug `web-stack-selection-in-the-agent-era` 是否保留?若改,工作区与两个 MDX 需同步重命名。标题约定(无时间锚)意味着"2021"不能进标题,但可进副标题/首段——确认?
+3. **标题与 slug**:当前占位 slug `stack-selection-in-the-agent-era` 是否保留?若改,工作区与两个 MDX 需同步重命名。标题约定(无时间锚)意味着"2021"不能进标题,但可进副标题/首段——确认?
 4. **利益相关披露**:文章将大篇幅讨论 Anthropic 收购 Bun 与 Claude Code 重写事件,而本站近年多篇文章以 Claude/AI 工具为题、本文本身也由 AI 协作撰写。是否加一句利益相关/立场说明?(建议加,成本低、可信度收益高)
 5. **训练数据反方的篇幅**:独立小节正面处理(方向 B 默认),还是压缩为一段回应?前者更诚实但增加长度。
 6. **新线索⑤⑥的取舍**:"对象与主体塌缩"(Bun 被 agent 重写)用作开场/结尾切口,还是仅一笔带过?"npm 度量失真"侧注是否保留?

@@ -1,6 +1,6 @@
 ---
-slug: web-stack-selection-in-the-agent-era
-title: "Web Stack Selection in the Agent Era"
+slug: stack-selection-in-the-agent-era
+title: "Stack Selection in the Agent Era"
 authors: ["marvin"]
 tags: ["ai", "agents", "typescript", "software-engineering"]
 date: 2026-07-06
@@ -13,7 +13,7 @@ For most readers this was performance news. For me it was three old blog posts c
 
 The collision is worth more than nostalgia, because it exposes what has changed underneath the argument. In 2021, we debated which language was better *for humans*: which syntax was cleaner, which learning curve was gentler, which type system annoyed you least. The debate never ended. But the referee changed. Since then, AI coding agents have become some of the highest-frequency authors — and the very first readers — of production code. An agent does not care that Go's error handling is tedious or that TypeScript's annotations are verbose. It cares about two things: **how fast it gets feedback**, and **whether that feedback can be trusted**.
 
-That observation is the candidate thesis of this article, stated deliberately in its modest form: when agents join the authorship of your codebase, two criteria get promoted to first class in web stack selection — **agent loop latency** (how long one edit-to-trusted-feedback cycle takes) and **the density of machine-decidable verification signals** (how much of your correctness can be checked automatically, deterministically, per cycle). These criteria do not replace the human ones. They re-rank them. And under the new ranking, some of 2021's verdicts get crowned while others get overturned.
+That observation is the candidate thesis of this article, stated deliberately in its modest form: when agents join the authorship of your codebase, two criteria get promoted to first class in stack selection — **agent loop latency** (how long one edit-to-trusted-feedback cycle takes) and **the density of machine-decidable verification signals** (how much of your correctness can be checked automatically, deterministically, per cycle). These criteria do not replace the human ones. They re-rank them. And under the new ranking, some of 2021's verdicts get crowned while others get overturned.
 
 To make that case honestly, I will first excavate what we actually argued about in 2021, then define the two new criteria precisely, then examine three bodies of evidence from 2025–2026, then give the strongest counterarguments their own section, and finally propose a small selection framework you can disagree with productively.
 
@@ -31,7 +31,7 @@ My [Golang article](/blog/golang) (March 2021) refused to crown anything. Its me
 
 My [C# article](/blog/csharp) (November 2021) introduced the frame I now find most durable: the gap between satisfaction and market share. Citing StackOverflow's 2021 survey of 82,914 developers, I noted that Java — the market's colossus — was loved by only 47% of its users, while C#, its supposed clone, scored 62%. My reading then: satisfaction is a leading indicator; market share is a lagging one. The article was titled "Part 1." Part 2 never appeared. Hold that thought.
 
-![Four 2021 articles side by side — the criterion each argued from, its verdict then, and how it reads in 2026; every criterion denominated in humans](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-1-2021-criteria.en.png)
+![Four 2021 articles side by side — the criterion each argued from, its verdict then, and how it reads in 2026; every criterion denominated in humans](/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-1-2021-criteria.en.png)
 
 Lined up this way, the four articles share an assumption so universal in 2021 that none of us thought to state it: every criterion was denominated in humans. Human learning curves, human reading comfort, human satisfaction surveys. Nobody asked how a machine would experience the stack, because no machine was writing the code.
 
@@ -43,17 +43,17 @@ Watch what an agent actually does after it edits your code. It runs the type che
 
 **Verification signal density** is the amount of correctness per cycle that a machine can decide without judgment. A `tsc` error is free to produce, deterministic, and machine-readable: the same defect yields the same message every time, pointing at a file and a line. A runtime `TypeError` in production is the opposite: expensive to reach, stochastic to reproduce, and demanding human interpretation. The distinction matters more than it used to, because agents consume these signals mechanically. A 2025 study of LLM-generated code, [cited by GitHub's engineering blog](https://github.blog/ai-and-ml/llms/why-ai-is-pushing-developers-toward-typed-languages/), found that **94% of compiler errors in LLM output are type-check failures** — which means a type system is, empirically, the densest verification-signal generator an agent encounters.
 
-![The agent loop: edit, then build/type-check/test, then a signal branch — deterministic machine-readable signals let the agent self-correct and loop back hundreds of rounds; weak runtime-only signals force a human to intervene. The stack sets the loop latency and the signal density.](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-2-agent-loop.en.png)
+![The agent loop: edit, then build/type-check/test, then a signal branch — deterministic machine-readable signals let the agent self-correct and loop back hundreds of rounds; weak runtime-only signals force a human to intervene. The stack sets the loop latency and the signal density.](/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-2-agent-loop.en.png)
 
 One sentence carries the mechanical heart of this article: **training data determines how well an agent writes on the first attempt; verification signals determine how fast it converges on correct.** Agent workflows are multi-round by construction, so the convergence variable — not the first-draft variable — dominates the economics. I will stress-test that sentence in the counterarguments section, because it is the load-bearing wall.
 
-![Two panels: in the same hour an agent gets 6 rounds on a slow loop versus 60 on a fast one; and from the same first draft, dense verification signals converge defects toward zero round by round while sparse signals plateau and leak to humans and production — delivery speed and quality both compound with the loop](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-3-compounding.en.png)
+![Two panels: in the same hour an agent gets 6 rounds on a slow loop versus 60 on a fast one; and from the same first draft, dense verification signals converge defects toward zero round by round while sparse signals plateau and leak to humans and production — delivery speed and quality both compound with the loop](/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-3-compounding.en.png)
 
 I should also mark where this argument sits among its neighbors, because parts of it are not new. Daniel Demmel's [feedback loop engineering](https://www.danieldemmel.me/blog/feedback-loop-engineering) develops the loop-quality idea thoroughly but stays deliberately tool-agnostic — it refuses to talk stack selection. Netlify's [AX (agent experience)](https://biilmann.blog/articles/introducing-ax/) names the goal migration but aims it at platforms serving other people's agents. What I have not seen done is connecting both to the decision my 2021 articles were actually about — *which stack do you pick* — under a constraint neither discusses: the codebase must remain reviewable by humans while being loopable by agents. Those two demands conflict. Explicitness and verbosity help the agent and tax the human reader. "Joint DX" is not a slogan; it is a trade-off the framework at the end has to hold.
 
 ## The Verdicts Are Being Rewritten
 
-If the two criteria are real, they should already be visible in the world: someone should be paying for them, and someone should be voting with them. The three exhibits below are that trail of money and votes — and each lands, with almost suspicious precision, on an argument from the 2021 series.
+If the two criteria are real, they should already be visible in the world: someone should be paying for them, and someone should be voting with them. The three exhibits below are that trail of money and votes — and each lands, with almost suspicious precision, on an argument from the 2021 series. All three come from the JS/web ecosystem, because that is where agent adoption runs deepest and where my 2021 archaeology lives — but nothing in the two criteria is web-specific, and the closing framework ranges wider.
 
 **Exhibit one: Microsoft put a price on both criteria.** This is the thesis's strongest single piece of evidence, so it goes first. The typescript-go port — announced in March 2025, [release candidate in June 2026](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0-rc/) (`typescript@rc`; as I write, npm's `latest` is still 6.0.3) — is one of the industry's best-funded compiler teams spending years rebuilding a working compiler in another language. Ask what they bought. Not new checks: the port's explicit goal is the *same* diagnostics, verified against some twenty thousand compiler tests. They bought the same verification signals at a tenth of the latency — Microsoft's own December 2025 measurements land at 7.5–10.2x on real codebases, now phrased as "often about 10 times faster." Read against 2021, both halves of the purchase are old friends: my TypeScript article's error front-loading, promoted from human convenience to machine feedstock; and the compile-speed row I treated as a joke in the Golang article's table, now the entire rationale of the deal. Even the staffing is a small verdict — [Hejlsberg's stated reasons](https://github.com/microsoft/typescript-go/discussions/411) for choosing Go over his own C# were loop mechanics, not language loyalty.
 
@@ -72,7 +72,7 @@ That is the verification-signal argument, productized. And it is precisely this 
 
 **Exhibit three: Bun demonstrates the latency axis — and only that axis.** Bun is the loudest confirmation that loop latency sells: one binary swallowing runtime, package manager, bundler, and test runner; install speed as its single most replicated advantage; 21% of respondents using it in [State of JS 2025](https://www.infoq.com/news/2026/03/state-of-js-survey-2025/), up four points. The 2021 echo is my frontend engineering article's complaint made flesh: the half-gigabyte dependency folders I endured turned out to be a market. But note what this exhibit does *not* demonstrate. Nothing in Bun's pitch adds a verification signal — it is a bet placed entirely on one axis. How that bet is going is the next section's subject.
 
-![Three 2026 exhibits mapped to their 2021 echoes: typescript-go crowns the error-front-loading and compile-speed arguments; Hono vs Express reuses the satisfaction-versus-share frame; Hono RPC upgrades the type contract across the network; Bun answers the toolchain complaint — with a double edge](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-4-verdicts.en.png)
+![Three 2026 exhibits mapped to their 2021 echoes: typescript-go crowns the error-front-loading and compile-speed arguments; Hono vs Express reuses the satisfaction-versus-share frame; Hono RPC upgrades the type contract across the network; Bun answers the toolchain complaint — with a double edge](/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-4-verdicts.en.png)
 
 ## The Case Against
 
@@ -82,7 +82,7 @@ Where could the thesis actually be wrong? The three objections below are not equ
 
 **The scope-limiter: Bun, continued from exhibit three.** Bun does not refute the thesis; it disciplines it. Apply the 2021 Golang article's method — every strength paired with its shadow — and the one-axis bet reads like this:
 
-![Bun scored by the 2021 Golang article method — every strength paired with its shadow: single binary vs compatibility surface and 5,000+ open issues; speed-first culture vs memory leaks and the OpenCode departure; AI-accelerated pace vs the production stability discount](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-5-bun-double-edge.en.png)
+![Bun scored by the 2021 Golang article method — every strength paired with its shadow: single binary vs compatibility surface and 5,000+ open issues; speed-first culture vs memory leaks and the OpenCode departure; AI-accelerated pace vs the production stability discount](/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-5-bun-double-edge.en.png)
 
 The community's pragmatic consensus — `bun install` for development speed, Node in production — is the verdict in one line: **loop-latency optimization cannot substitute for runtime reliability.** So the thesis has to carry its boundary explicitly: the two criteria rank stacks *among those that already qualify* on reliability and ecosystem, and Bun does not yet fully qualify. The sharpest twist is that even Bun's troubles end up arguing for the density axis. In June 2026, [Prisma moved its Compute product onto Bun's Rust-rewrite canary](https://www.prisma.io/blog/bun-rust-rewrite-prisma-compute) after finding that the *stable* release leaked memory and deadlocked connection pools while the canary passed their load tests — "The build which passed our tests made a better foundation than the build which failed them." A version label is a weak signal; a passed test suite is a decidable one.
 
@@ -92,7 +92,7 @@ The community's pragmatic consensus — `bun install` for development speed, Nod
 
 If the two criteria are real, they should be usable. Here is the plane they define, with placements that are qualitative judgments from the evidence above — not scores.
 
-![A two-axis plane — loop latency versus verification signal density. TS 7 native, Go, C# and Hono + Zod sit in or near the joint-DX sweet spot; Rust, Kotlin, Java and TS on the JS-based tsc are trustworthy but slower; PHP, Ruby, plain JavaScript and typical Python setups are fast but sparse on signals; C/C++ lands in agent hard mode; Bun today is furthest right with a reliability discount.](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-6-quadrant.en.png)
+![A two-axis plane — loop latency versus verification signal density. TS 7 native, Go, C# and Hono + Zod sit in or near the joint-DX sweet spot; Rust, Kotlin, Java and TS on the JS-based tsc are trustworthy but slower; PHP, Ruby, plain JavaScript and typical Python setups are fast but sparse on signals; C/C++ lands in agent hard mode; Bun today is furthest right with a reliability discount.](/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-6-quadrant.en.png)
 
 The chart is only the summary; the procedure is the point. Used honestly, it takes three steps.
 
