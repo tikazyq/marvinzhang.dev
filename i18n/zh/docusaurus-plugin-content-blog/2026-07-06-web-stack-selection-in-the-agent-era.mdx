@@ -47,6 +47,8 @@ unlisted: true
 
 本文机制层面的核心，就压在这一句话上：**训练数据决定 agent 首轮写得多好，验证信号决定它多快收敛到对。** agent 工作流天生是多轮的，所以主导经济账的是收敛变量，而不是首稿变量。这句话是全文的承重墙，反方证词一节里我会专门对它做压力测试。
 
+![两个面板：同样一小时，慢循环 6 轮、快循环 60 轮；同一份首稿，密集信号让缺陷逐轮收敛归零，稀疏信号则停在半路、逃逸给人工评审与生产——交付速度与质量都随循环被复利放大](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-3-compounding.zh.png)
+
 也该交代一下这个论点在既有讨论中的位置，因为它的零件并不全新。Daniel Demmel 的 [反馈循环工程（feedback loop engineering）](https://www.danieldemmel.me/blog/feedback-loop-engineering) 把循环质量讲得很透，但刻意保持工具无关——它拒绝谈选型。Netlify 提出的 [AX（agent experience）](https://biilmann.blog/articles/introducing-ax/) 点破了优化目标的迁移，但落点是"平台如何服务别人家的 agent"。我还没有见到有人把这两股线接回我 2021 年那几篇文章真正讨论的那个决策——**你到底选哪套技术栈**——并且直面一个两边都没有处理的约束：代码库既要让人可审，又要让 agent 可循环。这两个诉求是会打架的：显式、冗长利于 agent，却在消耗人类读者。"人机联合 DX"不是一句口号，而是一个文末框架必须兜得住的取舍。
 
 ## 判决正在被改写
@@ -70,7 +72,7 @@ const client = hc<AppType>('http://localhost:3000/')
 
 **证据三：Bun 展示了延迟这条轴——也只展示了这一条轴。** Bun 是"循环延迟有市场"最响亮的证明：一个二进制吞下运行时、包管理器、打包器和测试运行器；安装速度是各路独立评测里复现最一致的优点；[State of JS 2025](https://www.infoq.com/news/2026/03/state-of-js-survey-2025/) 显示 21% 的受访者在使用它（同比 +4 个百分点）。2021 年的对照来自前端工程化篇：当年我默默忍受的 500MB 依赖目录，五年后成了别人的商机。但请注意这组证据没有展示什么——Bun 的卖点里，没有任何一项在增加验证信号。它是押在单独一条轴上的赌注，而这个赌注赌得怎么样，是下一节的主题。
 
-![三组 2026 年证据与对应的 2021 年论点：typescript-go 加冕错误前置与编译速度论点；Hono 对 Express 复用满意度对市场份额框架；Hono RPC 让类型契约跨过网络边界；Bun 回应了工具链之怨——但双刃剑同样锋利](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-3-verdicts.zh.png)
+![三组 2026 年证据与对应的 2021 年论点：typescript-go 加冕错误前置与编译速度论点；Hono 对 Express 复用满意度对市场份额框架；Hono RPC 让类型契约跨过网络边界；Bun 回应了工具链之怨——但双刃剑同样锋利](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-4-verdicts.zh.png)
 
 ## 反方证词
 
@@ -80,7 +82,7 @@ const client = hc<AppType>('http://localhost:3000/')
 
 **收窄范围的一条：Bun，接着证据三说。** Bun 推翻不了命题，但它逼着命题把边界说清楚。用 2021 年 Golang 篇的方法——每个优点配上它的阴影——来看这个单轴赌注：
 
-![用 2021 年 Golang 篇的方法审视 Bun——每个优点配上阴影：单二进制对兼容表面积与 5000+ 未关闭 issue；速度优先文化对内存泄漏与 OpenCode 迁出；AI 加速节奏对生产稳定性折价](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-4-bun-double-edge.zh.png)
+![用 2021 年 Golang 篇的方法审视 Bun——每个优点配上阴影：单二进制对兼容表面积与 5000+ 未关闭 issue；速度优先文化对内存泄漏与 OpenCode 迁出；AI 加速节奏对生产稳定性折价](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-5-bun-double-edge.zh.png)
 
 社区早就形成了务实共识——开发用 `bun install` 提速，生产继续跑 Node——这句话本身就是判词：**循环延迟的优化，替代不了运行时的可靠性。** 所以命题必须带着边界来陈述：两个新判据是在"已经过了可靠性与生态资格线"的选项之间排序，而 Bun 目前还没有完全过线。最有意思的转折在于，连 Bun 的麻烦都在替信号密度这条轴作证。2026 年 6 月，[Prisma 把 Compute 产品迁到了 Bun 的 Rust 重写版 canary 上](https://www.prisma.io/blog/bun-rust-rewrite-prisma-compute)——因为他们实测发现稳定版内存泄漏、连接池死锁，而 canary 通过了他们的负载测试。他们的原话值得抄录："The build which passed our tests made a better foundation than the build which failed them."（通过了我们测试的构建，比没通过的那个更适合当地基。）版本标签是弱信号，跑通的测试套件才是可判定信号。
 
@@ -90,7 +92,7 @@ const client = hc<AppType>('http://localhost:3000/')
 
 如果这两个判据是真的，它们就应该能用。下面是它们张开的平面；各点的位置是基于前文证据的 **定性判断**，不是打分。
 
-![两轴平面：循环延迟 × 验证信号密度。TS 7 原生版、Go、Hono + Zod 位于联合 DX 甜区；JS 版 tsc 的 TS 可信但迟缓；纯 JavaScript 与典型 Python 配置快而信号稀疏；Bun 现状最靠右但带可靠性折价。](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-5-quadrant.zh.png)
+![两轴平面：循环延迟 × 验证信号密度。TS 7 原生版、Go、Hono + Zod 位于联合 DX 甜区；JS 版 tsc 的 TS 可信但迟缓；纯 JavaScript 与典型 Python 配置快而信号稀疏；Bun 现状最靠右但带可靠性折价。](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-6-quadrant.zh.png)
 
 象限图只是摘要，真正有用的是用法。老老实实地用，一共三步。
 

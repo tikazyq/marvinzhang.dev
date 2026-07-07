@@ -43,46 +43,8 @@
     color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
   }
 
-  .loopwrap { position: relative; padding: 8px 0 0 0; }
-  .lat {
-    display: flex; align-items: center; gap: 10px; margin: 0 0 14px 0;
-  }
-  .lat .brace { flex: 1; height: 14px; border: 2.5px solid var(--warn-stroke); border-bottom: none;
-    border-radius: 10px 10px 0 0; }
-  .lat .label {
-    flex: none; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
-    color: var(--warn-stroke); background: var(--warn-fill); border: 1.5px solid var(--warn-stroke);
-    border-radius: 8px; padding: 5px 12px;
-  }
-  .flow { display: flex; align-items: stretch; gap: 0; }
-  .node {
-    border: 1.5px solid; border-radius: 12px; padding: 14px 14px; background: #fff;
-    display: flex; flex-direction: column; justify-content: center; text-align: center;
-  }
-  .node .t { font-weight: 600; font-size: 15px; line-height: 1.3; }
-  .node .s { font-size: 12.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.4; }
-  .n-edit { border-color: var(--info-stroke); background: var(--info-fill); width: 150px; }
-  .n-verify { border-color: var(--warn-stroke); background: var(--warn-fill); width: 172px; }
-  .n-sig { border-color: var(--hi-stroke); background: var(--hi-fill); width: 168px; }
-  .arrow { display: flex; align-items: center; padding: 0 2px; }
-  .arrow svg { display: block; }
-  .outs { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
-  .out { border: 1.5px solid; border-radius: 12px; padding: 10px 14px; width: 240px; background: #fff; }
-  .out .t { font-weight: 600; font-size: 14.5px; }
-  .out .s { font-size: 12.5px; color: var(--ink-soft); margin-top: 3px; line-height: 1.4; }
-  .o-ok { border-color: var(--ok-stroke); background: var(--ok-fill); }
-  .o-ok .t { color: var(--ok-stroke); }
-  .o-err { border-color: var(--err-stroke); background: var(--err-fill); }
-  .o-err .t { color: var(--err-stroke); }
-  .back { margin-top: 16px; display: flex; align-items: center; gap: 10px; }
-  .back svg { flex: 1; display: block; }
-  .back .label {
-    flex: none; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600;
-    color: var(--ok-stroke);
-  }
-  .density {
-    margin-top: 20px; display: flex; gap: 14px;
-  }
+  .diagram { margin: 4px 0 0 0; }
+  .density { margin-top: 18px; display: flex; gap: 14px; }
   .density .cell {
     flex: 1; border-radius: 12px; padding: 13px 16px; border: 1.5px solid;
     font-size: 13.5px; line-height: 1.5;
@@ -104,38 +66,64 @@
   <div class="subtitle">一个任务里这个循环要闭合几十到几百次。技术栈决定它的延迟，也决定分叉处有多少正确性是机器可判定的。</div>
 </div>
 
-    <div class="loopwrap">
-      <div class="lat"><div class="label">循环延迟 · 修改 → 可信反馈</div><div class="brace"></div></div>
-      <div class="flow">
-        <div class="node n-edit"><div class="t">agent 修改代码</div><div class="s">写代码这一步很便宜</div></div>
-        <div class="arrow"><svg width="34" height="20" viewBox="0 0 34 20">
-  <line x1="0" y1="10" x2="26" y2="10" stroke="#8a8a8a" stroke-width="2.5"/>
-  <polygon points="24,4 34,10 24,16" fill="#8a8a8a"/></svg></div>
-        <div class="node n-verify"><div class="t">构建 · 类型检查 · 测试</div><div class="s">安装、编译、启动</div></div>
-        <div class="arrow"><svg width="34" height="20" viewBox="0 0 34 20">
-  <line x1="0" y1="10" x2="26" y2="10" stroke="#8a8a8a" stroke-width="2.5"/>
-  <polygon points="24,4 34,10 24,16" fill="#8a8a8a"/></svg></div>
-        <div class="node n-sig"><div class="t">信号</div><div class="s">返回了什么？能信吗？</div></div>
-        <div class="arrow"><svg width="34" height="20" viewBox="0 0 34 20">
-  <line x1="0" y1="10" x2="26" y2="10" stroke="#8a8a8a" stroke-width="2.5"/>
-  <polygon points="24,4 34,10 24,16" fill="#8a8a8a"/></svg></div>
-        <div class="outs">
-          <div class="out o-ok"><div class="t">agent 自我纠正</div><div class="s">确定性、机器可读——tsc 报错、断言失败</div></div>
-          <div class="out o-err"><div class="t">人类介入</div><div class="s">信号微弱或缺失——仅运行时暴露</div></div>
-        </div>
-      </div>
-      <div class="back">
-        <svg height="26" viewBox="0 0 640 26" preserveAspectRatio="none" style="width:100%">
-          <path d="M 630 2 L 630 16 L 14 16 L 14 6" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="7 5"/>
-          <polygon points="8,8 14,0 20,8" fill="#2e7d32"/>
-        </svg>
-      </div>
-      <div style="text-align:center;margin-top:2px" class="back"><div class="label" style="margin:0 auto">自我纠正回到起点——成百上千轮</div></div>
+<svg class="diagram" width="772" height="368" viewBox="0 0 772 368" font-family="Inter, 'Noto Sans SC', sans-serif">
+  <defs>
+    <marker id="agray" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#8a8a8a"/></marker>
+    <marker id="agreen" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#2e7d32"/></marker>
+    <marker id="ared" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#c62828"/></marker>
+  </defs>
+
+  <!-- loop-back: from green box top, over the top, down into Edit box top -->
+  <path d="M 683 56 L 683 24 L 81 24 L 81 112" fill="none" stroke="#2e7d32"
+        stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#agreen)"/>
+  <rect x="220" y="10" width="330" height="26" rx="13" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="385" y="27" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2e7d32">自我纠正后回到起点——一个任务里循环成百上千轮</text>
+
+  <!-- main row -->
+  <rect x="6" y="120" width="150" height="92" rx="12" fill="#e1f5fe" stroke="#01579b" stroke-width="1.5"/>
+  <text x="81" y="158" text-anchor="middle" font-size="15" font-weight="600" fill="#1f1f1f">agent 修改代码</text>
+  <text x="81" y="182" text-anchor="middle" font-size="11.5" fill="#525252">写代码这一步很便宜</text>
+
+  <line x1="160" y1="166" x2="206" y2="166" stroke="#8a8a8a" stroke-width="2.5" marker-end="url(#agray)"/>
+
+  <rect x="214" y="120" width="170" height="92" rx="12" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="299" y="158" text-anchor="middle" font-size="14" font-weight="600" fill="#1f1f1f">构建 · 类型检查 · 测试</text>
+  <text x="299" y="182" text-anchor="middle" font-size="11.5" fill="#525252">安装、编译、启动</text>
+
+  <line x1="388" y1="166" x2="434" y2="166" stroke="#8a8a8a" stroke-width="2.5" marker-end="url(#agray)"/>
+
+  <rect x="442" y="120" width="120" height="92" rx="12" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
+  <text x="502" y="153" text-anchor="middle" font-size="15" font-weight="600" fill="#1f1f1f">信号</text>
+  <text x="502" y="174" text-anchor="middle" font-size="11.5" fill="#525252">返回了什么？</text>
+  <text x="502" y="190" text-anchor="middle" font-size="11.5" fill="#525252">能不能信？</text>
+
+  <!-- branch arrows: signals -> two outcomes -->
+  <path d="M 562 146 C 588 146 578 97 596 97" fill="none" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#agreen)"/>
+  <path d="M 562 186 C 588 186 578 273 596 273" fill="none" stroke="#c62828" stroke-width="2.5" marker-end="url(#ared)"/>
+
+  <!-- outcomes -->
+  <rect x="600" y="56" width="166" height="82" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="683" y="84" text-anchor="middle" font-size="13.5" font-weight="600" fill="#2e7d32">agent 自我纠正</text>
+  <text x="683" y="103" text-anchor="middle" font-size="10.8" fill="#525252">确定性、机器可读</text>
+  <text x="683" y="118" text-anchor="middle" font-size="10.8" fill="#525252">tsc 报错、断言失败</text>
+
+  <rect x="600" y="232" width="166" height="82" rx="12" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+  <text x="683" y="260" text-anchor="middle" font-size="13.5" font-weight="600" fill="#c62828">人类介入</text>
+  <text x="683" y="279" text-anchor="middle" font-size="10.8" fill="#525252">信号微弱或缺失</text>
+  <text x="683" y="294" text-anchor="middle" font-size="10.8" fill="#525252">仅运行时暴露</text>
+
+  <!-- latency bracket under the edit->signals span -->
+  <path d="M 6 336 L 6 344 L 562 344 L 562 336" fill="none" stroke="#e65100" stroke-width="2.5"/>
+  <text x="284" y="362" text-anchor="middle" font-size="12.5" font-weight="600" fill="#e65100"
+        font-family="'JetBrains Mono', monospace">循环延迟 = 一次「修改 → 可信反馈」的端到端耗时</text>
+</svg>
       <div class="density">
         <div class="cell good"><b>密集信号：</b>一条 <code>tsc</code> 报错零成本、确定性、机器可读——同一缺陷、同一消息、同一行号。LLM 产出代码的编译错误中 94% 是类型检查失败。</div>
         <div class="cell bad"><b>稀疏信号：</b>生产环境的 <code>TypeError</code> 触达昂贵、复现随机、还需要人来解释。</div>
       </div>
-    </div>
 <div class="footer"><div>GitHub Blog 2026（94% 为类型检查失败）· 循环模型：本文</div><div>marvinzhang.dev · figure-2-agent-loop</div></div>
 </div>
 </body>

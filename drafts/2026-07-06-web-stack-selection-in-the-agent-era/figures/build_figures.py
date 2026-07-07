@@ -169,46 +169,8 @@ for lang, d in F1.items():
 
 # ---------------------------------------------------------------- figure 2
 F2_CSS = """
-  .loopwrap { position: relative; padding: 8px 0 0 0; }
-  .lat {
-    display: flex; align-items: center; gap: 10px; margin: 0 0 14px 0;
-  }
-  .lat .brace { flex: 1; height: 14px; border: 2.5px solid var(--warn-stroke); border-bottom: none;
-    border-radius: 10px 10px 0 0; }
-  .lat .label {
-    flex: none; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
-    color: var(--warn-stroke); background: var(--warn-fill); border: 1.5px solid var(--warn-stroke);
-    border-radius: 8px; padding: 5px 12px;
-  }
-  .flow { display: flex; align-items: stretch; gap: 0; }
-  .node {
-    border: 1.5px solid; border-radius: 12px; padding: 14px 14px; background: #fff;
-    display: flex; flex-direction: column; justify-content: center; text-align: center;
-  }
-  .node .t { font-weight: 600; font-size: 15px; line-height: 1.3; }
-  .node .s { font-size: 12.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.4; }
-  .n-edit { border-color: var(--info-stroke); background: var(--info-fill); width: 150px; }
-  .n-verify { border-color: var(--warn-stroke); background: var(--warn-fill); width: 172px; }
-  .n-sig { border-color: var(--hi-stroke); background: var(--hi-fill); width: 168px; }
-  .arrow { display: flex; align-items: center; padding: 0 2px; }
-  .arrow svg { display: block; }
-  .outs { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
-  .out { border: 1.5px solid; border-radius: 12px; padding: 10px 14px; width: 240px; background: #fff; }
-  .out .t { font-weight: 600; font-size: 14.5px; }
-  .out .s { font-size: 12.5px; color: var(--ink-soft); margin-top: 3px; line-height: 1.4; }
-  .o-ok { border-color: var(--ok-stroke); background: var(--ok-fill); }
-  .o-ok .t { color: var(--ok-stroke); }
-  .o-err { border-color: var(--err-stroke); background: var(--err-fill); }
-  .o-err .t { color: var(--err-stroke); }
-  .back { margin-top: 16px; display: flex; align-items: center; gap: 10px; }
-  .back svg { flex: 1; display: block; }
-  .back .label {
-    flex: none; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600;
-    color: var(--ok-stroke);
-  }
-  .density {
-    margin-top: 20px; display: flex; gap: 14px;
-  }
+  .diagram { margin: 4px 0 0 0; }
+  .density { margin-top: 18px; display: flex; gap: 14px; }
   .density .cell {
     flex: 1; border-radius: 12px; padding: 13px 16px; border: 1.5px solid;
     font-size: 13.5px; line-height: 1.5;
@@ -222,9 +184,63 @@ F2_CSS = """
     padding: 1px 5px; border-radius: 4px; }
 """
 
-ARROW = """<div class="arrow"><svg width="34" height="20" viewBox="0 0 34 20">
-  <line x1="0" y1="10" x2="26" y2="10" stroke="#8a8a8a" stroke-width="2.5"/>
-  <polygon points="24,4 34,10 24,16" fill="#8a8a8a"/></svg></div>"""
+def f2_svg(d):
+    T = d
+    return f"""
+<svg class="diagram" width="772" height="368" viewBox="0 0 772 368" font-family="Inter, 'Noto Sans SC', sans-serif">
+  <defs>
+    <marker id="agray" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#8a8a8a"/></marker>
+    <marker id="agreen" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#2e7d32"/></marker>
+    <marker id="ared" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#c62828"/></marker>
+  </defs>
+
+  <!-- loop-back: from green box top, over the top, down into Edit box top -->
+  <path d="M 683 56 L 683 24 L 81 24 L 81 112" fill="none" stroke="#2e7d32"
+        stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#agreen)"/>
+  <rect x="{385-T['loopw']//2}" y="10" width="{T['loopw']}" height="26" rx="13" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="385" y="27" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2e7d32">{T['loop']}</text>
+
+  <!-- main row -->
+  <rect x="6" y="120" width="150" height="92" rx="12" fill="#e1f5fe" stroke="#01579b" stroke-width="1.5"/>
+  <text x="81" y="158" text-anchor="middle" font-size="15" font-weight="600" fill="#1f1f1f">{T['edit_t']}</text>
+  <text x="81" y="182" text-anchor="middle" font-size="11.5" fill="#525252">{T['edit_s']}</text>
+
+  <line x1="160" y1="166" x2="206" y2="166" stroke="#8a8a8a" stroke-width="2.5" marker-end="url(#agray)"/>
+
+  <rect x="214" y="120" width="170" height="92" rx="12" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="299" y="158" text-anchor="middle" font-size="14" font-weight="600" fill="#1f1f1f">{T['verify_t']}</text>
+  <text x="299" y="182" text-anchor="middle" font-size="11.5" fill="#525252">{T['verify_s']}</text>
+
+  <line x1="388" y1="166" x2="434" y2="166" stroke="#8a8a8a" stroke-width="2.5" marker-end="url(#agray)"/>
+
+  <rect x="442" y="120" width="120" height="92" rx="12" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
+  <text x="502" y="153" text-anchor="middle" font-size="15" font-weight="600" fill="#1f1f1f">{T['sig_t']}</text>
+  <text x="502" y="174" text-anchor="middle" font-size="11.5" fill="#525252">{T['sig_s1']}</text>
+  <text x="502" y="190" text-anchor="middle" font-size="11.5" fill="#525252">{T['sig_s2']}</text>
+
+  <!-- branch arrows: signals -> two outcomes -->
+  <path d="M 562 146 C 588 146 578 97 596 97" fill="none" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#agreen)"/>
+  <path d="M 562 186 C 588 186 578 273 596 273" fill="none" stroke="#c62828" stroke-width="2.5" marker-end="url(#ared)"/>
+
+  <!-- outcomes -->
+  <rect x="600" y="56" width="166" height="82" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="683" y="84" text-anchor="middle" font-size="13.5" font-weight="600" fill="#2e7d32">{T['ok_t']}</text>
+  <text x="683" y="103" text-anchor="middle" font-size="{T['subfs']}" fill="#525252">{T['ok_s1']}</text>
+  <text x="683" y="118" text-anchor="middle" font-size="{T['subfs']}" fill="#525252">{T['ok_s2']}</text>
+
+  <rect x="600" y="232" width="166" height="82" rx="12" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+  <text x="683" y="260" text-anchor="middle" font-size="13.5" font-weight="600" fill="#c62828">{T['err_t']}</text>
+  <text x="683" y="279" text-anchor="middle" font-size="{T['subfs']}" fill="#525252">{T['err_s1']}</text>
+  <text x="683" y="294" text-anchor="middle" font-size="{T['subfs']}" fill="#525252">{T['err_s2']}</text>
+
+  <!-- latency bracket under the edit->signals span -->
+  <path d="M 6 336 L 6 344 L 562 344 L 562 336" fill="none" stroke="#e65100" stroke-width="2.5"/>
+  <text x="284" y="362" text-anchor="middle" font-size="12.5" font-weight="600" fill="#e65100"
+        font-family="'JetBrains Mono', monospace">{T['lat']}</text>
+</svg>"""
 
 F2 = {
  "en": dict(
@@ -232,13 +248,13 @@ F2 = {
   figno="Figure 02 — Two new selection criteria",
   h1="The loop an agent runs, and what your stack controls",
   subtitle="Per task the loop closes dozens to hundreds of times. The stack sets its latency; the stack decides how much correctness is machine-decidable at the branch.",
-  lat="LOOP LATENCY&nbsp;·&nbsp;edit → trusted feedback",
-  edit=("Agent edits code", "the write step is cheap"),
-  verify=("Build · type-check · test", "install, compile, startup"),
-  sig=("Signals", "what comes back, and can it be trusted?"),
-  ok=("Agent self-corrects", "deterministic, machine-readable — tsc error, failed assertion"),
-  err=("Human must intervene", "weak or absent signals — runtime-only failure"),
-  back="SELF-CORRECTION LOOPS BACK — HUNDREDS OF ROUNDS",
+  edit_t="Agent edits code", edit_s="the write step is cheap",
+  verify_t="Build · type-check · test", verify_s="install, compile, startup",
+  sig_t="Signals", sig_s1="what comes back —", sig_s2="can it be trusted?",
+  ok_t="Agent self-corrects", ok_s1="deterministic, machine-readable", ok_s2="tsc error, failed assertion",
+  err_t="Human must intervene", err_s1="weak or absent signals", err_s2="runtime-only failure",
+  loop="self-correction loops back — hundreds of rounds per task", loopw=392, subfs=10,
+  lat="LOOP LATENCY = one edit → trusted-feedback cycle",
   good="<b>Dense signal:</b> a <code>tsc</code> error is free, deterministic, machine-readable — same defect, same message, same line. 94% of compiler errors in LLM output are type-check failures.",
   bad="<b>Sparse signal:</b> a production <code>TypeError</code> is expensive to reach, stochastic to reproduce, and needs a human to interpret.",
   footleft="GitHub Blog 2026 (94% type-check failures) · loop model: this article",
@@ -248,13 +264,13 @@ F2 = {
   figno="图 02 — 两个新选型判据",
   h1="agent 跑的循环，以及技术栈控制着什么",
   subtitle="一个任务里这个循环要闭合几十到几百次。技术栈决定它的延迟，也决定分叉处有多少正确性是机器可判定的。",
-  lat="循环延迟 · 修改 → 可信反馈",
-  edit=("agent 修改代码", "写代码这一步很便宜"),
-  verify=("构建 · 类型检查 · 测试", "安装、编译、启动"),
-  sig=("信号", "返回了什么？能信吗？"),
-  ok=("agent 自我纠正", "确定性、机器可读——tsc 报错、断言失败"),
-  err=("人类介入", "信号微弱或缺失——仅运行时暴露"),
-  back="自我纠正回到起点——成百上千轮",
+  edit_t="agent 修改代码", edit_s="写代码这一步很便宜",
+  verify_t="构建 · 类型检查 · 测试", verify_s="安装、编译、启动",
+  sig_t="信号", sig_s1="返回了什么？", sig_s2="能不能信？",
+  ok_t="agent 自我纠正", ok_s1="确定性、机器可读", ok_s2="tsc 报错、断言失败",
+  err_t="人类介入", err_s1="信号微弱或缺失", err_s2="仅运行时暴露",
+  loop="自我纠正后回到起点——一个任务里循环成百上千轮", loopw=330, subfs=10.8,
+  lat="循环延迟 = 一次「修改 → 可信反馈」的端到端耗时",
   good="<b>密集信号：</b>一条 <code>tsc</code> 报错零成本、确定性、机器可读——同一缺陷、同一消息、同一行号。LLM 产出代码的编译错误中 94% 是类型检查失败。",
   bad="<b>稀疏信号：</b>生产环境的 <code>TypeError</code> 触达昂贵、复现随机、还需要人来解释。",
   footleft="GitHub Blog 2026（94% 为类型检查失败）· 循环模型：本文",
@@ -262,33 +278,11 @@ F2 = {
 }
 
 for lang, d in F2.items():
-    body = f"""
-    <div class="loopwrap">
-      <div class="lat"><div class="label">{d['lat']}</div><div class="brace"></div></div>
-      <div class="flow">
-        <div class="node n-edit"><div class="t">{d['edit'][0]}</div><div class="s">{d['edit'][1]}</div></div>
-        {ARROW}
-        <div class="node n-verify"><div class="t">{d['verify'][0]}</div><div class="s">{d['verify'][1]}</div></div>
-        {ARROW}
-        <div class="node n-sig"><div class="t">{d['sig'][0]}</div><div class="s">{d['sig'][1]}</div></div>
-        {ARROW}
-        <div class="outs">
-          <div class="out o-ok"><div class="t">{d['ok'][0]}</div><div class="s">{d['ok'][1]}</div></div>
-          <div class="out o-err"><div class="t">{d['err'][0]}</div><div class="s">{d['err'][1]}</div></div>
-        </div>
-      </div>
-      <div class="back">
-        <svg height="26" viewBox="0 0 640 26" preserveAspectRatio="none" style="width:100%">
-          <path d="M 630 2 L 630 16 L 14 16 L 14 6" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="7 5"/>
-          <polygon points="8,8 14,0 20,8" fill="#2e7d32"/>
-        </svg>
-      </div>
-      <div style="text-align:center;margin-top:2px" class="back"><div class="label" style="margin:0 auto">{d['back']}</div></div>
+    body = f2_svg(d) + f"""
       <div class="density">
         <div class="cell good">{d['good']}</div>
         <div class="cell bad">{d['bad']}</div>
-      </div>
-    </div>"""
+      </div>"""
     emit("figure-2-agent-loop", lang, d["title"], d["figno"], d["h1"], d["subtitle"], body, d["footleft"], F2_CSS)
 
 # ---------------------------------------------------------------- figure 3
@@ -317,8 +311,8 @@ F3_CSS = """
 
 F3 = {
  "en": dict(
-  title="Figure 3 — 2026 evidence, 2021 echoes",
-  figno="Figure 03 — The verdicts, revised",
+  title="Figure 4 — 2026 evidence, 2021 echoes",
+  figno="Figure 04 — The verdicts, revised",
   h1="Three exhibits and what they overturn",
   subtitle="Each 2025–2026 development lands directly on an argument from the 2021 series.",
   heads=("2026 evidence", "2021 echo", "Verdict, revised"),
@@ -334,13 +328,13 @@ F3 = {
     ("v-info", "Upgraded — the contract now crosses the network boundary")),
    (("Bun: one binary swallows the toolchain", "runtime + package manager + bundler + test runner"),
     ("Frontend piece: the 500MB toolchain complaint",),
-    ("v-warn", "Answered — but the double-edged sword cuts (Figure 4)")),
+    ("v-warn", "Answered — but the double-edged sword cuts (Figure 5)")),
   ],
   footleft="Microsoft devblogs · State of JS 2025 · hono.dev · bun.com",
  ),
  "zh": dict(
-  title="图 3 — 2026 年的证据与 2021 年的回声",
-  figno="图 03 — 判决修订",
+  title="图 4 — 2026 年的证据与 2021 年的回声",
+  figno="图 04 — 判决修订",
   h1="三组证据，各自改判了什么",
   subtitle="每一项 2025–2026 年的进展，都不偏不倚，正好落在 2021 年系列的某个论点上。",
   heads=("2026 年的证据", "对应的 2021 论点", "判决修订"),
@@ -356,7 +350,7 @@ F3 = {
     ("v-info", "升级——契约跨过了网络边界")),
    (("Bun：一个二进制吞下工具链", "运行时 + 包管理 + 打包 + 测试"),
     ("前端工程化篇：500MB 工具链之怨",),
-    ("v-warn", "得到回应——但双刃剑同样锋利（见图 4）")),
+    ("v-warn", "得到回应——但双刃剑同样锋利（见图 5）")),
   ],
   footleft="Microsoft devblogs · State of JS 2025 · hono.dev · bun.com",
  ),
@@ -383,7 +377,7 @@ for lang, d in F3.items():
     body = f"""
     <div class="colheads"><div class="c1">{h1c}</div><div class="c2">{h2c}</div><div class="c3">{h3c}</div></div>
     <div class="rows">{''.join(rows)}</div>"""
-    emit("figure-3-verdicts", lang, d["title"], d["figno"], d["h1"], d["subtitle"], body, d["footleft"], F3_CSS)
+    emit("figure-4-verdicts", lang, d["title"], d["figno"], d["h1"], d["subtitle"], body, d["footleft"], F3_CSS)
 
 # ---------------------------------------------------------------- figure 4
 F4_CSS = """
@@ -416,8 +410,8 @@ F4_CSS = """
 
 F4 = {
  "en": dict(
-  title="Figure 4 — Bun through the 2021 method",
-  figno="Figure 04 — Every strength casts a shadow",
+  title="Figure 5 — Bun through the 2021 method",
+  figno="Figure 05 — Every strength casts a shadow",
   h1="The Go article's method, applied to Bun",
   subtitle="The 2021 Golang piece scored every celebrated feature against its shadow. Run Bun through the same table.",
   plus="Strength", minus="The other edge",
@@ -436,8 +430,8 @@ F4 = {
   footleft="bun.com docs · The Register 2026-04 · Prisma 2026-06 · State of JS 2025",
  ),
  "zh": dict(
-  title="图 4 — 用 2021 年的方法审视 Bun",
-  figno="图 04 — 每个优点都投下阴影",
+  title="图 5 — 用 2021 年的方法审视 Bun",
+  figno="图 05 — 每个优点都投下阴影",
   h1="Golang 篇的方法，原样用到 Bun 身上",
   subtitle="2021 年那篇 Golang 文章给每个被吹捧的特性都配上了阴影。现在把 Bun 放进同一张表。",
   plus="优点", minus="另一面刃",
@@ -470,7 +464,7 @@ for lang, d in F4.items():
     <div class="heads"><div class="spacer"></div><div class="h plus">{d['plus']}</div><div class="h minus">{d['minus']}</div></div>
     <div class="trows">{''.join(rows)}</div>
     <div class="verdictline">{d['verdict']}</div>"""
-    emit("figure-4-bun-double-edge", lang, d["title"], d["figno"], d["h1"], d["subtitle"], body, d["footleft"], F4_CSS)
+    emit("figure-5-bun-double-edge", lang, d["title"], d["figno"], d["h1"], d["subtitle"], body, d["footleft"], F4_CSS)
 
 # ---------------------------------------------------------------- figure 5
 F5_CSS = """
@@ -506,8 +500,8 @@ F5_CSS = """
 
 F5 = {
  "en": dict(
-  title="Figure 5 — A two-axis selection frame",
-  figno="Figure 05 — Joint DX, qualitatively",
+  title="Figure 6 — A two-axis selection frame",
+  figno="Figure 06 — Joint DX, qualitatively",
   h1="Loop latency × verification signal density",
   subtitle="Placements are qualitative judgments from this article's evidence — not scores. Reliability and ecosystem maturity remain entry tickets outside both axes.",
   quads=("Joint-DX sweet spot", "Trustworthy but sluggish", "Hard mode for agents", "Fast but unverifiable"),
@@ -525,8 +519,8 @@ F5 = {
   footleft="Qualitative — evidence in the article body",
  ),
  "zh": dict(
-  title="图 5 — 两轴选型框架",
-  figno="图 05 — 人机联合 DX（定性）",
+  title="图 6 — 两轴选型框架",
+  figno="图 06 — 人机联合 DX（定性）",
   h1="循环延迟 × 验证信号密度",
   subtitle="各点位置是基于本文证据的定性判断，不是打分。可靠性与生态成熟度是两轴之外的入场券。",
   quads=("联合 DX 甜区", "可信但迟缓", "agent 困难模式", "快而不可验证"),
@@ -573,6 +567,130 @@ for lang, d in F5.items():
     </div>
     </div>
     <div class="axcap"><div>← {d['xl'][0]}</div><div>{d['xl'][1]} →</div></div>"""
-    emit("figure-5-quadrant", lang, d["title"], d["figno"], d["h1"], d["subtitle"], body, d["footleft"], F5_CSS)
+    emit("figure-6-quadrant", lang, d["title"], d["figno"], d["h1"], d["subtitle"], body, d["footleft"], F5_CSS)
 
 print("done")
+
+
+# ---------------------------------------------------------------- figure 3 (new): compounding
+F3C_CSS = """
+  .cwrap { margin-top: 4px; }
+"""
+
+def f3c_svg(T):
+    slow_beads = "".join(f'<rect x="{18+i*56}" y="66" width="48" height="22" rx="6" fill="#e1f5fe" stroke="#01579b" stroke-width="1.2"/>' for i in range(6))
+    fast_beads = "".join(f'<rect x="{18+i*5.6:.1f}" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/>' for i in range(60))
+    return f"""
+<svg class="cwrap" width="772" height="322" viewBox="0 0 772 322" font-family="Inter, 'Noto Sans SC', sans-serif">
+  <!-- ============ Panel A: speed ============ -->
+  <g>
+    <text x="18" y="20" font-size="15" font-weight="700" fill="#1f1f1f">{T['pa_title']}</text>
+    <text x="18" y="40" font-size="12" fill="#525252">{T['pa_sub']}</text>
+
+    <text x="18" y="60" font-size="12" font-weight="600" fill="#01579b">{T['slow_lbl']}</text>
+    {slow_beads}
+    <text x="18" y="108" font-size="12.5" font-weight="700" fill="#01579b" font-family="'JetBrains Mono', monospace">{T['slow_stat']}</text>
+
+    <text x="18" y="150" font-size="12" font-weight="600" fill="#2e7d32">{T['fast_lbl']}</text>
+    {fast_beads}
+    <text x="18" y="198" font-size="12.5" font-weight="700" fill="#2e7d32" font-family="'JetBrains Mono', monospace">{T['fast_stat']}</text>
+
+    <text x="18" y="232" font-size="11.5" fill="#8a8a8a">{T['pa_cap']}</text>
+  </g>
+
+  <line x1="386" y1="10" x2="386" y2="240" stroke="#e0e0e0" stroke-width="1.5"/>
+
+  <!-- ============ Panel B: quality ============ -->
+  <g transform="translate(406,0)">
+    <text x="0" y="20" font-size="15" font-weight="700" fill="#1f1f1f">{T['pb_title']}</text>
+    <text x="0" y="40" font-size="12" fill="#525252">{T['pb_sub']}</text>
+
+    <!-- axes -->
+    <line x1="26" y1="58" x2="26" y2="204" stroke="#525252" stroke-width="1.5"/>
+    <line x1="26" y1="204" x2="350" y2="204" stroke="#525252" stroke-width="1.5"/>
+    <text x="0" y="52" font-size="10.5" fill="#8a8a8a">{T['ylab']}</text>
+    <text x="350" y="218" font-size="10.5" fill="#8a8a8a" text-anchor="end">{T['xlab']}</text>
+
+    <!-- same first draft marker -->
+    <circle cx="26" cy="70" r="4.5" fill="#7b1fa2"/>
+    <text x="36" y="72" font-size="11" font-weight="600" fill="#7b1fa2">{T['start']}</text>
+
+    <!-- dense: converges -->
+    <path d="M 26 70 C 60 78 85 168 130 190 C 170 200 260 202 350 202"
+          fill="none" stroke="#2e7d32" stroke-width="3"/>
+    <text x="112" y="188" font-size="11.5" font-weight="600" fill="#2e7d32">{T['dense_lbl']}</text>
+
+    <!-- sparse: plateaus -->
+    <path d="M 26 70 C 90 78 180 105 350 118" fill="none" stroke="#c62828" stroke-width="3"/>
+    <text x="150" y="94" font-size="11.5" font-weight="600" fill="#c62828">{T['sparse_lbl']}</text>
+    <line x1="320" y1="122" x2="320" y2="200" stroke="#c62828" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="314" y="150" font-size="10.5" fill="#c62828" text-anchor="end">{T['escape1']}</text>
+    <text x="314" y="164" font-size="10.5" fill="#c62828" text-anchor="end">{T['escape2']}</text>
+
+    <text x="0" y="232" font-size="11.5" fill="#8a8a8a">{T['pb_cap']}</text>
+  </g>
+
+  <!-- ============ bottom bar ============ -->
+  <rect x="6" y="254" width="760" height="56" rx="12" fill="#fffdf0" stroke="#c62828" stroke-width="0" />
+  <rect x="6" y="254" width="4" height="56" rx="2" fill="#c62828"/>
+  <text x="26" y="277" font-size="13.5" font-weight="700" fill="#c62828">{T['bar_t']}</text>
+  <text x="26" y="298" font-size="13" fill="#1f1f1f">{T['bar_s']}</text>
+</svg>"""
+
+F3C = {
+ "en": dict(
+  title="Figure 3 — Why these two criteria",
+  figno="Figure 03 — Speed × quality, compounded",
+  h1="The loop turns both variables into compound interest",
+  subtitle="Same hour of work, same quality of first draft. Latency decides how many rounds you get; signal density decides how much each round purifies.",
+  pa_title="Loop latency → delivery speed",
+  pa_sub="one hour of agent work, two stacks",
+  slow_lbl="10 minutes per round",
+  slow_stat="6 rounds/hour",
+  fast_lbl="1 minute per round",
+  fast_stat="60 rounds/hour — 10×",
+  pa_cap="Output ceiling = round count; latency divides into throughput.",
+  pb_title="Signal density → delivery quality",
+  pb_sub="defects remaining, round after round",
+  pb_cap="More machine adjudication per round = faster convergence.",
+  ylab="defects remaining",
+  xlab="rounds →",
+  start="same first draft",
+  dense_lbl="dense signals: converge per round",
+  sparse_lbl="sparse signals: plateaus",
+  escape1="the gap leaks to humans",
+  escape2="and production",
+  bar_t="Delivery = speed × quality.",
+  bar_s="By the day these numbers barely mattered; by the round they compound into first-class criteria.",
+  footleft="Illustrative dynamics — evidence in the article body",
+ ),
+ "zh": dict(
+  title="图 3 — 为什么恰好是这两个判据",
+  figno="图 03 — 速度 × 质量的复利",
+  h1="循环把速度和质量都变成了复利",
+  subtitle="同样一小时的工作，同样质量的首稿。延迟决定你能试多少轮；信号密度决定每一轮能净化多少。",
+  pa_title="循环延迟 → 交付速度",
+  pa_sub="agent 工作一小时，两种技术栈",
+  slow_lbl="每轮 10 分钟",
+  slow_stat="6 轮/小时",
+  fast_lbl="每轮 1 分钟",
+  fast_stat="60 轮/小时 —— 10 倍",
+  pa_cap="agent 的产出上限就是循环次数：延迟直接除进吞吐量。",
+  pb_title="信号密度 → 交付质量",
+  pb_sub="一轮又一轮之后，还剩多少缺陷",
+  pb_cap="每轮机器能裁决得越多，收敛越快；剩下的都要人来兜底。",
+  ylab="剩余缺陷",
+  xlab="轮次 →",
+  start="同一份首稿",
+  dense_lbl="密集信号：逐轮收敛",
+  sparse_lbl="稀疏信号：停在半路",
+  escape1="这段差距逃逸给",
+  escape2="人工评审与生产",
+  bar_t="交付 = 速度 × 质量。",
+  bar_s="按天迭代时，这两个数字无关痛痒；按轮迭代时，它们被复利放大——这就是两个判据升为一等公民的原因。",
+  footleft="示意性动态——证据见正文",
+ ),
+}
+
+for lang, d in F3C.items():
+    emit("figure-3-compounding", lang, d["title"], d["figno"], d["h1"], d["subtitle"], f3c_svg(d), d["footleft"], F3C_CSS)
