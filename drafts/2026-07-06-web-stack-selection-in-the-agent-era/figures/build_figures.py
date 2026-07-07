@@ -222,8 +222,8 @@ def f2_svg(d):
   <text x="502" y="190" text-anchor="middle" font-size="11.5" fill="#525252">{T['sig_s2']}</text>
 
   <!-- branch arrows: signals -> two outcomes -->
-  <path d="M 562 146 C 588 146 578 97 596 97" fill="none" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#agreen)"/>
-  <path d="M 562 186 C 588 186 578 273 596 273" fill="none" stroke="#c62828" stroke-width="2.5" marker-end="url(#ared)"/>
+  <path d="M 562 146 L 570 146 Q 580 146 580 136 L 580 107 Q 580 97 590 97 L 594 97" fill="none" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#agreen)"/>
+  <path d="M 562 186 L 570 186 Q 580 186 580 196 L 580 263 Q 580 273 590 273 L 594 273" fill="none" stroke="#c62828" stroke-width="2.5" marker-end="url(#ared)"/>
 
   <!-- outcomes -->
   <rect x="600" y="56" width="166" height="82" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
@@ -237,8 +237,8 @@ def f2_svg(d):
   <text x="683" y="294" text-anchor="middle" font-size="{T['subfs']}" fill="#525252">{T['err_s2']}</text>
 
   <!-- latency bracket under the edit->signals span -->
-  <path d="M 6 336 L 6 344 L 562 344 L 562 336" fill="none" stroke="#e65100" stroke-width="2.5"/>
-  <text x="284" y="362" text-anchor="middle" font-size="12.5" font-weight="600" fill="#e65100"
+  <path d="M 6 336 L 6 344 L 766 344 L 766 336" fill="none" stroke="#e65100" stroke-width="2.5"/>
+  <text x="386" y="362" text-anchor="middle" font-size="12.5" font-weight="600" fill="#e65100"
         font-family="'JetBrains Mono', monospace">{T['lat']}</text>
 </svg>"""
 
