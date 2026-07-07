@@ -23,20 +23,15 @@ To make that case honestly, I will first excavate what we actually argued about 
 
 Rereading your own five-year-old technical writing is a peculiar form of archaeology. The artifacts are familiar; the assumptions buried under them are what surprise you.
 
-My [TypeScript article](/blog/typescript) (February 2021) made one argument in several costumes: types are a collaboration contract. JavaScript's freedom was the villain — "动态一时爽，重构火葬场," as the folk saying I quoted put it: dynamic typing feels great until the refactoring becomes a cremation. The core mechanism I praised was error front-loading: a violated contract surfaces at compile time as a deterministic message, instead of surfacing in production as `undefined is not a function`. I framed this entirely as a benefit for human teams — interfaces as documentation, autocomplete as comfort.
+My [TypeScript article](/blog/typescript) (February 2021) made one argument in several costumes: types are a collaboration contract. JavaScript's freedom was the villain — as the folk saying I quoted put it, dynamic typing feels great right up until the refactoring becomes a cremation. The core mechanism I praised was error front-loading: a violated contract surfaces at compile time as a deterministic message, instead of surfacing in production as `undefined is not a function`. I framed this entirely as a benefit for human teams — interfaces as documentation, autocomplete as comfort.
 
-My [frontend engineering article](/blog/frontend-engineering) (March 2021) was, in hindsight, a complaint dressed as a curriculum. It cataloged what a "real" frontend engineer had to master — Webpack, Babel, Node, NPM, Yarn, ESLint, TypeScript configs — and admitted that "稍微大一点的前端项目的依赖文件就会超过 500MB": even a modestly sized project dragged half a gigabyte of dependencies behind it. The article's closing line asked, half-jokingly, whether anyone entering frontend could still keep up with the learning. The toolchain's complexity was treated as weather: something to be endured and mastered, not questioned.
+My [frontend engineering article](/blog/frontend-engineering) (March 2021) was, in hindsight, a complaint dressed as a curriculum. It cataloged what a "real" frontend engineer had to master — Webpack, Babel, Node, NPM, Yarn, ESLint, TypeScript configs — and admitted that even a modestly sized project dragged half a gigabyte of dependencies behind it. The article's closing line asked, half-jokingly, whether anyone entering frontend could still keep up with the learning. The toolchain's complexity was treated as weather: something to be endured and mastered, not questioned.
 
-My [Golang article](/blog/golang) (March 2021) refused to crown anything. Its method was explicitly dialectical: "Golang 的一些突出特性将成为它的双刃剑" — a language's most celebrated features become its double-edged swords. Simple syntax limits expressiveness; mandatory error handling produces `err` everywhere; compile speed, I joked in a pros-and-cons table, was the one row with no downside ("怎么可能是缺点?"). The article even made a falsifiable prediction — that generics would likely arrive in Go 2.0. Reality was kinder: [Go 1.18 shipped generics](https://go.dev/blog/go1.18) in March 2022, no version bump required.
+My [Golang article](/blog/golang) (March 2021) refused to crown anything. Its method was explicitly dialectical: a language's most celebrated features become its double-edged swords. Simple syntax limits expressiveness; mandatory error handling produces `err` everywhere; compile speed, I joked in a pros-and-cons table, was the one row with no downside ("how could this possibly be a con?"). The article even made a falsifiable prediction — that generics would likely arrive in Go 2.0. Reality was kinder: [Go 1.18 shipped generics](https://go.dev/blog/go1.18) in March 2022, no version bump required.
 
 My [C# article](/blog/csharp) (November 2021) introduced the frame I now find most durable: the gap between satisfaction and market share. Citing StackOverflow's 2021 survey of 82,914 developers, I noted that Java — the market's colossus — was loved by only 47% of its users, while C#, its supposed clone, scored 62%. My reading then: satisfaction is a leading indicator; market share is a lagging one. The article was titled "Part 1." Part 2 never appeared. Hold that thought.
 
-| Article | Criterion it argued from | Verdict then | How it reads in 2026 |
-| ------- | ------------------------ | ------------ | -------------------- |
-| [TypeScript](/blog/typescript) (2021-02) | Types as a human collaboration contract | Indispensable for large projects | Strongest aging — the same mechanism now serves a second audience |
-| [Frontend engineering](/blog/frontend-engineering) (2021-03) | Toolchain mastery as professional identity | Complexity is the job | The complaint survived; the tool list reads like sediment layers |
-| [Golang](/blog/golang) (2021-03) | Simplicity × stability × speed, dialectically | No panacea; know your trade-offs | The method aged better than any single verdict |
-| [C#](/blog/csharp) (2021-11) | Satisfaction vs. market share | Loved beats large, eventually | The frame transplants cleanly to 2026 (see below) |
+![Four 2021 articles side by side — the criterion each argued from, its verdict then, and how it reads in 2026; every criterion denominated in humans](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-1-2021-criteria.en.png)
 
 Lined up this way, the four articles share an assumption so universal in 2021 that none of us thought to state it: every criterion was denominated in humans. Human learning curves, human reading comfort, human satisfaction surveys. Nobody asked how a machine would experience the stack, because no machine was writing the code.
 
@@ -48,19 +43,7 @@ Watch what an agent actually does after it edits your code. It runs the type che
 
 **Verification signal density** is the amount of correctness per cycle that a machine can decide without judgment. A `tsc` error is free to produce, deterministic, and machine-readable: the same defect yields the same message every time, pointing at a file and a line. A runtime `TypeError` in production is the opposite: expensive to reach, stochastic to reproduce, and demanding human interpretation. The distinction matters more than it used to, because agents consume these signals mechanically. A 2025 study of LLM-generated code, [cited by GitHub's engineering blog](https://github.blog/ai-and-ml/llms/why-ai-is-pushing-developers-toward-typed-languages/), found that **94% of compiler errors in LLM output are type-check failures** — which means a type system is, empirically, the densest verification-signal generator an agent encounters.
 
-```mermaid
-flowchart LR
-    A[Agent edits code] --> B[Build / type-check / test]
-    B --> C{Signals}
-    C -->|"deterministic, machine-readable<br/>(tsc error, failed assertion)"| D[Agent self-corrects]
-    C -->|"weak or absent signals<br/>(runtime-only failure)"| E[Human must intervene]
-    D --> A
-    style A fill:#e1f5fe,stroke:#01579b,color:#01579b
-    style B fill:#fff3e0,stroke:#e65100,color:#e65100
-    style C fill:#f3e5f5,stroke:#7b1fa2,color:#7b1fa2
-    style D fill:#e8f5e9,stroke:#2e7d32,color:#2e7d32
-    style E fill:#ffebee,stroke:#c62828,color:#c62828
-```
+![The agent loop: edit, then build/type-check/test, then a signal branch — deterministic machine-readable signals let the agent self-correct and loop back hundreds of rounds; weak runtime-only signals force a human to intervene. The stack sets the loop latency and the signal density.](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-2-agent-loop.en.png)
 
 One sentence carries the mechanical heart of this article: **training data determines how well an agent writes on the first attempt; verification signals determine how fast it converges on correct.** Agent workflows are multi-round by construction, so the convergence variable — not the first-draft variable — dominates the economics. I will stress-test that sentence in the counterarguments section, because it is the load-bearing wall.
 
@@ -87,12 +70,7 @@ A note on numbers, in the spirit of this article: Hono's raw download counts (ar
 
 **Exhibit three: Bun, prosecution's half.** Bun's pitch is one binary that swallows the runtime, package manager, bundler, and test runner. Its install speed is the single most consistently replicated advantage across independent write-ups, and [State of JS 2025](https://www.infoq.com/news/2026/03/state-of-js-survey-2025/) has 21% of respondents using it (up 4 points year over year). The echo here is my frontend engineering article's central complaint — the 500MB dependency folders, the tool-list-as-curriculum. The complexity I treated as weather in 2021 turned out to be a market: Bun's entire narrative is collapsing that toolchain to zero. But I wrote the 2021 Golang article precisely to resist this kind of narrative, and the same dialectic applies with force here — which is why Bun's other half testifies for the defense in the next section.
 
-| 2026 evidence | 2021 echo | The verdict, revised |
-| ------------- | --------- | -------------------- |
-| tsc ported to Go, ~10x, at RC | TS piece's error front-loading; Go piece's compile-speed "joke" | Crowned — both articles' points converge as agent economics |
-| Hono S-tier vs. Express usage lead | C# piece's satisfaction/share gap | Frame reused verbatim; the leading indicator leads again |
-| Hono RPC + Zod as full-stack contract | TS piece's "types as contract" | Upgraded — the contract now crosses the network boundary |
-| Bun's single binary | Frontend piece's toolchain complaint | Answered — but see the double-edged sword below |
+![Three 2026 exhibits mapped to their 2021 echoes: typescript-go crowns the error-front-loading and compile-speed arguments; Hono vs Express reuses the satisfaction-versus-share frame; Hono RPC upgrades the type contract across the network; Bun answers the toolchain complaint — with a double edge](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-3-verdicts.en.png)
 
 ## The Case Against
 
@@ -102,11 +80,7 @@ An argument this convenient deserves its strongest opposition. Three counterargu
 
 **Bun is its own counterexample.** Apply the 2021 Golang article's method — the table where every strength casts a shadow — to Bun, and the shadow is substantial:
 
-| Trait | Strength | The other edge |
-| ----- | -------- | -------------- |
-| Single binary, batteries included | Toolchain complexity collapses toward zero; installs are dramatically faster | A vastly larger surface to keep compatible; 5,000+ open issues |
-| Speed-first engineering culture | Benchmarks and iteration pace that pulled 21% of surveyed developers | Long-running-process memory leaks; [Bun's own docs](https://bun.com/docs/runtime/nodejs-compat) list 16 Node modules partially implemented and 3 not at all |
-| Fast-moving, AI-accelerated development | Rapid feature delivery | [OpenCode migrated off Bun](https://www.theregister.com/2026/04/21/anthropics_bun_1113_released_with_memory_fixes/) citing "memory issues, crashes, and terrible Windows support" — an AI CLI, Bun's flagship use case |
+![Bun scored by the 2021 Golang article method — every strength paired with its shadow: single binary vs compatibility surface and 5,000+ open issues; speed-first culture vs memory leaks and the OpenCode departure; AI-accelerated pace vs the production stability discount](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-4-bun-double-edge.en.png)
 
 The community's pragmatic consensus — use `bun install` for development speed, run Node in production — is itself a verdict: **loop-latency optimization cannot substitute for runtime reliability.** In the framework below, latency is one axis, not the whole plane. The most instructive Bun datapoint, though, cuts both ways. In June 2026, [Prisma moved its Compute product onto Bun's Rust-rewrite canary](https://www.prisma.io/blog/bun-rust-rewrite-prisma-compute) after finding that the *stable* release leaked memory and deadlocked connection pools while the canary passed their load tests. Their sentence deserves quoting: "The build which passed our tests made a better foundation than the build which failed them." A version label is a weak signal; a passed test suite is a decidable one. Even Bun's troubles end up illustrating the thesis.
 
@@ -116,23 +90,7 @@ The community's pragmatic consensus — use `bun install` for development speed,
 
 If the two criteria are real, they should be usable. Here is the plane they define, with placements that are qualitative judgments from the evidence above — not scores.
 
-```mermaid
-quadrantChart
-    title Joint DX, qualitatively: loop latency × signal density
-    x-axis Slow feedback loop --> Fast feedback loop
-    y-axis Sparse verification signals --> Dense verification signals
-    quadrant-1 Joint-DX sweet spot
-    quadrant-2 Trustworthy but sluggish
-    quadrant-3 Hard mode for agents
-    quadrant-4 Fast but unverifiable
-    "TS on JS-based tsc": [0.38, 0.8]
-    "TS 7 native": [0.8, 0.82]
-    "Go": [0.85, 0.72]
-    "Hono + Zod contract": [0.72, 0.88]
-    "Plain JavaScript": [0.6, 0.25]
-    "Python, typical setup": [0.55, 0.35]
-    "Bun runtime today": [0.9, 0.45]
-```
+![A two-axis plane — loop latency versus verification signal density. TS 7 native, Go, and Hono + Zod sit in the joint-DX sweet spot; TS on the JS-based tsc is trustworthy but sluggish; plain JavaScript and typical Python setups are fast but sparse on signals; Bun today is furthest right with a reliability discount.](/img/blog/2026-07-06-web-stack-selection-in-the-agent-era/figure-5-quadrant.en.png)
 
 The placements matter less than the rules for using them.
 
@@ -142,7 +100,7 @@ The placements matter less than the rules for using them.
 
 **Third, corpus adequacy is a precondition, not an axis.** The framework compares stacks *within* the well-trodden mainstream, where training data saturates. Choosing an exquisite but obscure language hands the agent a losing first draft that no amount of verification density fully repays — this is the legitimate core of the training-data objection, absorbed as a boundary condition.
 
-What this framework refuses to produce is a sentence of the form "X is the best language for the agent era." I declined to write that sentence about Go in 2021 — "如果一门编程语言能广为人知，那它绝对不会是一门糟糕语言," any language that achieves broad adoption is not a bad language — and the intervening five years have only strengthened the refusal. Criteria travel; crowns do not.
+What this framework refuses to produce is a sentence of the form "X is the best language for the agent era." I declined to write that sentence about Go in 2021 — any language that achieves broad adoption, I argued then, is not a bad language — and the intervening five years have only strengthened the refusal. Criteria travel; crowns do not.
 
 ## When the Subject Becomes the Object
 

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 2 — agent 循环</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .loopwrap { position: relative; padding: 8px 0 0 0; }
+  .lat {
+    display: flex; align-items: center; gap: 10px; margin: 0 0 14px 0;
+  }
+  .lat .brace { flex: 1; height: 14px; border: 2.5px solid var(--warn-stroke); border-bottom: none;
+    border-radius: 10px 10px 0 0; }
+  .lat .label {
+    flex: none; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+    color: var(--warn-stroke); background: var(--warn-fill); border: 1.5px solid var(--warn-stroke);
+    border-radius: 8px; padding: 5px 12px;
+  }
+  .flow { display: flex; align-items: stretch; gap: 0; }
+  .node {
+    border: 1.5px solid; border-radius: 12px; padding: 14px 14px; background: #fff;
+    display: flex; flex-direction: column; justify-content: center; text-align: center;
+  }
+  .node .t { font-weight: 600; font-size: 15px; line-height: 1.3; }
+  .node .s { font-size: 12.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.4; }
+  .n-edit { border-color: var(--info-stroke); background: var(--info-fill); width: 150px; }
+  .n-verify { border-color: var(--warn-stroke); background: var(--warn-fill); width: 172px; }
+  .n-sig { border-color: var(--hi-stroke); background: var(--hi-fill); width: 168px; }
+  .arrow { display: flex; align-items: center; padding: 0 2px; }
+  .arrow svg { display: block; }
+  .outs { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+  .out { border: 1.5px solid; border-radius: 12px; padding: 10px 14px; width: 240px; background: #fff; }
+  .out .t { font-weight: 600; font-size: 14.5px; }
+  .out .s { font-size: 12.5px; color: var(--ink-soft); margin-top: 3px; line-height: 1.4; }
+  .o-ok { border-color: var(--ok-stroke); background: var(--ok-fill); }
+  .o-ok .t { color: var(--ok-stroke); }
+  .o-err { border-color: var(--err-stroke); background: var(--err-fill); }
+  .o-err .t { color: var(--err-stroke); }
+  .back { margin-top: 16px; display: flex; align-items: center; gap: 10px; }
+  .back svg { flex: 1; display: block; }
+  .back .label {
+    flex: none; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600;
+    color: var(--ok-stroke);
+  }
+  .density {
+    margin-top: 20px; display: flex; gap: 14px;
+  }
+  .density .cell {
+    flex: 1; border-radius: 12px; padding: 13px 16px; border: 1.5px solid;
+    font-size: 13.5px; line-height: 1.5;
+  }
+  .density .good { border-color: var(--ok-stroke); background: #f3faf4; }
+  .density .bad { border-color: var(--err-stroke); background: #fff6f6; }
+  .density b { font-weight: 600; }
+  .density .good b { color: var(--ok-stroke); }
+  .density .bad b { color: var(--err-stroke); }
+  .density code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #f1f1f1;
+    padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 02 — 两个新选型判据</div>
+  <h1>agent 跑的循环，以及技术栈控制着什么</h1>
+  <div class="subtitle">一个任务里这个循环要闭合几十到几百次。技术栈决定它的延迟，也决定分叉处有多少正确性是机器可判定的。</div>
+</div>
+
+    <div class="loopwrap">
+      <div class="lat"><div class="label">循环延迟 · 修改 → 可信反馈</div><div class="brace"></div></div>
+      <div class="flow">
+        <div class="node n-edit"><div class="t">agent 修改代码</div><div class="s">写代码这一步很便宜</div></div>
+        <div class="arrow"><svg width="34" height="20" viewBox="0 0 34 20">
+  <line x1="0" y1="10" x2="26" y2="10" stroke="#8a8a8a" stroke-width="2.5"/>
+  <polygon points="24,4 34,10 24,16" fill="#8a8a8a"/></svg></div>
+        <div class="node n-verify"><div class="t">构建 · 类型检查 · 测试</div><div class="s">安装、编译、启动</div></div>
+        <div class="arrow"><svg width="34" height="20" viewBox="0 0 34 20">
+  <line x1="0" y1="10" x2="26" y2="10" stroke="#8a8a8a" stroke-width="2.5"/>
+  <polygon points="24,4 34,10 24,16" fill="#8a8a8a"/></svg></div>
+        <div class="node n-sig"><div class="t">信号</div><div class="s">返回了什么？能信吗？</div></div>
+        <div class="arrow"><svg width="34" height="20" viewBox="0 0 34 20">
+  <line x1="0" y1="10" x2="26" y2="10" stroke="#8a8a8a" stroke-width="2.5"/>
+  <polygon points="24,4 34,10 24,16" fill="#8a8a8a"/></svg></div>
+        <div class="outs">
+          <div class="out o-ok"><div class="t">agent 自我纠正</div><div class="s">确定性、机器可读——tsc 报错、断言失败</div></div>
+          <div class="out o-err"><div class="t">人类介入</div><div class="s">信号微弱或缺失——仅运行时暴露</div></div>
+        </div>
+      </div>
+      <div class="back">
+        <svg height="26" viewBox="0 0 640 26" preserveAspectRatio="none" style="width:100%">
+          <path d="M 630 2 L 630 16 L 14 16 L 14 6" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="7 5"/>
+          <polygon points="8,8 14,0 20,8" fill="#2e7d32"/>
+        </svg>
+      </div>
+      <div style="text-align:center;margin-top:2px" class="back"><div class="label" style="margin:0 auto">自我纠正回到起点——成百上千轮</div></div>
+      <div class="density">
+        <div class="cell good"><b>密集信号：</b>一条 <code>tsc</code> 报错零成本、确定性、机器可读——同一缺陷、同一消息、同一行号。LLM 产出代码的编译错误中 94% 是类型检查失败。</div>
+        <div class="cell bad"><b>稀疏信号：</b>生产环境的 <code>TypeError</code> 触达昂贵、复现随机、还需要人来解释。</div>
+      </div>
+    </div>
+<div class="footer"><div>GitHub Blog 2026（94% 为类型检查失败）· 循环模型：本文</div><div>marvinzhang.dev · figure-2-agent-loop</div></div>
+</div>
+</body>
+</html>

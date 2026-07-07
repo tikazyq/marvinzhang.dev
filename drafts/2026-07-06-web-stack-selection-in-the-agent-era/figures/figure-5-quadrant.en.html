@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Figure 5 — A two-axis selection frame</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .plotwrap { display: flex; justify-content: center; }
+  .plot { position: relative; width: 700px; height: 560px; margin: 8px 0 4px 0; }
+  .quad { position: absolute; width: 50%; height: 50%; }
+  .q1 { right: 0; top: 0; background: #e8f5e9; border-radius: 0 14px 0 0; }
+  .q2 { left: 0; top: 0; background: #eef4fb; border-radius: 14px 0 0 0; }
+  .q3 { left: 0; bottom: 0; background: #f5f5f5; border-radius: 0 0 0 14px; }
+  .q4 { right: 0; bottom: 0; background: #fff3e0; border-radius: 0 0 14px 0; }
+  .qlabel { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 4px 10px;
+    border-radius: 7px; background: rgba(255,255,255,0.85); }
+  .ql1 { right: 12px; top: 12px; color: var(--ok-stroke); border: 1px solid var(--ok-stroke); }
+  .ql2 { left: 12px; top: 12px; color: var(--info-stroke); border: 1px solid var(--info-stroke); }
+  .ql3 { left: 12px; bottom: 12px; color: var(--ink-faint); border: 1px solid var(--ink-faint); }
+  .ql4 { right: 12px; bottom: 12px; color: var(--warn-stroke); border: 1px solid var(--warn-stroke); }
+  .axis { position: absolute; background: var(--ink-soft); }
+  .ax-x { left: 0; right: 0; top: 50%; height: 2px; }
+  .ax-y { top: 0; bottom: 0; left: 50%; width: 2px; }
+  .pt { position: absolute; transform: translate(-50%, -50%); z-index: 3; }
+  .pt .dot { width: 15px; height: 15px; border-radius: 50%; border: 3px solid #fff;
+    margin: 0 auto; box-shadow: 0 0 0 2px currentColor; background: currentColor; }
+  .pt .lbl { font-size: 13px; font-weight: 600; white-space: nowrap; margin-top: 5px;
+    background: rgba(255,255,255,0.9); padding: 2px 7px; border-radius: 6px; }
+  .axcap { display: flex; justify-content: space-between; width: 700px; margin: 6px auto 0 auto;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-soft); }
+  .ycap { position: absolute; left: 50%; transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-soft);
+    background: rgba(255,255,255,0.9); padding: 2px 8px; border-radius: 6px; z-index: 2; }
+  .ycap.top { top: 8px; } .ycap.bot { bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">Figure 05 — Joint DX, qualitatively</div>
+  <h1>Loop latency × verification signal density</h1>
+  <div class="subtitle">Placements are qualitative judgments from this article's evidence — not scores. Reliability and ecosystem maturity remain entry tickets outside both axes.</div>
+</div>
+
+    <div class="plotwrap">
+    <div class="plot">
+      <div class="quad q1"></div><div class="quad q2"></div><div class="quad q3"></div><div class="quad q4"></div>
+      <div class="axis ax-x"></div><div class="axis ax-y"></div>
+      <div class="qlabel ql1">Joint-DX sweet spot</div>
+      <div class="qlabel ql2">Trustworthy but sluggish</div>
+      <div class="qlabel ql3">Hard mode for agents</div>
+      <div class="qlabel ql4">Fast but unverifiable</div>
+      <div class="ycap top">dense verification signals ↑</div>
+      <div class="ycap bot">sparse signals ↓</div>
+      <div class="pt" style="left:36.0%;top:19.999999999999996%;color:#01579b;text-align:center"><div style="display:flex;align-items:center;gap:7px"><div class="dot" style="margin:0"></div><div class="lbl" style="margin-top:0">TS on JS-based tsc</div></div></div><div class="pt" style="left:82.0%;top:18.000000000000004%;color:#2e7d32;text-align:center"><div style="display:flex;align-items:center;gap:7px"><div class="dot" style="margin:0"></div><div class="lbl" style="margin-top:0">TS 7 native</div></div></div><div class="pt" style="left:86.0%;top:30.000000000000004%;color:#2e7d32;text-align:center"><div class="dot"></div><div class="lbl">Go</div></div><div class="pt" style="left:62.0%;top:8.999999999999996%;color:#7b1fa2;text-align:center"><div class="dot"></div><div class="lbl">Hono + Zod contract</div></div><div class="pt" style="left:60.0%;top:76.0%;color:#c62828;text-align:center"><div class="dot"></div><div class="lbl">Plain JavaScript</div></div><div class="pt" style="left:52.0%;top:65.0%;color:#e65100;text-align:center"><div class="lbl" style="margin-top:0;margin-bottom:5px">Python, typical setup</div><div class="dot"></div></div><div class="pt" style="left:85.0%;top:56.00000000000001%;color:#e65100;text-align:center"><div class="dot"></div><div class="lbl">Bun runtime, today</div></div>
+    </div>
+    </div>
+    <div class="axcap"><div>← slower feedback loop</div><div>faster feedback loop →</div></div>
+<div class="footer"><div>Qualitative — evidence in the article body</div><div>marvinzhang.dev · figure-5-quadrant</div></div>
+</div>
+</body>
+</html>

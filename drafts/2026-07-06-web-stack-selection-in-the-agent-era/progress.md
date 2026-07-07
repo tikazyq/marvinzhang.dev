@@ -37,12 +37,18 @@
 - [x] zh 标题定为《AI Agent 时代的 Web 技术选型》(可改);frontmatter tags 与 EN 对齐
 - [x] validate:zh-bold-source 通过(55/55);注意:仓库"加粗前后空格"约定中 `**X **，` 形式在 CommonMark 下渲染为字面星号(老文章亦存在此问题),本篇改用不触发歧义的写法,渲染已抽查为 0 残留星号
 - [x] pnpm build 双 locale 通过
-- [ ] 作者评论后统一润色(EN + ZH)
+- [x] 作者第一轮评论(2026-07-07)处理完毕:
+  - ① 中文表述:"被当成了天气"→"被当成理所当然的行业现状";"现实比预测更温柔"→"结果这个预测还保守了";§4 联动句同步修改
+  - ② 3 个多列表格 + 2 个 mermaid 全部替换为 HTML→PNG 渲染图(5 图 × EN/ZH = 10 张,风格沿用 vsm 篇 figure 规范;PNG 在 static/img/blog/<slug>/,HTML 源码在 drafts/<slug>/figures/)
+  - ③ 英文版正文去除全部中文引语,改为英文转述(grep CJK = 0)
+- [ ] 等作者下一轮评论/定稿
 
 ## Work Session Log
 - **2026-07-06** by Claude (Stage 1 agent): scaffold 工作区;精读 2021-02-03-typescript / 2021-03-02-frontend-engineering / 2021-03-24-golang / 2021-11-19-csharp / 2021-02-22-vue3;完成旧文清单与成色评估;启动 4 路外部证据研究(Bun 现状与 Anthropic 收购、Hono 采用度多口径、typescript-go 进展、agent-friendly stack 既有讨论饱和度)。
 
 - **2026-07-06 (later)** by Claude (Stage 1 agent): 4 路外部研究返回并整合;完成压力测试/候选大纲/开放问题;处理 Copilot PR review 4 条意见(占位 tags → 真实 taxonomy、zh 标题中文化、slug/文件名口径澄清、lean-spec 备注注明出处为作者指示)。Stage 1 完成,PR #39,等作者反馈。
+
+- **2026-07-07 (later)** by Claude (Stage 4 agent): 处理作者三条评论(中文表述 × 2、表格与 mermaid 全部图片化、英文版去中文);新增 10 张 figure(build_figures.py 可再生);双 locale build + zh 加粗校验通过。
 
 - **2026-07-07** by Claude (Stage 2/3 agent): 作者确认 "B 为骨 C 为皮" → 完成 outline.md(7 节 + Assumptions);随后完成 Stage 3 英文正稿(~4,600 词,2 mermaid + 3 表 + 1 代码片段);pnpm build 通过;zh 占位稿加 truncate 标记。等作者对 EN 稿反馈后进 Stage 4。
 

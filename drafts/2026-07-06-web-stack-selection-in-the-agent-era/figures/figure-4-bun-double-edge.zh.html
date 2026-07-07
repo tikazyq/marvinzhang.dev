@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 4 — 用 2021 年的方法审视 Bun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .heads { display: flex; gap: 14px; margin-bottom: 10px; }
+  .heads .spacer { width: 172px; flex: none; }
+  .heads .h { flex: 1; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.07em; text-transform: uppercase; padding: 7px 12px; border-radius: 8px; }
+  .heads .plus { color: var(--ok-stroke); background: var(--ok-fill); border: 1.5px solid var(--ok-stroke); }
+  .heads .minus { color: var(--err-stroke); background: var(--err-fill); border: 1.5px solid var(--err-stroke); }
+  .trows { display: flex; flex-direction: column; gap: 13px; }
+  .trow { display: flex; gap: 14px; align-items: stretch; }
+  .trait { width: 172px; flex: none; display: flex; align-items: center; font-weight: 600;
+    font-size: 14.5px; line-height: 1.35; padding: 12px 14px; border-radius: 12px;
+    background: #fff; border: 1.5px solid var(--line); }
+  .pane { flex: 1; border-radius: 12px; border: 1.5px solid; padding: 12px 15px;
+    font-size: 13.5px; line-height: 1.5; background: #fff; }
+  .pane.plus { border-color: var(--ok-stroke); background: #f3faf4; }
+  .pane.minus { border-color: var(--err-stroke); background: #fff6f6; }
+  .pane b { font-weight: 600; }
+  .pane.plus b { color: var(--ok-stroke); }
+  .pane.minus b { color: var(--err-stroke); }
+  .verdictline {
+    margin-top: 22px; border-radius: 12px; border: 1.5px solid var(--ink);
+    background: #fff; padding: 14px 18px; font-size: 15px; line-height: 1.5; text-align: center;
+  }
+  .verdictline b { font-weight: 700; }
+  .verdictline code { font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    background: #f1f1f1; padding: 1px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 04 — 每个优点都投下阴影</div>
+  <h1>Golang 篇的方法，原样用到 Bun 身上</h1>
+  <div class="subtitle">2021 年那篇 Golang 文章给每个被吹捧的特性都配上了阴影。现在把 Bun 放进同一张表。</div>
+</div>
+
+    <div class="heads"><div class="spacer"></div><div class="h plus">优点</div><div class="h minus">另一面刃</div></div>
+    <div class="trows">
+      <div class="trow">
+        <div class="trait">单二进制、开箱即全家桶</div>
+        <div class="pane plus">工具链复杂度趋零；安装速度 <b>大幅领先</b>——各路独立评测中复现最一致的优点</div>
+        <div class="pane minus">需要保持兼容的表面积同样暴涨；<b>5,000+ 未关闭 issue</b>；16 个 Node 模块部分兼容、3 个未实现（官方文档自认）</div>
+      </div>
+      <div class="trow">
+        <div class="trait">速度优先的工程文化</div>
+        <div class="pane plus">基准与迭代节奏拉来了 <b>21% 的受访使用者</b>（State of JS 2025，同比 +4pt）</div>
+        <div class="pane minus">长时运行进程 <b>内存泄漏</b>；OpenCode 迁出，理由是“内存问题、崩溃、糟糕的 Windows 支持”</div>
+      </div>
+      <div class="trow">
+        <div class="trait">快速演进、AI 加速开发</div>
+        <div class="pane plus">功能交付极快；1.x 两年内塞进运行时、SQL、Redis、全栈 dev server</div>
+        <div class="pane minus">生产环境有稳定性折价；canary 与稳定版的悖论——<b>Prisma 相信的是跑通测试的构建</b>，不是版本标签</div>
+      </div></div>
+    <div class="verdictline">社区共识本身就是判决书：开发用 <code>bun install</code> 提速，生产继续跑 Node——<b>循环延迟的优化，替代不了运行时的可靠性。</b></div>
+<div class="footer"><div>bun.com 文档 · The Register 2026-04 · Prisma 2026-06 · State of JS 2025</div><div>marvinzhang.dev · figure-4-bun-double-edge</div></div>
+</div>
+</body>
+</html>
