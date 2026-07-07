@@ -21,14 +21,25 @@
 - [x] 开放问题清单 8 项(论点强度、大纲方向、slug、利益披露、反方篇幅、新线索取舍、外文对话、自嘲尺度)
 - **Gate**: ⛔ **已停止,等作者对 research.md 的反馈后再进 Stage 2 (Outline)**
 
-### ⏳ Stage 2: Outline — BLOCKED (等作者对 Stage 1 的反馈)
-### ⏳ Stage 3: Writing — NOT STARTED
+### ✅ Stage 2: Outline — COMPLETE (2026-07-07)
+- [x] 作者反馈:采纳 "B 为骨(命题驱动)、C 为皮(叙事)" 混合方案
+- [x] outline.md 完成:7 节 section map、每节 beats、视觉元素规划、开放问题按 research 建议值落为 Assumptions(作者可否决)
+
+### ✅ Stage 3: Writing (EN) — COMPLETE (2026-07-07),等待作者反馈
+- [x] EN 正文 ~4,600 词写入 blog/2026-07-06-web-stack-selection-in-the-agent-era.mdx(unlisted: true)
+- [x] 7 节全部完成:会师冷开场 / 判据考古(表) / 两个新变量(mermaid 循环图) / 三组证据(表 + 1 个 Hono RPC 片段) / 反方三连(Bun 双刃表,复刻 Golang 篇格式) / 两轴框架(quadrantChart) / 塌缩结尾 + 利益披露
+- [x] 全部外部数字取自 research.md 已核验条目,冲突口径按备注处理(下载量只做相对断言)
+- [x] 站内链接 4 篇旧文;pnpm build 双 locale 通过
+- **Gate**: ⛔ 等作者对 EN 稿反馈后进 Stage 4(润色 + 中文翻译)
+
 ### ⏳ Stage 4: Refine (incl. zh translation) — NOT STARTED
 
 ## Work Session Log
 - **2026-07-06** by Claude (Stage 1 agent): scaffold 工作区;精读 2021-02-03-typescript / 2021-03-02-frontend-engineering / 2021-03-24-golang / 2021-11-19-csharp / 2021-02-22-vue3;完成旧文清单与成色评估;启动 4 路外部证据研究(Bun 现状与 Anthropic 收购、Hono 采用度多口径、typescript-go 进展、agent-friendly stack 既有讨论饱和度)。
 
 - **2026-07-06 (later)** by Claude (Stage 1 agent): 4 路外部研究返回并整合;完成压力测试/候选大纲/开放问题;处理 Copilot PR review 4 条意见(占位 tags → 真实 taxonomy、zh 标题中文化、slug/文件名口径澄清、lean-spec 备注注明出处为作者指示)。Stage 1 完成,PR #39,等作者反馈。
+
+- **2026-07-07** by Claude (Stage 2/3 agent): 作者确认 "B 为骨 C 为皮" → 完成 outline.md(7 节 + Assumptions);随后完成 Stage 3 英文正稿(~4,600 词,2 mermaid + 3 表 + 1 代码片段);pnpm build 通过;zh 占位稿加 truncate 标记。等作者对 EN 稿反馈后进 Stage 4。
 
 ## Notes & Conventions (Stage 2+ 生效,先记录勿执行)
 - 遵循仓库 frontmatter / slug / tags / truncate 约定;双语按 i18n 结构
