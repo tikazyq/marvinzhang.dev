@@ -1,7 +1,7 @@
 
-2025 年 3 月 11 日，Anders Hejlsberg 发表了一篇题为 [A 10x Faster TypeScript](https://devblogs.microsoft.com/typescript/typescript-native-port/) 的公告：微软要把 TypeScript 编译器移植到 Go。
+2025 年 3 月 11 日，Anders Hejlsberg 发表了一篇题为 A 10x Faster TypeScript<sup>[1]</sup> 的公告：微软要把 TypeScript 编译器移植到 Go。
 
-对大多数读者来说，这是一条性能新闻。对我来说，这是三篇旧文的迎头相撞。2021 年，我在短短几个月里先后写过三篇彼此不相干的文章：一篇问 [大红大紫的 Golang 真的是后端开发中的万能药吗](https://www.marvinzhang.dev/zh/blog/golang)，一篇论证 [为什么 TypeScript 是开发大型前端项目的必备语言](https://www.marvinzhang.dev/zh/blog/typescript)，还有一篇夸 [C# 的开发体验](https://www.marvinzhang.dev/zh/blog/csharp)——那篇文章里我顺带提过一句当时看来只算趣闻的事实：TypeScript 和 C# 出自同一人之手。五年后，三篇文章的主角在同一个仓库里会师：我称为"必备"的那门语言的编译器，用我当年审视过的那门语言重写，主导者正是 TS 与 C# 共同的父亲。我知道这几篇文章之间有联系，但没想到会以这种方式收束。
+对大多数读者来说，这是一条性能新闻。对我来说，这是三篇旧文的迎头相撞。2021 年，我在短短几个月里先后写过三篇彼此不相干的文章：一篇问 大红大紫的 Golang 真的是后端开发中的万能药吗<sup>[2]</sup>，一篇论证 为什么 TypeScript 是开发大型前端项目的必备语言<sup>[3]</sup>，还有一篇夸 C# 的开发体验<sup>[4]</sup>——那篇文章里我顺带提过一句当时看来只算趣闻的事实：TypeScript 和 C# 出自同一人之手。五年后，三篇文章的主角在同一个仓库里会师：我称为"必备"的那门语言的编译器，用我当年审视过的那门语言重写，主导者正是 TS 与 C# 共同的父亲。我知道这几篇文章之间有联系，但没想到会以这种方式收束。
 
 这场会师的价值不止于怀旧，它暴露了争论底下悄悄变掉的东西。2021 年，咱们争的是哪种语言对"人"更友好：谁的语法更干净，谁的学习曲线更平缓，谁的类型系统更不烦人。这场争论至今没有结束，但裁判换了。从那之后，AI 编程智能体（coding agent）成了生产代码最高频的作者之一，也是代码的第一读者。agent 不在乎 Go 的错误处理有多啰嗦，也不嫌 TypeScript 的类型标注有多累赘。它只关心两件事：一是 **多快拿到反馈**，二是 **反馈能不能被信任**。
 
@@ -15,13 +15,13 @@
 
 重读自己五年前的技术文章，是一种奇特的考古体验。器物都还眼熟，真正让人吃惊的是埋在器物底下的那些假设。
 
-我的 [TypeScript 篇](https://www.marvinzhang.dev/zh/blog/typescript)（2021 年 2 月）翻来覆去只讲了一个论点：类型是协作契约。JavaScript 的自由度是全文的反派——"动态一时爽，重构火葬场"，我当年引用的这句坊间流言说得够直白了。我最推崇的机制是 **错误前置**：违反契约的代码在编译时就以一条确定性的报错浮出水面，而不是等到生产环境里变成一句 `undefined is not a function`。不过当时我把这一切完全框定为人类团队的收益：接口即文档，自动补全即舒适。
+我的 TypeScript 篇<sup>[3]</sup>（2021 年 2 月）翻来覆去只讲了一个论点：类型是协作契约。JavaScript 的自由度是全文的反派——"动态一时爽，重构火葬场"，我当年引用的这句坊间流言说得够直白了。我最推崇的机制是 **错误前置**：违反契约的代码在编译时就以一条确定性的报错浮出水面，而不是等到生产环境里变成一句 `undefined is not a function`。不过当时我把这一切完全框定为人类团队的收益：接口即文档，自动补全即舒适。
 
-我的 [前端工程化篇](https://www.marvinzhang.dev/zh/blog/frontend-engineering)（2021 年 3 月）事后看来，其实是一份用课程表口吻写下的抱怨清单。它罗列了一个"真正的"前端工程师必须掌握的东西——Webpack、Babel、Node、NPM/Yarn、ESLint、TypeScript 配置——并且承认"稍微大一点的前端项目的依赖文件就会超过 500MB"。文章结尾半开玩笑地问：今天入坑前端的你，还学得动么？在那篇文章里，工具链的复杂度被当成理所当然的行业现状：我只琢磨怎么掌握它，从没想过它本身就是问题。
+我的 前端工程化篇<sup>[5]</sup>（2021 年 3 月）事后看来，其实是一份用课程表口吻写下的抱怨清单。它罗列了一个"真正的"前端工程师必须掌握的东西——Webpack、Babel、Node、NPM/Yarn、ESLint、TypeScript 配置——并且承认"稍微大一点的前端项目的依赖文件就会超过 500MB"。文章结尾半开玩笑地问：今天入坑前端的你，还学得动么？在那篇文章里，工具链的复杂度被当成理所当然的行业现状：我只琢磨怎么掌握它，从没想过它本身就是问题。
 
-我的 [Golang 篇](https://www.marvinzhang.dev/zh/blog/golang)（2021 年 3 月）拒绝给任何东西加冕。它的方法论是明确的辩证法："Golang 的一些突出特性将成为它的双刃剑"——语法简单限制了表达复杂问题的能力；强制错误处理让 `err` 满天飞；而编译速度，我在优缺点对照表里开了个玩笑，是唯一一行没有缺点的特性（"怎么可能是缺点？"）。那篇文章甚至做了一个可证伪的预测：泛型大概要等 Go 2.0。结果这个预测还保守了：[Go 1.18 在 2022 年 3 月就带来了泛型](https://go.dev/blog/go1.18)，连版本号都没进位。
+我的 Golang 篇<sup>[2]</sup>（2021 年 3 月）拒绝给任何东西加冕。它的方法论是明确的辩证法："Golang 的一些突出特性将成为它的双刃剑"——语法简单限制了表达复杂问题的能力；强制错误处理让 `err` 满天飞；而编译速度，我在优缺点对照表里开了个玩笑，是唯一一行没有缺点的特性（"怎么可能是缺点？"）。那篇文章甚至做了一个可证伪的预测：泛型大概要等 Go 2.0。结果这个预测还保守了：Go 1.18 在 2022 年 3 月就带来了泛型<sup>[6]</sup>，连版本号都没进位。
 
-我的 [C# 篇](https://www.marvinzhang.dev/zh/blog/csharp)（2021 年 11 月）引入了我如今看来最耐用的分析框架：满意度与市场份额的错位。引用 StackOverflow 2021 年对 82,914 名开发者的调查：市场巨人 Java 的用户满意度只有 47%，而它的"山寨版"C# 拿到了 62%。我当时的解读是：**满意度是领先指标，市场份额是滞后指标**。那篇文章的标题里写着"Part 1"，Part 2 至今没有出现。这个梗先记下，文末有用。
+我的 C# 篇<sup>[4]</sup>（2021 年 11 月）引入了我如今看来最耐用的分析框架：满意度与市场份额的错位。引用 StackOverflow 2021 年对 82,914 名开发者的调查：市场巨人 Java 的用户满意度只有 47%，而它的"山寨版"C# 拿到了 62%。我当时的解读是：**满意度是领先指标，市场份额是滞后指标**。那篇文章的标题里写着"Part 1"，Part 2 至今没有出现。这个梗先记下，文末有用。
 
 ![四篇 2021 年文章并列：各自的判据、当年结论与 2026 年读来的成色——所有判据的量纲都是人](https://www.marvinzhang.dev/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-1-2021-criteria.zh.png)
 
@@ -33,7 +33,7 @@
 
 **反馈周期** 是一轮循环的端到端耗时：安装、编译、类型检查、测试启动、拿到反馈。对人来说，70 秒的类型检查是个可以起身倒杯咖啡的烦恼；对一个要迭代几百次的 agent 来说，延迟就是吞吐量本身，它会乘进所有环节。我 2021 年 Golang 对照表里那个玩笑行——编译速度"怎么可能是缺点？"——就这样悄悄升格成了一等选型判据。
 
-**验证信号密度** 是每轮循环中机器无需人类判断就能裁决的正确性总量。一条 `tsc` 报错是零成本产出、确定性、机器可读的：同一个缺陷永远给出同一条消息，指向确切的文件与行号。生产环境里的一个运行时 `TypeError` 则处处相反：触达昂贵、复现随机、还需要人来解释。这个区别的分量今非昔比，因为 agent 是机械地消费这些信号的。一项 2025 年针对 LLM 生成代码的研究（[GitHub 工程博客引用](https://github.blog/ai-and-ml/llms/why-ai-is-pushing-developers-toward-typed-languages/)）发现：**LLM 产出代码的编译错误中，94% 是类型检查失败**——换句话说，从经验数据看，类型系统是 agent 所能遇到的密度最高的验证信号发生器。
+**验证信号密度** 是每轮循环中机器无需人类判断就能裁决的正确性总量。一条 `tsc` 报错是零成本产出、确定性、机器可读的：同一个缺陷永远给出同一条消息，指向确切的文件与行号。生产环境里的一个运行时 `TypeError` 则处处相反：触达昂贵、复现随机、还需要人来解释。这个区别的分量今非昔比，因为 agent 是机械地消费这些信号的。一项 2025 年针对 LLM 生成代码的研究（GitHub 工程博客引用<sup>[7]</sup>）发现：**LLM 产出代码的编译错误中，94% 是类型检查失败**——换句话说，从经验数据看，类型系统是 agent 所能遇到的密度最高的验证信号发生器。
 
 ![agent 循环：修改代码 → 构建/类型检查/测试 → 信号分叉——确定性、机器可读的信号让 agent 自我纠正并循环成百上千轮；微弱的仅运行时信号则迫使人类介入。技术栈决定反馈周期与信号密度。](https://www.marvinzhang.dev/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-2-agent-loop.zh.png)
 
@@ -41,15 +41,15 @@
 
 ![两个面板：同样一小时，慢循环 6 轮、快循环 60 轮；同一份首稿，密集信号让缺陷逐轮收敛归零，稀疏信号则停在半路、逃逸给人工评审与生产——交付速度与质量都随循环被复利放大](https://www.marvinzhang.dev/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-3-compounding.zh.png)
 
-也该交代一下这个论点在既有讨论中的位置，因为它的零件并不全新。Daniel Demmel 的 [反馈循环工程（feedback loop engineering）](https://www.danieldemmel.me/blog/feedback-loop-engineering) 把循环质量讲得很透，但刻意保持工具无关——它拒绝谈选型。Netlify 提出的 [AX（agent experience）](https://biilmann.blog/articles/introducing-ax/) 点破了优化目标的迁移，但落点是"平台如何服务别人家的 agent"。我还没有见到有人把这两股线接回我 2021 年那几篇文章真正讨论的那个决策——**你到底选哪套技术栈**——并且直面一个两边都没有处理的约束：代码库既要让人可审，又要让 agent 可循环。这两个诉求是会打架的：显式、冗长利于 agent，却在消耗人类读者。"人机联合 DX"不是一句口号，而是一个文末框架必须兜得住的取舍。
+也该交代一下这个论点在既有讨论中的位置，因为它的零件并不全新。Daniel Demmel 的 反馈循环工程（feedback loop engineering）<sup>[8]</sup> 把循环质量讲得很透，但刻意保持工具无关——它拒绝谈选型。Netlify 提出的 AX（agent experience）<sup>[9]</sup> 点破了优化目标的迁移，但落点是"平台如何服务别人家的 agent"。我还没有见到有人把这两股线接回我 2021 年那几篇文章真正讨论的那个决策——**你到底选哪套技术栈**——并且直面一个两边都没有处理的约束：代码库既要让人可审，又要让 agent 可循环。这两个诉求是会打架的：显式、冗长利于 agent，却在消耗人类读者。"人机联合 DX"不是一句口号，而是一个文末框架必须兜得住的取舍。
 
 ## 判决正在被改写
 
 如果这两个判据是真的，世界上应该已经有人在为它们花钱，也有人在为它们投票。下面三组证据，就是这条钱和票的轨迹——而且每一组都不偏不倚，正好落在 2021 年某篇旧文的论点上。三组证据都取自 JS/web 生态：agent 在那里渗透最深，我的 2021 年考古也在那里——但这两个判据本身没有任何 web 专属的成分，文末的框架会把范围放宽。
 
-**证据一：微软为两个判据标了价。** 这是全文最硬的一条证据，所以放在最前面。typescript-go 这次移植——2025 年 3 月宣布，[2026 年 6 月进入 RC](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0-rc/)（`typescript@rc`；截至写作，npm 的 `latest` 还停在 6.0.3）——是业界资金最充足的编译器团队之一，花数年时间，用另一门语言重造一个本来就能用的编译器。问一句：他们买到了什么？不是新的检查能力，移植的目标恰恰是输出"一模一样"的诊断，对齐了约两万个编译器测试。他们买的是同样的验证信号、十分之一的延迟——微软自己 2025 年 12 月在真实代码库上的实测落在 7.5–10.2 倍，官方口径如今收敛为"通常约 10 倍"。拿 2021 年的旧文来对照，这笔买卖的两半都是老熟人：TS 篇的"错误前置"，从人类的便利升格为机器的口粮；Golang 篇对照表里被我当玩笑写的编译速度那一行，成了这笔投入的全部理由。连人选都在作证——[Hejlsberg 给出的选 Go 弃 C# 的理由](https://github.com/microsoft/typescript-go/discussions/411)，是循环力学，不是语言忠诚。
+**证据一：微软为两个判据标了价。** 这是全文最硬的一条证据，所以放在最前面。typescript-go 这次移植——2025 年 3 月宣布，2026 年 6 月进入 RC<sup>[10]</sup>（`typescript@rc`；截至写作，npm 的 `latest` 还停在 6.0.3）——是业界资金最充足的编译器团队之一，花数年时间，用另一门语言重造一个本来就能用的编译器。问一句：他们买到了什么？不是新的检查能力，移植的目标恰恰是输出"一模一样"的诊断，对齐了约两万个编译器测试。他们买的是同样的验证信号、十分之一的延迟——微软自己 2025 年 12 月在真实代码库上的实测落在 7.5–10.2 倍，官方口径如今收敛为"通常约 10 倍"。拿 2021 年的旧文来对照，这笔买卖的两半都是老熟人：TS 篇的"错误前置"，从人类的便利升格为机器的口粮；Golang 篇对照表里被我当玩笑写的编译速度那一行，成了这笔投入的全部理由。连人选都在作证——Hejlsberg 给出的选 Go 弃 C# 的理由<sup>[11]</sup>，是循环力学，不是语言忠诚。
 
-**证据二：开发者在为信号密度这条轴投票。** 证据一说明有厂商愿意掏钱，这一条说明有用户在用满意度投票。Hono 的 [RPC 模式](https://hono.dev/docs/guides/rpc) 把服务端类型直接共享给客户端——不用代码生成，不经容易漂移的 OpenAPI 中间层；再配上 Zod 校验（单是 `@hono/zod-validator` 在注册表官方口径下就有约 270 万次周下载），API 形状就变成一份机器检查的全栈契约：服务端改坏了，客户端连编译都过不去。
+**证据二：开发者在为信号密度这条轴投票。** 证据一说明有厂商愿意掏钱，这一条说明有用户在用满意度投票。Hono 的 RPC 模式<sup>[12]</sup> 把服务端类型直接共享给客户端——不用代码生成，不经容易漂移的 OpenAPI 中间层；再配上 Zod 校验（单是 `@hono/zod-validator` 在注册表官方口径下就有约 270 万次周下载），API 形状就变成一份机器检查的全栈契约：服务端改坏了，客户端连编译都过不去。
 
 ```ts
 // 服务端：路由 + 校验器共同定义契约
@@ -60,9 +60,9 @@ export type AppType = typeof app
 const client = hc<AppType>('http://localhost:3000/')
 ```
 
-这就是"验证信号"论证的产品化。而恰恰是这个框架，在 [State of JS 2025 调查](https://2025.stateofjs.com/en-US/libraries/) 里首年参评就以超过 90% 的满意度进入 S 级；同一份报告写道，Express 使用率仍是第一，"但满意度指标暴露了它的年纪"。这个结构就是我 C# 篇那张图换了名字：满意度领先，市场份额滞后，2021 年那套分析原封不动搬过来就能用。（按原始下载量，Hono 已是仅次于 Express 的第二名——但 2026 年注册表数字被自动化流量整体推高，所以我只为相对结论背书。）
+这就是"验证信号"论证的产品化。而恰恰是这个框架，在 State of JS 2025 调查<sup>[13]</sup> 里首年参评就以超过 90% 的满意度进入 S 级；同一份报告写道，Express 使用率仍是第一，"但满意度指标暴露了它的年纪"。这个结构就是我 C# 篇那张图换了名字：满意度领先，市场份额滞后，2021 年那套分析原封不动搬过来就能用。（按原始下载量，Hono 已是仅次于 Express 的第二名——但 2026 年注册表数字被自动化流量整体推高，所以我只为相对结论背书。）
 
-**证据三：Bun 展示了速度这条轴——也只展示了这一条轴。** Bun 是"反馈周期有市场"最响亮的证明：一个二进制吞下运行时、包管理器、打包器和测试运行器；安装速度是各路独立评测里复现最一致的优点；[State of JS 2025](https://www.infoq.com/news/2026/03/state-of-js-survey-2025/) 显示 21% 的受访者在使用它（同比 +4 个百分点）。2021 年的对照来自前端工程化篇：当年我默默忍受的 500MB 依赖目录，五年后成了别人的商机。但请注意这组证据没有展示什么——Bun 的卖点里，没有任何一项在增加验证信号。它是押在单独一条轴上的赌注，而这个赌注赌得怎么样，是下一节的主题。
+**证据三：Bun 展示了速度这条轴——也只展示了这一条轴。** Bun 是"反馈周期有市场"最响亮的证明：一个二进制吞下运行时、包管理器、打包器和测试运行器；安装速度是各路独立评测里复现最一致的优点；State of JS 2025<sup>[14]</sup> 显示 21% 的受访者在使用它（同比 +4 个百分点）。2021 年的对照来自前端工程化篇：当年我默默忍受的 500MB 依赖目录，五年后成了别人的商机。但请注意这组证据没有展示什么——Bun 的卖点里，没有任何一项在增加验证信号。它是押在单独一条轴上的赌注，而这个赌注赌得怎么样，是下一节的主题。
 
 ![三组 2026 年证据与对应的 2021 年论点：typescript-go 加冕错误前置与编译速度论点；Hono 对 Express 复用满意度对市场份额框架；Hono RPC 让类型契约跨过网络边界；Bun 回应了工具链之怨——但双刃剑同样锋利](https://www.marvinzhang.dev/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-4-verdicts.zh.png)
 
@@ -70,13 +70,13 @@ const client = hc<AppType>('http://localhost:3000/')
 
 命题到底可能在哪里出错？下面三条反对意见的分量并不相同，我也不打算装作它们相同：第一条正面攻击命题的机制，是真正的对手；第二条收窄命题的适用范围；第三条腐蚀的是我们度量这一切所用的仪器。
 
-**真正的对手：训练数据飞轮。** 这条反对若成立，我的两个判据就沦为装饰。[MultiPL-E 基准](https://nuprl.github.io/MultiPL-E/) 确立了一个事实：LLM 各语言的代码生成正确率，与该语言训练语料的体量强相关；社区讨论里也反复引用悬殊的对比——一个流传很广的基准称模型写 Elixir 的正确率接近 97%，写 Rust 只有 61%。GitHub 自家的 [Octoverse 2025](https://github.blog/news-insights/octoverse/typescript-python-and-the-ai-feedback-loop-changing-software-development/) 描述了由此形成的飞轮：越流行的语言生成质量越好，于是变得更流行。照这个说法，选型规则简化成一句"选最流行的"就够了。我的回应是前文那句机制话——语料体量设定每轮循环的起点，验证密度设定的是收敛速率，而多轮工作流对后者是复利——但证据现状也必须交代清楚：截至写作，还没有任何一项控制变量的研究，能在隔离这两个变量的前提下度量 agent 跨技术栈的端到端任务成功率。命题立足于机制与行为证据，还谈不上盖棺定论。这正是全文采用克制版本论点的原因。
+**真正的对手：训练数据飞轮。** 这条反对若成立，我的两个判据就沦为装饰。MultiPL-E 基准<sup>[15]</sup> 确立了一个事实：LLM 各语言的代码生成正确率，与该语言训练语料的体量强相关；社区讨论里也反复引用悬殊的对比——一个流传很广的基准称模型写 Elixir 的正确率接近 97%，写 Rust 只有 61%。GitHub 自家的 Octoverse 2025<sup>[16]</sup> 描述了由此形成的飞轮：越流行的语言生成质量越好，于是变得更流行。照这个说法，选型规则简化成一句"选最流行的"就够了。我的回应是前文那句机制话——语料体量设定每轮循环的起点，验证密度设定的是收敛速率，而多轮工作流对后者是复利——但证据现状也必须交代清楚：截至写作，还没有任何一项控制变量的研究，能在隔离这两个变量的前提下度量 agent 跨技术栈的端到端任务成功率。命题立足于机制与行为证据，还谈不上盖棺定论。这正是全文采用克制版本论点的原因。
 
 **收窄范围的一条：Bun，接着证据三说。** Bun 推翻不了命题，但它逼着命题把边界说清楚。用 2021 年 Golang 篇的方法——每个优点配上它的阴影——来看这个单轴赌注：
 
 ![用 2021 年 Golang 篇的方法审视 Bun——每个优点配上阴影：单二进制对兼容表面积与 5000+ 未关闭 issue；速度优先文化对内存泄漏与 OpenCode 迁出；AI 加速节奏对生产稳定性折价](https://www.marvinzhang.dev/img/blog/2026-07-06-stack-selection-in-the-agent-era/figure-5-bun-double-edge.zh.png)
 
-社区早就形成了务实共识——开发用 `bun install` 提速，生产继续跑 Node——这句话本身就是判词：**反馈周期再短，也替代不了运行时的可靠性。** 所以命题必须带着边界来陈述：两个新判据是在"已经过了可靠性与生态资格线"的选项之间排序，而 Bun 目前还没有完全过线。最有意思的转折在于，连 Bun 的麻烦都在替信号密度这条轴作证。2026 年 6 月，[Prisma 把 Compute 产品迁到了 Bun 的 Rust 重写版 canary 上](https://www.prisma.io/blog/bun-rust-rewrite-prisma-compute)——因为他们实测发现稳定版内存泄漏、连接池死锁，而 canary 通过了他们的负载测试。他们的原话值得抄录："The build which passed our tests made a better foundation than the build which failed them."（通过了我们测试的构建，比没通过的那个更适合当地基。）版本标签是弱信号，跑通的测试套件才是机器能直接裁决的硬信号。
+社区早就形成了务实共识——开发用 `bun install` 提速，生产继续跑 Node——这句话本身就是判词：**反馈周期再短，也替代不了运行时的可靠性。** 所以命题必须带着边界来陈述：两个新判据是在"已经过了可靠性与生态资格线"的选项之间排序，而 Bun 目前还没有完全过线。最有意思的转折在于，连 Bun 的麻烦都在替信号密度这条轴作证。2026 年 6 月，Prisma 把 Compute 产品迁到了 Bun 的 Rust 重写版 canary 上<sup>[17]</sup>——因为他们实测发现稳定版内存泄漏、连接池死锁，而 canary 通过了他们的负载测试。他们的原话值得抄录："The build which passed our tests made a better foundation than the build which failed them."（通过了我们测试的构建，比没通过的那个更适合当地基。）版本标签是弱信号，跑通的测试套件才是机器能直接裁决的硬信号。
 
 **最后交代一下秤的问题。** 多年来，下载量一直是语言之争里最顺手的论据——2021 年我自己也这么用过——但它正在失效。2026 年上半年，npm 注册表的流量几乎全线翻倍（Express 的月下载量从约 2.2 亿涨到约 4.6 亿，找不到任何合理的人类解释），普遍归因于 CI 与自动化 agent 流量。度量"流行"的仪器，如今有一部分在度量机器。这里头有种冷幽默的公道：一个呼唤更硬验证信号的时代，恰好也是我们最软的那个信号悄悄失去含义的时代。
 
@@ -104,7 +104,7 @@ const client = hc<AppType>('http://localhost:3000/')
 
 ## 当主体变成客体
 
-这次研究里有一个进展，放在 2021 年会荒诞得像段子。Bun——我通篇作为 agent 的"选项"来掂量的那个工具——如今在很大程度上是由 agent"建造"的。Anthropic 于 2025 年 12 月收购该项目后，按 [RedMonk 的统计](https://redmonk.com/sogrady/2026/06/04/bun-two-lessons/)，其提交中由 bot 完成的比例升到了 80% 以上；2026 年 5 月，一次由编程智能体在九天内生成的、超过百万行的 Rust 重写，以单个合并落入主干。我要谨慎地引用它：这是一场厂商有充分动机安排的展示，样本也只有一个代码库。但作为路标，它很难被替代。2021 年的问题——**哪种语言最适合人来写**——有了一个旧争论的语法里根本装不下的后继问题：哪套技术栈，最能让机器来写、让人来裁决、并让双方都信得过结果。
+这次研究里有一个进展，放在 2021 年会荒诞得像段子。Bun——我通篇作为 agent 的"选项"来掂量的那个工具——如今在很大程度上是由 agent"建造"的。Anthropic 于 2025 年 12 月收购该项目后，按 RedMonk 的统计<sup>[18]</sup>，其提交中由 bot 完成的比例升到了 80% 以上；2026 年 5 月，一次由编程智能体在九天内生成的、超过百万行的 Rust 重写，以单个合并落入主干。我要谨慎地引用它：这是一场厂商有充分动机安排的展示，样本也只有一个代码库。但作为路标，它很难被替代。2021 年的问题——**哪种语言最适合人来写**——有了一个旧争论的语法里根本装不下的后继问题：哪套技术栈，最能让机器来写、让人来裁决、并让双方都信得过结果。
 
 这个重新表述，正好补上考古一节留下的两个尾巴。前端工程化篇的结尾问：今天入坑前端的你，还学得动么？2026 年的答案比当年想象的宽松：你不必全学了——agent 替你消化了半张课程表。但有一层你无法外包：课程表之上的判断层——**由哪些判据来决定你的技术栈**，这件事你得自己想清楚，因为不管你递给 agent 什么样的循环，它都会兴高采烈地在里面优化。至于 C# 篇欠了五年的 Part 2——就当是这一篇吧。只是续集的主角，从一门语言，换成了给语言排座次的标准。
 
@@ -113,59 +113,59 @@ const client = hc<AppType>('http://localhost:3000/')
 
 ## 参考资料
 
-1. A 10x Faster TypeScript
-   https://devblogs.microsoft.com/typescript/typescript-native-port/
+[1] A 10x Faster TypeScript  
+https://devblogs.microsoft.com/typescript/typescript-native-port/
 
-2. 大红大紫的 Golang 真的是后端开发中的万能药吗
-   https://www.marvinzhang.dev/zh/blog/golang
+[2] 大红大紫的 Golang 真的是后端开发中的万能药吗  
+https://www.marvinzhang.dev/zh/blog/golang
 
-3. 为什么 TypeScript 是开发大型前端项目的必备语言
-   https://www.marvinzhang.dev/zh/blog/typescript
+[3] 为什么 TypeScript 是开发大型前端项目的必备语言  
+https://www.marvinzhang.dev/zh/blog/typescript
 
-4. C# 的开发体验
-   https://www.marvinzhang.dev/zh/blog/csharp
+[4] C# 的开发体验  
+https://www.marvinzhang.dev/zh/blog/csharp
 
-5. 前端工程化篇
-   https://www.marvinzhang.dev/zh/blog/frontend-engineering
+[5] 前端工程化篇  
+https://www.marvinzhang.dev/zh/blog/frontend-engineering
 
-6. Go 1.18 在 2022 年 3 月就带来了泛型
-   https://go.dev/blog/go1.18
+[6] Go 1.18 在 2022 年 3 月就带来了泛型  
+https://go.dev/blog/go1.18
 
-7. GitHub 工程博客引用
-   https://github.blog/ai-and-ml/llms/why-ai-is-pushing-developers-toward-typed-languages/
+[7] GitHub 工程博客引用  
+https://github.blog/ai-and-ml/llms/why-ai-is-pushing-developers-toward-typed-languages/
 
-8. 反馈循环工程（feedback loop engineering）
-   https://www.danieldemmel.me/blog/feedback-loop-engineering
+[8] 反馈循环工程（feedback loop engineering）  
+https://www.danieldemmel.me/blog/feedback-loop-engineering
 
-9. AX（agent experience）
-   https://biilmann.blog/articles/introducing-ax/
+[9] AX（agent experience）  
+https://biilmann.blog/articles/introducing-ax/
 
-10. 2026 年 6 月进入 RC
-   https://devblogs.microsoft.com/typescript/announcing-typescript-7-0-rc/
+[10] 2026 年 6 月进入 RC  
+https://devblogs.microsoft.com/typescript/announcing-typescript-7-0-rc/
 
-11. Hejlsberg 给出的选 Go 弃 C# 的理由
-   https://github.com/microsoft/typescript-go/discussions/411
+[11] Hejlsberg 给出的选 Go 弃 C# 的理由  
+https://github.com/microsoft/typescript-go/discussions/411
 
-12. RPC 模式
-   https://hono.dev/docs/guides/rpc
+[12] RPC 模式  
+https://hono.dev/docs/guides/rpc
 
-13. State of JS 2025 调查
-   https://2025.stateofjs.com/en-US/libraries/
+[13] State of JS 2025 调查  
+https://2025.stateofjs.com/en-US/libraries/
 
-14. State of JS 2025
-   https://www.infoq.com/news/2026/03/state-of-js-survey-2025/
+[14] State of JS 2025  
+https://www.infoq.com/news/2026/03/state-of-js-survey-2025/
 
-15. MultiPL-E 基准
-   https://nuprl.github.io/MultiPL-E/
+[15] MultiPL-E 基准  
+https://nuprl.github.io/MultiPL-E/
 
-16. Octoverse 2025
-   https://github.blog/news-insights/octoverse/typescript-python-and-the-ai-feedback-loop-changing-software-development/
+[16] Octoverse 2025  
+https://github.blog/news-insights/octoverse/typescript-python-and-the-ai-feedback-loop-changing-software-development/
 
-17. Prisma 把 Compute 产品迁到了 Bun 的 Rust 重写版 canary 上
-   https://www.prisma.io/blog/bun-rust-rewrite-prisma-compute
+[17] Prisma 把 Compute 产品迁到了 Bun 的 Rust 重写版 canary 上  
+https://www.prisma.io/blog/bun-rust-rewrite-prisma-compute
 
-18. RedMonk 的统计
-   https://redmonk.com/sogrady/2026/06/04/bun-two-lessons/
+[18] RedMonk 的统计  
+https://redmonk.com/sogrady/2026/06/04/bun-two-lessons/
 
 ---
 

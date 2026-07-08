@@ -470,8 +470,20 @@ const processArticles = async () => {
       refs.push({ text, url });
     }
     if (refs.length > 0) {
+      // Replace each in-text link with plain text plus a superscript [n] marker
+      // pointing at the reference list. WeChat strips external links anyway, so
+      // colored-but-dead anchor text is more confusing than plain text + marker.
+      const urlIndex = new Map(refs.map((r, i) => [r.url, i + 1]));
+      processedContent = processedContent.replace(linkPattern, (match, prefix, label, url) => {
+        const n = urlIndex.get(url.trim());
+        if (!n) return match; // anchors and other skipped links stay as-is
+        return `${prefix}${label}<sup>[${n}]</sup>`;
+      });
       const refHeader = article.locale === 'zh' ? '\n\n## 参考资料\n\n' : '\n\n## References\n\n';
-      const refList = refs.map((r, i) => `${i + 1}. ${r.text}\n   ${r.url}`).join('\n\n');
+      // Explicit [n] prefixes as plain paragraphs — the HTML renderer's <ol>
+      // style (padding-left:0) clips native list markers in WeChat, so ordered
+      // markdown lists would lose their numbers.
+      const refList = refs.map((r, i) => `[${i + 1}] ${r.text}  \n${r.url}`).join('\n\n');
       processedContent += refHeader + refList;
     }
 
