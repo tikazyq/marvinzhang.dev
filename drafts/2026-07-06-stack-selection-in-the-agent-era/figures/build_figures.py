@@ -486,10 +486,13 @@ F5_CSS = """
   .ax-x { left: 0; right: 0; top: 50%; height: 2px; }
   .ax-y { top: 0; bottom: 0; left: 50%; width: 2px; }
   .pt { position: absolute; transform: translate(-50%, -50%); z-index: 3; }
-  .pt .dot { width: 15px; height: 15px; border-radius: 50%; border: 3px solid #fff;
+  .pt .dot { border-radius: 50%; border: 3px solid #fff;
     margin: 0 auto; box-shadow: 0 0 0 2px currentColor; background: currentColor; }
   .pt .lbl { font-size: 13px; font-weight: 600; white-space: nowrap; margin-top: 5px;
-    background: rgba(255,255,255,0.9); padding: 2px 7px; border-radius: 6px; }
+    background: rgba(255,255,255,0.9); padding: 2px 7px; border-radius: 6px; color: #1f1f1f; }
+  .legend { display: flex; justify-content: center; align-items: center; gap: 10px;
+    margin: 10px auto 0 auto; font-size: 12.5px; color: var(--ink-soft); }
+  .legend .d { border-radius: 50%; background: #01579b; display: inline-block; }
   .axcap { display: flex; justify-content: space-between; width: 700px; margin: 6px auto 0 auto;
     font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-soft); }
   .ycap { position: absolute; left: 50%; transform: translateX(-50%);
@@ -503,72 +506,77 @@ F5 = {
   title="Figure 6 — A two-axis selection frame",
   figno="Figure 06 — Joint DX, qualitatively",
   h1="Loop latency × verification signal density",
-  subtitle="Qualitative placements from published incremental/watch-mode data — the X axis judges the inner loop, not cold full builds. Reliability and ecosystem maturity remain entry tickets outside both axes.",
+  subtitle="Qualitative placements from published incremental/watch-mode data — X judges the inner loop, not cold full builds. Dot size encodes training-corpus adequacy, the ceiling on first-draft quality. Reliability and ecosystem maturity remain entry tickets outside the chart.",
   quads=("Joint-DX sweet spot", "Trustworthy but sluggish", "Hard mode for agents", "Fast but unverifiable"),
   xl=("slower feedback loop", "faster feedback loop"),
+  legend=("Dot size = training corpus:", "rich", "medium", "thin"),
   yl=("dense verification signals ↑", "sparse signals ↓"),
   pts=[
-   ("Rust", 0.55, 0.96, "#01579b", "right"),
-   ("Swift", 0.38, 0.86, "#01579b", "right"),
-   ("Kotlin", 0.48, 0.80, "#7b1fa2", "top"),
-   ("TS on JS-based tsc", 0.49, 0.71, "#01579b", "right"),
-   ("Hono + Zod contract", 0.66, 0.90, "#7b1fa2", "bottom"),
-   ("C#", 0.70, 0.74, "#2e7d32", "top"),
-   ("Java", 0.70, 0.64, "#01579b", "bottom"),
-   ("TS 7 native", 0.80, 0.78, "#2e7d32", "bottom"),
-   ("Dart *", 0.88, 0.82, "#e65100", "top"),
-   ("Bun, today", 0.95, 0.68, "#e65100", "bottom"),
-   ("Go", 0.90, 0.58, "#2e7d32", "bottom"),
-   ("Python, typical setup", 0.80, 0.45, "#e65100", "top"),
-   ("PHP", 0.84, 0.40, "#e65100", "bottom"),
-   ("C/C++", 0.35, 0.40, "#c62828", "right"),
-   ("Ruby", 0.82, 0.17, "#c62828", "bottom"),
-   ("Plain JavaScript", 0.96, 0.13, "#c62828", "top"),
+   ("Rust", 0.55, 0.96, "M", "right"),
+   ("Swift", 0.38, 0.86, "S", "right"),
+   ("Kotlin", 0.48, 0.80, "M", "top"),
+   ("TS on JS-based tsc", 0.49, 0.71, "L", "right"),
+   ("Hono + Zod contract", 0.66, 0.90, "L", "bottom"),
+   ("C#", 0.70, 0.74, "L", "top"),
+   ("Java", 0.70, 0.64, "L", "bottom"),
+   ("TS 7 native", 0.80, 0.78, "L", "bottom"),
+   ("Dart", 0.88, 0.82, "S", "top"),
+   ("Bun, today", 0.95, 0.68, "L", "bottom"),
+   ("Go", 0.90, 0.58, "M", "bottom"),
+   ("Python, typical setup", 0.80, 0.45, "L", "top"),
+   ("PHP", 0.84, 0.40, "L", "bottom"),
+   ("C/C++", 0.35, 0.40, "L", "right"),
+   ("Ruby", 0.82, 0.17, "S", "bottom"),
+   ("Plain JavaScript", 0.96, 0.13, "L", "top"),
   ],
-  footleft="Incremental-loop data, see body · * thin training data",
+  footleft="Incremental-loop data, see body",
  ),
  "zh": dict(
   title="图 6 — 两轴选型框架",
   figno="图 06 — 人机联合 DX（定性）",
   h1="反馈周期 × 验证信号密度",
-  subtitle="位置为基于公开增量/watch 模式数据的定性判断——X 轴衡量的是内循环，不是冷启动全量构建。可靠性与生态成熟度是两轴之外的入场券。",
+  subtitle="位置为基于公开增量/watch 模式数据的定性判断——X 轴衡量内循环而非全量构建；点的大小表示训练语料充足度，即首稿质量的上限。可靠性与生态成熟度仍是图外的入场券。",
   quads=("联合 DX 甜区", "可信但迟缓", "agent 困难模式", "快而不可验证"),
   xl=("反馈循环慢", "反馈循环快"),
+  legend=("点的大小 = 训练语料：", "充足", "一般", "薄弱"),
   yl=("验证信号密集 ↑", "信号稀疏 ↓"),
   pts=[
-   ("Rust", 0.55, 0.96, "#01579b", "right"),
-   ("Swift", 0.38, 0.86, "#01579b", "right"),
-   ("Kotlin", 0.48, 0.80, "#7b1fa2", "top"),
-   ("TS（JS 版 tsc）", 0.49, 0.71, "#01579b", "right"),
-   ("Hono + Zod 契约", 0.66, 0.90, "#7b1fa2", "bottom"),
-   ("C#", 0.70, 0.74, "#2e7d32", "top"),
-   ("Java", 0.70, 0.64, "#01579b", "bottom"),
-   ("TS 7 原生版", 0.80, 0.78, "#2e7d32", "bottom"),
-   ("Dart *", 0.88, 0.82, "#e65100", "top"),
-   ("Bun（现状）", 0.95, 0.68, "#e65100", "bottom"),
-   ("Go", 0.90, 0.58, "#2e7d32", "bottom"),
-   ("Python（典型配置）", 0.80, 0.45, "#e65100", "top"),
-   ("PHP", 0.84, 0.40, "#e65100", "bottom"),
-   ("C/C++", 0.35, 0.40, "#c62828", "right"),
-   ("Ruby", 0.82, 0.17, "#c62828", "bottom"),
-   ("纯 JavaScript", 0.96, 0.13, "#c62828", "top"),
+   ("Rust", 0.55, 0.96, "M", "right"),
+   ("Swift", 0.38, 0.86, "S", "right"),
+   ("Kotlin", 0.48, 0.80, "M", "top"),
+   ("TS（JS 版 tsc）", 0.49, 0.71, "L", "right"),
+   ("Hono + Zod 契约", 0.66, 0.90, "L", "bottom"),
+   ("C#", 0.70, 0.74, "L", "top"),
+   ("Java", 0.70, 0.64, "L", "bottom"),
+   ("TS 7 原生版", 0.80, 0.78, "L", "bottom"),
+   ("Dart", 0.88, 0.82, "S", "top"),
+   ("Bun（现状）", 0.95, 0.68, "L", "bottom"),
+   ("Go", 0.90, 0.58, "M", "bottom"),
+   ("Python（典型配置）", 0.80, 0.45, "L", "top"),
+   ("PHP", 0.84, 0.40, "L", "bottom"),
+   ("C/C++", 0.35, 0.40, "L", "right"),
+   ("Ruby", 0.82, 0.17, "S", "bottom"),
+   ("纯 JavaScript", 0.96, 0.13, "L", "top"),
   ],
-  footleft="增量循环数据见正文 · * 训练语料薄弱",
+  footleft="增量循环数据见正文",
  ),
 }
 
+SIZES = {"L": 17, "M": 12.5, "S": 9}
 for lang, d in F5.items():
     pts = []
-    for name, x, y, color, side in d["pts"]:
+    for name, x, y, tier, side in d["pts"]:
         left = x * 100
         top = (1 - y) * 100
+        px = SIZES[tier]
+        dot = f'<div class="dot" style="width:{px}px;height:{px}px"></div>'
         if side == "top":
-            inner = f'<div class="lbl" style="margin-top:0;margin-bottom:5px">{name}</div><div class="dot"></div>'
+            inner = f'<div class="lbl" style="margin-top:0;margin-bottom:5px">{name}</div>{dot}'
         elif side == "right":
-            inner = f'<div style="display:flex;align-items:center;gap:7px"><div class="dot" style="margin:0"></div><div class="lbl" style="margin-top:0">{name}</div></div>'
+            inner = f'<div style="display:flex;align-items:center;gap:7px">{dot.replace("></div>", ";margin:0></div>").replace("px;margin", "px;margin")}<div class="lbl" style="margin-top:0">{name}</div></div>'
         else:
-            inner = f'<div class="dot"></div><div class="lbl">{name}</div>'
-        pts.append(f'<div class="pt" style="left:{left}%;top:{top}%;color:{color};text-align:center">{inner}</div>')
+            inner = f'{dot}<div class="lbl">{name}</div>'
+        pts.append(f'<div class="pt" style="left:{left}%;top:{top}%;color:#01579b;text-align:center">{inner}</div>')
     q1, q2, q3, q4 = d["quads"]
     body = f"""
     <div class="plotwrap">
@@ -584,7 +592,12 @@ for lang, d in F5.items():
       {''.join(pts)}
     </div>
     </div>
-    <div class="axcap"><div>← {d['xl'][0]}</div><div>{d['xl'][1]} →</div></div>"""
+    <div class="axcap"><div>← {d['xl'][0]}</div><div>{d['xl'][1]} →</div></div>
+    <div class="legend"><span>{d['legend'][0]}</span>
+      <span class="d" style="width:17px;height:17px"></span><span>{d['legend'][1]}</span>
+      <span class="d" style="width:12.5px;height:12.5px"></span><span>{d['legend'][2]}</span>
+      <span class="d" style="width:9px;height:9px"></span><span>{d['legend'][3]}</span>
+    </div>"""
     emit("figure-6-quadrant", lang, d["title"], d["figno"], d["h1"], d["subtitle"], body, d["footleft"], F5_CSS)
 
 print("done")
