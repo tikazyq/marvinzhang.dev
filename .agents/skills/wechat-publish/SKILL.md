@@ -42,9 +42,20 @@ pnpm wechat <article-slug> --zh --force
 ```
 
 Output:
-- WeChat markdown: `.temp/wechat/<slug>-zh-wechat.md`
+- WeChat markdown: `drafts/<date>-<slug>/wechat-zh.md` if a draft workspace exists,
+  plus a copy in `.temp/wechat/<slug>-zh-wechat.md`
+- Rendered HTML (Method A, auto-generated): `static/wechat/<slug>.html`
 - Diagram PNGs: `static/img/blog/<slug>/wechat/*.png`
 - JSX screenshots: `static/img/blog/<slug>/wechat/*.png`
+
+The generator already handles WeChat's rendering traps — do NOT hand-fix these
+in the output; if one regresses, fix the scripts:
+- In-text links become plain text + `<sup>[n]</sup>` markers, with a matching
+  `[n] Title` + URL references section appended (`scripts/wechat.js`)
+- Bold markers are normalized pair-safely (`**text **` → `**text**`) before
+  rendering (`scripts/generate-wechat-html.js: fixBoldMarkers`)
+- Code blocks wrap long lines (`pre-wrap` + `break-all`) instead of relying on
+  horizontal scroll, which WeChat clips on phones
 
 ### 2. Prepare Content for Mobile
 
@@ -214,6 +225,9 @@ send_telegram_doc() {
 | Message too long | Split into chunks ≤4096 chars |
 | Images not sending | Check file path; max 10MB per photo |
 | Content formatting lost in paste | Use markdown-nice mini program for rendering |
+| Literal `**` visible in published article | Bold delimiter has an adjacent space or a broken pair; ensure `fixBoldMarkers` in `scripts/generate-wechat-html.js` runs and consumes one balanced pair at a time (never write a regex that requires a space after the opening `**` — it will match across pairs) |
+| Long code lines clipped on phone | Code style must include `white-space: pre-wrap; word-break: break-all` (see `S.precode`); WeChat ignores `overflow-x` scrolling |
+| Reference list shows no numbers | The `ol` style uses `padding-left: 0`, which clips native markers; emit explicit `[n]` prefixes as plain paragraphs (handled in `scripts/wechat.js`) |
 | 公众号助手 paste loses styles | Paste rendered HTML (from markdown-nice), not raw markdown |
 | Table spacing/gap issues (md2weixin-core) | Theme CSS adds margins to headings before tables. Post-process HTML to reduce `margin-bottom` on `<h3>` preceding `<table>`. See `references/wechat-styles.md` > Tables > Known Issues |
 | Table styles not matching design | Use Method A (custom renderer) for full style control instead of md2weixin-core themes |

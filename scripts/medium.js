@@ -511,6 +511,13 @@ const processArticles = async () => {
     
     // Convert deep headers (H5/H6)
     processedContent = convertDeepHeaders(processedContent);
+
+    // Normalize spaces inside bold markers (`**text **` -> `**text**`).
+    // Some zh sources pad bold delimiters per the site's zh-bold convention;
+    // Medium's importer, like CommonMark, refuses to close a delimiter that is
+    // preceded by whitespace. Content excludes asterisks so the regex consumes
+    // one balanced pair at a time and cannot glue neighboring pairs together.
+    processedContent = processedContent.replace(/\*\*[ \t]*([^*\n]+?)[ \t]*\*\*/g, '**$1**');
     
     // Convert relative links to absolute
     processedContent = convertLinks(processedContent, article.locale);

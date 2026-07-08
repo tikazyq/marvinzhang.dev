@@ -51,6 +51,7 @@ pnpm medium:list
 | **MDX imports/exports** | Removed |
 | **H5/H6 headers** | Bold text (Medium only supports H1-H4) |
 | **Relative links** | Absolute URLs |
+| **Bold markers** | `**text **` / `** text**` normalized to `**text**` (space-adjacent delimiters break Medium's markdown import) |
 | **Truncate markers** | Removed |
 | **Frontmatter** | Converted to article header |
 | **Tags** | Hashtag format in header |

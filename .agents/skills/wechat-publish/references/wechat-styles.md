@@ -82,11 +82,13 @@ WeChat's editor strips most CSS classes and external stylesheets. All styles **m
 
 ### Fenced Code Blocks
 
-WeChat does not support syntax highlighting natively. Use a pre-styled block:
+WeChat does not support syntax highlighting natively. Use a pre-styled block.
+`white-space: pre-wrap; word-break: break-all` is required — WeChat clips
+horizontally-scrolling code on narrow screens, so long lines must wrap:
 
 ```html
 <pre style="background-color: rgb(30, 30, 30); padding: 15px; border-radius: 5px; overflow-x: auto; margin: 10px 0;">
-<code style="background: none; padding: 0; border-radius: 0; font-size: 14px; line-height: 1.6; font-family: 'Operator Mono', Consolas, Monaco, Menlo, monospace; color: #abb2bf;">
+<code style="background: none; padding: 0; border-radius: 0; font-size: 13px; line-height: 1.6; font-family: 'Operator Mono', Consolas, Monaco, Menlo, monospace; color: #abb2bf; white-space: pre-wrap; word-break: break-all;">
 def hello():
     print("Hello, WeChat!")
 </code>

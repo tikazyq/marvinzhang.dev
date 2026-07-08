@@ -57,8 +57,17 @@ pnpm wechat fundamental -o     # Process + open output
 1. **Mermaid diagrams** → PNG images with white background
 2. **Docusaurus admonitions** (`:::tip`, `:::warning`, etc.) → Standard markdown blockquotes
 3. **Relative blog links** → Absolute URLs
-4. **Truncate markers** (`{/* truncate */}`) → Removed
-5. **Footer added** → Link back to original blog post
+4. **In-text links** → Plain text + superscript `<sup>[n]</sup>` markers (WeChat strips
+   external links, so anchor text would render colored but dead)
+5. **References section appended** → Explicit `[n] Title` + URL paragraphs matching the
+   in-text markers (plain paragraphs, not a markdown ordered list — the HTML renderer's
+   `ol` style clips native list markers)
+6. **Bold markers normalized** → `**text **` / `** text**` → `**text**`, one balanced
+   pair at a time (a space-adjacent delimiter breaks CommonMark/marked bold parsing)
+7. **Code blocks** → wrap long lines (`pre-wrap` + `break-all`); WeChat clips
+   horizontal scrolling on phones
+8. **Truncate markers** (`{/* truncate */}`) → Removed
+9. **Footer added** → Link back to original blog post
 
 ## Output
 
