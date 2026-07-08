@@ -57,9 +57,16 @@ in the output; if one regresses, fix the scripts:
   rendering (`scripts/generate-wechat-html.js: fixBoldMarkers`)
 - Code blocks wrap long lines (`pre-wrap` + `break-all`) instead of relying on
   horizontal scroll, which WeChat clips on phones
-- No `<a>` tags are ever emitted — WeChat rejects anchors pointing outside
-  WeChat. The `link()` renderer outputs link-blue text (raw autolinked URLs
-  stay plain copyable text) instead (`scripts/generate-wechat-html.js`)
+- `<a>` tags are emitted ONLY for WeChat-internal (`mp.weixin.qq.com`) links —
+  WeChat rejects anchors pointing outside WeChat. External links render as
+  link-blue text + footnote; raw URLs stay plain copyable text
+  (`scripts/generate-wechat-html.js`)
+- Blog cross-references become clickable WeChat-internal links when the target
+  article declares its permanent 公众号 URL in MDX frontmatter as
+  `wechat_url: https://mp.weixin.qq.com/s/...` (zh version preferred);
+  articles without one degrade to footnotes. After publishing an article on
+  公众号, add `wechat_url` to its frontmatter so future articles can link to
+  it — permanent short links only, signed search URLs expire
 
 ### 2. Prepare Content for Mobile
 

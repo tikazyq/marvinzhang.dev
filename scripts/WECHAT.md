@@ -125,6 +125,26 @@ const BLOG_DIRS = [
 ];
 ```
 
+### Linking to Published 公众号 Articles (`wechat_url`)
+
+WeChat rejects `<a>` tags pointing outside WeChat, so external links are
+converted to footnote references. Links **within** WeChat are allowed: when a
+blog article has already been published on the 公众号, declare its permanent
+URL in the article's MDX frontmatter (zh version preferred):
+
+```yaml
+wechat_url: https://mp.weixin.qq.com/s/gf8Y_715rOLbvqZBY0blVA
+```
+
+During export, blog cross-references (`/blog/<slug>` or absolute
+`marvinzhang.dev` links) whose target declares a `wechat_url` are rewritten to
+that URL and stay clickable; targets without one degrade to footnotes.
+
+Only use **permanent short links** (`https://mp.weixin.qq.com/s/...`, copied
+from the 公众号 article page or 后台) — search-result URLs with
+`signature=`/`timestamp=` parameters expire. After publishing each new
+article, add its `wechat_url` so future articles can link back to it.
+
 ## Troubleshooting
 
 ### Cache Issues

@@ -23,7 +23,10 @@ const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 // WeChat inline styles — mdnice 风格，匹配已发布微信公众号文章样式
 // Primary accent: rgb(53, 148, 247) / #3594F7
 const S = {
-  body: 'font-family:Optima,PingFangSC-light,PingFangTC-light,"PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC",serif;font-size:16px;line-height:1.5em;color:#000;word-break:break-word;overflow-wrap:break-word;text-align:left;padding:0 10px;',
+  // NOTE: no quotes inside style values — nested double quotes terminate the
+  // HTML style="..." attribute early and silently drop every declaration
+  // after them. CSS allows unquoted multi-word font family names.
+  body: 'font-family:Optima,PingFangSC-light,PingFangTC-light,PingFang SC,Hiragino Sans GB,Source Han Sans CN,Source Han Sans SC,serif;font-size:16px;line-height:1.5em;color:#000;word-break:break-word;overflow-wrap:break-word;text-align:left;padding:0 10px;',
   h1: 'font-size:24px;font-weight:600;margin:30px 0 15px;padding-bottom:10px;border-bottom:4px solid rgb(64,184,250);color:rgb(64,184,250);',
   h2: 'font-size:20px;font-weight:bold;margin:30px 0 15px;padding:0;color:rgb(64,184,250);background-color:transparent;border-bottom:4px solid rgb(64,184,250);line-height:1.5em;',
   h3: 'font-size:18px;font-weight:bold;margin:30px 0 15px;padding:0;color:rgb(43,43,43);line-height:1.5em;text-align:center;',
@@ -34,9 +37,9 @@ const S = {
   img: 'max-width:100%;width:100%;height:auto;display:block;margin:0;',
   blockquote: 'margin:20px 0;padding:10px 10px 10px 20px;background-color:rgba(64,184,250,0.1);border:1px solid rgba(64,184,255,0.4);border-radius:8px;color:rgb(43,43,43);',
   blockquotep: 'margin:0;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);',
-  code: 'background-color:rgba(27,31,35,0.05);padding:2px 4px;border-radius:3px;font-size:14px;font-family:"Operator Mono",Consolas,Monaco,Menlo,monospace;color:rgb(53,148,247);letter-spacing:0;',
+  code: 'background-color:rgba(27,31,35,0.05);padding:2px 4px;border-radius:3px;font-size:14px;font-family:Operator Mono,Consolas,Monaco,Menlo,monospace;color:rgb(53,148,247);letter-spacing:0;',
   pre: 'background-color:rgb(30,30,30);padding:15px;border-radius:5px;overflow-x:auto;margin:10px 0;',
-  precode: 'background:none;padding:0;border-radius:0;font-size:13px;line-height:1.6;font-family:"Operator Mono",Consolas,Monaco,Menlo,monospace;color:#abb2bf;white-space:pre-wrap;word-break:break-all;',
+  precode: 'background:none;padding:0;border-radius:0;font-size:13px;line-height:1.6;font-family:Operator Mono,Consolas,Monaco,Menlo,monospace;color:#abb2bf;white-space:pre-wrap;word-break:break-all;',
   table: 'width:100%;border-collapse:collapse;margin:10px 0;font-size:14px;',
   th: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);background:rgb(240,240,240);color:rgb(89,89,89);font-weight:bold;font-size:14px;line-height:1.5em;letter-spacing:0.02em;min-width:85px;',
   td: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);font-size:14px;line-height:1.5em;letter-spacing:0.02em;color:rgb(89,89,89);min-width:85px;',
@@ -46,9 +49,11 @@ const S = {
   hr: 'border:none;border-top:2px solid rgba(64,184,250,0.4);margin:10px 0;',
   // Info box (for ℹ️ blocks)
   infobox: 'margin:20px 0;padding:10px 10px 10px 20px;background-color:rgba(64,184,250,0.1);border:1px solid rgba(64,184,255,0.4);border-radius:8px;color:rgb(43,43,43);',
-  // Reference label (former in-text link) + its superscript [n] marker.
-  // WeChat rejects <a> tags pointing outside WeChat, so the pipeline never
-  // emits anchors — labels render as link-blue text instead.
+  // Real anchors are emitted ONLY for WeChat-internal (mp.weixin.qq.com)
+  // links — WeChat rejects <a> tags pointing outside WeChat.
+  a: 'color:rgb(53,148,247);text-decoration:none;',
+  // Reference label (former external in-text link) + its superscript [n]
+  // marker — link-blue text, no anchor.
   ref: 'color:rgb(53,148,247);',
   sup: 'color:rgb(53,148,247);font-size:11px;',
 };
@@ -74,9 +79,13 @@ function createRenderer() {
     },
     link({ href, tokens }) {
       const text = this.parser.parseInline(tokens);
-      // WeChat rejects <a> tags pointing outside WeChat, so never emit
-      // anchors. Raw URLs that GFM autolinked (label === href) stay plain
-      // copyable text; labeled links keep the link-blue pseudo-link look.
+      // WeChat rejects <a> tags pointing outside WeChat but allows internal
+      // ones, so mp.weixin.qq.com links stay real anchors. Everything else:
+      // raw URLs that GFM autolinked (label === href) become plain copyable
+      // text; labeled links keep the link-blue pseudo-link look.
+      if (/^https?:\/\/mp\.weixin\.qq\.com\//.test(href)) {
+        return `<a style="${S.a}" href="${href}">${text}</a>`;
+      }
       if (text === href) return text;
       return `<span style="${S.ref}">${text}</span>`;
     },

@@ -33,6 +33,29 @@ const BLOG_DIRS = ['blog', 'i18n/zh/docusaurus-plugin-content-blog'];
 // Canonical host is www (apex 307-redirects to www). WeChat's image importer
 // does not follow that redirect, so absolute URLs must point straight at www.
 const BASE_URL = 'https://www.marvinzhang.dev';
+// Blog cross-references to articles already published on the 公众号 stay
+// clickable: an article's permanent WeChat URL lives in its own MDX
+// frontmatter as `wechat_url` (set it after publishing). Only permanent
+// https://mp.weixin.qq.com/s/... short links belong there — signed search
+// URLs (signature=/timestamp=) expire. The zh version wins if both set it.
+let _wechatArticleMap;
+function loadWechatArticleMap() {
+  if (_wechatArticleMap) return _wechatArticleMap;
+  const map = {};
+  BLOG_DIRS.forEach((blogDir) => { // en first, zh second → zh overrides
+    if (!fs.existsSync(blogDir)) return;
+    glob.sync(`${blogDir}/**/*.{md,mdx}`).forEach((filePath) => {
+      const { data: fm } = matter(fs.readFileSync(filePath, 'utf8'));
+      if (!fm.wechat_url) return;
+      if (!/^https?:\/\/mp\.weixin\.qq\.com\//.test(fm.wechat_url)) {
+        console.warn(`⚠️  ${filePath}: wechat_url is not an mp.weixin.qq.com URL — ignored`);
+        return;
+      }
+      map[fm.slug || path.parse(filePath).name] = fm.wechat_url;
+    });
+  });
+  return (_wechatArticleMap = map);
+}
 const CACHE_FILE = '.temp/mermaid/.extraction-cache.json';
 const DIAGRAM_PATTERN = /```mermaid\n([\s\S]*?)```/g;
 const JSX_COMPONENT_PATTERN = /<(ProtocolStack|AutomationSpectrum|ToolEcosystem)\s*\/>/g;
@@ -448,24 +471,37 @@ const processArticles = async () => {
       (match, alt, imgPath) => `![${alt}](${BASE_URL}/img/${imgPath})`
     );
     
-    // Build a References section from all inline links in the body. WeChat
-    // 公众号 renders inline links inconsistently (and strips most external
-    // ones for unverified accounts), so a numbered list at the end with the
-    // URL printed on its own line lets readers see and copy every source.
-    const refs = [];
-    const seenUrls = new Set();
     // URL portion allows one level of balanced parens so Wikipedia-style URLs
     // like https://en.wikipedia.org/wiki/Variety_(cybernetics) are captured
     // intact rather than truncated at the first inner `)`.
     const linkPattern = /(^|[^!])\[([^\]]+)\]\(([^()]*(?:\([^()]*\)[^()]*)*)\)/g;
+
+    // WeChat allows <a> links that stay inside WeChat, so blog cross-references
+    // whose article is already published on the 公众号 (mapped in
+    // scripts/wechat-article-map.json) are rewritten to their permanent
+    // mp.weixin.qq.com URL and stay clickable instead of degrading to footnotes.
+    const wechatArticleMap = loadWechatArticleMap();
+    processedContent = processedContent.replace(linkPattern, (match, prefix, label, url) => {
+      const slugMatch = url.trim().match(/^https?:\/\/(?:www\.)?marvinzhang\.dev\/(?:zh\/)?blog\/([^/?#]+)/);
+      const wxUrl = slugMatch && wechatArticleMap[slugMatch[1]];
+      return wxUrl ? `${prefix}[${label}](${wxUrl})` : match;
+    });
+
+    // Build a References section from all remaining inline links in the body.
+    // WeChat 公众号 renders inline links inconsistently (and strips most
+    // external ones for unverified accounts), so a numbered list at the end
+    // with the URL printed on its own line lets readers see and copy every
+    // source. mp.weixin.qq.com links are exempt — they stay clickable.
+    const refs = [];
+    const seenUrls = new Set();
     let linkMatch;
     while ((linkMatch = linkPattern.exec(processedContent)) !== null) {
       // Strip markdown emphasis (*italic*, **bold**, `code`) from the label so
       // reference entries read as plain prose, not as raw markdown.
       const text = linkMatch[2].trim().replace(/[\*_`]+/g, '').trim();
       const url = linkMatch[3].trim();
-      // Skip anchor-only links and duplicates
-      if (!url || url.startsWith('#') || seenUrls.has(url)) continue;
+      // Skip anchor-only links, WeChat-internal links, and duplicates
+      if (!url || url.startsWith('#') || /^https?:\/\/mp\.weixin\.qq\.com\//.test(url) || seenUrls.has(url)) continue;
       seenUrls.add(url);
       refs.push({ text, url });
     }

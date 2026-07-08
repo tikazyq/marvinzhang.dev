@@ -165,7 +165,10 @@ WeChat auto-fetches remote images and re-hosts them on its CDN. Absolute URLs fr
 
 ## Links
 
-WeChat articles **cannot contain external hyperlinks** — never emit `<a>` tags pointing outside WeChat. The pipeline enforces this: `generate-wechat-html.js`'s `link()` renderer outputs styled text instead of anchors (raw autolinked URLs stay plain copyable text), and `wechat.js` converts in-text links to footnote-style references. The former link label is kept visible in link-blue (accent color) with a superscript marker, so readers can see which phrase the footnote annotates:
+WeChat articles **cannot contain external hyperlinks** — never emit `<a>` tags pointing outside WeChat. Links **within** WeChat (`mp.weixin.qq.com`) are allowed and stay clickable. The pipeline enforces this:
+
+- An article published on the 公众号 declares its permanent URL in MDX frontmatter: `wechat_url: https://mp.weixin.qq.com/s/...` (short links only — signed search URLs expire). `wechat.js` scans all articles' frontmatter and rewrites blog cross-references to real WeChat-internal links when the target has a `wechat_url`.
+- All other links are converted to footnote-style references by `wechat.js`, and `generate-wechat-html.js`'s `link()` renderer outputs styled text instead of anchors (raw autolinked URLs stay plain copyable text). The former link label is kept visible in link-blue (accent color) with a superscript marker, so readers can see which phrase the footnote annotates:
 
 ```html
 <!-- In-text: link label stays visible, colored like a link, with a [n] marker -->
