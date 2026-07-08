@@ -82,15 +82,22 @@ WeChat's editor strips most CSS classes and external stylesheets. All styles **m
 
 ### Fenced Code Blocks
 
-WeChat does not support syntax highlighting natively. Use a pre-styled block.
-`white-space: pre-wrap; word-break: break-all` is required — WeChat clips
-horizontally-scrolling code on narrow screens, so long lines must wrap:
+WeChat does not support syntax highlighting natively — highlighting must be
+baked in as inline-styled `<span>`s. `generate-wechat-html.js` does this with
+prism-react-renderer's `Prism.tokenize` + the oneDark theme (colors converted
+to `rgb()`, matching the `rgb(30,30,30)` background and `#abb2bf` base).
+Supported languages: js/ts/jsx/tsx, go, rust, python, c/cpp, css, yaml, sql,
+json, md, and more — but NOT bash or csharp (those fall back to unhighlighted
+text). `white-space: pre-wrap; word-break: break-all` is required — WeChat
+clips horizontally-scrolling code on narrow screens, so long lines must wrap.
+Do NOT put quotes inside style values (e.g. font names) — nested quotes
+terminate the style attribute early and silently drop later declarations:
 
 ```html
 <pre style="background-color: rgb(30, 30, 30); padding: 15px; border-radius: 5px; overflow-x: auto; margin: 10px 0;">
-<code style="background: none; padding: 0; border-radius: 0; font-size: 13px; line-height: 1.6; font-family: 'Operator Mono', Consolas, Monaco, Menlo, monospace; color: #abb2bf; white-space: pre-wrap; word-break: break-all;">
-def hello():
-    print("Hello, WeChat!")
+<code style="background: none; padding: 0; border-radius: 0; font-size: 13px; line-height: 1.6; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; color: #abb2bf; white-space: pre-wrap; word-break: break-all;">
+<span style="color:rgb(198,120,221)">def</span> <span style="color:rgb(97,175,239)">hello</span><span style="color:rgb(171,178,191)">():</span>
+    <span style="color:rgb(97,175,239)">print</span><span style="color:rgb(171,178,191)">(</span><span style="color:rgb(152,195,121)">"Hello, WeChat!"</span><span style="color:rgb(171,178,191)">)</span>
 </code>
 </pre>
 ```

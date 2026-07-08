@@ -129,14 +129,14 @@ lean-spec search "created:&gt;2025-11-01"</code></pre>
 # ─────────────────────────────────────</code></pre>
 <h3 style="font-size:18px;font-weight:bold;margin:30px 0 15px;padding:0;color:rgb(43,43,43);line-height:1.5em;text-align:center;">MCP Server：AI 集成</h3>
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">LeanSpec 内置 MCP（Model Context Protocol）服务器，让 AI 助手可以直接与你的规格交互：</p>
-<pre style="background-color:rgb(30,30,30);padding:15px;border-radius:5px;overflow-x:auto;margin:10px 0;"><code style="background:none;padding:0;border-radius:0;font-size:13px;line-height:1.6;font-family:Operator Mono,Consolas,Monaco,Menlo,monospace;color:#abb2bf;white-space:pre-wrap;word-break:break-all;">{
-  "mcpServers": {
-    "leanspec": {
-      "command": "npx",
-      "args": ["@leanspec/mcp"]
-    }
-  }
-}</code></pre>
+<pre style="background-color:rgb(30,30,30);padding:15px;border-radius:5px;overflow-x:auto;margin:10px 0;"><code style="background:none;padding:0;border-radius:0;font-size:13px;line-height:1.6;font-family:Operator Mono,Consolas,Monaco,Menlo,monospace;color:#abb2bf;white-space:pre-wrap;word-break:break-all;"><span style="color:rgb(171,178,191)">{</span>
+  <span style="color:rgb(224,108,117)">"mcpServers"</span><span style="color:rgb(97,175,239)">:</span> <span style="color:rgb(171,178,191)">{</span>
+    <span style="color:rgb(224,108,117)">"leanspec"</span><span style="color:rgb(97,175,239)">:</span> <span style="color:rgb(171,178,191)">{</span>
+      <span style="color:rgb(224,108,117)">"command"</span><span style="color:rgb(97,175,239)">:</span> <span style="color:rgb(152,195,121)">"npx"</span><span style="color:rgb(171,178,191)">,</span>
+      <span style="color:rgb(224,108,117)">"args"</span><span style="color:rgb(97,175,239)">:</span> <span style="color:rgb(171,178,191)">[</span><span style="color:rgb(152,195,121)">"@leanspec/mcp"</span><span style="color:rgb(171,178,191)">]</span>
+    <span style="color:rgb(171,178,191)">}</span>
+  <span style="color:rgb(171,178,191)">}</span>
+<span style="color:rgb(171,178,191)">}</span></code></pre>
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">支持 Claude Code、Cursor、GitHub Copilot 等 MCP 兼容工具。AI 代理可以搜索规格、读取上下文、更新状态——全部通过编程接口完成。</p>
 <h3 style="font-size:18px;font-weight:bold;margin:30px 0 15px;padding:0;color:rgb(43,43,43);line-height:1.5em;text-align:center;">示例项目快速上手</h3>
 <p style="font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;">刚接触 SDD？从一个完整的示例开始：</p>

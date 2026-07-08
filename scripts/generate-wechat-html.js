@@ -5,6 +5,7 @@ const path = require('path');
 const { Marked } = require('marked');
 const matter = require('gray-matter');
 const glob = require('glob');
+const { Prism, themes } = require('prism-react-renderer');
 
 /**
  * Generate WeChat-compatible HTML from WeChat markdown files.
@@ -58,6 +59,73 @@ const S = {
   sup: 'color:rgb(53,148,247);font-size:11px;',
 };
 
+// --- Syntax highlighting (inline styles only — WeChat strips classes/CSS) ---
+// Token colors come from prism-react-renderer's oneDark theme, which matches
+// the code block's rgb(30,30,30) background and #abb2bf base color.
+
+function hslToRgb(value) {
+  // WeChat clients handle rgb() more reliably than hsl(); convert eagerly.
+  return value.replace(/hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*\)/g, (m, h, s, l) => {
+    h = +h / 360; s = +s / 100; l = +l / 100;
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    const f = (t) => {
+      t = ((t % 1) + 1) % 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
+    const [r, g, b] = [f(h + 1 / 3), f(h), f(h - 1 / 3)].map((x) => Math.round(x * 255));
+    return `rgb(${r},${g},${b})`;
+  });
+}
+
+const TOKEN_STYLES = (() => {
+  const map = {};
+  for (const { types, style } of themes.oneDark.styles) {
+    const css = Object.entries(style)
+      .map(([k, v]) => `${k.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())}:${hslToRgb(String(v))}`)
+      .join(';');
+    for (const t of types) map[t] = css;
+  }
+  return map;
+})();
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function renderPrismTokens(tokens) {
+  let out = '';
+  for (const tok of tokens) {
+    if (typeof tok === 'string') {
+      out += escapeHtml(tok);
+      continue;
+    }
+    const inner = Array.isArray(tok.content)
+      ? renderPrismTokens(tok.content)
+      : escapeHtml(String(tok.content));
+    const aliases = [].concat(tok.alias || []);
+    const css = [tok.type, ...aliases].map((t) => TOKEN_STYLES[t]).find(Boolean);
+    out += css ? `<span style="${css}">${inner}</span>` : inner;
+  }
+  return out;
+}
+
+function highlightCode(code, lang) {
+  // The Prism build vendored by prism-react-renderer covers js/ts/jsx/tsx,
+  // go, rust, python, c/cpp, css, yaml, sql, json, md… — but NOT bash or
+  // csharp; unsupported languages fall back to unhighlighted text.
+  const grammar = Prism.languages[(lang || '').trim().toLowerCase()];
+  if (!grammar) return escapeHtml(code);
+  try {
+    return renderPrismTokens(Prism.tokenize(code, grammar));
+  } catch {
+    return escapeHtml(code);
+  }
+}
+
 function createRenderer() {
   const renderer = {
     heading({ tokens, depth }) {
@@ -99,8 +167,7 @@ function createRenderer() {
       return `<blockquote style="${S.blockquote}">${tightBody}</blockquote>\n`;
     },
     code({ text, lang }) {
-      const escaped = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      return `<pre style="${S.pre}"><code style="${S.precode}">${escaped}</code></pre>\n`;
+      return `<pre style="${S.pre}"><code style="${S.precode}">${highlightCode(text, lang)}</code></pre>\n`;
     },
     codespan({ text }) {
       return `<code style="${S.code}">${text}</code>`;

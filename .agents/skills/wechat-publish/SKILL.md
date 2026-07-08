@@ -57,6 +57,10 @@ in the output; if one regresses, fix the scripts:
   rendering (`scripts/generate-wechat-html.js: fixBoldMarkers`)
 - Code blocks wrap long lines (`pre-wrap` + `break-all`) instead of relying on
   horizontal scroll, which WeChat clips on phones
+- Code blocks are syntax-highlighted with inline-styled spans (Prism oneDark
+  via prism-react-renderer) — WeChat strips classes/CSS, so highlighting must
+  be inline. bash/csharp aren't in the vendored Prism build and fall back to
+  plain text (`scripts/generate-wechat-html.js`)
 - `<a>` tags are emitted ONLY for WeChat-internal (`mp.weixin.qq.com`) links —
   WeChat rejects anchors pointing outside WeChat. External links render as
   link-blue text + footnote; raw URLs stay plain copyable text
