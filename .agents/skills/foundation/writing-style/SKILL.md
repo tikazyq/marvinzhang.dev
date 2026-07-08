@@ -79,6 +79,25 @@ When you think you're done, cut 10% more:
 - ❌ Qualifier bloat: "very," "really," "quite," "rather"
 - ❌ Unnecessary phrases: "In order to" → "To"
 
+## Chinese Voice (作者本人的声音)
+
+The zh version is not a translation register — it must read like the author's
+own hand-written articles (2021–2023). Two hard rules, both learned from
+author rework rounds:
+
+1. **No literary metaphors** (文艺腔): 器物、承重墙、加冕、量纲、口粮、
+   投下阴影… Reuse the author's own metaphors instead (双刃剑、万能药).
+2. **No English calques** (英语腔): "对论点做压力测试" (stress-test the
+   argument), "候选论点" (candidate thesis), "有效率地不同意" (disagree
+   efficiently)… Unpack nominalizations into plain verb phrases.
+
+Test every sentence: would the author say this out loud to a colleague?
+Figures embed prose too — when wording changes, check and re-render figures.
+
+See [references/zh-voice.md](references/zh-voice.md) for the author's
+vocabulary profile and a full ❌/✅ replacement table.
+
 ## References
 
 - [references/economist-principles.md](references/economist-principles.md) — Detailed style guide with wit, structure, and craft guidelines
+- [references/zh-voice.md](references/zh-voice.md) — 作者中文语感：惯用词汇、文艺腔与英语腔红线、替换对照表

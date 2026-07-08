@@ -79,3 +79,4 @@ Keep frontmatter aligned (title, tags, date, authors).
 ## References
 
 - [references/localization.md](references/localization.md) — Complete translation patterns, common mistakes, technical explanation patterns
+- [../writing-style/references/zh-voice.md](../writing-style/references/zh-voice.md) — 作者中文语感红线（文艺腔、英语直译）；中文稿定稿前必须过一遍这份清单
