@@ -492,7 +492,7 @@ F5_CSS = """
     background: rgba(255,255,255,0.9); padding: 2px 7px; border-radius: 6px; color: #1f1f1f; }
   .legend { display: flex; justify-content: center; align-items: center; gap: 10px;
     margin: 10px auto 0 auto; font-size: 12.5px; color: var(--ink-soft); }
-  .legend .d { border-radius: 50%; background: #01579b; display: inline-block; }
+  .legend .d { border-radius: 50%; background: #8a8a8a; display: inline-block; }
   .axcap { display: flex; justify-content: space-between; width: 700px; margin: 6px auto 0 auto;
     font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-soft); }
   .ycap { position: absolute; left: 50%; transform: translateX(-50%);
@@ -506,7 +506,7 @@ F5 = {
   title="Figure 6 — A two-axis selection frame",
   figno="Figure 06 — Joint DX, qualitatively",
   h1="Loop latency × verification signal density",
-  subtitle="Qualitative placements from published incremental/watch-mode data — X judges the inner loop, not cold full builds. Dot size encodes training-corpus adequacy, the ceiling on first-draft quality. Reliability and ecosystem maturity remain entry tickets outside the chart.",
+  subtitle="Qualitative placements from published incremental/watch-mode data — X judges the inner loop, not cold full builds. Dot color follows the quadrant; dot size encodes training-corpus adequacy, the ceiling on first-draft quality. Reliability and ecosystem maturity remain entry tickets outside the chart.",
   quads=("Joint-DX sweet spot", "Trustworthy but sluggish", "Hard mode for agents", "Fast but unverifiable"),
   xl=("slower feedback loop", "faster feedback loop"),
   legend=("Dot size = training corpus:", "rich", "medium", "thin"),
@@ -522,7 +522,7 @@ F5 = {
    ("TS 7 native", 0.80, 0.78, "L", "bottom"),
    ("Dart", 0.88, 0.82, "S", "top"),
    ("Bun, today", 0.95, 0.68, "L", "bottom"),
-   ("Go", 0.90, 0.58, "M", "bottom"),
+   ("Go", 0.90, 0.58, "L", "bottom"),
    ("Python, typical setup", 0.80, 0.45, "L", "top"),
    ("PHP", 0.84, 0.40, "L", "bottom"),
    ("C/C++", 0.35, 0.40, "L", "right"),
@@ -535,7 +535,7 @@ F5 = {
   title="图 6 — 两轴选型框架",
   figno="图 06 — 人机联合 DX（定性）",
   h1="反馈周期 × 验证信号密度",
-  subtitle="位置为基于公开增量/watch 模式数据的定性判断——X 轴衡量内循环而非全量构建；点的大小表示训练语料充足度，即首稿质量的上限。可靠性与生态成熟度仍是图外的入场券。",
+  subtitle="位置为基于公开增量/watch 模式数据的定性判断——X 轴衡量内循环而非全量构建；点的颜色随象限；大小表示训练语料充足度，即首稿质量的上限。可靠性与生态成熟度仍是图外的入场券。",
   quads=("联合 DX 甜区", "可信但迟缓", "agent 困难模式", "快而不可验证"),
   xl=("反馈循环慢", "反馈循环快"),
   legend=("点的大小 = 训练语料：", "充足", "一般", "薄弱"),
@@ -551,7 +551,7 @@ F5 = {
    ("TS 7 原生版", 0.80, 0.78, "L", "bottom"),
    ("Dart", 0.88, 0.82, "S", "top"),
    ("Bun（现状）", 0.95, 0.68, "L", "bottom"),
-   ("Go", 0.90, 0.58, "M", "bottom"),
+   ("Go", 0.90, 0.58, "L", "bottom"),
    ("Python（典型配置）", 0.80, 0.45, "L", "top"),
    ("PHP", 0.84, 0.40, "L", "bottom"),
    ("C/C++", 0.35, 0.40, "L", "right"),
@@ -563,20 +563,27 @@ F5 = {
 }
 
 SIZES = {"L": 17, "M": 12.5, "S": 9}
+def quad_color(x, y):
+    if x >= 0.5 and y >= 0.5: return "#2e7d32"
+    if x < 0.5 and y >= 0.5: return "#01579b"
+    if x >= 0.5 and y < 0.5: return "#e65100"
+    return "#616161"
 for lang, d in F5.items():
     pts = []
     for name, x, y, tier, side in d["pts"]:
         left = x * 100
         top = (1 - y) * 100
         px = SIZES[tier]
-        dot = f'<div class="dot" style="width:{px}px;height:{px}px"></div>'
+        color = quad_color(x, y)
+        def dot(margin):
+            return f'<div class="dot" style="width:{px}px;height:{px}px;margin:{margin}"></div>'
         if side == "top":
-            inner = f'<div class="lbl" style="margin-top:0;margin-bottom:5px">{name}</div>{dot}'
+            inner = f'<div class="lbl" style="margin-top:0;margin-bottom:5px">{name}</div>{dot("0 auto")}'
         elif side == "right":
-            inner = f'<div style="display:flex;align-items:center;gap:7px">{dot.replace("></div>", ";margin:0></div>").replace("px;margin", "px;margin")}<div class="lbl" style="margin-top:0">{name}</div></div>'
+            inner = f'<div style="display:flex;align-items:center;gap:7px">{dot("0")}<div class="lbl" style="margin-top:0">{name}</div></div>'
         else:
-            inner = f'{dot}<div class="lbl">{name}</div>'
-        pts.append(f'<div class="pt" style="left:{left}%;top:{top}%;color:#01579b;text-align:center">{inner}</div>')
+            inner = f'{dot("0 auto")}<div class="lbl">{name}</div>'
+        pts.append(f'<div class="pt" style="left:{left}%;top:{top}%;color:{color};text-align:center">{inner}</div>')
     q1, q2, q3, q4 = d["quads"]
     body = f"""
     <div class="plotwrap">
@@ -725,3 +732,100 @@ F3C = {
 
 for lang, d in F3C.items():
     emit("figure-3-compounding", lang, d["title"], d["figno"], d["h1"], d["subtitle"], f3c_svg(d), d["footleft"], F3C_CSS)
+
+
+# ---------------------------------------------------------------- figure 7: dimension table
+F7_CSS = """
+  .dim { width: 100%; border-collapse: collapse; }
+  .dim th { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink-faint); text-align: left; padding: 6px 8px;
+    border-bottom: 2px solid var(--line); }
+  .dim td { padding: 7px 8px; border-bottom: 1px solid #ececec; font-size: 13px; line-height: 1.4;
+    vertical-align: middle; }
+  .dim td.name { font-weight: 600; white-space: nowrap; }
+  .dim tr.eco td.name { font-weight: 600; color: var(--hi-stroke); }
+  .dots { white-space: nowrap; letter-spacing: 1.5px; font-size: 13px; }
+  .dots .on { color: var(--ink); } .dots .off { color: #d4d4d4; }
+  .chip { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 9px;
+    border-radius: 8px; border: 1.2px solid; white-space: nowrap; }
+  .c-rich { color: var(--ok-stroke); border-color: var(--ok-stroke); background: var(--ok-fill); }
+  .c-mid  { color: var(--warn-stroke); border-color: var(--warn-stroke); background: var(--warn-fill); }
+  .c-thin { color: var(--err-stroke); border-color: var(--err-stroke); background: var(--err-fill); }
+  .dim td.note { color: var(--ink-soft); font-size: 12px; line-height: 1.35; }
+"""
+
+def rating(v):
+    n = max(1, min(5, round(v * 5)))
+    return '<span class="dots">' + '<span class="on">●</span>' * n + '<span class="off">●</span>' * (5 - n) + '</span>'
+
+F7_ROWS = [
+  # key, x, y, tier, zh_name, zh_note, en_name, en_note, eco
+  (0.49,0.71,"rich","TS（JS 版 tsc）","大项目 watch 增量 4–10s；strict 信号密但有 any 逃逸",
+   "TS on JS-based tsc","watch-mode 4–10s on large projects; dense but any-escapable",0),
+  (0.80,0.78,"rich","TS 7 原生版","同语义约 10×：VS Code 77.8s→7.5s",
+   "TS 7 native","same semantics, ~10x: VS Code 77.8s→7.5s",0),
+  (0.90,0.58,"rich","Go","秒级编译+构建缓存；nil 与被忽略的 error 逃逸。榜单约 #12，但基础设施语料厚、Aider 六语言核心集之一——定性上调",
+   "Go","second-level builds + cache; nil and ignored errors escape. Ranks ~#12, but infra corpus is deep and it sits in Aider's six-language core set — upgraded qualitatively",0),
+  (0.96,0.13,"rich","纯 JavaScript","零编译；语法错误之外几乎无编辑期信号",
+   "Plain JavaScript","zero compile; almost no edit-time signals beyond syntax",0),
+  (0.80,0.45,"rich","Python（典型配置）","解释执行；类型提示 86% 常态使用但属渐进",
+   "Python, typical","interpreted; type hints at 86% adoption, but gradual",0),
+  (0.55,0.96,"mid","Rust","cargo check 增量 1–7s（55% 用户 >10s）；借用检查是信号天花板。TIOBE 前 10 / RedMonk #20；实用上够用，但多项基准仍显示低于 Python——保守取一般",
+   "Rust","cargo check 1–7s incr. (55% see >10s); borrow checker tops signals. TIOBE top-10 / RedMonk #20; serviceable in practice, yet benchmarks consistently trail Python — held at medium",0),
+  (0.70,0.64,"rich","Java","Gradle 增量把小改动降到秒级；NPE 逃逸类型系统",
+   "Java","Gradle incremental gets small edits to seconds; NPE escapes types",0),
+  (0.55,0.80,"mid","Kotlin","K2 全量最高 +94%，增量改善有限；内建空安全",
+   "Kotlin","K2 up to +94% full builds, incremental modest; built-in null safety",0),
+  (0.70,0.74,"rich","C#","Roslyn 增量+热重载；NRT 新项目默认开、三方标注不齐",
+   "C#","Roslyn incremental + hot reload; NRT default on new projects",0),
+  (0.35,0.40,"rich","C/C++","单元秒级但头文件级联+链接慢；UB/内存错误逃逸编译期",
+   "C/C++","unit rebuilds fast, header cascades slow; UB escapes compile time",0),
+  (0.80,0.42,"rich","PHP","刷新即生效；类型为运行时强制，PHPStan 采用约 36%",
+   "PHP","refresh-to-run; runtime-enforced types, PHPStan at ~36% adoption",0),
+  (0.82,0.17,"thin","Ruby","即改即跑；Sorbet 基本限于大厂。RedMonk #9 但基准准确率极低——定性下调",
+   "Ruby","edit-and-run; Sorbet stays big-co. RedMonk #9 yet benchmark accuracy collapses — downgraded qualitatively",0),
+  (0.40,0.86,"thin","Swift","类型推断可超时放弃、增量级联失效；强类型+Optional",
+   "Swift","type inference can bail out, incremental cascades; strong types + optionals",0),
+  (0.90,0.75,"thin","Dart","亚秒热重载+健全空安全；语料与评测双薄",
+   "Dart","sub-second hot reload + sound null safety; thin corpus and evals",0),
+  (0.66,0.90,"rich","Hono + Zod（生态层）","契约跨栈、编译期校验——生态层抬升语言位置的示例",
+   "Hono + Zod (ecosystem)","cross-stack contract checked at compile time — ecosystem lifting a language",1),
+  (0.95,0.68,"rich","Bun（生态层）","install 18–30×、test ~20×——回路加速器示例",
+   "Bun (ecosystem)","install 18–30x, test ~20x — a loop accelerator",1),
+]
+
+F7_META = {
+ "en": dict(
+  title="Figure 7 — The three dimensions, unpacked",
+  figno="Figure 07 — Scores behind the quadrant",
+  h1="Loop, signals, corpus — one row per stack",
+  subtitle="The same judgments as Figure 6, laid out by dimension with the one-line basis for each. Corpus tiers are quantitative first (top-6 across major rankings = rich; roughly 7–15 = medium) with flagged qualitative adjustments. Languages only — frameworks, libraries and toolchains often move these scores, which is exactly what the two ecosystem rows illustrate.",
+  heads=("Stack", "Feedback loop", "Signal density", "Corpus", "One-line basis"),
+  chips={"rich": "rich", "mid": "medium", "thin": "thin"},
+  footleft="Sources in the article body · rankings: Octoverse 2025 / RedMonk 2026-01 / TIOBE 2026-07",
+ ),
+ "zh": dict(
+  title="图 7 — 三个维度摊开看",
+  figno="图 07 — 象限图背后的打分",
+  h1="反馈周期 · 信号密度 · 语料——每栈一行",
+  subtitle="与图 6 同一份判断，按维度摊开并附一句依据。语料分档以榜单为定量基准（各大榜稳居前 6 = 充足；约 7–15 名 = 一般），定性修正处已注明。只比语言——框架、库与工具链常会改变这些分数，表末两行生态层示例说的就是这件事。",
+  heads=("语言/栈", "反馈周期", "信号密度", "训练语料", "依据一句话"),
+  chips={"rich": "充足", "mid": "一般", "thin": "薄弱"},
+  footleft="来源见正文 · 榜单：Octoverse 2025 / RedMonk 2026-01 / TIOBE 2026-07",
+ ),
+}
+
+for lang, meta in F7_META.items():
+    rows = []
+    for x, y, tier, zh_name, zh_note, en_name, en_note, eco in F7_ROWS:
+        name = zh_name if lang == "zh" else en_name
+        note = zh_note if lang == "zh" else en_note
+        chipcls = {"rich": "c-rich", "mid": "c-mid", "thin": "c-thin"}[tier]
+        rows.append(f'<tr class="{"eco" if eco else ""}"><td class="name">{name}</td>'
+                    f'<td>{rating(x)}</td><td>{rating(y)}</td>'
+                    f'<td><span class="chip {chipcls}">{meta["chips"][tier]}</span></td>'
+                    f'<td class="note">{note}</td></tr>')
+    h = meta["heads"]
+    body = (f'<table class="dim"><thead><tr><th>{h[0]}</th><th>{h[1]}</th><th>{h[2]}</th>'
+            f'<th>{h[3]}</th><th>{h[4]}</th></tr></thead><tbody>{"".join(rows)}</tbody></table>')
+    emit("figure-7-dimensions", lang, meta["title"], meta["figno"], meta["h1"], meta["subtitle"], body, meta["footleft"], F7_CSS)
