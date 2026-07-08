@@ -165,7 +165,7 @@ WeChat auto-fetches remote images and re-hosts them on its CDN. Absolute URLs fr
 
 ## Links
 
-WeChat articles **cannot contain external hyperlinks** in most account types. Convert links to footnote-style references. The pipeline does this automatically: the former link label is kept visible in link-blue (accent color, matching `S.a`) with a superscript marker, so readers can see which phrase the footnote annotates:
+WeChat articles **cannot contain external hyperlinks** — never emit `<a>` tags pointing outside WeChat. The pipeline enforces this: `generate-wechat-html.js`'s `link()` renderer outputs styled text instead of anchors (raw autolinked URLs stay plain copyable text), and `wechat.js` converts in-text links to footnote-style references. The former link label is kept visible in link-blue (accent color) with a superscript marker, so readers can see which phrase the footnote annotates:
 
 ```html
 <!-- In-text: link label stays visible, colored like a link, with a [n] marker -->
@@ -194,5 +194,5 @@ Summary of markdown element → inline style mapping (mdnice 风格, accent `rgb
 | `- item` | `<ul><li>` | `font-size: 14px; line-height: 1.8em; letter-spacing: 0.02em` |
 | Table | `<table>` | `border-collapse: collapse; width: 100%; th: background rgb(240,240,240)` |
 | Image | `<img>` | `max-width: 100%; width: 100%; height: auto` |
-| Link | `<a>` | `color: rgb(53, 148, 247); text-decoration: none` |
+| Link | `<span>` (never `<a>` — WeChat rejects external anchors) | `color: rgb(53, 148, 247)`; raw URLs stay plain text |
 | `---` | `<hr>` | `border: none; border-top: 2px solid rgba(64,184,250,0.4); margin: 10px 0` |

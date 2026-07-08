@@ -57,6 +57,9 @@ in the output; if one regresses, fix the scripts:
   rendering (`scripts/generate-wechat-html.js: fixBoldMarkers`)
 - Code blocks wrap long lines (`pre-wrap` + `break-all`) instead of relying on
   horizontal scroll, which WeChat clips on phones
+- No `<a>` tags are ever emitted — WeChat rejects anchors pointing outside
+  WeChat. The `link()` renderer outputs link-blue text (raw autolinked URLs
+  stay plain copyable text) instead (`scripts/generate-wechat-html.js`)
 
 ### 2. Prepare Content for Mobile
 

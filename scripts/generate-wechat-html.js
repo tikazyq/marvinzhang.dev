@@ -31,7 +31,6 @@ const S = {
   p: 'font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);text-align:left;text-indent:0;margin:0;padding:8px 0;',
   strong: 'font-weight:bold;color:rgb(53,148,247);',
   em: 'font-style:italic;',
-  a: 'color:rgb(53,148,247);text-decoration:none;',
   img: 'max-width:100%;width:100%;height:auto;display:block;margin:0;',
   blockquote: 'margin:20px 0;padding:10px 10px 10px 20px;background-color:rgba(64,184,250,0.1);border:1px solid rgba(64,184,255,0.4);border-radius:8px;color:rgb(43,43,43);',
   blockquotep: 'margin:0;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);',
@@ -48,8 +47,8 @@ const S = {
   // Info box (for ℹ️ blocks)
   infobox: 'margin:20px 0;padding:10px 10px 10px 20px;background-color:rgba(64,184,250,0.1);border:1px solid rgba(64,184,255,0.4);border-radius:8px;color:rgb(43,43,43);',
   // Reference label (former in-text link) + its superscript [n] marker.
-  // Link-blue matches S.a so annotated phrases still read as references even
-  // though WeChat strips the actual anchors.
+  // WeChat rejects <a> tags pointing outside WeChat, so the pipeline never
+  // emits anchors — labels render as link-blue text instead.
   ref: 'color:rgb(53,148,247);',
   sup: 'color:rgb(53,148,247);font-size:11px;',
 };
@@ -75,7 +74,11 @@ function createRenderer() {
     },
     link({ href, tokens }) {
       const text = this.parser.parseInline(tokens);
-      return `<a style="${S.a}" href="${href}">${text}</a>`;
+      // WeChat rejects <a> tags pointing outside WeChat, so never emit
+      // anchors. Raw URLs that GFM autolinked (label === href) stay plain
+      // copyable text; labeled links keep the link-blue pseudo-link look.
+      if (text === href) return text;
+      return `<span style="${S.ref}">${text}</span>`;
     },
     image({ href, text }) {
       return `<img style="${S.img}" src="${href}" alt="${text || ''}" />\n`;
