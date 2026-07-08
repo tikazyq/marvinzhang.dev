@@ -64,7 +64,7 @@ pnpm wechat fundamental -o     # Process + open output
    `ol` style clips native list markers)
 6. **Bold markers normalized** → `**text **` / `** text**` → `**text**`, one balanced
    pair at a time (a space-adjacent delimiter breaks CommonMark/marked bold parsing)
-7. **Code blocks** → wrap long lines (`pre-wrap` + `break-all`); WeChat clips
+7. **Code blocks** → syntax-highlighted inline; long lines scroll horizontally (`overflow-x` on pre, `nowrap` on code); line breaks baked in as `<br/>`/`&nbsp;`
    horizontal scrolling on phones
 8. **Truncate markers** (`{/* truncate */}`) → Removed
 9. **Footer added** → Link back to original blog post

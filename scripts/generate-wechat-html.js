@@ -39,8 +39,12 @@ const S = {
   blockquote: 'margin:20px 0;padding:10px 10px 10px 20px;background-color:rgba(64,184,250,0.1);border:1px solid rgba(64,184,255,0.4);border-radius:8px;color:rgb(43,43,43);',
   blockquotep: 'margin:0;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);',
   code: 'background-color:rgba(27,31,35,0.05);padding:2px 4px;border-radius:3px;font-size:14px;font-family:Operator Mono,Consolas,Monaco,Menlo,monospace;color:rgb(53,148,247);letter-spacing:0;',
-  pre: 'background-color:rgb(30,30,30);padding:15px;border-radius:5px;overflow-x:auto;margin:10px 0;',
-  precode: 'background:none;padding:0;border-radius:0;font-size:13px;line-height:1.6;font-family:Operator Mono,Consolas,Monaco,Menlo,monospace;color:#abb2bf;white-space:pre-wrap;word-break:break-all;',
+  // Long lines scroll horizontally (overflow-x on <pre>) instead of wrapping
+  // — mid-token wrapping reads badly on phones. nowrap stops CJK comments
+  // from wrapping between characters; the <br/> line breaks baked in by
+  // hardenCodeWhitespace still apply.
+  pre: 'background-color:rgb(30,30,30);padding:15px;border-radius:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;',
+  precode: 'background:none;padding:0;border-radius:0;font-size:13px;line-height:1.6;font-family:Operator Mono,Consolas,Monaco,Menlo,monospace;color:#abb2bf;white-space:nowrap;',
   table: 'width:100%;border-collapse:collapse;margin:10px 0;font-size:14px;',
   th: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);background:rgb(240,240,240);color:rgb(89,89,89);font-weight:bold;font-size:14px;line-height:1.5em;letter-spacing:0.02em;min-width:85px;',
   td: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);font-size:14px;line-height:1.5em;letter-spacing:0.02em;color:rgb(89,89,89);min-width:85px;',

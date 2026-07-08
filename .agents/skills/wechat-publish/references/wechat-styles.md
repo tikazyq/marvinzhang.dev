@@ -88,12 +88,15 @@ prism-react-renderer's `Prism.tokenize` + the oneDark theme (colors converted
 to `rgb()`, matching the `rgb(30,30,30)` background and `#abb2bf` base).
 Supported languages: js/ts/jsx/tsx, go, rust, python, c/cpp, css, yaml, sql,
 json, md, and more — but NOT bash or csharp (those fall back to unhighlighted
-text). `white-space: pre-wrap; word-break: break-all` is required — WeChat
-clips horizontally-scrolling code on narrow screens, so long lines must wrap.
+text). Long lines scroll horizontally: `overflow-x: auto` (+
+`-webkit-overflow-scrolling: touch`) on `<pre>`, `white-space: nowrap` on
+`<code>` — mid-token wrapping (`break-all`) reads badly on phones, and nowrap
+also stops CJK comments from wrapping between characters.
 CRITICAL: WeChat's paste sanitizer collapses raw newlines and space runs
 inside `<pre>` (they are whitespace-only text nodes between highlight spans),
 gluing all code onto one line — bake line structure into markup instead:
-`\n` → `<br/>`, space → `&nbsp;` (done by `hardenCodeWhitespace`).
+`\n` → `<br/>`, space → `&nbsp;` (done by `hardenCodeWhitespace`); the
+`<br/>` breaks still apply under `nowrap`.
 Do NOT put quotes inside style values (e.g. font names) — nested quotes
 terminate the style attribute early and silently drop later declarations:
 

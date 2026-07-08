@@ -55,8 +55,8 @@ in the output; if one regresses, fix the scripts:
   `[n] Title` + URL references section appended (`scripts/wechat.js`)
 - Bold markers are normalized pair-safely (`**text **` → `**text**`) before
   rendering (`scripts/generate-wechat-html.js: fixBoldMarkers`)
-- Code blocks wrap long lines (`pre-wrap` + `break-all`) instead of relying on
-  horizontal scroll, which WeChat clips on phones
+- Code blocks scroll horizontally on long lines (`overflow-x:auto` on pre,
+  `nowrap` on code) — mid-token wrapping reads badly on phones
 - Code blocks are syntax-highlighted with inline-styled spans (Prism oneDark
   via prism-react-renderer) — WeChat strips classes/CSS, so highlighting must
   be inline. bash/csharp aren't in the vendored Prism build and fall back to
@@ -244,7 +244,7 @@ send_telegram_doc() {
 | Images not sending | Check file path; max 10MB per photo |
 | Content formatting lost in paste | Use markdown-nice mini program for rendering |
 | Literal `**` visible in published article | Bold delimiter has an adjacent space or a broken pair; ensure `fixBoldMarkers` in `scripts/generate-wechat-html.js` runs and consumes one balanced pair at a time (never write a regex that requires a space after the opening `**` — it will match across pairs) |
-| Long code lines clipped on phone | Code style must include `white-space: pre-wrap; word-break: break-all` (see `S.precode`); WeChat ignores `overflow-x` scrolling |
+| Long code lines wrap mid-token / read badly on phone | Code scrolls horizontally: `overflow-x:auto` + `-webkit-overflow-scrolling:touch` on `<pre>`, `white-space:nowrap` on `<code>` (see `S.pre`/`S.precode`). If a published article ever clips instead of scrolling, fall back to `pre-wrap` + `break-all` |
 | Reference list shows no numbers | The `ol` style uses `padding-left: 0`, which clips native markers; emit explicit `[n]` prefixes as plain paragraphs (handled in `scripts/wechat.js`) |
 | In-text reference labels look like plain prose | `wechat.js` wraps former link labels in `<span class="wx-ref">`; `generate-wechat-html.js` swaps the class for inline link-blue styles (`S.ref`/`S.sup`) since WeChat strips classes |
 | Code loses line breaks when pasted into WeChat | WeChat collapses raw `\n`/space text nodes inside `<pre>`; `hardenCodeWhitespace` bakes them in as `<br/>`/`&nbsp;` — never rely on `white-space` alone |
