@@ -27,7 +27,10 @@ const S = {
   // NOTE: no quotes inside style values — nested double quotes terminate the
   // HTML style="..." attribute early and silently drop every declaration
   // after them. CSS allows unquoted multi-word font family names.
-  body: 'font-family:Optima,PingFangSC-light,PingFangTC-light,PingFang SC,Hiragino Sans GB,Source Han Sans CN,Source Han Sans SC,serif;font-size:16px;line-height:1.5em;color:#000;word-break:break-word;overflow-wrap:break-word;text-align:left;padding:0 10px;',
+  // No horizontal padding — WeChat's editor already adds page margins; the
+  // 10px here only ever "worked" while the quote-truncation bug silently
+  // dropped it, so adding it back doubled the gutters.
+  body: 'font-family:Optima,PingFangSC-light,PingFangTC-light,PingFang SC,Hiragino Sans GB,Source Han Sans CN,Source Han Sans SC,serif;font-size:16px;line-height:1.5em;color:#000;word-break:break-word;overflow-wrap:break-word;text-align:left;padding:0;',
   h1: 'font-size:24px;font-weight:600;margin:30px 0 15px;padding-bottom:10px;border-bottom:4px solid rgb(64,184,250);color:rgb(64,184,250);',
   h2: 'font-size:20px;font-weight:bold;margin:30px 0 15px;padding:0;color:rgb(64,184,250);background-color:transparent;border-bottom:4px solid rgb(64,184,250);line-height:1.5em;',
   h3: 'font-size:18px;font-weight:bold;margin:30px 0 15px;padding:0;color:rgb(43,43,43);line-height:1.5em;text-align:center;',
