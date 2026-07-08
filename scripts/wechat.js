@@ -470,14 +470,16 @@ const processArticles = async () => {
       refs.push({ text, url });
     }
     if (refs.length > 0) {
-      // Replace each in-text link with plain text plus a superscript [n] marker
+      // Replace each in-text link with its label plus a superscript [n] marker
       // pointing at the reference list. WeChat strips external links anyway, so
-      // colored-but-dead anchor text is more confusing than plain text + marker.
+      // instead of a colored-but-dead anchor the label is wrapped in a
+      // `wx-ref` span — the HTML renderer styles it link-blue so readers can
+      // see which phrase the superscript annotates.
       const urlIndex = new Map(refs.map((r, i) => [r.url, i + 1]));
       processedContent = processedContent.replace(linkPattern, (match, prefix, label, url) => {
         const n = urlIndex.get(url.trim());
         if (!n) return match; // anchors and other skipped links stay as-is
-        return `${prefix}${label}<sup>[${n}]</sup>`;
+        return `${prefix}<span class="wx-ref">${label}</span><sup>[${n}]</sup>`;
       });
       const refHeader = article.locale === 'zh' ? '\n\n## 参考资料\n\n' : '\n\n## References\n\n';
       // Explicit [n] prefixes as plain paragraphs — the HTML renderer's <ol>

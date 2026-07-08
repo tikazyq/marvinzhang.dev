@@ -165,17 +165,16 @@ WeChat auto-fetches remote images and re-hosts them on its CDN. Absolute URLs fr
 
 ## Links
 
-WeChat articles **cannot contain external hyperlinks** in most account types. Convert links to footnote-style references:
+WeChat articles **cannot contain external hyperlinks** in most account types. Convert links to footnote-style references. The pipeline does this automatically: the former link label is kept visible in link-blue (accent color, matching `S.a`) with a superscript marker, so readers can see which phrase the footnote annotates:
 
 ```html
-<!-- Instead of clickable links, show URL as reference -->
-<span style="color: #576b95;">[1]</span>
+<!-- In-text: link label stays visible, colored like a link, with a [n] marker -->
+<span style="color:rgb(53,148,247);">label text</span><sup style="color:rgb(53,148,247);font-size:11px;">[1]</sup>
 
-<!-- Add footnotes section at the end -->
-<section style="margin-top: 2em; padding-top: 1em; border-top: 1px solid #eee; font-size: 13px; color: #999;">
-  <p>[1] https://example.com/reference</p>
-  <p>[2] https://github.com/example/repo</p>
-</section>
+<!-- References section at the end: explicit [n] prefixes as plain paragraphs
+     (the ol style's padding-left:0 clips native list markers) -->
+<p>[1] Reference title<br/>https://example.com/reference</p>
+<p>[2] Repo name<br/>https://github.com/example/repo</p>
 ```
 
 ## Complete Style Map

@@ -47,6 +47,11 @@ const S = {
   hr: 'border:none;border-top:2px solid rgba(64,184,250,0.4);margin:10px 0;',
   // Info box (for ℹ️ blocks)
   infobox: 'margin:20px 0;padding:10px 10px 10px 20px;background-color:rgba(64,184,250,0.1);border:1px solid rgba(64,184,255,0.4);border-radius:8px;color:rgb(43,43,43);',
+  // Reference label (former in-text link) + its superscript [n] marker.
+  // Link-blue matches S.a so annotated phrases still read as references even
+  // though WeChat strips the actual anchors.
+  ref: 'color:rgb(53,148,247);',
+  sup: 'color:rgb(53,148,247);font-size:11px;',
 };
 
 function createRenderer() {
@@ -186,7 +191,12 @@ function fixBoldMarkers(md) {
 function convertMarkdownToWeChatHTML(mdContent) {
   const fixed = fixBoldMarkers(mdContent);
   const marked = new Marked({ renderer: createRenderer() });
-  const html = marked.parse(fixed);
+  let html = marked.parse(fixed);
+  // wechat.js marks former in-text links with class="wx-ref"; WeChat strips
+  // classes, so swap in inline styles here (same for the [n] superscripts).
+  html = html
+    .replace(/<span class="wx-ref">/g, `<span style="${S.ref}">`)
+    .replace(/<sup>/g, `<sup style="${S.sup}">`);
   return `<section style="${S.body}">${html}</section>`;
 }
 
