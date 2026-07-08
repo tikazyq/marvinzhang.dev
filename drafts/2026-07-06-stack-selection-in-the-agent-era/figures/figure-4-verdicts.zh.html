@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 4 — 2026 年的证据与 2021 年的回声</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .rows { display: flex; flex-direction: column; gap: 13px; }
+  .vrow { display: flex; align-items: stretch; gap: 0; }
+  .cell { border: 1.5px solid; border-radius: 12px; background: #fff; padding: 12px 15px; }
+  .now { width: 300px; flex: none; border-color: var(--info-stroke); background: #f4faff; }
+  .then { width: 268px; flex: none; border-color: var(--line); background: #fff; }
+  .cell .t { font-weight: 600; font-size: 14.5px; line-height: 1.35; }
+  .now .t { color: var(--info-stroke); }
+  .cell .s { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; line-height: 1.45; }
+  .mid { display: flex; align-items: center; padding: 0 3px; }
+  .verdict { flex: 1; display: flex; align-items: center; border-radius: 12px; border: 1.5px solid;
+    padding: 10px 14px; font-size: 13px; font-weight: 600; line-height: 1.35; }
+  .v-ok { border-color: var(--ok-stroke); background: var(--ok-fill); color: var(--ok-stroke); }
+  .v-hi { border-color: var(--hi-stroke); background: var(--hi-fill); color: var(--hi-stroke); }
+  .v-info { border-color: var(--info-stroke); background: var(--info-fill); color: var(--info-stroke); }
+  .v-warn { border-color: var(--warn-stroke); background: var(--warn-fill); color: var(--warn-stroke); }
+  .colheads { display: flex; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); }
+  .colheads .c1 { width: 300px; flex: none; }
+  .colheads .c2 { width: 308px; flex: none; padding-left: 40px; }
+  .colheads .c3 { flex: 1; padding-left: 40px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 04 — 判决修订</div>
+  <h1>三组证据，各自改判了什么</h1>
+  <div class="subtitle">每一项 2025–2026 年的进展，都不偏不倚，正好落在 2021 年系列的某个论点上。</div>
+</div>
+
+    <div class="colheads"><div class="c1">2026 年的证据</div><div class="c2">对应的 2021 论点</div><div class="c3">判决修订</div></div>
+    <div class="rows">
+      <div class="vrow">
+        <div class="cell now"><div class="t">typescript-go：tsc 移植到 Go</div><div class="s">约 10 倍提速，已至 RC；同样的检查，十分之一的延迟</div></div>
+        <div class="mid"><svg width="34" height="18" viewBox="0 0 34 18">
+  <line x1="0" y1="9" x2="26" y2="9" stroke="#8a8a8a" stroke-width="2.2"/>
+  <polygon points="24,3 34,9 24,15" fill="#8a8a8a"/></svg></div>
+        <div class="cell then"><div class="s" style="margin-top:0">TS 篇：错误前置 · Golang 篇：编译速度“玩笑行”</div></div>
+        <div class="mid"><svg width="34" height="18" viewBox="0 0 34 18">
+  <line x1="0" y1="9" x2="26" y2="9" stroke="#8a8a8a" stroke-width="2.2"/>
+  <polygon points="24,3 34,9 24,15" fill="#8a8a8a"/></svg></div>
+        <div class="verdict v-ok">加冕——两个论点在 agent 经济学中会合</div>
+      </div>
+      <div class="vrow">
+        <div class="cell now"><div class="t">Hono 进 S 级，Express 使用率第一</div><div class="s">State of JS 2025：首年参评满意度 >90%</div></div>
+        <div class="mid"><svg width="34" height="18" viewBox="0 0 34 18">
+  <line x1="0" y1="9" x2="26" y2="9" stroke="#8a8a8a" stroke-width="2.2"/>
+  <polygon points="24,3 34,9 24,15" fill="#8a8a8a"/></svg></div>
+        <div class="cell then"><div class="s" style="margin-top:0">C# 篇：满意度领先，市场份额滞后</div></div>
+        <div class="mid"><svg width="34" height="18" viewBox="0 0 34 18">
+  <line x1="0" y1="9" x2="26" y2="9" stroke="#8a8a8a" stroke-width="2.2"/>
+  <polygon points="24,3 34,9 24,15" fill="#8a8a8a"/></svg></div>
+        <div class="verdict v-hi">框架原样复用——领先指标再次领先</div>
+      </div>
+      <div class="vrow">
+        <div class="cell now"><div class="t">Hono RPC + Zod 全栈契约</div><div class="s">服务端类型流向客户端；契约漂移直接编译失败</div></div>
+        <div class="mid"><svg width="34" height="18" viewBox="0 0 34 18">
+  <line x1="0" y1="9" x2="26" y2="9" stroke="#8a8a8a" stroke-width="2.2"/>
+  <polygon points="24,3 34,9 24,15" fill="#8a8a8a"/></svg></div>
+        <div class="cell then"><div class="s" style="margin-top:0">TS 篇：类型即协作契约</div></div>
+        <div class="mid"><svg width="34" height="18" viewBox="0 0 34 18">
+  <line x1="0" y1="9" x2="26" y2="9" stroke="#8a8a8a" stroke-width="2.2"/>
+  <polygon points="24,3 34,9 24,15" fill="#8a8a8a"/></svg></div>
+        <div class="verdict v-info">升级——契约跨过了网络边界</div>
+      </div>
+      <div class="vrow">
+        <div class="cell now"><div class="t">Bun：一个二进制吞下工具链</div><div class="s">运行时 + 包管理 + 打包 + 测试</div></div>
+        <div class="mid"><svg width="34" height="18" viewBox="0 0 34 18">
+  <line x1="0" y1="9" x2="26" y2="9" stroke="#8a8a8a" stroke-width="2.2"/>
+  <polygon points="24,3 34,9 24,15" fill="#8a8a8a"/></svg></div>
+        <div class="cell then"><div class="s" style="margin-top:0">前端工程化篇：500MB 工具链之怨</div></div>
+        <div class="mid"><svg width="34" height="18" viewBox="0 0 34 18">
+  <line x1="0" y1="9" x2="26" y2="9" stroke="#8a8a8a" stroke-width="2.2"/>
+  <polygon points="24,3 34,9 24,15" fill="#8a8a8a"/></svg></div>
+        <div class="verdict v-warn">得到回应——但双刃剑同样锋利（见图 5）</div>
+      </div></div>
+<div class="footer"><div>Microsoft devblogs · State of JS 2025 · hono.dev · bun.com</div><div>marvinzhang.dev · figure-4-verdicts</div></div>
+</div>
+</body>
+</html>

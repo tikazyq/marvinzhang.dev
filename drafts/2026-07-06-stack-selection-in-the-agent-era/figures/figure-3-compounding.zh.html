@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 3 — 为什么恰好是这两个判据</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .cwrap { margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 03 — 速度 × 质量的复利</div>
+  <h1>循环把速度和质量都变成了复利</h1>
+  <div class="subtitle">同样一小时的工作，同样质量的首稿。反馈周期决定你能试多少轮；信号密度决定每一轮能净化多少。</div>
+</div>
+
+<svg class="cwrap" width="772" height="322" viewBox="0 0 772 322" font-family="Inter, 'Noto Sans SC', sans-serif">
+  <!-- ============ Panel A: speed ============ -->
+  <g>
+    <text x="18" y="20" font-size="15" font-weight="700" fill="#1f1f1f">反馈周期 → 交付速度</text>
+    <text x="18" y="40" font-size="12" fill="#525252">agent 工作一小时，两种技术栈</text>
+
+    <text x="18" y="60" font-size="12" font-weight="600" fill="#01579b">每轮 10 分钟</text>
+    <rect x="18" y="66" width="48" height="22" rx="6" fill="#e1f5fe" stroke="#01579b" stroke-width="1.2"/><rect x="74" y="66" width="48" height="22" rx="6" fill="#e1f5fe" stroke="#01579b" stroke-width="1.2"/><rect x="130" y="66" width="48" height="22" rx="6" fill="#e1f5fe" stroke="#01579b" stroke-width="1.2"/><rect x="186" y="66" width="48" height="22" rx="6" fill="#e1f5fe" stroke="#01579b" stroke-width="1.2"/><rect x="242" y="66" width="48" height="22" rx="6" fill="#e1f5fe" stroke="#01579b" stroke-width="1.2"/><rect x="298" y="66" width="48" height="22" rx="6" fill="#e1f5fe" stroke="#01579b" stroke-width="1.2"/>
+    <text x="18" y="108" font-size="12.5" font-weight="700" fill="#01579b" font-family="'JetBrains Mono', monospace">6 轮/小时</text>
+
+    <text x="18" y="150" font-size="12" font-weight="600" fill="#2e7d32">每轮 1 分钟</text>
+    <rect x="18.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="23.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="29.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="34.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="40.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="46.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="51.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="57.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="62.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="68.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="74.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="79.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="85.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="90.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="96.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="102.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="107.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="113.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="118.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="124.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="130.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="135.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="141.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="146.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="152.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="158.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="163.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="169.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="174.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="180.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="186.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="191.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="197.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="202.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="208.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="214.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="219.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="225.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="230.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="236.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="242.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="247.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="253.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="258.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="264.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="270.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="275.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="281.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="286.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="292.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="298.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="303.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="309.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="314.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="320.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="326.0" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="331.6" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="337.2" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="342.8" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/><rect x="348.4" y="156" width="3.4" height="22" rx="1.5" fill="#2e7d32"/>
+    <text x="18" y="198" font-size="12.5" font-weight="700" fill="#2e7d32" font-family="'JetBrains Mono', monospace">60 轮/小时 —— 10 倍</text>
+
+    <text x="18" y="232" font-size="11.5" fill="#8a8a8a">agent 的产出上限就是循环次数：一轮越快，吞吐越大。</text>
+  </g>
+
+  <line x1="386" y1="10" x2="386" y2="240" stroke="#e0e0e0" stroke-width="1.5"/>
+
+  <!-- ============ Panel B: quality ============ -->
+  <g transform="translate(406,0)">
+    <text x="0" y="20" font-size="15" font-weight="700" fill="#1f1f1f">信号密度 → 交付质量</text>
+    <text x="0" y="40" font-size="12" fill="#525252">一轮又一轮之后，还剩多少缺陷</text>
+
+    <!-- axes -->
+    <line x1="26" y1="58" x2="26" y2="204" stroke="#525252" stroke-width="1.5"/>
+    <line x1="26" y1="204" x2="350" y2="204" stroke="#525252" stroke-width="1.5"/>
+    <text x="0" y="52" font-size="10.5" fill="#8a8a8a">剩余缺陷</text>
+    <text x="350" y="218" font-size="10.5" fill="#8a8a8a" text-anchor="end">轮次 →</text>
+
+    <!-- same first draft marker -->
+    <circle cx="26" cy="70" r="4.5" fill="#7b1fa2"/>
+    <text x="36" y="72" font-size="11" font-weight="600" fill="#7b1fa2">同一份首稿</text>
+
+    <!-- dense: converges -->
+    <path d="M 26 70 C 60 78 85 168 130 190 C 170 200 260 202 350 202"
+          fill="none" stroke="#2e7d32" stroke-width="3"/>
+    <text x="112" y="188" font-size="11.5" font-weight="600" fill="#2e7d32">密集信号：逐轮收敛</text>
+
+    <!-- sparse: plateaus -->
+    <path d="M 26 70 C 90 78 180 105 350 118" fill="none" stroke="#c62828" stroke-width="3"/>
+    <text x="150" y="94" font-size="11.5" font-weight="600" fill="#c62828">稀疏信号：停在半路</text>
+    <line x1="320" y1="122" x2="320" y2="200" stroke="#c62828" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="314" y="150" font-size="10.5" fill="#c62828" text-anchor="end">这段差距逃逸给</text>
+    <text x="314" y="164" font-size="10.5" fill="#c62828" text-anchor="end">人工评审与生产</text>
+
+    <text x="0" y="232" font-size="11.5" fill="#8a8a8a">每轮机器能裁决得越多，收敛越快；剩下的都要人来兜底。</text>
+  </g>
+
+  <!-- ============ bottom bar ============ -->
+  <rect x="6" y="254" width="760" height="56" rx="12" fill="#fffdf0" stroke="#c62828" stroke-width="0" />
+  <rect x="6" y="254" width="4" height="56" rx="2" fill="#c62828"/>
+  <text x="26" y="277" font-size="13.5" font-weight="700" fill="#c62828">交付 = 速度 × 质量。</text>
+  <text x="26" y="298" font-size="13" fill="#1f1f1f">按天迭代时，这两个数字无关痛痒；按轮迭代时，它们被复利放大——这就是两个判据升为一等公民的原因。</text>
+</svg>
+<div class="footer"><div>示意性动态——证据见正文</div><div>marvinzhang.dev · figure-3-compounding</div></div>
+</div>
+</body>
+</html>

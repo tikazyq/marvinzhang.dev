@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Figure 5 — Bun through the 2021 method</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .heads { display: flex; gap: 14px; margin-bottom: 10px; }
+  .heads .spacer { width: 172px; flex: none; }
+  .heads .h { flex: 1; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.07em; text-transform: uppercase; padding: 7px 12px; border-radius: 8px; }
+  .heads .plus { color: var(--ok-stroke); background: var(--ok-fill); border: 1.5px solid var(--ok-stroke); }
+  .heads .minus { color: var(--err-stroke); background: var(--err-fill); border: 1.5px solid var(--err-stroke); }
+  .trows { display: flex; flex-direction: column; gap: 13px; }
+  .trow { display: flex; gap: 14px; align-items: stretch; }
+  .trait { width: 172px; flex: none; display: flex; align-items: center; font-weight: 600;
+    font-size: 14.5px; line-height: 1.35; padding: 12px 14px; border-radius: 12px;
+    background: #fff; border: 1.5px solid var(--line); }
+  .pane { flex: 1; border-radius: 12px; border: 1.5px solid; padding: 12px 15px;
+    font-size: 13.5px; line-height: 1.5; background: #fff; }
+  .pane.plus { border-color: var(--ok-stroke); background: #f3faf4; }
+  .pane.minus { border-color: var(--err-stroke); background: #fff6f6; }
+  .pane b { font-weight: 600; }
+  .pane.plus b { color: var(--ok-stroke); }
+  .pane.minus b { color: var(--err-stroke); }
+  .verdictline {
+    margin-top: 22px; border-radius: 12px; border: 1.5px solid var(--ink);
+    background: #fff; padding: 14px 18px; font-size: 15px; line-height: 1.5; text-align: center;
+  }
+  .verdictline b { font-weight: 700; }
+  .verdictline code { font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    background: #f1f1f1; padding: 1px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">Figure 05 — Every strength casts a shadow</div>
+  <h1>The Go article's method, applied to Bun</h1>
+  <div class="subtitle">The 2021 Golang piece scored every celebrated feature against its shadow. Run Bun through the same table.</div>
+</div>
+
+    <div class="heads"><div class="spacer"></div><div class="h plus">Strength</div><div class="h minus">The other edge</div></div>
+    <div class="trows">
+      <div class="trow">
+        <div class="trait">Single binary, batteries included</div>
+        <div class="pane plus">Toolchain complexity collapses toward zero; installs <b>dramatically faster</b> — the most replicated advantage across independent tests</div>
+        <div class="pane minus">A vastly larger surface to keep compatible; <b>5,000+ open issues</b>; 16 Node modules partial, 3 unimplemented (Bun's own docs)</div>
+      </div>
+      <div class="trow">
+        <div class="trait">Speed-first engineering culture</div>
+        <div class="pane plus">Benchmarks and iteration pace pulled <b>21% of surveyed developers</b> (State of JS 2025, +4pt YoY)</div>
+        <div class="pane minus">Long-running-process <b>memory leaks</b>; OpenCode migrated off citing “memory issues, crashes, terrible Windows support”</div>
+      </div>
+      <div class="trow">
+        <div class="trait">Fast-moving, AI-accelerated development</div>
+        <div class="pane plus">Rapid feature delivery; 1.x line shipped runtime, SQL, Redis, full-stack dev server in two years</div>
+        <div class="pane minus">Stability discount in production; the canary-vs-stable paradox — <b>Prisma trusted the build that passed its tests</b>, not the version label</div>
+      </div></div>
+    <div class="verdictline">Community consensus is itself a verdict: <code>bun install</code> for development speed, Node in production — <b>loop-latency optimization cannot substitute for runtime reliability.</b></div>
+<div class="footer"><div>bun.com docs · The Register 2026-04 · Prisma 2026-06 · State of JS 2025</div><div>marvinzhang.dev · figure-5-bun-double-edge</div></div>
+</div>
+</body>
+</html>

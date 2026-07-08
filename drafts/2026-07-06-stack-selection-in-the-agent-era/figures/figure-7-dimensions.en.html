@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Figure 7 — The three dimensions, unpacked</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .dim { width: 100%; border-collapse: collapse; }
+  .dim th { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink-faint); text-align: left; padding: 6px 8px;
+    border-bottom: 2px solid var(--line); }
+  .dim td { padding: 7px 8px; border-bottom: 1px solid #ececec; font-size: 13px; line-height: 1.4;
+    vertical-align: middle; }
+  .dim td.name { font-weight: 600; white-space: nowrap; }
+  .dim tr.eco td.name { font-weight: 600; color: var(--hi-stroke); }
+  .dots { white-space: nowrap; letter-spacing: 1.5px; font-size: 13px; }
+  .dots .on { color: var(--ink); } .dots .off { color: #d4d4d4; }
+  .chip { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 9px;
+    border-radius: 8px; border: 1.2px solid; white-space: nowrap; }
+  .c-rich { color: var(--ok-stroke); border-color: var(--ok-stroke); background: var(--ok-fill); }
+  .c-mid  { color: var(--warn-stroke); border-color: var(--warn-stroke); background: var(--warn-fill); }
+  .c-thin { color: var(--err-stroke); border-color: var(--err-stroke); background: var(--err-fill); }
+  .dim td.note { color: var(--ink-soft); font-size: 12px; line-height: 1.35; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">Figure 07 — Scores behind the quadrant</div>
+  <h1>Loop, signals, corpus — one row per stack</h1>
+  <div class="subtitle">The same judgments as Figure 6, laid out by dimension with the one-line basis for each. Corpus tiers are quantitative first (top-6 across major rankings = rich; roughly 7–15 = medium) with flagged qualitative adjustments. Languages only — frameworks, libraries and toolchains often move these scores, which is exactly what the two ecosystem rows illustrate.</div>
+</div>
+<table class="dim"><thead><tr><th>Stack</th><th>Feedback loop</th><th>Signal density</th><th>Corpus</th><th>One-line basis</th></tr></thead><tbody><tr class=""><td class="name">TS on JS-based tsc</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">watch-mode 4–10s on large projects; dense but any-escapable</td></tr><tr class=""><td class="name">TS 7 native</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">same semantics, ~10x: VS Code 77.8s→7.5s</td></tr><tr class=""><td class="name">Go</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">second-level builds + cache; nil and ignored errors escape. Ranks ~#12, but infra corpus is deep and it sits in Aider's six-language core set — upgraded qualitatively</td></tr><tr class=""><td class="name">Plain JavaScript</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">zero compile; almost no edit-time signals beyond syntax</td></tr><tr class=""><td class="name">Python, typical</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">interpreted; type hints at 86% adoption, but gradual</td></tr><tr class=""><td class="name">Rust</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span></span></td><td><span class="chip c-mid">medium</span></td><td class="note">cargo check 1–7s incr. (55% see >10s); borrow checker tops signals. TIOBE top-10 / RedMonk #20; serviceable in practice, yet benchmarks consistently trail Python — held at medium</td></tr><tr class=""><td class="name">Java</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">Gradle incremental gets small edits to seconds; NPE escapes types</td></tr><tr class=""><td class="name">Kotlin</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-mid">medium</span></td><td class="note">K2 up to +94% full builds, incremental modest; built-in null safety</td></tr><tr class=""><td class="name">C#</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">Roslyn incremental + hot reload; NRT default on new projects</td></tr><tr class=""><td class="name">C/C++</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">unit rebuilds fast, header cascades slow; UB escapes compile time</td></tr><tr class=""><td class="name">PHP</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">refresh-to-run; runtime-enforced types, PHPStan at ~36% adoption</td></tr><tr class=""><td class="name">Ruby</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-thin">thin</span></td><td class="note">edit-and-run; Sorbet stays big-co. RedMonk #9 yet benchmark accuracy collapses — downgraded qualitatively</td></tr><tr class=""><td class="name">Swift</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-thin">thin</span></td><td class="note">type inference can bail out, incremental cascades; strong types + optionals</td></tr><tr class=""><td class="name">Dart</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-thin">thin</span></td><td class="note">sub-second hot reload + sound null safety; thin corpus and evals</td></tr><tr class="eco"><td class="name">Hono + Zod (ecosystem)</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">cross-stack contract checked at compile time — ecosystem lifting a language</td></tr><tr class="eco"><td class="name">Bun (ecosystem)</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">rich</span></td><td class="note">install 18–30x, test ~20x — a loop accelerator</td></tr></tbody></table>
+<div class="footer"><div>Sources in the article body · rankings: Octoverse 2025 / RedMonk 2026-01 / TIOBE 2026-07</div><div>marvinzhang.dev · figure-7-dimensions</div></div>
+</div>
+</body>
+</html>

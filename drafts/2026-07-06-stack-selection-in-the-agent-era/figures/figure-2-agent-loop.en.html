@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Figure 2 — The agent loop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .diagram { margin: 4px 0 0 0; }
+  .density { margin-top: 18px; display: flex; gap: 14px; }
+  .density .cell {
+    flex: 1; border-radius: 12px; padding: 13px 16px; border: 1.5px solid;
+    font-size: 13.5px; line-height: 1.5;
+  }
+  .density .good { border-color: var(--ok-stroke); background: #f3faf4; }
+  .density .bad { border-color: var(--err-stroke); background: #fff6f6; }
+  .density b { font-weight: 600; }
+  .density .good b { color: var(--ok-stroke); }
+  .density .bad b { color: var(--err-stroke); }
+  .density code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #f1f1f1;
+    padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">Figure 02 — Two new selection criteria</div>
+  <h1>The loop an agent runs, and what your stack controls</h1>
+  <div class="subtitle">Per task the loop closes dozens to hundreds of times. The stack sets its latency; the stack decides how much correctness is machine-decidable at the branch.</div>
+</div>
+
+<svg class="diagram" width="772" height="368" viewBox="0 0 772 368" font-family="Inter, 'Noto Sans SC', sans-serif">
+  <defs>
+    <marker id="agray" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#8a8a8a"/></marker>
+    <marker id="agreen" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#2e7d32"/></marker>
+    <marker id="ared" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#c62828"/></marker>
+  </defs>
+
+  <!-- loop-back: from green box top, over the top, down into Edit box top -->
+  <path d="M 683 56 L 683 24 L 81 24 L 81 112" fill="none" stroke="#2e7d32"
+        stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#agreen)"/>
+  <rect x="189" y="10" width="392" height="26" rx="13" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="385" y="27" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2e7d32">self-correction loops back — hundreds of rounds per task</text>
+
+  <!-- main row -->
+  <rect x="6" y="120" width="150" height="92" rx="12" fill="#e1f5fe" stroke="#01579b" stroke-width="1.5"/>
+  <text x="81" y="158" text-anchor="middle" font-size="15" font-weight="600" fill="#1f1f1f">Agent edits code</text>
+  <text x="81" y="182" text-anchor="middle" font-size="11.5" fill="#525252">the write step is cheap</text>
+
+  <line x1="160" y1="166" x2="206" y2="166" stroke="#8a8a8a" stroke-width="2.5" marker-end="url(#agray)"/>
+
+  <rect x="214" y="120" width="170" height="92" rx="12" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="299" y="158" text-anchor="middle" font-size="14" font-weight="600" fill="#1f1f1f">Build · type-check · test</text>
+  <text x="299" y="182" text-anchor="middle" font-size="11.5" fill="#525252">install, compile, startup</text>
+
+  <line x1="388" y1="166" x2="434" y2="166" stroke="#8a8a8a" stroke-width="2.5" marker-end="url(#agray)"/>
+
+  <rect x="442" y="120" width="120" height="92" rx="12" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
+  <text x="502" y="153" text-anchor="middle" font-size="15" font-weight="600" fill="#1f1f1f">Signals</text>
+  <text x="502" y="174" text-anchor="middle" font-size="11.5" fill="#525252">what comes back —</text>
+  <text x="502" y="190" text-anchor="middle" font-size="11.5" fill="#525252">can it be trusted?</text>
+
+  <!-- branch arrows: signals -> two outcomes -->
+  <path d="M 562 146 L 570 146 Q 580 146 580 136 L 580 107 Q 580 97 590 97 L 594 97" fill="none" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#agreen)"/>
+  <path d="M 562 186 L 570 186 Q 580 186 580 196 L 580 263 Q 580 273 590 273 L 594 273" fill="none" stroke="#c62828" stroke-width="2.5" marker-end="url(#ared)"/>
+
+  <!-- outcomes -->
+  <rect x="600" y="56" width="166" height="82" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="683" y="84" text-anchor="middle" font-size="13.5" font-weight="600" fill="#2e7d32">Agent self-corrects</text>
+  <text x="683" y="103" text-anchor="middle" font-size="10" fill="#525252">deterministic, machine-readable</text>
+  <text x="683" y="118" text-anchor="middle" font-size="10" fill="#525252">tsc error, failed assertion</text>
+
+  <rect x="600" y="232" width="166" height="82" rx="12" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+  <text x="683" y="260" text-anchor="middle" font-size="13.5" font-weight="600" fill="#c62828">Human must intervene</text>
+  <text x="683" y="279" text-anchor="middle" font-size="10" fill="#525252">weak or absent signals</text>
+  <text x="683" y="294" text-anchor="middle" font-size="10" fill="#525252">runtime-only failure</text>
+
+  <!-- latency bracket under the edit->signals span -->
+  <path d="M 6 336 L 6 344 L 766 344 L 766 336" fill="none" stroke="#e65100" stroke-width="2.5"/>
+  <text x="386" y="362" text-anchor="middle" font-size="12.5" font-weight="600" fill="#e65100"
+        font-family="'JetBrains Mono', monospace">LOOP LATENCY = one edit → trusted-feedback cycle</text>
+</svg>
+      <div class="density">
+        <div class="cell good"><b>Dense signal:</b> a <code>tsc</code> error is free, deterministic, machine-readable — same defect, same message, same line. 94% of compiler errors in LLM output are type-check failures.</div>
+        <div class="cell bad"><b>Sparse signal:</b> a production <code>TypeError</code> is expensive to reach, stochastic to reproduce, and needs a human to interpret.</div>
+      </div>
+<div class="footer"><div>GitHub Blog 2026 (94% type-check failures) · loop model: this article</div><div>marvinzhang.dev · figure-2-agent-loop</div></div>
+</div>
+</body>
+</html>

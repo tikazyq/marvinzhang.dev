@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 7 — 三个维度摊开看</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 28px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .dim { width: 100%; border-collapse: collapse; }
+  .dim th { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink-faint); text-align: left; padding: 6px 8px;
+    border-bottom: 2px solid var(--line); }
+  .dim td { padding: 7px 8px; border-bottom: 1px solid #ececec; font-size: 13px; line-height: 1.4;
+    vertical-align: middle; }
+  .dim td.name { font-weight: 600; white-space: nowrap; }
+  .dim tr.eco td.name { font-weight: 600; color: var(--hi-stroke); }
+  .dots { white-space: nowrap; letter-spacing: 1.5px; font-size: 13px; }
+  .dots .on { color: var(--ink); } .dots .off { color: #d4d4d4; }
+  .chip { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 9px;
+    border-radius: 8px; border: 1.2px solid; white-space: nowrap; }
+  .c-rich { color: var(--ok-stroke); border-color: var(--ok-stroke); background: var(--ok-fill); }
+  .c-mid  { color: var(--warn-stroke); border-color: var(--warn-stroke); background: var(--warn-fill); }
+  .c-thin { color: var(--err-stroke); border-color: var(--err-stroke); background: var(--err-fill); }
+  .dim td.note { color: var(--ink-soft); font-size: 12px; line-height: 1.35; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 07 — 象限图背后的打分</div>
+  <h1>反馈周期 · 信号密度 · 语料——每栈一行</h1>
+  <div class="subtitle">与图 6 同一份判断，按维度摊开并附一句依据。语料分档以榜单为定量基准（各大榜稳居前 6 = 充足；约 7–15 名 = 一般），定性修正处已注明。只比语言——框架、库与工具链常会改变这些分数，表末两行生态层示例说的就是这件事。</div>
+</div>
+<table class="dim"><thead><tr><th>语言/栈</th><th>反馈周期</th><th>信号密度</th><th>训练语料</th><th>依据一句话</th></tr></thead><tbody><tr class=""><td class="name">TS（JS 版 tsc）</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">大项目 watch 增量 4–10s；strict 信号密但有 any 逃逸</td></tr><tr class=""><td class="name">TS 7 原生版</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">同语义约 10×：VS Code 77.8s→7.5s</td></tr><tr class=""><td class="name">Go</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">秒级编译+构建缓存；nil 与被忽略的 error 逃逸。榜单约 #12，但基础设施语料厚、Aider 六语言核心集之一——定性上调</td></tr><tr class=""><td class="name">纯 JavaScript</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">零编译；语法错误之外几乎无编辑期信号</td></tr><tr class=""><td class="name">Python（典型配置）</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">解释执行；类型提示 86% 常态使用但属渐进</td></tr><tr class=""><td class="name">Rust</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span></span></td><td><span class="chip c-mid">一般</span></td><td class="note">cargo check 增量 1–7s（55% 用户 >10s）；借用检查是信号天花板。TIOBE 前 10 / RedMonk #20；实用上够用，但多项基准仍显示低于 Python——保守取一般</td></tr><tr class=""><td class="name">Java</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">Gradle 增量把小改动降到秒级；NPE 逃逸类型系统</td></tr><tr class=""><td class="name">Kotlin</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-mid">一般</span></td><td class="note">K2 全量最高 +94%，增量改善有限；内建空安全</td></tr><tr class=""><td class="name">C#</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">Roslyn 增量+热重载；NRT 新项目默认开、三方标注不齐</td></tr><tr class=""><td class="name">C/C++</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">单元秒级但头文件级联+链接慢；UB/内存错误逃逸编译期</td></tr><tr class=""><td class="name">PHP</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">刷新即生效；类型为运行时强制，PHPStan 采用约 36%</td></tr><tr class=""><td class="name">Ruby</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-thin">薄弱</span></td><td class="note">即改即跑；Sorbet 基本限于大厂。RedMonk #9 但基准准确率极低——定性下调</td></tr><tr class=""><td class="name">Swift</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-thin">薄弱</span></td><td class="note">类型推断可超时放弃、增量级联失效；强类型+Optional</td></tr><tr class=""><td class="name">Dart</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-thin">薄弱</span></td><td class="note">亚秒热重载+健全空安全；语料与评测双薄</td></tr><tr class="eco"><td class="name">Hono + Zod（生态层）</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">契约跨栈、编译期校验——生态层抬升语言位置的示例</td></tr><tr class="eco"><td class="name">Bun（生态层）</td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="on">●</span></span></td><td><span class="dots"><span class="on">●</span><span class="on">●</span><span class="on">●</span><span class="off">●</span><span class="off">●</span></span></td><td><span class="chip c-rich">充足</span></td><td class="note">install 18–30×、test ~20×——回路加速器示例</td></tr></tbody></table>
+<div class="footer"><div>来源见正文 · 榜单：Octoverse 2025 / RedMonk 2026-01 / TIOBE 2026-07</div><div>marvinzhang.dev · figure-7-dimensions</div></div>
+</div>
+</body>
+</html>
