@@ -61,6 +61,9 @@ in the output; if one regresses, fix the scripts:
   via prism-react-renderer) — WeChat strips classes/CSS, so highlighting must
   be inline. bash/csharp aren't in the vendored Prism build and fall back to
   plain text (`scripts/generate-wechat-html.js`)
+- Inside code blocks, newlines are baked in as `<br/>` and spaces as `&nbsp;`
+  — WeChat's paste sanitizer collapses raw whitespace text nodes between
+  spans, gluing all code onto one line (`hardenCodeWhitespace`)
 - `<a>` tags are emitted ONLY for WeChat-internal (`mp.weixin.qq.com`) links —
   WeChat rejects anchors pointing outside WeChat. External links render as
   link-blue text + footnote; raw URLs stay plain copyable text
@@ -244,6 +247,7 @@ send_telegram_doc() {
 | Long code lines clipped on phone | Code style must include `white-space: pre-wrap; word-break: break-all` (see `S.precode`); WeChat ignores `overflow-x` scrolling |
 | Reference list shows no numbers | The `ol` style uses `padding-left: 0`, which clips native markers; emit explicit `[n]` prefixes as plain paragraphs (handled in `scripts/wechat.js`) |
 | In-text reference labels look like plain prose | `wechat.js` wraps former link labels in `<span class="wx-ref">`; `generate-wechat-html.js` swaps the class for inline link-blue styles (`S.ref`/`S.sup`) since WeChat strips classes |
+| Code loses line breaks when pasted into WeChat | WeChat collapses raw `\n`/space text nodes inside `<pre>`; `hardenCodeWhitespace` bakes them in as `<br/>`/`&nbsp;` — never rely on `white-space` alone |
 | 公众号助手 paste loses styles | Paste rendered HTML (from markdown-nice), not raw markdown |
 | Table spacing/gap issues (md2weixin-core) | Theme CSS adds margins to headings before tables. Post-process HTML to reduce `margin-bottom` on `<h3>` preceding `<table>`. See `references/wechat-styles.md` > Tables > Known Issues |
 | Table styles not matching design | Use Method A (custom renderer) for full style control instead of md2weixin-core themes |

@@ -113,17 +113,36 @@ function renderPrismTokens(tokens) {
   return out;
 }
 
+function hardenCodeWhitespace(html) {
+  // WeChat's editor collapses raw newlines and space runs inside <pre> when
+  // the HTML is pasted (they become whitespace-only text nodes between the
+  // highlight spans), gluing all code onto one line. Bake the line structure
+  // into markup instead: \n → <br/>, space → &nbsp; — but only in text,
+  // never inside tags.
+  return html
+    .split(/(<[^>]+>)/g)
+    .map((part) =>
+      part.startsWith('<') ? part : part.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;')
+    )
+    .join('');
+}
+
 function highlightCode(code, lang) {
   // The Prism build vendored by prism-react-renderer covers js/ts/jsx/tsx,
   // go, rust, python, c/cpp, css, yaml, sql, json, md… — but NOT bash or
   // csharp; unsupported languages fall back to unhighlighted text.
   const grammar = Prism.languages[(lang || '').trim().toLowerCase()];
-  if (!grammar) return escapeHtml(code);
-  try {
-    return renderPrismTokens(Prism.tokenize(code, grammar));
-  } catch {
-    return escapeHtml(code);
+  let html;
+  if (!grammar) {
+    html = escapeHtml(code);
+  } else {
+    try {
+      html = renderPrismTokens(Prism.tokenize(code, grammar));
+    } catch {
+      html = escapeHtml(code);
+    }
   }
+  return hardenCodeWhitespace(html);
 }
 
 function createRenderer() {
