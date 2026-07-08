@@ -506,10 +506,10 @@ F5 = {
   title="Figure 6 — A two-axis selection frame",
   figno="Figure 06 — Joint DX, qualitatively",
   h1="Loop latency × verification signal density",
-  subtitle="Qualitative placements from published incremental/watch-mode data — X judges the inner loop, not cold full builds. Dot color follows the quadrant; dot size encodes training-corpus adequacy, the ceiling on first-draft quality. Reliability and ecosystem maturity remain entry tickets outside the chart.",
+  subtitle="Qualitative placements from published incremental/watch-mode data — X judges the inner loop, not cold full builds. Dot color follows the quadrant (purple = ecosystem exemplars, not languages); dot size encodes training-corpus adequacy, the ceiling on first-draft quality. Reliability and ecosystem maturity remain entry tickets outside the chart.",
   quads=("Joint-DX sweet spot", "Trustworthy but sluggish", "Hard mode for agents", "Fast but unverifiable"),
   xl=("slower feedback loop", "faster feedback loop"),
-  legend=("Dot size = training corpus:", "rich", "medium", "thin"),
+  legend=("Dot size = training corpus:", "rich", "medium", "thin", "purple = ecosystem (framework/tool)"),
   yl=("dense verification signals ↑", "sparse signals ↓"),
   pts=[
    ("Rust", 0.55, 0.96, "M", "right"),
@@ -535,10 +535,10 @@ F5 = {
   title="图 6 — 两轴选型框架",
   figno="图 06 — 人机联合 DX（定性）",
   h1="反馈周期 × 验证信号密度",
-  subtitle="位置为基于公开增量/watch 模式数据的定性判断——X 轴衡量内循环而非全量构建；点的颜色随象限；大小表示训练语料充足度，即首稿质量的上限。可靠性与生态成熟度仍是图外的入场券。",
+  subtitle="位置为基于公开增量/watch 模式数据的定性判断——X 轴衡量内循环而非全量构建；点的颜色随象限（紫色为生态层示例，非语言）；大小表示训练语料充足度，即首稿质量的上限。可靠性与生态成熟度仍是图外的入场券。",
   quads=("联合 DX 甜区", "可信但迟缓", "agent 困难模式", "快而不可验证"),
   xl=("反馈循环慢", "反馈循环快"),
-  legend=("点的大小 = 训练语料：", "充足", "一般", "薄弱"),
+  legend=("点的大小 = 训练语料：", "充足", "一般", "薄弱", "紫色 = 生态层（框架/工具）"),
   yl=("验证信号密集 ↑", "信号稀疏 ↓"),
   pts=[
    ("Rust", 0.55, 0.96, "M", "right"),
@@ -563,6 +563,7 @@ F5 = {
 }
 
 SIZES = {"L": 17, "M": 12.5, "S": 9}
+ECO_NAMES = {"Hono + Zod contract", "Hono + Zod 契约", "Bun, today", "Bun（现状）"}
 def quad_color(x, y):
     if x >= 0.5 and y >= 0.5: return "#2e7d32"
     if x < 0.5 and y >= 0.5: return "#01579b"
@@ -574,7 +575,7 @@ for lang, d in F5.items():
         left = x * 100
         top = (1 - y) * 100
         px = SIZES[tier]
-        color = quad_color(x, y)
+        color = "#7b1fa2" if name in ECO_NAMES else quad_color(x, y)
         def dot(margin):
             return f'<div class="dot" style="width:{px}px;height:{px}px;margin:{margin}"></div>'
         if side == "top":
@@ -604,6 +605,8 @@ for lang, d in F5.items():
       <span class="d" style="width:17px;height:17px"></span><span>{d['legend'][1]}</span>
       <span class="d" style="width:12.5px;height:12.5px"></span><span>{d['legend'][2]}</span>
       <span class="d" style="width:9px;height:9px"></span><span>{d['legend'][3]}</span>
+      <span style="color:#d4d4d4">·</span>
+      <span class="d" style="width:12.5px;height:12.5px;background:#7b1fa2"></span><span>{d['legend'][4]}</span>
     </div>"""
     emit("figure-6-quadrant", lang, d["title"], d["figno"], d["h1"], d["subtitle"], body, d["footleft"], F5_CSS)
 
