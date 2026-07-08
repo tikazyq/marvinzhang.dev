@@ -144,21 +144,6 @@ pnpm wechat:list
 
 ---
 
-## Legacy Commands
+## Legacy Workflow
 
-The original two-step workflow is still available:
-
-```bash
-# Two-step process
-pnpm wechat:extract
-pnpm wechat:process
-
-# Combined legacy command
-pnpm wechat:build
-
-# With filters
-node scripts/extract-blog-mermaid.js --locale zh --tags ai
-node scripts/process-blog-for-wechat.js --file rice
-```
-
-See `extract-blog-mermaid.js` and `process-blog-for-wechat.js` for full options.
+The original two-step workflow (`extract-blog-mermaid.js` + `process-blog-for-wechat.js`) has been retired; the scripts are preserved in `scripts/archived/` for reference. Use the unified `pnpm wechat <slug>` command instead.

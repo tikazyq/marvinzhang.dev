@@ -7,13 +7,15 @@ This directory contains active utilities for managing blog content.
 | Script | Purpose | Usage |
 |--------|---------|-------|
 | `wechat.js` | Export articles for WeChat | `pnpm wechat <slug> --zh -o` |
+| `generate-wechat-html.js` | Render WeChat markdown to inline-styled HTML | Called by `wechat.js`; standalone via `pnpm wechat:html` |
+| `medium.js` | Export articles for Medium | `pnpm medium <slug>` |
+| `screenshot-jsx-components.js` | Screenshot JSX/React figures for exports | Called by `wechat.js` / `medium.js` |
 | `validate-zh-bold-formatting-source.js` | Validate Chinese formatting | `pnpm run validate:zh-bold-source` |
-| `validate-zh-bold-formatting.js` | Validate rendered output | `pnpm run validate:zh-bold` |
-| `extract-blog-mermaid.js` | Extract Mermaid diagrams | Internal use |
+| `drafts/scaffold.js` | Scaffold a drafts workspace | `node scripts/drafts/scaffold.js "title" "YYYY-MM-DD"` |
 
 ## Chinese Bold Formatting Validation
 
-AI coding agents sometimes fail to follow MDX bold formatting rules for Chinese articles. Two validators help catch issues:
+AI coding agents sometimes fail to follow MDX bold formatting rules for Chinese articles. The source validator catches issues before commit (also enforced in CI via `.github/workflows/validate-zh-formatting.yml`):
 
 ### Formatting Rules
 
@@ -29,7 +31,7 @@ AI coding agents sometimes fail to follow MDX bold formatting rules for Chinese 
    ❌ **"所有程序行为"** 是一个语义属性
    ```
 
-### Source Validator (Recommended)
+### Source Validator
 
 Fast, static analysis of MDX source files:
 
@@ -41,14 +43,6 @@ pnpm run validate:zh-bold-source
 pnpm run validate:zh-bold-source:fix
 ```
 
-### Rendered Validator
-
-Validates actual rendered HTML using Playwright (requires `npx playwright install chromium`):
-
-```bash
-pnpm run validate:zh-bold
-```
-
 ## WeChat Export
 
 See [WECHAT.md](WECHAT.md) for full documentation.
@@ -58,10 +52,16 @@ See [WECHAT.md](WECHAT.md) for full documentation.
 pnpm wechat <slug> --zh -o
 ```
 
+## Medium Export
+
+See [MEDIUM.md](MEDIUM.md) for full documentation.
+
 ## Archived Scripts
 
-One-time migration scripts are preserved in `archived/` for reference:
+One-time migration scripts and superseded utilities are preserved in `archived/` for reference:
 - `migrate-blog-structure.js` - Migrated nested to flat blog structure
 - `migrate-legacy-articles.js` - Migrated articles/ to blog/
 - `backup-blog.js` - Blog backup utility
+- `extract-blog-mermaid.js` / `process-blog-for-wechat.js` - Legacy two-step WeChat flow (superseded by `wechat.js`)
+- `validate-zh-bold-formatting.js` - Rendered-output validator (superseded by the source validator)
 - Others - Various one-time utilities
