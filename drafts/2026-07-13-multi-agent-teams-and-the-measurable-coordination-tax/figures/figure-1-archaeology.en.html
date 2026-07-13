@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fig. 1 — Three old posts, one question</title>
+<link rel="stylesheet" href="fonts.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .arts { display: flex; flex-direction: column; gap: 14px; }
+  .art { border: 1.5px solid; border-radius: 12px; background: #fff; display: flex; }
+  .art .side { width: 226px; flex: none; padding: 16px 18px; border-right: 1.5px dashed var(--line); }
+  .art .side .name { font-weight: 600; font-size: 16.5px; line-height: 1.35; }
+  .art .side .date { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--ink-faint); margin-top: 6px; }
+  .art .fields { padding: 14px 20px; flex: 1; display: flex; flex-direction: column; gap: 7px; }
+  .art .row { display: flex; font-size: 14.5px; line-height: 1.45; }
+  .art .row .k {
+    width: 118px; flex: none; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-faint); padding-top: 3px;
+  }
+  .art .row .v { flex: 1; color: var(--ink); }
+  .art .row .v b { font-weight: 600; }
+  .a1 { border-color: var(--info-stroke); } .a1 .side { background: #f4faff; } .a1 .name { color: var(--info-stroke); }
+  .a2 { border-color: var(--warn-stroke); } .a2 .side { background: #fffaf2; } .a2 .name { color: var(--warn-stroke); }
+  .a3 { border-color: var(--ok-stroke); }   .a3 .side { background: #f3faf4; } .a3 .name { color: var(--ok-stroke); }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">FIG 01 — SITE ARCHAEOLOGY</div>
+  <h1>Three old posts, one question</h1>
+  <div class="subtitle">Three articles from 2021–2022, each on its own topic — all circling the same question in hindsight.</div>
+</div>
+<div class="arts"><div class="art a1"><div class="side"><div class="name">Why Modern Software Engineering Needs Project Management</div><div class="date">2021-04</div></div><div class="fields"><div class="row"><div class="k">Topic</div><div class="v">Waterfall vs. agile: how process protects delivery</div></div><div class="row"><div class="k">Answer then</div><div class="v">Embrace agile, but keep the plan — <b>&ldquo;a bad plan is better than no plan&rdquo;</b></div></div><div class="row"><div class="k">Read today</div><div class="v">The real fight was over how to amortise <b>alignment cost</b></div></div></div></div><div class="art a2"><div class="side"><div class="name">Is Your Team Practising Agile Correctly?</div><div class="date">2022-09</div></div><div class="fields"><div class="row"><div class="k">Topic</div><div class="v">“Agile = fast” as the practitioners’ biggest myth</div></div><div class="row"><div class="k">Answer then</div><div class="v"><b>Agile does not necessarily mean fast</b> — it adds work</div></div><div class="row"><div class="k">Read today</div><div class="v">Small teams, short iterations = pushing N back under N*</div></div></div></div><div class="art a3"><div class="side"><div class="name">Why Consider Complexity in Software Projects?</div><div class="date">2022-12</div></div><div class="fields"><div class="row"><div class="k">Topic</div><div class="v">Complexity grows with scale; uncontrolled, it kills projects</div></div><div class="row"><div class="k">Answer then</div><div class="v">Contain complexity through architecture</div></div><div class="row"><div class="k">Read today</div><div class="v">“Exponential” was really <b>quadratic</b> — the κN(N−1) term</div></div></div></div></div>
+<div class="takeaway">All three converge on one question: <b>why do more people make a team slower?</b> Back then you could only design around it; now, for the first time, it can be measured.</div>
+<div class="footer"><span>marvinzhang.dev</span><span>FIG 1 / 5</span></div>
+</div>
+</body>
+</html>

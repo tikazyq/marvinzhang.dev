@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 1 — 三篇旧文，同一个问题</title>
+<link rel="stylesheet" href="fonts.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .arts { display: flex; flex-direction: column; gap: 14px; }
+  .art { border: 1.5px solid; border-radius: 12px; background: #fff; display: flex; }
+  .art .side { width: 226px; flex: none; padding: 16px 18px; border-right: 1.5px dashed var(--line); }
+  .art .side .name { font-weight: 600; font-size: 16.5px; line-height: 1.35; }
+  .art .side .date { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--ink-faint); margin-top: 6px; }
+  .art .fields { padding: 14px 20px; flex: 1; display: flex; flex-direction: column; gap: 7px; }
+  .art .row { display: flex; font-size: 14.5px; line-height: 1.45; }
+  .art .row .k {
+    width: 118px; flex: none; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-faint); padding-top: 3px;
+  }
+  .art .row .v { flex: 1; color: var(--ink); }
+  .art .row .v b { font-weight: 600; }
+  .a1 { border-color: var(--info-stroke); } .a1 .side { background: #f4faff; } .a1 .name { color: var(--info-stroke); }
+  .a2 { border-color: var(--warn-stroke); } .a2 .side { background: #fffaf2; } .a2 .name { color: var(--warn-stroke); }
+  .a3 { border-color: var(--ok-stroke); }   .a3 .side { background: #f3faf4; } .a3 .name { color: var(--ok-stroke); }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 01 — 站内考古</div>
+  <h1>三篇旧文，同一个问题</h1>
+  <div class="subtitle">2021–2022 年的三篇文章各写各的话题，回头看都在绕着同一个问题打转。</div>
+</div>
+<div class="arts"><div class="art a1"><div class="side"><div class="name">为什么现代软件工程离不开项目管理</div><div class="date">2021-04</div></div><div class="fields"><div class="row"><div class="k">话题</div><div class="v">瀑布与敏捷之争：流程如何保住交付</div></div><div class="row"><div class="k">当年的答案</div><div class="v">拥抱敏捷，但流程与计划不可少——<b>&ldquo;坏计划也好过没有计划&rdquo;</b></div></div><div class="row"><div class="k">现在读来</div><div class="v">争的其实是：用哪种流程摊薄<b>对齐成本</b></div></div></div></div><div class="art a2"><div class="side"><div class="name">你的团队在正确实践敏捷吗</div><div class="date">2022-09</div></div><div class="fields"><div class="row"><div class="k">话题</div><div class="v">&ldquo;敏捷 = 快&rdquo;是实践者最大的误区</div></div><div class="row"><div class="k">当年的答案</div><div class="v"><b>敏捷并不一定意味着快</b>，它还会引入额外工作</div></div><div class="row"><div class="k">现在读来</div><div class="v">小团队、短迭代 = 把 N 压回 N* 以内</div></div></div></div><div class="art a3"><div class="side"><div class="name">为什么需要在软件项目中考虑复杂度</div><div class="date">2022-12</div></div><div class="fields"><div class="row"><div class="k">话题</div><div class="v">复杂度随规模增长，失控则项目失败</div></div><div class="row"><div class="k">当年的答案</div><div class="v">用架构手段控制复杂度</div></div><div class="row"><div class="k">现在读来</div><div class="v">&ldquo;指数级&rdquo;其实是<b>平方级</b>——κN(N−1) 那一项</div></div></div></div></div>
+<div class="takeaway">三篇文章殊途同归：<b>人多了，为什么反而慢了？</b>当年只能从流程与架构上&ldquo;防&rdquo;，如今这个问题第一次可以被测量。</div>
+<div class="footer"><span>marvinzhang.dev</span><span>图 1 / 5</span></div>
+</div>
+</body>
+</html>

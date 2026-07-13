@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 2 — 两种拓扑</title>
+<link rel="stylesheet" href="fonts.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .panels { display: flex; gap: 16px; }
+  .panel { flex: 1; border: 1.5px solid; border-radius: 12px; background: #fff; padding: 18px 18px 14px; }
+  .p-mesh { border-color: var(--err-stroke); }
+  .p-star { border-color: var(--ok-stroke); }
+  .panel h2 { margin: 0 0 2px; font-size: 17px; font-weight: 600; }
+  .p-mesh h2 { color: var(--err-stroke); } .p-star h2 { color: var(--ok-stroke); }
+  .panel .sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; }
+  .panel svg { display: block; margin: 0 auto; }
+  .stats { margin-top: 10px; display: flex; gap: 8px; }
+  .stat { flex: 1; border-radius: 9px; padding: 8px 10px; text-align: center; }
+  .p-mesh .stat { background: var(--err-fill); } .p-star .stat { background: var(--ok-fill); }
+  .stat .num { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 17px; }
+  .p-mesh .num { color: var(--err-stroke); } .p-star .num { color: var(--ok-stroke); }
+  .stat .lab { font-size: 11.5px; color: var(--ink-soft); margin-top: 2px; line-height: 1.35; }
+  .trade { margin-top: 16px; display: flex; gap: 12px; }
+  .trade .cell { flex: 1; border-radius: 10px; padding: 11px 15px; font-size: 14px; line-height: 1.5; }
+  .t-down { background: var(--ok-fill); border-left: 4px solid var(--ok-stroke); }
+  .t-up { background: var(--warn-fill); border-left: 4px solid var(--warn-stroke); }
+  .trade b.k { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 02 — 平方换线性</div>
+  <h1>项目经理的本质：一笔拓扑交易</h1>
+  <div class="subtitle">同样 8 个节点，两种协作结构的渠道数量级完全不同。</div>
+</div>
+
+<div class="panels">
+  <div class="panel p-mesh">
+    <h2>人人对齐人人</h2><div class="sub">全连接：渠道数 n(n−1)/2，随人数平方增长</div>
+    <svg width="340" height="200" viewBox="0 0 340 200"><line x1="170.0" y1="26.0" x2="225.2" y2="48.8" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="170.0" y1="26.0" x2="248.0" y2="104.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="170.0" y1="26.0" x2="225.2" y2="159.2" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="170.0" y1="26.0" x2="170.0" y2="182.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="170.0" y1="26.0" x2="114.8" y2="159.2" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="170.0" y1="26.0" x2="92.0" y2="104.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="170.0" y1="26.0" x2="114.8" y2="48.8" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="48.8" x2="248.0" y2="104.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="48.8" x2="225.2" y2="159.2" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="48.8" x2="170.0" y2="182.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="48.8" x2="114.8" y2="159.2" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="48.8" x2="92.0" y2="104.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="48.8" x2="114.8" y2="48.8" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="248.0" y1="104.0" x2="225.2" y2="159.2" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="248.0" y1="104.0" x2="170.0" y2="182.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="248.0" y1="104.0" x2="114.8" y2="159.2" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="248.0" y1="104.0" x2="92.0" y2="104.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="248.0" y1="104.0" x2="114.8" y2="48.8" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="159.2" x2="170.0" y2="182.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="159.2" x2="114.8" y2="159.2" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="159.2" x2="92.0" y2="104.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="225.2" y1="159.2" x2="114.8" y2="48.8" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="170.0" y1="182.0" x2="114.8" y2="159.2" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="170.0" y1="182.0" x2="92.0" y2="104.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="170.0" y1="182.0" x2="114.8" y2="48.8" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="114.8" y1="159.2" x2="92.0" y2="104.0" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="114.8" y1="159.2" x2="114.8" y2="48.8" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><line x1="92.0" y1="104.0" x2="114.8" y2="48.8" stroke="#c62828" stroke-opacity="0.38" stroke-width="1.2"/><circle cx="170.0" cy="26.0" r="9" fill="#ffebee" stroke="#c62828" stroke-width="2"/><circle cx="225.2" cy="48.8" r="9" fill="#ffebee" stroke="#c62828" stroke-width="2"/><circle cx="248.0" cy="104.0" r="9" fill="#ffebee" stroke="#c62828" stroke-width="2"/><circle cx="225.2" cy="159.2" r="9" fill="#ffebee" stroke="#c62828" stroke-width="2"/><circle cx="170.0" cy="182.0" r="9" fill="#ffebee" stroke="#c62828" stroke-width="2"/><circle cx="114.8" cy="159.2" r="9" fill="#ffebee" stroke="#c62828" stroke-width="2"/><circle cx="92.0" cy="104.0" r="9" fill="#ffebee" stroke="#c62828" stroke-width="2"/><circle cx="114.8" cy="48.8" r="9" fill="#ffebee" stroke="#c62828" stroke-width="2"/></svg>
+    <div class="stats"><div class="stat"><div class="num">6</div><div class="lab">4 人</div></div>
+    <div class="stat"><div class="num">28</div><div class="lab">8 人</div></div>
+    <div class="stat"><div class="num">120</div><div class="lab">16 人</div></div></div>
+  </div>
+  <div class="panel p-star">
+    <h2>人人只对齐 PM</h2><div class="sub">星型：渠道数 n，随人数线性增长</div>
+    <svg width="340" height="200" viewBox="0 0 340 200"><line x1="170.0" y1="104.0" x2="170.0" y2="26.0" stroke="#2e7d32" stroke-opacity="0.55" stroke-width="1.6"/><line x1="170.0" y1="104.0" x2="225.2" y2="48.8" stroke="#2e7d32" stroke-opacity="0.55" stroke-width="1.6"/><line x1="170.0" y1="104.0" x2="248.0" y2="104.0" stroke="#2e7d32" stroke-opacity="0.55" stroke-width="1.6"/><line x1="170.0" y1="104.0" x2="225.2" y2="159.2" stroke="#2e7d32" stroke-opacity="0.55" stroke-width="1.6"/><line x1="170.0" y1="104.0" x2="170.0" y2="182.0" stroke="#2e7d32" stroke-opacity="0.55" stroke-width="1.6"/><line x1="170.0" y1="104.0" x2="114.8" y2="159.2" stroke="#2e7d32" stroke-opacity="0.55" stroke-width="1.6"/><line x1="170.0" y1="104.0" x2="92.0" y2="104.0" stroke="#2e7d32" stroke-opacity="0.55" stroke-width="1.6"/><line x1="170.0" y1="104.0" x2="114.8" y2="48.8" stroke="#2e7d32" stroke-opacity="0.55" stroke-width="1.6"/><circle cx="170.0" cy="26.0" r="9" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><circle cx="225.2" cy="48.8" r="9" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><circle cx="248.0" cy="104.0" r="9" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><circle cx="225.2" cy="159.2" r="9" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><circle cx="170.0" cy="182.0" r="9" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><circle cx="114.8" cy="159.2" r="9" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><circle cx="92.0" cy="104.0" r="9" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><circle cx="114.8" cy="48.8" r="9" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><circle cx="170.0" cy="104.0" r="17" fill="#fff3e0" stroke="#e65100" stroke-width="2.4"/><text x="170.0" y="108.5" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600" fill="#e65100">PM</text></svg>
+    <div class="stats"><div class="stat"><div class="num">4</div><div class="lab">4 人</div></div>
+    <div class="stat"><div class="num">8</div><div class="lab">8 人</div></div>
+    <div class="stat"><div class="num">16</div><div class="lab">16 人</div></div></div>
+  </div>
+</div>
+<div class="trade">
+  <div class="cell t-down"><b class="k">κ ↓</b>&nbsp;&nbsp;平方级的对齐成本被压成线性</div>
+  <div class="cell t-up"><b class="k">σ ↑</b>&nbsp;&nbsp;代价：PM 自己成为新的排队点（串行瓶颈）</div>
+</div>
+
+<div class="takeaway">项目经理（以及 agent 世界的 orchestrator）做的是同一笔交易：<b>用平方换线性</b>——压下 κ，代价是自己成为 σ。</div>
+<div class="footer"><span>marvinzhang.dev</span><span>图 2 / 5</span></div>
+</div>
+</body>
+</html>

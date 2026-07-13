@@ -55,3 +55,25 @@
 - `unlisted: true` retained — remove to publish.
 - Optional `/labs` standalone deploy of the interactive widget + a soft footer pointer (per author note) — not built; flag if wanted.
 - Consider adding `multi-agent` / `scalability` to `blog/tags.yml` if you want them as tags (currently using existing tags to avoid inline-tag warnings).
+
+
+---
+
+## 重写记录（2026-07-13，作者反馈后）
+
+作者退回第一版，诊断：①引子不对味（假想团队开场，无人无事无日期）②翻译腔（英文先写中文翻译；"病历本"等英式隐喻踩文艺腔红线）③配比失衡（管理/职业发展被压成引子，正文成 agent 文献综述）④缺图 ⑤根因：动笔前未与作者对齐。
+
+对齐结论（AskUserQuestion + 追加反馈）：
+- 开场：站内考古（三篇旧文）+ 泛化亲身经历（不特写具体场景）
+- 配比：三线均衡（人类组织 1/3 + agent 1/3 + 职业发展 1/3）
+- 初稿语言：中文先写，英文重述
+- 节奏：大纲对齐后一次成稿
+- 标题：弃《同一条曲线：……复刻人类组织的老病》（翻译腔），改《为什么 AI Agent 团队也逃不过人月神话？》
+- 补五张图，风格对齐 stack-selection（860px 画布、语义色板、双语）
+
+产出：
+- ZH 重写完成（权威版）、EN 重述完成
+- figures/gen_figures.py + render.mjs → 10 张 PNG 至 static/img/blog/{slug}/
+- validate:zh-bold-source 通过；构建验证见提交记录
+
+待办（作者提出，本次不做）：更新写作流程 skill——把"动笔前对齐、中文先写、图为默认交付物"编进 blog-analytical / chat-driven 等 skill。

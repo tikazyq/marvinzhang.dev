@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fig. 3 — Readings from agent teams</title>
+<link rel="stylesheet" href="fonts.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card { border: 1.5px solid; border-radius: 12px; background: #fff; padding: 16px 18px 14px; }
+  .card .num { font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 600; letter-spacing: -0.01em; }
+  .card .what { font-size: 14.5px; font-weight: 600; margin-top: 5px; line-height: 1.4; }
+  .card .how { font-size: 12.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.45; }
+  .c-ok   { border-color: var(--ok-stroke); }   .c-ok .num { color: var(--ok-stroke); }
+  .c-err  { border-color: var(--err-stroke); }  .c-err .num { color: var(--err-stroke); }
+  .c-warn { border-color: var(--warn-stroke); } .c-warn .num { color: var(--warn-stroke); }
+  .c-hi   { border-color: var(--hi-stroke); }   .c-hi .num { color: var(--hi-stroke); }
+  .wide { margin-top: 14px; border: 1.5px solid var(--info-stroke); border-radius: 12px; background: #fff;
+          padding: 13px 18px; display: flex; align-items: center; gap: 16px; }
+  .wide .num { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 600; color: var(--info-stroke); flex: none; }
+  .wide .txt { font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">FIG 03 — THE RELAPSE</div>
+  <h1>Five readings from agent teams</h1>
+  <div class="subtitle">Empirical results on multi-agent systems — each one has a textbook ancestor in management science.</div>
+</div>
+<div class="grid"><div class="card c-ok"><div class="num">+80.9%</div><div class="what">Parallelisable tasks: multi-agent genuinely works</div><div class="how">Centralized coordination vs. single agent (Kim et al., 180 configs)</div></div><div class="card c-err"><div class="num">−39%~−70%</div><div class="what">Sequential tasks: every multi-agent variant degrades</div><div class="how">Beyond 3–4 agents, more only makes it worse (ibid.)</div></div><div class="card c-warn"><div class="num">15%–49%</div><div class="what">Lost by merely going to two agents</div><div class="how">Share of single-agent performance lost at k=2 (Silo-Bench, RCC)</div></div><div class="card c-hi"><div class="num">17.2× → 4.4×</div><div class="what">Error amplification: the orchestrator reins it in</div><div class="how">Independent swarm vs. centralized coordination (Kim et al.)</div></div></div><div class="wide"><div class="num">≈37%</div><div class="txt">Across 1,600+ execution traces, the single largest failure class is <b>inter-agent misalignment</b> — talking past each other, dropping context, re-litigating settled decisions (MAST, Cemri et al., NeurIPS 2025)</div></div>
+<div class="takeaway">The researchers’ phrase is “architecture–task alignment determines collaborative success.” In plain words: <b>whether the work splits decides whether more agents help or hurt.</b></div>
+<div class="footer"><span>arXiv 2512.08296 · 2503.13657 · 2603.01045</span><span>FIG 3 / 5</span></div>
+</div>
+</body>
+</html>
