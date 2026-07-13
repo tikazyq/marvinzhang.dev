@@ -68,3 +68,6 @@ tmp/
 drafts/**/figures/fonts/
 drafts/**/figures/fonts.css
 drafts/**/figures/fonts.css.orig
+
+# Python bytecode in figure generators
+drafts/**/figures/__pycache__/
