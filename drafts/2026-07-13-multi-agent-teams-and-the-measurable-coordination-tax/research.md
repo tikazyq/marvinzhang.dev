@@ -181,3 +181,15 @@ Why agents are the first fully instrumentable organisation (three classic obstac
 - **"1.5×–7× necessary tokens"** — no primary source. Dropped.
 - **"5-agent code review: 42k–71k tokens/call, 29–38% redundant context"** — appears in no primary; the cited arXiv 2604.17400 actually reports 27.3% reduction. Numbers dropped; PSMAS's real 27.3% figure kept.
 - **"E1/E2/E3/E4 four-dimension evaluation framework" (arXiv 2605.02801)** — that ID is an unrelated RL paper; framework unfindable. Dropped entirely.
+
+---
+
+## 追加验算（2026-07-13，作者提问"能不能压 σ"）
+
+σ vs κ 不对称性（agent 模式参数验算，公式 N\* = √((1−σ)/κ)）：
+- 基线 σ=0.08, κ=0.02 → N\* = 6.8
+- 压 σ 四倍（0.08→0.02，κ 不变）→ N\* = 7.0（曲线抬高 ~18%，峰位几乎不动）
+- 压 κ 四倍（0.02→0.005，σ 不变）→ N\* = 13.6（有效协作规模翻倍）
+
+结论写入职业发展一节：σ 线性、可用钱买（加环境/并发/副本），不构成稀缺；κ 平方、只能靠设计。压 σ 让现有团队更顺，压 κ 推远规模天花板。
+另：职业发展一节新增站内引用《除了画架构图，架构师还需要些什么》(/blog/architect-essential-skills)——架构师的"软技能"（沟通/协调/划边界）= 压 κ 的活。
