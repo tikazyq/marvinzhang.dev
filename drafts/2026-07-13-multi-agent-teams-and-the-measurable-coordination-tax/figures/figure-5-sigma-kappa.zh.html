@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 5 — σ 能买，κ 只能设计</title>
+<link rel="stylesheet" href="fonts.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .duo { display: flex; gap: 16px; }
+  .pan { flex: 1; border: 1.5px solid; border-radius: 12px; background: #fff; padding: 15px 16px 12px; }
+  .p-sig { border-color: var(--info-stroke); } .p-kap { border-color: var(--hi-stroke); }
+  .pan h2 { margin: 0 0 1px; font-size: 16px; font-weight: 600; }
+  .p-sig h2 { color: var(--info-stroke); } .p-kap h2 { color: var(--hi-stroke); }
+  .pan .sub { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 8px; }
+  .pan svg { display: block; }
+  .verdict { margin-top: 9px; border-radius: 9px; padding: 8px 12px; font-size: 13px; line-height: 1.45; }
+  .p-sig .verdict { background: var(--info-fill); color: var(--info-stroke); }
+  .p-kap .verdict { background: var(--hi-fill); color: var(--hi-stroke); }
+  .verdict b { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 05 — 两个旋钮</div>
+  <h1>σ 能买，κ 只能设计</h1>
+  <div class="subtitle">同样压低四倍，两个参数对曲线的影响完全不同（灰色虚线为基线 σ=0.08、κ=0.02，λ=1，两图同一纵轴）。</div>
+</div>
+<div class="duo"><div class="pan p-sig"><h2>压 σ：四倍</h2><div class="sub">σ 0.08 → 0.02（κ 不变）——加机器、加环境、加并发，钱能办到</div><svg width="340" height="190" viewBox="0 0 340 190">
+<line x1="30" y1="26" x2="30" y2="168" stroke="#8a8a8a" stroke-width="1"/>
+<line x1="30" y1="168" x2="330" y2="168" stroke="#8a8a8a" stroke-width="1"/>
+<text x="30.0" y="183" font-size="10" fill="#8a8a8a" text-anchor="middle">2</text>
+<text x="180.0" y="183" font-size="10" fill="#8a8a8a" text-anchor="middle">N</text>
+<text x="330.0" y="183" font-size="10" fill="#8a8a8a" text-anchor="middle">24</text>
+<path d="M30.0,119.2L36.8,110.9L43.6,104.0L50.5,98.5L57.3,94.2L64.1,91.0L70.9,88.6L77.7,87.0L84.5,86.1L91.4,85.6L98.2,85.6L105.0,85.9L111.8,86.5L118.6,87.3L125.5,88.2L132.3,89.3L139.1,90.4L145.9,91.6L152.7,92.9L159.5,94.2L166.4,95.5L173.2,96.8L180.0,98.1L186.8,99.4L193.6,100.7L200.5,102.0L207.3,103.2L214.1,104.4L220.9,105.6L227.7,106.7L234.5,107.9L241.4,109.0L248.2,110.0L255.0,111.1L261.8,112.1L268.6,113.1L275.5,114.0L282.3,115.0L289.1,115.9L295.9,116.7L302.7,117.6L309.5,118.4L316.4,119.2L323.2,120.0L330.0,120.8" fill="none" stroke="#b0b0b0" stroke-width="1.8" stroke-dasharray="5 4"/>
+<path d="M30.0,116.5L36.8,106.2L43.6,97.4L50.5,90.0L57.3,84.0L64.1,79.3L70.9,75.7L77.7,73.2L84.5,71.6L91.4,70.7L98.2,70.5L105.0,70.7L111.8,71.3L118.6,72.3L125.5,73.5L132.3,74.8L139.1,76.4L145.9,78.0L152.7,79.7L159.5,81.4L166.4,83.1L173.2,84.8L180.0,86.6L186.8,88.3L193.6,90.0L200.5,91.6L207.3,93.3L214.1,94.8L220.9,96.4L227.7,97.9L234.5,99.3L241.4,100.7L248.2,102.1L255.0,103.4L261.8,104.7L268.6,106.0L275.5,107.2L282.3,108.4L289.1,109.5L295.9,110.6L302.7,111.6L309.5,112.7L316.4,113.7L323.2,114.6L330.0,115.6" fill="none" stroke="#01579b" stroke-width="2.6"/>
+<line x1="95.2" y1="85.6" x2="95.2" y2="168" stroke="#b0b0b0" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="98.2" y1="70.5" x2="98.2" y2="168" stroke="#01579b" stroke-width="1.2" stroke-dasharray="3 3"/>
+<circle cx="95.2" cy="85.6" r="3.5" fill="#b0b0b0"/>
+<circle cx="98.2" cy="70.5" r="4" fill="#01579b"/>
+<text x="98.2" y="17" font-size="11.5" font-weight="700" fill="#01579b" text-anchor="middle" font-family="JetBrains Mono, monospace">N* 6.8 → 7.0</text>
+</svg><div class="verdict">曲线整体抬高，峰位几乎不动：<b>6.8 → 7.0</b>。队伍还是这么大，只是干得更顺。</div></div><div class="pan p-kap"><h2>压 κ：四倍</h2><div class="sub">κ 0.02 → 0.005（σ 不变）——拆分、协议、验证、编排，只能靠设计</div><svg width="340" height="190" viewBox="0 0 340 190">
+<line x1="30" y1="26" x2="30" y2="168" stroke="#8a8a8a" stroke-width="1"/>
+<line x1="30" y1="168" x2="330" y2="168" stroke="#8a8a8a" stroke-width="1"/>
+<text x="30.0" y="183" font-size="10" fill="#8a8a8a" text-anchor="middle">2</text>
+<text x="180.0" y="183" font-size="10" fill="#8a8a8a" text-anchor="middle">N</text>
+<text x="330.0" y="183" font-size="10" fill="#8a8a8a" text-anchor="middle">24</text>
+<path d="M30.0,119.2L36.8,110.9L43.6,104.0L50.5,98.5L57.3,94.2L64.1,91.0L70.9,88.6L77.7,87.0L84.5,86.1L91.4,85.6L98.2,85.6L105.0,85.9L111.8,86.5L118.6,87.3L125.5,88.2L132.3,89.3L139.1,90.4L145.9,91.6L152.7,92.9L159.5,94.2L166.4,95.5L173.2,96.8L180.0,98.1L186.8,99.4L193.6,100.7L200.5,102.0L207.3,103.2L214.1,104.4L220.9,105.6L227.7,106.7L234.5,107.9L241.4,109.0L248.2,110.0L255.0,111.1L261.8,112.1L268.6,113.1L275.5,114.0L282.3,115.0L289.1,115.9L295.9,116.7L302.7,117.6L309.5,118.4L316.4,119.2L323.2,120.0L330.0,120.8" fill="none" stroke="#b0b0b0" stroke-width="1.8" stroke-dasharray="5 4"/>
+<path d="M30.0,117.9L36.8,108.0L43.6,99.2L50.5,91.2L57.3,84.0L64.1,77.6L70.9,71.8L77.7,66.8L84.5,62.3L91.4,58.3L98.2,54.9L105.0,51.9L111.8,49.3L118.6,47.0L125.5,45.1L132.3,43.5L139.1,42.2L145.9,41.1L152.7,40.2L159.5,39.5L166.4,39.0L173.2,38.6L180.0,38.4L186.8,38.4L193.6,38.4L200.5,38.5L207.3,38.8L214.1,39.1L220.9,39.5L227.7,39.9L234.5,40.5L241.4,41.0L248.2,41.6L255.0,42.3L261.8,43.0L268.6,43.7L275.5,44.4L282.3,45.2L289.1,46.0L295.9,46.8L302.7,47.6L309.5,48.4L316.4,49.3L323.2,50.1L330.0,51.0" fill="none" stroke="#7b1fa2" stroke-width="2.6"/>
+<line x1="95.2" y1="85.6" x2="95.2" y2="168" stroke="#b0b0b0" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="187.7" y1="38.4" x2="187.7" y2="168" stroke="#7b1fa2" stroke-width="1.2" stroke-dasharray="3 3"/>
+<circle cx="95.2" cy="85.6" r="3.5" fill="#b0b0b0"/>
+<circle cx="187.7" cy="38.4" r="4" fill="#7b1fa2"/>
+<text x="187.7" y="17" font-size="11.5" font-weight="700" fill="#7b1fa2" text-anchor="middle" font-family="JetBrains Mono, monospace">N* 6.8 → 13.6</text>
+</svg><div class="verdict">峰值右移一倍：<b>6.8 → 13.6</b>。能有效协作的规模，天花板被推出去了。</div></div></div>
+<div class="takeaway"><b>压 σ 是让现有的队伍干得更顺，压 κ 才是把队伍规模的天花板往外推</b>——这也是为什么稀缺的位置在 κ。</div>
+<div class="footer"><span><span style="text-transform:none">λ=1 · 基线 σ=0.08 κ=0.02</span></span><span>图 5 / 6</span></div>
+</div>
+</body>
+</html>
