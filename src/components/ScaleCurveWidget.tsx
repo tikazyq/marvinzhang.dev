@@ -64,6 +64,8 @@ const STR = {
     eff: 'Effective share',
     tax: 'Coordination tax',
     unitShort: { human: 'PR/wk', agent: 'tasks' },
+    modeGroup: 'Team type',
+    chartLabel: { human: 'Human team: output versus team size', agent: 'AI agent team: output versus team size' },
   },
   zh: {
     modeHuman: '人类团队',
@@ -82,6 +84,8 @@ const STR = {
     eff: '有效占比',
     tax: '协调税率',
     unitShort: { human: 'PR/周', agent: '任务' },
+    modeGroup: '团队类型',
+    chartLabel: { human: '人类团队：产出与团队规模的关系', agent: 'AI agent 团队：产出与团队规模的关系' },
   },
 };
 
@@ -91,6 +95,7 @@ interface Props {
 
 export default function ScaleCurveWidget({ lang = 'en' }: Props): React.ReactElement {
   const t = STR[lang];
+  const uid = React.useId();
   const [mode, setMode] = React.useState<Mode>('human');
   const [n, setN] = React.useState<number>(16);
 
@@ -137,14 +142,14 @@ export default function ScaleCurveWidget({ lang = 'en' }: Props): React.ReactEle
   const ns = nStar(p);
   const xSel = throughput(n, p);
   const effSel = efficiency(n, p);
-  const clipId = `scw-clip-${mode}`;
+  const clipId = `scw-clip-${uid.replace(/[^a-zA-Z0-9]/g, '')}-${mode}`;
 
   const xTicks = [2, 6, 10, 14, 18, 22];
 
   return (
     <div className={styles.widget}>
       <div className={styles.header}>
-        <div className={styles.toggle} role="tablist">
+        <div className={styles.toggle} role="group" aria-label={t.modeGroup}>
           <button
             type="button"
             className={`${styles.toggleBtn} ${mode === 'human' ? styles.toggleActive : ''}`}
@@ -171,7 +176,7 @@ export default function ScaleCurveWidget({ lang = 'en' }: Props): React.ReactEle
           className={styles.chart}
           viewBox={`0 0 ${W} ${H}`}
           role="img"
-          aria-label={`${mode === 'human' ? t.modeHuman : t.modeAgent}: output vs team size`}
+          aria-label={t.chartLabel[mode]}
         >
           <defs>
             <clipPath id={clipId}>
