@@ -1,0 +1,227 @@
+/**
+ * ScaleCurveWidget — theme-aware styling.
+ * Colors are driven by CSS variables so the SVG follows the site's
+ * light/dark theme with no JS and no hydration flash.
+ */
+
+.widget {
+  /* Light theme palette (defaults) */
+  --scw-surface: #f8fafc;
+  --scw-surface-2: #ffffff;
+  --scw-border: #e2e8f0;
+  --scw-grid: #eef2f7;
+  --scw-axis: #94a3b8;
+  --scw-text: #1e293b;
+  --scw-text-sub: #64748b;
+  --scw-ideal: #cbd5e1;
+  --scw-actual: #2563eb;
+  --scw-actual-fill: rgba(37, 99, 235, 0.12);
+  --scw-gold: #d9930b;
+  --scw-tax: #fb7185;
+  --scw-toggle-bg: #eef2f7;
+  --scw-toggle-active: #2563eb;
+
+  max-width: 640px;
+  margin: 1.75rem auto;
+  padding: 1.1rem 1.15rem 1.25rem;
+  background: var(--scw-surface);
+  border: 1px solid var(--scw-border);
+  border-radius: 14px;
+  color: var(--scw-text);
+  font-size: 0.95rem;
+}
+
+:global([data-theme='dark']) .widget {
+  --scw-surface: #12161d;
+  --scw-surface-2: #0d1117;
+  --scw-border: #1e2a3a;
+  --scw-grid: #1a2230;
+  --scw-axis: #64748b;
+  --scw-text: #e2e8f0;
+  --scw-text-sub: #94a3b8;
+  --scw-ideal: #334155;
+  --scw-actual: #4d8eff;
+  --scw-actual-fill: rgba(77, 142, 255, 0.16);
+  --scw-gold: #fbbf24;
+  --scw-tax: #fb7185;
+  --scw-toggle-bg: #1a2230;
+  --scw-toggle-active: #4d8eff;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+}
+
+.toggle {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--scw-toggle-bg);
+  border-radius: 10px;
+  gap: 2px;
+}
+
+.toggleBtn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--scw-text-sub);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.34rem 0.72rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+  white-space: nowrap;
+}
+
+.toggleBtn:hover {
+  color: var(--scw-text);
+}
+
+.toggleActive {
+  background: var(--scw-surface-2);
+  color: var(--scw-toggle-active);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.caption {
+  font-size: 0.78rem;
+  color: var(--scw-text-sub);
+  line-height: 1.5;
+  margin: 0.1rem 0 0.7rem;
+}
+
+.chartWrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  touch-action: pan-y;
+}
+
+/* SVG element styling via classes so paths (computed in JS) stay theme-aware */
+.gridLine { stroke: var(--scw-grid); stroke-width: 1; }
+.axisLine { stroke: var(--scw-axis); stroke-width: 1; }
+.axisLabel { fill: var(--scw-text-sub); font-size: 11px; }
+.axisTitle { fill: var(--scw-text-sub); font-size: 11px; font-weight: 600; }
+
+.idealLine {
+  stroke: var(--scw-ideal);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+  fill: none;
+}
+.idealLabel { fill: var(--scw-axis); font-size: 10.5px; }
+
+.actualArea { fill: var(--scw-actual-fill); stroke: none; }
+.actualLine {
+  stroke: var(--scw-actual);
+  stroke-width: 2.5;
+  fill: none;
+  transition: d 0.4s ease;
+}
+
+.starLine { stroke: var(--scw-gold); stroke-width: 1.4; stroke-dasharray: 4 3; }
+.starDot { fill: var(--scw-gold); }
+.starLabel { fill: var(--scw-gold); font-size: 10.5px; font-weight: 700; }
+
+.pickGuide { stroke: var(--scw-actual); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.55; }
+.pickDot { fill: var(--scw-surface-2); stroke: var(--scw-actual); stroke-width: 2.5; }
+
+.controls {
+  margin-top: 0.9rem;
+}
+
+.sliderRow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.9rem;
+}
+
+.sliderLabel {
+  font-size: 0.82rem;
+  color: var(--scw-text-sub);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sliderVal {
+  color: var(--scw-actual);
+  font-variant-numeric: tabular-nums;
+}
+
+.slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--scw-toggle-bg);
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--scw-actual);
+  cursor: pointer;
+  border: 2px solid var(--scw-surface-2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.slider::-moz-range-thumb {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--scw-actual);
+  cursor: pointer;
+  border: 2px solid var(--scw-surface-2);
+}
+
+.readouts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.stat {
+  background: var(--scw-surface-2);
+  border: 1px solid var(--scw-border);
+  border-radius: 10px;
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+}
+
+.statVal {
+  font-size: 1.28rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.statValActual { color: var(--scw-actual); }
+.statValTax { color: var(--scw-tax); }
+
+.statLabel {
+  font-size: 0.72rem;
+  color: var(--scw-text-sub);
+  margin-top: 0.25rem;
+  line-height: 1.25;
+}
+
+@media (max-width: 480px) {
+  .widget { padding: 0.9rem 0.75rem 1rem; }
+  .statVal { font-size: 1.1rem; }
+  .toggleBtn { padding: 0.3rem 0.55rem; font-size: 0.78rem; }
+}

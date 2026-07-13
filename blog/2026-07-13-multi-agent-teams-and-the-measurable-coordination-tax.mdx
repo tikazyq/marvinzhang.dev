@@ -1,0 +1,109 @@
+---
+slug: multi-agent-teams-and-the-measurable-coordination-tax
+title: "The Same Curve: What the Mythical Man-Month Predicted About AI Agents"
+authors: ["marvin"]
+tags: ["ai", "agents", "systems-design", "architecture", "software-engineering"]
+date: 2026-07-13
+unlisted: true
+---
+
+import ScaleCurveWidget from '@site/src/components/ScaleCurveWidget';
+
+{/* Section-by-section English draft. Authoritative source for the English version. */}
+{/* Filename date (2026-07-13) and frontmatter date must match. */}
+
+Picture a team of sixteen engineers. On paper it looks like eight times the two-person team it grew out of, and the budget certainly treats it that way. But if you fit that team to the mathematics of how organisations actually scale — I will get to the formula shortly — a strange number falls out. Those sixteen people ship the weekly output of roughly **3.4** full-time engineers. Not sixteen. Not eight. Three point four. Worse, the model says the sixteen-person team ships *less* per week than the same team did at eight people: throughput peaks somewhere around eight and then bends back down. The other twelve-and-change salaries are not idle. They are busy — busy coordinating, waiting, re-explaining, reconciling. The work is real. It just isn't the work you hired them for.
+
+Those figures come from an **illustrative model**, not a payroll audit — a curve fit I will show you the knobs on, not a survey of real companies. Hold the exact numbers loosely. Hold the *shape* tightly, because the shape is the whole story, and it just showed up somewhere new.
+
+Swap the humans for AI coding agents and the curve does not flatten out of gratitude. In late 2025 a team from MIT and Google Research ran [a controlled study of agent systems](https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/) across 180 configurations. On tasks that genuinely parallelise, more agents helped a lot — centralized coordination beat a single agent by **80.9%**. But on tasks that have to happen in order, *every* multi-agent variant they tested did **worse** than one agent alone, by **39 to 70%**. Their practical ceiling before per-agent reasoning gets too thin: **three to four agents**. A separate 2026 benchmark, [Silo-Bench](https://arxiv.org/abs/2603.01045), found that at just **two** agents you have already forfeited **15 to 49%** of what a single agent could do.
+
+Same curve. The disease that made your sixteen-person team ship like three is now reproducing itself, to the decimal, inside your agent fleet. Here is the twist worth an article: the disease is fifty years old and thoroughly diagnosed — but for the first time in the history of organisations, we can finally *measure* it exactly.
+
+{/* truncate */}
+
+Before the argument, feel the shape yourself. Drag the slider; flip between a human team and an agent team. The parameters differ, but the curve is deliberately the same.
+
+<ScaleCurveWidget lang="en" />
+
+*Both modes obey one equation. Past the sweet spot, every unit you add buys less than the last — until it buys nothing, then buys backwards. That downturn is not a bug in your team. It is a property of coordination itself.*
+
+## The math that names the disease
+
+The curve has a name and an author. In 2007 Neil Gunther published the **[Universal Scalability Law](https://www.perfdynamics.com/Manifesto/USLscalability.pdf)** in *Guerrilla Capacity Planning*, originally to explain why adding CPUs to a database stopped helping. It turns out to describe any system where independent workers share something. Here it is, once — and then I promise to put it away:
+
+```
+              λN
+X(N) = ───────────────────────
+        1 + σ(N−1) + κN(N−1)
+```
+
+Three knobs, and each one translates into plain English about teams:
+
+- **λ — solo throughput.** What one worker gets done alone, with nobody to talk to. In the numerator, `λN` is the fantasy: perfect linear scaling, N workers doing N times the work. Everything below the line is the tax.
+- **σ — contention.** The cost of *fighting over the shared resource* — the one database lock, the one staging environment, the one reviewer everyone needs. It grows with N, linearly. Annoying, survivable.
+- **κ — coherence.** The cost of *keeping everyone on the same page*. This is the killer, because it carries the term `N(N−1)` — it grows with the **square** of the team. Every new member has to stay in sync with every existing member.
+
+That κ·N² term is not a new idea. It is Fred Brooks's [*Mythical Man-Month*](https://en.wikipedia.org/wiki/The_Mythical_Man-Month) (1975) written as algebra. Brooks counted the communication paths in a team of n people and got n(n−1)/2: four people have six pairwise channels, sixteen people have a hundred and twenty. The growth is quadratic, and it is why "adding manpower to a late software project makes it later." Gunther's κ is the price tag on each of those paths.
+
+The algebra even hands you the famous advice for free. Take the derivative of X(N), set it to zero, and the peak sits at `N* = √((1−σ)/κ)`. For the human parameters in the widget, that is about eight. The "two-pizza team" was never folklore. It is the closed-form maximum of a curve, and it moves exactly where you'd expect: crank κ up and N\* slides left, toward smaller teams.
+
+If you want a picture for the two coefficients, use a kitchen. σ is the cooks elbowing each other for the single stove — irritating, but it caps out. κ is everyone shouting orders across a crowded kitchen so nobody plates the wrong dish — and the shouting gets quadratically worse as you hire. The fix humanity invented is the ticket rail: a structural investment that lets cooks coordinate through a cheap protocol instead of a hundred and twenty simultaneous conversations. Remember the ticket rail. It is where this ends up.
+
+That is the last you'll see of the formula. From here the question is not *what is the law* — Gunther settled that — but *what can we finally do with it now that the workers are made of tokens*.
+
+## Body one: the agent team's medical chart
+
+Read the agent research with the USL in hand and it stops looking like a catalogue of surprises. It looks like a team you have met before.
+
+Start with the failures. In [*Why Do Multi-Agent LLM Systems Fail?*](https://arxiv.org/abs/2503.13657) — the paper behind MAST, the Multi-Agent System Failure Taxonomy, out of Berkeley and presented at NeurIPS 2025 — the authors hand-annotated over 1,600 execution traces across seven popular frameworks. The failure rates are not encouraging: from roughly 40% up to 86%, with ChatDev finishing correct as little as 25% of the time. But the diagnosis is the interesting part. Sort the failures and about **37%** are what they call *inter-agent misalignment* — agents talking past each other, dropping context, re-litigating decisions a teammate already made. Another 42% are specification problems and 21% are verification gaps. In USL terms, that middle third is κ, itemised. It is the shouting-across-the-kitchen bucket, and it is the single largest coordination category.
+
+The MIT–Google study puts a coefficient on the same instinct. Across their configurations, the strongest single predictor of whether a multi-agent system helps or hurts is what they name the **tool-coordination trade-off** (β = −0.330): the more a task leans on tool use, the more the coordination overhead eats the benefit. And they measured how errors travel. Let independent agents run without a coordinator and a single mistake amplifies **17.2×** as it propagates unchecked. Route everything through a central coordinator and that containment improves to **4.4×**.
+
+Look closely at that trade, because it is the oldest move in management. The orchestrator is the agent world's project manager. Putting one in charge presses κ down — instead of every agent syncing with every other agent, they sync through the coordinator, and the quadratic mess of paths collapses toward a star. But the coordinator has to touch everything, and a thing that touches everything is a serial bottleneck. You bought a lower κ by **becoming σ yourself**. Trading quadratic coordination cost for a linear queue is precisely the bargain a human PM strikes, and precisely why the fix is real but never free.
+
+Now the honest counterweight, because the story is not "multi-agent bad." When the task is genuinely parallel, more agents win, and win big. Anthropic reported that their [multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) beat single-agent Claude Opus 4 by **90.2%** on breadth-first research — the kind of job where you want ten independent librarians fanning out, not one reading serially. Google's own data agrees: on parallelisable work, coordination *helped* by that same 80.9%. The engineering team at Cognition first argued, in ["Don't Build Multi-Agents,"](https://cognition.com/blog/dont-build-multi-agents) that fragile context-sharing made most multi-agent setups a mistake — then, months later, described in ["what's actually working"](https://cognition.com/blog/multi-agents-working) where the pattern earns its keep: reads fan out, writes stay single-threaded. Both essays are pointing at the same rule the MIT–Google team stated outright — **architecture–task alignment determines collaborative success**. Parallel work rewards more agents. Sequential work punishes them. That is not a paradox. It is the curve: tasks with a high κ have their N\* jammed down near one, and no amount of orchestration cleverness moves a square-law peak very far.
+
+## Body two: the first organisation you can actually measure
+
+Everything so far is a re-run. Here is what is genuinely new — and it is not about agents being worse than us. It is about agents being *legible* in a way no human organisation has ever been.
+
+Economists have wanted to measure coordination cost for a century. They mostly couldn't, and three walls stood in the way.
+
+First, **there is no log.** You cannot instrument a company. You cannot attach a profiler to a hallway conversation, timestamp the moment a decision quietly diverged in two people's heads, or total up the tokens burned in a status meeting. The raw event stream of human coordination is simply not recorded, and never was.
+
+Second, **you cannot re-run it.** The cleanest way to measure the cost of team size would be to run the exact same quarter with eight people and with sixteen, everything else held fixed, and diff the output. No company can do this. History runs once. Every claim about "the right team size" is an anecdote wearing a lab coat, because the counterfactual is unobservable.
+
+Third, **people game the metric.** The moment you measure something and attach consequences, [Goodhart's Law](https://en.wikipedia.org/wiki/Goodhart%27s_law) bites: the measure stops measuring. Count lines of code and you get verbose code. Count tickets closed and tickets fragment. Humans optimise against any observability layer they can see, which corrupts the very number you were trying to trust.
+
+Agents knock down all three walls at once.
+
+**The log is total.** Every agent interaction is already tokens through an API, which means it is already accounted, already timestamped, already complete. There is no hallway conversation that escapes the ledger, because there is no hallway. The event stream org economics never had is, for an agent system, the *default artefact* — you have to work to throw it away.
+
+**N is a free variable.** Take a fixed batch of tasks and run it with two agents, then four, then eight, then sixteen, everything else pinned. This is the counterfactual no company can buy, and for agents it costs an afternoon and some inference budget. Silo-Bench's whole method is exactly this — sweep the agent count, hold the task set, watch what happens. You are running the randomised experiment that human org design could only ever daydream about.
+
+**And agents don't game the ledger.** An agent is not angling for promotion by inflating its token count; it isn't aware the accounting exists. The Goodhart corruption that rots human metrics simply has no foothold. The number stays honest because nobody inside the system has an incentive to bend it.
+
+So we can finally measure the man-month. But — and this is the part it would be easy to get wrong — *measuring it well is not "count the messages between agents."* That intuition is a trap, and two recent results spring it.
+
+The first is [AgentTaxo](https://openreview.net/forum?id=0iLbiYYIpC), which dissected where the tokens actually go in multi-agent frameworks. The coordination cost is not mostly in the visible hand-off messages. It hides in redundant shared context and in verification — in one MetaGPT experiment the verification phase alone accounted for the lion's share of token consumption. The expensive part of coordination is the quiet part: the same context, re-sent and re-checked, over and over. Count only the chat between agents and you miss most of the bill.
+
+The second is more radical. [LatentMAS](https://arxiv.org/abs/2511.20639) has agents collaborate entirely in **latent space** — passing hidden-state embeddings and a shared latent memory instead of natural-language text — and does it while using 70 to 84% fewer output tokens. Read that again: there may be **no message to count at all**. The coordination happened; it just never became words. Any measurement scheme that equals "sum the inter-agent messages" reads zero on a system that is coordinating furiously in a representation you can't tokenise.
+
+The honest way to measure coordination cost, then, runs on two tracks, and neither one requires you to itemise blame.
+
+**Track one is the whole-outcome measurement.** Don't decompose anything. Vary N, plot the output, and watch the curve bend away from the ideal `λN` line. The gap *is* the coordination tax — you are measuring the disease by its total effect, not by autopsying which organ failed. Silo-Bench formalises this as a single clean number, **RCC = 1 − SR(k)/SR(1)**: the fraction of single-agent success rate you lose by going to k agents. The MIT–Google scaling law is the same idea fit to a curve. There is a century of philosophy of science under this move — the [Duhem–Quine](https://en.wikipedia.org/wiki/Duhem%E2%80%93Quine_thesis) thesis, that you can observe a system's aggregate deviation from prediction without being able to pin it on any one internal hypothesis. Coordination cost is exactly that kind of quantity: cleanly measurable in the aggregate, genuinely not decomposable into "this message cost us 3%."
+
+**Track two is a basket of process proxies** — for when you do want to steer, not just score. Context-duplication accounting, à la AgentTaxo. Agent utilisation: how much of each agent's work is real versus waiting. Cost per delegation. The error-amplification ratio, that 17.2×-versus-4.4× spread. Each of these is a proxy — a partial, honest view of one facet of κ — and none of them is *the* coordination cost. Held as a dashboard, not a verdict, they tell you which knob to turn.
+
+The point is not that agents are hard to coordinate. Humans are harder. The point is that Brooks and Gunther handed us the right answer decades ago and we could never *check their work* — the organisation refused to be instrumented. Agents are the first organisation that says yes. The man-month stops being a memorable aphorism and becomes a measurement.
+
+## What gets scarce next
+
+Step back far enough and a pattern in these transitions repeats. Each wave of automation commoditises whatever used to be the bottleneck, and the scarce, valuable skill jumps somewhere else.
+
+AI is commoditising the *doing* — call it W, the raw work: the function written, the test passed, the endpoint stood up. Agents wholesale that. When execution gets cheap, the constraint moves to everything the execution has to stay coherent with, and that constraint has a name we've been circling the whole article. It is κ.
+
+The scarce skill of the next few years is not writing more code faster. It is pressing κ down without becoming the bottleneck that presses it: designing the protocols agents coordinate through, drawing the boundaries so work parallelises instead of colliding, setting verification standards a machine can actually check, building the orchestration that behaves like a ticket rail rather than a shouting match. This is engineering, with a measurable objective function — the coordination tax — and, for the first time, a live gauge on the dashboard reading it back to you.
+
+Last era, the job was to raise λ — to make each worker, human or machine, individually more productive. That game is largely won; the agents are fast. This era, the job is to become the person who lowers κ. The curve was always there. We just finally got to watch it bend in real time — and, at last, to do something about the bend.
