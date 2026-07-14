@@ -58,7 +58,7 @@ function loadWechatArticleMap() {
 }
 const CACHE_FILE = '.temp/mermaid/.extraction-cache.json';
 const DIAGRAM_PATTERN = /```mermaid\n([\s\S]*?)```/g;
-const JSX_COMPONENT_PATTERN = /<(ProtocolStack|AutomationSpectrum|ToolEcosystem)\s*\/>/g;
+const JSX_COMPONENT_PATTERN = /<(ProtocolStack|AutomationSpectrum|ToolEcosystem|ScaleCurveWidget)[^>]*\/>/g;
 const JSX_EXPORT_PATTERN = /^export const (C|ProtocolStack|AutomationSpectrum|ToolEcosystem)\b[\s\S]*?^};?\s*$/gm;
 const JSX_IMPORT_PATTERN = /^import React from 'react';\s*$/gm;
 
@@ -193,7 +193,7 @@ const findAllArticles = () => {
       }
 
       const jsxComponents = [];
-      const jsxPattern = /<(ProtocolStack|AutomationSpectrum|ToolEcosystem)\s*\/>/g;
+      const jsxPattern = /<(ProtocolStack|AutomationSpectrum|ToolEcosystem|ScaleCurveWidget)[^>]*\/>/g;
       while ((match = jsxPattern.exec(markdownContent)) !== null) {
         jsxComponents.push(match[1]);
       }
@@ -424,7 +424,7 @@ const processArticles = async () => {
 
     // Replace JSX component tags with image references
     processedContent = processedContent.replace(
-      /<(ProtocolStack|AutomationSpectrum|ToolEcosystem)\s*\/>/g,
+      /<(ProtocolStack|AutomationSpectrum|ToolEcosystem|ScaleCurveWidget)[^>]*\/>/g,
       (match, compName) => {
         const img = jsxImageFiles.find(f => f.name === compName);
         if (img) {
@@ -437,6 +437,7 @@ const processArticles = async () => {
 
     // Remove JSX export blocks and React import (not needed in WeChat markdown)
     processedContent = processedContent.replace(/^import React from 'react';\s*\n/gm, '');
+    processedContent = processedContent.replace(/^import .* from '@site\/[^']*';\s*\n/gm, '');
     processedContent = processedContent.replace(/^export const (?:C|ProtocolStack|AutomationSpectrum|ToolEcosystem)\b[\s\S]*?^};\s*\n/gm, '');
 
     // Remove truncate markers and any other MDX/JSX comments. WeChat copy-paste

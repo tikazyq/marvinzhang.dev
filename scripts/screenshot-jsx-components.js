@@ -27,6 +27,12 @@ const PORT = 4173;
 // JSX component selectors and their names
 // Components are identified by unique text/structure patterns in the rendered HTML
 const COMPONENT_CONFIGS = {
+  'multi-agent-teams-and-the-measurable-coordination-tax': {
+    components: [
+      // CSS-module widget: match by hashed class name (contains "widget")
+      { name: 'ScaleCurveWidget', cssSelector: '[class*="widget"]' },
+    ],
+  },
   'agent-landscape': {
     components: [
       { name: 'ProtocolStack', selector: 'div:has(> div:first-child > span:first-child)', matchText: 'Click a layer', matchTextZh: '点击层级' },
@@ -40,6 +46,15 @@ async function findComponentElements(page, config, locale) {
   const components = [];
 
   for (const comp of config.components) {
+    // Direct CSS selector path (for CSS-module components declaring cssSelector)
+    if (comp.cssSelector) {
+      const el = await page.$(comp.cssSelector);
+      if (el) {
+        const box = await el.boundingBox();
+        if (box && box.height > 50) components.push({ name: comp.name, element: el, box });
+      }
+      continue;
+    }
     // Find the component's outer container by looking for the dark background wrapper
     // All components share the same pattern: dark bg (#06080d), rounded corners, border
     const elements = await page.$$('div[style*="background"]');
@@ -125,7 +140,12 @@ async function main() {
   await waitForServer();
   console.log('Server ready.');
 
-  const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  // Prefer the environment-provided Chromium (e.g. /opt/pw-browsers/chromium in
+  // sandboxed runners); fall back to Playwright's own download.
+  const launchOpts = { args: ['--no-sandbox', '--disable-setuid-sandbox'] };
+  const browser = await chromium
+    .launch({ ...launchOpts, executablePath: '/opt/pw-browsers/chromium' })
+    .catch(() => chromium.launch(launchOpts));
 
   try {
     for (const loc of locales) {
@@ -143,6 +163,8 @@ async function main() {
 
       try {
         await page.goto(pageUrl, { waitUntil: 'networkidle', timeout: 30000 });
+        // Fixed navbars overlap element screenshots — hide chrome before capture
+        await page.addStyleTag({ content: 'nav.navbar, .navbar { display: none !important; }' });
       } catch (err) {
         console.error(`Failed to load ${pageUrl}: ${err.message}`);
         await context.close();
