@@ -107,6 +107,24 @@ Make it easy for the author to give direction without precision editing:
 I'll start with Section 1: Introduction. Ready?
 ```
 
+## Alignment Gates (learned 2026-07)
+
+A complete-looking task brief is NOT a license to write the whole article
+autonomously — even when the brief arrives as a detailed prompt with every
+stage specified. The most expensive failure mode is a polished full draft
+built on an unaligned foundation: hook style, voice, content balance, and
+title were all rejected in one review, forcing a ground-up rewrite that one
+pre-writing exchange would have prevented.
+
+Mandatory stops, each a short inline-chat exchange:
+1. **Before writing**: outline + fully-drafted hook sample + title → author
+   approves or adjusts. Offer concrete options (AskUserQuestion works well
+   for direction choices: hook style, content balance, drafting language,
+   pacing).
+2. **After each author feedback round**: restate the diagnosis in your own
+   words before fixing, so a misread critique doesn't drive another wrong
+   round.
+
 ## Adaptive Question Depth
 
 Match the question style to the answer style:

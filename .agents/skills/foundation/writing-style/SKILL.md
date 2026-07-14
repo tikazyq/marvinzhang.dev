@@ -97,6 +97,21 @@ Figures embed prose too — when wording changes, check and re-render figures.
 See [references/zh-voice.md](references/zh-voice.md) for the author's
 vocabulary profile and a full ❌/✅ replacement table.
 
+Two additional rules from the 2026-07 rework rounds:
+
+3. **中文标题不预设读者知识**: a title must land for someone who has never
+   heard of the referenced book/paper/theorem. 《为什么 AI Agent 团队也逃
+   不过人月神话？》 gates on knowing《人月神话》; 《…"人多了反而慢"？》
+   does not. The author's question-title tradition (「真的是万能药吗」
+   「你的团队在正确实践敏捷吗」) is the pattern to reuse. The body may
+   introduce the reference properly — the title may not depend on it.
+4. **符号随行** (symbols ride along): for general-reader articles, Greek
+   letters and math symbols never travel alone in prose. Define once with a
+   plain-language alias, then pair at key mentions ("对齐成本 κ 降了，
+   排队成本 σ 升了"); bare symbols only inside formulas and parameter
+   lists. Neither extreme survives review: all-symbols loses general
+   readers, all-aliases loses the professional register.
+
 ## References
 
 - [references/economist-principles.md](references/economist-principles.md) — Detailed style guide with wit, structure, and craft guidelines

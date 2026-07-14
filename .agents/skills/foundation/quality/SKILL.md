@@ -35,6 +35,27 @@ Validation gates and checklists for marvinzhang.dev articles.
 - [ ] Code blocks ≤10 lines
 - [ ] All diagrams theme-aware (explicit colors)
 
+## Verification Discipline
+
+Hard rules, each learned from a real incident (2026-07):
+
+1. **The exit code is the only pass signal.** A generated page or artifact
+   existing on disk does NOT mean the build passed — Docusaurus emits pages
+   before some failures, and a stale `build/` from a previous run looks
+   identical to a fresh one. Capture and check `$?` (or `echo "exit: $?"`)
+   on every `pnpm build`; never infer success from `ls`.
+2. **Re-verify after every edit, not just the big ones.** A one-line
+   frontmatter change broke a production deploy after all "significant"
+   changes had been verified. If a file changed since the last green build,
+   the last green build proves nothing.
+3. **YAML frontmatter quoting:** inside a double-quoted `title:`, inner
+   quotation marks MUST be CJK curly quotes（""）— an ASCII `"` terminates
+   the YAML string early and fails the build (locally *and* on Vercel).
+   Sanity check: the title line contains exactly two ASCII double quotes.
+4. **Push only what a full local build has verified.** CI is the backstop,
+   not the first tester; a red Vercel deploy on a published article is a
+   user-visible outage of the preview link.
+
 ## Validation Commands
 
 ```bash
