@@ -51,7 +51,11 @@ const S = {
   table: 'width:100%;border-collapse:collapse;margin:10px 0;font-size:14px;',
   th: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);background:rgb(240,240,240);color:rgb(89,89,89);font-weight:bold;font-size:14px;line-height:1.5em;letter-spacing:0.02em;min-width:85px;',
   td: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);font-size:14px;line-height:1.5em;letter-spacing:0.02em;color:rgb(89,89,89);min-width:85px;',
-  ul: 'padding-left:0;margin:8px 0;list-style:disc;',
+  // padding-left:0 with outside discs breaks hanging indent in WeChat —
+  // wrapped li lines flow back under the marker. The left padding reserves
+  // room for the (still CSS-outside) markers so continuation lines hang-align
+  // under the first line's text.
+  ul: 'padding-left:1.4em;margin:8px 0;list-style:disc outside;',
   ol: 'padding-left:0;margin:8px 0;',
   li: 'margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);',
   hr: 'border:none;border-top:2px solid rgba(64,184,250,0.4);margin:10px 0;',
