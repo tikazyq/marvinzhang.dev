@@ -1,7 +1,7 @@
 ---
 name: wechat-publish
-description: Automated publishing of blog articles to WeChat Official Account (微信公众号). Generates WeChat-ready markdown, converts to styled content, and delivers via Telegram for easy copy-paste into 公众号助手 app. Triggers include "publish to WeChat", "发布到微信", "微信公众号发布", "wechat publish".
-allowed-tools: Bash(pnpm wechat*), Bash(curl*api.telegram.org*)
+description: Automated publishing of blog articles to WeChat Official Account (微信公众号). Generates WeChat-ready markdown, converts to styled content, and delivers the bundle directly in the Claude chat for copy-paste into 公众号助手 / 公众号后台. Triggers include "publish to WeChat", "发布到微信", "微信公众号发布", "wechat publish".
+allowed-tools: Bash(pnpm wechat*)
 metadata:
   author: marvinzhang
   version: "2.0"
@@ -10,7 +10,7 @@ metadata:
 
 # WeChat Publish
 
-Generates WeChat-ready content and delivers it via Telegram for publishing through the 公众号助手 app.
+Generates WeChat-ready content and delivers it directly in the Claude chat for publishing through 公众号助手 or the 公众号 web editor.
 
 ## End-to-End Workflow
 
@@ -19,17 +19,18 @@ pnpm wechat <slug> --zh          ← Step 1: Generate markdown + images
         ↓
 Convert MD → styled content      ← Step 2: Apply WeChat formatting
         ↓
-Telegram: send content + images   ← Step 3: Deliver to user's phone
+Send files in the Claude chat     ← Step 3: HTML + md + screenshots + covers + digest
         ↓
-User: 公众号助手 → paste → publish ← Step 4: User publishes on mobile
+User: 公众号助手 → paste → publish ← Step 4: User publishes
 ```
 
-## Environment Variables
+## Delivery Channel
 
-```bash
-TELEGRAM_BOT_TOKEN   # Bot token from @BotFather
-TELEGRAM_CHAT_ID     # User's numeric chat ID (from @userinfobot)
-```
+**Chat-direct is the canonical channel (author decision 2026-07): send the
+bundle as files in the Claude conversation** — rendered HTML first (it is
+the paste source, viewable inline), then the markdown, component
+screenshots, covers, and the digest as message text. Do NOT use Telegram;
+that path is deprecated (see Legacy section at the end).
 
 ## Per-Article Checklist (codified 2026-07)
 
@@ -59,11 +60,10 @@ Run through these in order — each item came from a real publishing round:
      garbled), leave the left third empty for a later title overlay, and
      specify `--ar 21:9` (crop to 2.35:1) plus a 1:1 variant.
    - Digest: ≤120 chars, hook-first, no symbols the reader hasn't met.
-5. **Delivery fallback**: if `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` are
-   absent in the environment, send the bundle as chat files instead
-   (HTML first — it is the paste source — then markdown, component
-   screenshots, covers, digest text). Tell the user the env vars to set if
-   they want phone push restored.
+5. **Delivery**: send the bundle as files in the Claude chat — HTML
+   first (paste source), then markdown, component screenshots, covers;
+   digest goes in the message text. Telegram is deprecated — do not use it
+   even if credentials exist.
 6. **Post-publish**: user sends back the permanent
    `https://mp.weixin.qq.com/s/...` link → add `wechat_url` to BOTH locale
    MDX frontmatters, then archive the drafts workspace to `drafts/archive/`.
@@ -121,9 +121,14 @@ Read the generated markdown and prepare it for the user:
 3. **Identify all images** that need to be sent separately
 4. **Split content** into chunks if it exceeds Telegram's 4096-char message limit
 
-### 3. Send via Telegram
+### 3. Deliver in the Claude Chat
 
-Send the content to the user in a structured sequence:
+Send the files directly in the conversation (HTML → markdown → images), with the digest and paste instructions as message text.
+
+### Legacy: Telegram delivery (deprecated 2026-07, do not use)
+
+<details>
+<summary>Kept for reference only</summary>
 
 ```bash
 # Send article metadata first
@@ -163,6 +168,8 @@ curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument"
   -F "document=@.temp/wechat/<slug>-zh-wechat.md" \
   -F "caption=完整 Markdown 文件 - 可在 markdown-nice 中渲染后复制"
 ```
+
+</details>
 
 ### 4. User Publishes via 公众号助手
 
@@ -213,7 +220,7 @@ const html = await getHtml({ markdown, theme: 'quanzhanlan', font: 'cx' });
 3. Paste markdown → auto-renders with WeChat styles
 4. One-tap copy → paste into 公众号助手
 
-## Telegram API Helpers
+## Telegram API Helpers (deprecated 2026-07 — do not use)
 
 ### Send Text (with chunking)
 
