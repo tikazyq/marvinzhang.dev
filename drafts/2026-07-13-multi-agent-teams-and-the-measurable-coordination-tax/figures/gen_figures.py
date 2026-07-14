@@ -113,12 +113,12 @@ f1_zh_body = '<div class="arts">' + "".join([
     art("a2", "你的团队在正确实践敏捷吗", "2022-09", [
         ("话题", "&ldquo;敏捷 = 快&rdquo;是实践者最大的误区"),
         ("当年的答案", "<b>敏捷并不一定意味着快</b>，它还会引入额外工作"),
-        ("现在读来", "小团队、短迭代 = 把 N 压回 N* 以内"),
+        ("现在读来", "小团队、短迭代 = 把团队规模压回最优点 N* 以内"),
     ]),
     art("a3", "为什么需要在软件项目中考虑复杂度", "2022-12", [
         ("话题", "复杂度随规模增长，失控则项目失败"),
         ("当年的答案", "用架构手段控制复杂度"),
-        ("现在读来", "&ldquo;指数级&rdquo;其实是<b>平方级</b>——κN(N−1) 那一项"),
+        ("现在读来", "&ldquo;指数级&rdquo;其实是<b>平方级</b>——对齐成本 κN(N−1) 那一项"),
     ]),
 ]) + "</div>"
 
@@ -131,12 +131,12 @@ f1_en_body = '<div class="arts">' + "".join([
     art("a2", "Is Your Team Practising Agile Correctly?", "2022-09", [
         ("Topic", "“Agile = fast” as the practitioners’ biggest myth"),
         ("Answer then", "<b>Agile does not necessarily mean fast</b> — it adds work"),
-        ("Read today", "Small teams, short iterations = pushing N back under N*"),
+        ("Read today", "Small teams, short iterations = pushing team size back under the optimum N*"),
     ]),
     art("a3", "Why Consider Complexity in Software Projects?", "2022-12", [
         ("Topic", "Complexity grows with scale; uncontrolled, it kills projects"),
         ("Answer then", "Contain complexity through architecture"),
-        ("Read today", "“Exponential” was really <b>quadratic</b> — the κN(N−1) term"),
+        ("Read today", "“Exponential” was really <b>quadratic</b> — the alignment-cost term κN(N−1)"),
     ]),
 ]) + "</div>"
 
@@ -244,13 +244,13 @@ f2_en_body = f'''
 emit("figure-2-topology", "zh", "图 2 — 两种拓扑", "图 02 — 平方换线性",
      "项目经理的本质：一笔拓扑交易", "同样 8 个节点，两种协作结构的渠道数量级完全不同。",
      f2_zh_body,
-     "项目经理（以及 agent 世界的 orchestrator）做的是同一笔交易：<b>用平方换线性</b>——压下 κ，代价是自己成为 σ。",
+     "项目经理（以及 agent 世界的 orchestrator）做的是同一笔交易：<b>用平方换线性</b>——压下对齐成本 κ，代价是自己成为排队瓶颈 σ。",
      "marvinzhang.dev", "图 2 / 6", F2_CSS)
 
 emit("figure-2-topology", "en", "Fig. 2 — Two topologies", "FIG 02 — QUADRATIC FOR LINEAR",
      "The project manager as a topology trade", "Same 8 nodes; the two collaboration structures differ by an order of magnitude in channels.",
      f2_en_body,
-     "The PM — and the orchestrator in the agent world — strikes the same deal: <b>trade quadratic for linear</b>. κ goes down; the price is becoming σ yourself.",
+     "The PM — and the orchestrator in the agent world — strikes the same deal: <b>trade quadratic for linear</b>. alignment cost (κ) goes down; the price is becoming the queue (σ) yourself.",
      "marvinzhang.dev", "FIG 2 / 6", F2_CSS)
 
 # ---------------------------------------------------------------- figure 3
@@ -388,45 +388,45 @@ F5_CSS = """
 """
 
 f5_zh_body = ('<div class="cols">'
-    '<div class="col col-old"><h2>λ 时代的硬通货</h2><div class="tag">正在被 agent 批发化</div><ul>'
+    '<div class="col col-old"><h2>单兵产能（λ）时代的硬通货</h2><div class="tag">正在被 agent 批发化</div><ul>'
     '<li>写得快</li><li>bug 少</li><li>精通框架与语言</li><li>单兵产能溢价</li></ul></div>'
     '<div class="mid">→</div>'
-    '<div class="col col-new"><h2>κ 时代的手艺</h2><div class="tag">新的稀缺能力</div><ul>'
+    '<div class="col col-new"><h2>压对齐成本（κ）的手艺</h2><div class="tag">新的稀缺能力</div><ul>'
     '<li><b>任务拆分</b>——拆到能并行、边界不打架</li>'
     '<li><b>协议设计</b>——什么必须同步、什么不许广播</li>'
     '<li><b>验证标准</b>——机器能裁决的对错越多越好</li>'
     '<li><b>编排</b>——何时中心化收口、何时放手并行</li></ul></div>'
     '</div><div class="roles">'
-    '<div class="role"><h3>一线工程师</h3><p>把功夫从&ldquo;写得快&rdquo;挪一部分到&ldquo;拆得好&rdquo;——你的拆分决定 agent 集群的 κ</p></div>'
+    '<div class="role"><h3>一线工程师</h3><p>把功夫从&ldquo;写得快&rdquo;挪一部分到&ldquo;拆得好&rdquo;——你的拆分决定 agent 集群的对齐成本</p></div>'
     '<div class="role"><h3>架构师 · 技术管理者</h3><p>带团队攒下的直觉，升级为可拿数据验证的工程判断</p></div>'
     '<div class="role"><h3>组织</h3><p>两个披萨、小团队、流程投资——老经验以编排配置的形式被逐字重写</p></div>'
     '</div>')
 
 f5_en_body = ('<div class="cols">'
-    '<div class="col col-old"><h2>Hard currency of the λ era</h2><div class="tag">Being wholesaled by agents</div><ul>'
+    '<div class="col col-old"><h2>Hard currency of the solo-throughput (λ) era</h2><div class="tag">Being wholesaled by agents</div><ul>'
     '<li>Writing fast</li><li>Few bugs</li><li>Framework & language mastery</li><li>Premium on solo throughput</li></ul></div>'
     '<div class="mid">→</div>'
-    '<div class="col col-new"><h2>Craft of the κ era</h2><div class="tag">The new scarcity</div><ul>'
+    '<div class="col col-new"><h2>Craft of pressing alignment cost (κ) down</h2><div class="tag">The new scarcity</div><ul>'
     '<li><b>Task decomposition</b> — parallelisable, non-colliding boundaries</li>'
     '<li><b>Protocol design</b> — what must sync, what must never broadcast</li>'
     '<li><b>Verification standards</b> — maximise machine-decidable correctness</li>'
     '<li><b>Orchestration</b> — when to centralise, when to fan out</li></ul></div>'
     '</div><div class="roles">'
-    '<div class="role"><h3>Engineers</h3><p>Shift effort from "writing fast" to "splitting well" — your decomposition sets your agent fleet\'s κ</p></div>'
+    '<div class="role"><h3>Engineers</h3><p>Shift effort from "writing fast" to "splitting well" — your decomposition sets your agent fleet\'s alignment cost</p></div>'
     '<div class="role"><h3>Architects · tech leads</h3><p>Instincts earned managing people upgrade into data-verifiable engineering judgement</p></div>'
     '<div class="role"><h3>Organisations</h3><p>Two-pizza teams, process investment — old lessons rewritten verbatim as orchestration configs</p></div>'
     '</div>')
 
 emit("figure-6-skills", "zh", "图 5 — 能力迁移", "图 06 — 职业地图",
-     "上个时代提高 λ，这个时代压低 κ", "当单兵产能被批发化，稀缺的位置从分子挪到了分母。",
+     "上个时代提高单兵产能，这个时代压低对齐成本", "当单兵产能被批发化，稀缺的位置从分子挪到了分母。",
      f5_zh_body,
-     "<b>谁能把 κ 压下去，谁就是下一个时代的稀缺人才</b>——而且这门手艺第一次有了仪表盘。",
+     "<b>谁能把对齐成本压下去，谁就是下一个时代的稀缺人才</b>——而且这门手艺第一次有了仪表盘。",
      "marvinzhang.dev", "图 6 / 6", F5_CSS)
 
 emit("figure-6-skills", "en", "Fig. 5 — The skill migration", "FIG 06 — CAREER MAP",
-     "Last era: raise λ. This era: lower κ.", "With solo throughput commoditised, scarcity moves from the numerator to the denominator.",
+     "Last era: raise solo throughput. This era: lower alignment cost.", "With solo throughput commoditised, scarcity moves from the numerator to the denominator.",
      f5_en_body,
-     "<b>Whoever can press κ down is the scarce talent of the next era</b> — and for the first time, the craft comes with a gauge.",
+     "<b>Whoever can press alignment cost down is the scarce talent of the next era</b> — and for the first time, the craft comes with a gauge.",
      "marvinzhang.dev", "FIG 6 / 6", F5_CSS)
 
 print("all done")
@@ -484,31 +484,31 @@ def usl_panel(sig2, kap2, color, w=340, h=190, ymax=5.2):
 </svg>"""
 
 f5b_zh_body = ('<div class="duo">'
-    '<div class="pan p-sig"><h2>压 σ：四倍</h2><div class="sub">σ 0.08 → 0.02（κ 不变）——加机器、加环境、加并发，钱能办到</div>'
+    '<div class="pan p-sig"><h2>压排队成本 σ：四倍</h2><div class="sub">σ 0.08 → 0.02（κ 不变）——加机器、加环境、加并发，钱能办到</div>'
     + usl_panel(0.02, 0.02, '#01579b')
     + '<div class="verdict">曲线整体抬高，峰位几乎不动：<b>6.8 → 7.0</b>。队伍还是这么大，只是干得更顺。</div></div>'
-    '<div class="pan p-kap"><h2>压 κ：四倍</h2><div class="sub">κ 0.02 → 0.005（σ 不变）——拆分、协议、验证、编排，只能靠设计</div>'
+    '<div class="pan p-kap"><h2>压对齐成本 κ：四倍</h2><div class="sub">κ 0.02 → 0.005（σ 不变）——拆分、协议、验证、编排，只能靠设计</div>'
     + usl_panel(0.08, 0.005, '#7b1fa2')
     + '<div class="verdict">峰值右移一倍：<b>6.8 → 13.6</b>。能有效协作的规模，天花板被推出去了。</div></div>'
     '</div>')
 
 f5b_en_body = ('<div class="duo">'
-    '<div class="pan p-sig"><h2>Press σ: 4×</h2><div class="sub">σ 0.08 → 0.02 (κ fixed) — more machines, environments, concurrency; money works</div>'
+    '<div class="pan p-sig"><h2>Press queueing cost σ: 4×</h2><div class="sub">σ 0.08 → 0.02 (κ fixed) — more machines, environments, concurrency; money works</div>'
     + usl_panel(0.02, 0.02, '#01579b')
     + '<div class="verdict">The curve lifts; the peak barely moves: <b>6.8 → 7.0</b>. Same team size, smoother running.</div></div>'
-    '<div class="pan p-kap"><h2>Press κ: 4×</h2><div class="sub">κ 0.02 → 0.005 (σ fixed) — decomposition, protocols, verification, orchestration; only design works</div>'
+    '<div class="pan p-kap"><h2>Press alignment cost κ: 4×</h2><div class="sub">κ 0.02 → 0.005 (σ fixed) — decomposition, protocols, verification, orchestration; only design works</div>'
     + usl_panel(0.08, 0.005, '#7b1fa2')
     + '<div class="verdict">The peak shifts right, doubling: <b>6.8 → 13.6</b>. The ceiling on useful team size moves out.</div></div>'
     '</div>')
 
-emit("figure-5-sigma-kappa", "zh", "图 5 — σ 能买，κ 只能设计", "图 05 — 两个旋钮",
-     "σ 能买，κ 只能设计", "同样压低四倍，两个参数对曲线的影响完全不同（灰色虚线为基线 σ=0.08、κ=0.02，λ=1，两图同一纵轴）。",
+emit("figure-5-sigma-kappa", "zh", "图 5 — 排队成本能买，对齐成本只能设计", "图 05 — 两个旋钮",
+     "排队成本能买，对齐成本只能设计", "同样压低四倍，两个参数对曲线的影响完全不同（灰色虚线为基线 σ=0.08、κ=0.02，λ=1，两图同一纵轴）。",
      f5b_zh_body,
-     "<b>压 σ 是让现有的队伍干得更顺，压 κ 才是把队伍规模的天花板往外推</b>——这也是为什么稀缺的位置在 κ。",
+     "<b>压排队成本是让现有的队伍干得更顺，压对齐成本才是把队伍规模的天花板往外推</b>——这也是为什么稀缺的本事在后者。",
      "<span style=\"text-transform:none\">λ=1 · 基线 σ=0.08 κ=0.02</span>", "图 5 / 6", F5B_CSS)
 
-emit("figure-5-sigma-kappa", "en", "Fig. 5 — σ can be bought; κ must be designed", "FIG 05 — TWO KNOBS",
-     "σ can be bought; κ must be designed", "The same 4× reduction, applied to each parameter, does very different things to the curve (grey dashed = baseline σ=0.08, κ=0.02, λ=1; both panels share one y-axis).",
+emit("figure-5-sigma-kappa", "en", "Fig. 5 — Queueing cost can be bought; alignment cost must be designed", "FIG 05 — TWO KNOBS",
+     "Queueing cost can be bought; alignment cost must be designed", "The same 4× reduction, applied to each parameter, does very different things to the curve (grey dashed = baseline σ=0.08, κ=0.02, λ=1; both panels share one y-axis).",
      f5b_en_body,
-     "<b>Lowering σ makes the team you have run smoother; lowering κ pushes out the ceiling on how big a team can get</b> — which is why scarcity lives in κ.",
+     "<b>Lowering queueing cost makes the team you have run smoother; lowering alignment cost pushes out the ceiling on how big a team can get</b> — which is why the scarcity lives in the latter.",
      "<span style=\"text-transform:none\">λ=1 · baseline σ=0.08 κ=0.02</span>", "FIG 5 / 6", F5B_CSS)
