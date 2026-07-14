@@ -64,3 +64,10 @@ tmp/
 .windsurf/
 .zencoder/
 /skills/
+# Figure-render font cache (fetched at render time, not committed)
+drafts/**/figures/fonts/
+drafts/**/figures/fonts.css
+drafts/**/figures/fonts.css.orig
+
+# Python bytecode in figure generators
+drafts/**/figures/__pycache__/

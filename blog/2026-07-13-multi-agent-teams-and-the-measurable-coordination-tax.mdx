@@ -1,0 +1,127 @@
+---
+slug: multi-agent-teams-and-the-measurable-coordination-tax
+title: "Why AI Agent Teams Can't Escape the Mythical Man-Month"
+authors: ["marvin"]
+tags: ["ai", "agents", "systems-design", "architecture", "software-engineering"]
+date: 2026-07-13
+---
+
+import ScaleCurveWidget from '@site/src/components/ScaleCurveWidget';
+
+{/* The Chinese version is the primary draft; this English version restates it. */}
+{/* Filename date (2026-07-13) and frontmatter date must match. */}
+
+In April 2021 I wrote [a piece on why modern software engineering can't do without project management](/blog/project-management). In September 2022, [one asking whether your team is practising agile correctly](/blog/agile-team-practices). That December, [another on why complexity deserves a seat in software design](/blog/software-project-complexity). At the time they felt like three different topics: process, methodology, architecture. Rereading them recently, I realised all three had been circling the same question: **why do more people make a team slower?** The complexity piece even opens with the claim that "as project scale grows, complexity increases exponentially — left uncontrolled, it will eventually sink the project."
+
+Years of running teams moved that question off the page and into my own schedule. A project slips; the reflex is to add people. The people arrive and the slip gets worse — newcomers need context, veterans stop to provide it, the meeting count doubles, and the cost of staying aligned grows faster than the output. Fred Brooks nailed this fifty years ago in [*The Mythical Man-Month*](https://en.wikipedia.org/wiki/The_Mythical_Man-Month) (1975): "Adding manpower to a late software project makes it later." Every programmer has heard the line and nodded along. But strictly speaking it has always been an aphorism, not a law — no company can run a controlled experiment on its own team to check how right it is.
+
+Here is the interesting turn: the check finally arrived, and it came from AI rather than management science. In late 2025, researchers at MIT and Google Research [tested 180 configurations of agent systems](https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/), and the results read like a re-enactment of Brooks: on tasks that must proceed step by step, every multi-agent variant they tried did worse than a single agent — by 39 to 70% — and past three or four agents, adding more only deepened the hole. Fifty years after publication, the man-month got its first controlled experiment. The subjects just happened to be agents, not people.
+
+That is this article in one sentence: AI agent teams are faithfully reproducing the oldest disease of human organisations — and, the more interesting half, they are the first form of organisation in history where the bill can be fully itemised.
+
+{/* truncate */}
+
+Before the evidence, get a feel for the curve itself. The widget below switches between a human team and an AI agent team; drag the slider to change team size. The parameters differ — the shape, deliberately, does not.
+
+<ScaleCurveWidget lang="en" />
+
+*Past the optimal size, every added person (or agent) buys less than the previous one; further on, total output actually falls. That is not a defect of any particular team — it is the mathematics of collaboration itself.*
+
+## An account settled fifty years ago
+
+Brooks's reasoning needed nothing more than middle-school math. In a team of n people there are n(n−1)/2 pairwise communication channels: 4 people have 6, 16 people have 120. Multiply headcount by four and the channels multiply by twenty. Every channel takes time to maintain — syncing progress, aligning understanding, untangling misunderstandings — so the bigger the team, the larger the share of time spent talking to each other and the smaller the share spent doing the work. Let me also correct my younger self: the "exponential" in that complexity piece was an overstatement. n(n−1)/2 is quadratic. The diagnosis, though, was pointing at the right organ.
+
+In 2007 the performance analyst Neil Gunther wrote the account up as a formal equation in *Guerrilla Capacity Planning*: the **[Universal Scalability Law](https://www.perfdynamics.com/Manifesto/USLscalability.pdf)** (USL). It was invented to explain why adding CPUs to a database stops paying off, but it describes any system of cooperating workers — including the human kind. The formula appears exactly once in this article:
+
+```
+              λN
+X(N) = ───────────────────────
+        1 + σ(N−1) + κN(N−1)
+```
+
+Three parameters, in plain words:
+
+- **λ (solo throughput)**: what one worker produces alone. The λN in the numerator is the fantasy — N workers, N times the output.
+- **σ (queueing cost)**: the price of contending for shared resources. Everyone waits for the same staging environment, the same reviewer; someone always queues. Linear in headcount — annoying, manageable.
+- **κ (alignment cost)**: the price of keeping everyone's understanding of the same thing the same. Note its factor N(N−1) — precisely the channel count Brooks tallied. It grows with the **square** of the team, and it is the term that kills.
+
+From here on, whenever a symbol shows up, its plain name rides along — λ is solo throughput, σ is queueing cost, κ is alignment cost. If the Greek slips your mind, just follow the words.
+
+The alignment-cost term κ is *The Mythical Man-Month* in strict mathematical form. And the formula throws in a bonus: differentiate X(N) and the peak lands at `N* = √((1−σ)/κ)`. **Optimal team size is computable.** With a typical set of parameters, N\* comes out around 8 — Amazon's famous rule that two pizzas must feed the whole team is not folklore, it is the maximum of this curve.
+
+A kitchen makes the two coefficients concrete. Queueing cost σ is cooks jostling for the one stove — cramped, but it tops out. Alignment cost κ is the whole kitchen shouting orders at each other — the more cooks, the louder, until nobody can make out a word. The restaurant industry's fix is the ticket rail: everyone reads the tickets, nobody shouts. That is a classic **structural investment**: pay a fixed cost to install a coordination protocol, and alignment cost drops.
+
+![Three old posts, one question: the project-management, agile, and complexity articles each with their topic and answer, all converging on "why do more people make a team slower"](/img/blog/2026-07-13-multi-agent-teams-and-the-measurable-coordination-tax/figure-1-archaeology.en.png)
+
+Looked at this way, the software industry's decades of management methodology have mostly been a running fight with alignment cost κ. The essence of the project manager's job is to collapse the 120 channels of "everyone aligns with everyone" into the 16 of "everyone aligns with the PM" — **trading quadratic for linear**. The price is that the PM becomes the new queue: alignment cost κ falls, queueing cost σ rises. It is a trade, not a freebie. Waterfall attacked alignment with heavyweight documents; agile went the other way and simply pushed team size back under the optimum — small teams, short iterations. In my old agile piece I wrote that "agile does not necessarily mean fast"; I can now supply the missing half: its speed never came from typing faster, it came from holding the alignment cost down.
+
+![Two topologies: the fully-connected n(n−1)/2 channels versus the star structure through a PM — trading quadratic for linear, pressing alignment cost down at the price of becoming the queue](/img/blog/2026-07-13-multi-agent-teams-and-the-measurable-coordination-tax/figure-2-topology.en.png)
+
+How ugly do the numbers get when you actually run them on people? Take an illustrative parameter set (λ = 4.64 PRs/person/week, σ = 0.0158, κ = 0.0146 — a constructed model, not a survey): a 16-person team ships about 15.6 PRs a week, its effective capacity down to 21%, the equivalent of 3.4 full-time engineers — while an 8-person team would ship 19.2. The extra eight salaries don't just add nothing; they subtract. Honesty requires a caveat, though: these numbers are **computed**, not **measured** — for human teams, computing is all you can do. Keep that thought; it pays off at the end.
+
+## The same curve, new protagonist
+
+Now the agents. For the past year or so, multi-agent systems have been one of the hottest directions in AI engineering: if one agent isn't smart enough, deploy a dozen — divide the labour, assign the roles. It is the same instinct as "the project slipped, add people." And the empirical research keeps pouring cold water on that instinct in ways any management textbook would recognise.
+
+The study from the opening — MIT and Google Research's [*Towards a Science of Scaling Agent Systems*](https://arxiv.org/abs/2512.08296) — deserves its full conclusion: on parallelisable tasks, multi-agent genuinely works, with centralized coordination beating a single agent by 80.9%; on sequential tasks, every multi-agent variant degrades, by 39 to 70%; and beyond three or four agents, more only hurts. Their summary phrase is "architecture–task alignment determines collaborative success." In plain words: **whether the work splits decides whether more hands help or hurt.** Anyone who has run a team reads that sentence and smiles.
+
+The failure modes are familiar too. A Berkeley team's NeurIPS 2025 study, [*Why Do Multi-Agent LLM Systems Fail?*](https://arxiv.org/abs/2503.13657), annotated over 1,600 execution traces across 7 mainstream frameworks and built a failure taxonomy (MAST). Failure rates ran from roughly 40 to 86%, and the single largest class — about 37% of all failures — is **inter-agent misalignment**: talking past each other, dropping context, re-litigating decisions a teammate had already made. Another benchmark, [Silo-Bench](https://arxiv.org/abs/2603.01045), is blunter still: with merely two agents, coordination overhead already eats 15 to 49% of single-agent performance. Two people who can't run a meeting — agents have learned that one faithfully.
+
+The error-propagation data puts a number on the project manager's worth. The MIT–Google study measured that in an independent agent swarm with no coordinator, a single error amplifies 17.2× as it spreads; route everything through a central coordinator and that drops to 4.4×. The orchestrator is the agent world's project manager, striking exactly the old trade: every agent aligns only with it, alignment cost κ collapses — and it becomes the serial bottleneck, queueing cost σ rises. Fifty years of management science, reproduced wholesale in agent architectures before anyone wrote a line of it down.
+
+![Five readings from agent teams: +80.9% on parallel tasks, −39–70% on sequential tasks, 15–49% lost at just two agents, error amplification 17.2× versus 4.4×, and ~37% of failures from inter-agent misalignment](/img/blog/2026-07-13-multi-agent-teams-and-the-measurable-coordination-tax/figure-3-evidence.en.png)
+
+The story is not "multi-agent bad," of course. Anthropic's [multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) beat a single agent by 90.2% on breadth-first research — work that was always meant for ten librarians fanning out. Cognition (the company behind Devin) first published [*Don't Build Multi-Agents*](https://cognition.com/blog/dont-build-multi-agents), then months later [a follow-up on which multi-agent patterns actually hold up](https://cognition.com/blog/multi-agents-working), landing on: fan out the reads, keep the writes single-threaded. The consensus the two camps argued their way into is just the curve's own meaning: work with low alignment cost κ (parallel research) takes all the agents you can throw at it; high-κ work (sequential writing) wants as few as possible.
+
+## This time, the bill can be itemised
+
+At this point you might object: isn't this just re-verifying management common sense? It is — and that is precisely the news, because management science waited a century for the word "verify."
+
+Organisational economics has always wanted to measure coordination cost precisely. Three walls stood in the way:
+
+- **No logs**: you cannot instrument a company. The hallway chat, the glance across the meeting room — none of it leaves a record.
+- **No re-runs**: you cannot have the same company live the same quarter once with 8 people and again with 16 and diff the output. History runs once; the counterfactual is unobservable.
+- **People game metrics**: [Goodhart's Law](https://en.wikipedia.org/wiki/Goodhart%27s_law) — when a measure becomes a target, it ceases to be a good measure. Count lines of code, get padded code; count closed tickets, watch tickets shatter into confetti.
+
+Agents demolish all three at once. Every interaction goes through an API — token usage, timestamps, full content, a complete ledger by default: wall one, gone. The same task batch can run with 2, 4, 8, 16 agents, everything else pinned, for an afternoon and some inference budget: wall two, gone. An agent doesn't know it is being measured and doesn't inflate its numbers for the performance review: wall three, gone. **The experimental conditions organisational economics could only dream about, agent systems hand over for free.**
+
+One trap, though, before you go measuring: coordination cost is *not* "the token count of messages between agents." Work that traces token flows (such as [AgentTaxo](https://openreview.net/forum?id=0iLbiYYIpC)) finds the biggest costs hiding not in the visible hand-off messages but in redundantly re-sent context and in verification. More radically, [LatentMAS](https://arxiv.org/abs/2511.20639) shows agents can collaborate entirely in latent space — **there may be no natural-language message to count at all**. Counting messages is like judging a company's coordination cost by its meeting hours: few meetings does not mean well aligned.
+
+Honest measurement runs on two tracks. One is **outcome-side, whole-system**: fix the task set, sweep the team size N, and watch where the output curve bends away from the ideal line — the gap *is* the coordination tax, no attribution required. Silo-Bench's RCC metric (the share of single-agent performance lost) works exactly this way. The other is **process-side, a basket of gauges**: context-duplication rate, agent utilisation, cost per delegation, error-amplification factor. Each is one facet of the cost; read them together as a dashboard, but don't expect any single one to be the truth. Philosophy of science has a name for this situation — the [Duhem–Quine thesis](https://en.wikipedia.org/wiki/Duhem%E2%80%93Quine_thesis): the aggregate deviation is measurable, the single-point attribution is not.
+
+![Three walls come down: no logs, no re-runs, gamed metrics — the three century-old obstacles of organisational economics, the agent-side answers, and the two measurement routes](/img/blog/2026-07-13-multi-agent-teams-and-the-measurable-coordination-tax/figure-4-walls.en.png)
+
+Time to collect on the earlier caveat: for human teams those numbers could only ever be computed; for agent teams they can, at last, be measured. The man-month has gone from a quotable aphorism to a law you can rerun in an afternoon — an unexpected gift from AI to management science.
+
+## What becomes valuable next
+
+Finally, what this means for a career — because the curve doesn't just describe teams, it maps where the leverage goes.
+
+Read USL's three parameters as a skills map. For decades the industry's premium went to solo throughput — the λ in the formula: coding fast, few bugs, framework mastery — the hard currency of every résumé. AI is now wholesaling solo throughput: a single agent's throughput is cheap, plentiful, priced per token, and still getting cheaper. When the numerator stops being scarce, the value moves to the denominator: **whoever can press alignment cost κ down is the scarce talent of the next era.**
+
+Pressing alignment cost κ down is a concrete craft, not a slogan. At minimum it has four parts:
+
+- **Task decomposition**: split work so it parallelises with clean, non-colliding boundaries — split well, and alignment cost is low by construction.
+- **Protocol design**: decide what must be synchronised and what must never be broadcast — the kitchen's ticket rail is protocol design.
+- **Verification standards**: the more correctness a machine can adjudicate automatically, the less humans need to align on.
+- **Orchestration**: when to funnel through a coordinator, when to let agents fan out.
+
+Look familiar? This is what architects and engineering managers have been doing all along. The difference is that the craft now comes with a gauge: every coordination structure you design can be run, and the curve tells you whether it works.
+
+A fair question at this point: if alignment cost can be pressed down, what about queueing cost? It can — engineers have been pressing it forever: more staging environments, more CI concurrency; you can always buy another stove. But the two knobs differ in one crucial way: queueing cost (σ) is the linear term and can usually be bought down with money, and a problem money can solve is not where scarcity lives; alignment cost (κ) is quadratic, immune to spending, curable only by design. Apply the same 4× reduction to each knob and watch how differently the curve responds:
+
+![Queueing cost can be bought, alignment cost must be designed: the same 4× reduction lifts the curve when applied to queueing cost (N* 6.8→7.0) but doubles the peak position when applied to alignment cost (N* 6.8→13.6)](/img/blog/2026-07-13-multi-agent-teams-and-the-measurable-coordination-tax/figure-5-sigma-kappa.en.png)
+
+Theory stated; now the operating manual. Depending on where you stand, there are things you can start doing tomorrow.
+
+**If you're a working engineer**: move some effort from *writing fast* to *splitting well*. When a requirement lands, decompose it first, then run one self-check: could any two subtasks touch the same file or the same table? If yes, re-split — fan out the reads, keep the writes single-threaded. When you hand a task to an agent, put the interface contract and acceptance criteria at the top so it never has to come back and ask; give sequential work (debugging, refactoring) to one agent end-to-end instead of a crowd. Your token bill is your report card: the higher the share burned on re-feeding context, the worse the split was.
+
+**If you run a team or own an architecture**: make "3–4 agents" the default ceiling for any multi-agent cluster, and demand evidence of genuine parallelism before exceeding it. Nail down the protocol — schemas, interfaces, specs — *before* fanning out, even if it costs half a day. Put one centralized verification gate on the cluster: the distance between 17.2× and 4.4× error amplification is exactly that gate. And interrogate every process — standups, reviews, documents — with the same question: is this pressing alignment cost (κ) down, or quietly becoming a new queue (σ)? Back in 2022 I wrote [a piece on what architects actually need beyond drawing diagrams](/blog/architect-essential-skills); the conclusion was that half an architect's essential skills live outside technology — communication, coordination, drawing boundaries — filed, at the time, under "soft skills." Those soft skills now have a hard readout: they are precisely the work of pressing alignment cost down. What you've banked is exactly what the new field is short of.
+
+**If you run a company or design the org**: draw team boundaries by one criterion — can changes proceed without stepping on each other? Boundaries drawn well make alignment cost low by construction, and two pizzas remain the default. Tilt promotion and incentives toward work that *makes others faster* — interface quality, documentation, standards: contributions that used to be hard to quantify, and that agent bills can now measure for you. Reserve a structural alignment-cost budget every quarter — protocols, tooling, verification infrastructure: they ship no features, but they are what moves the ceiling. One old caution to close: measuring humans invites Goodhart's Law; only agent systems can be whole-curve-measured with a clear conscience. Don't port the agent dashboard onto people as-is. And none of the old management lessons expire — they are being rewritten, almost verbatim, as orchestration configs.
+
+![The skill migration: the solo-throughput era's hard currency is being wholesaled by agents, while the four crafts of pressing alignment cost down — decomposition, protocol design, verification standards, orchestration — become the new scarcity](/img/blog/2026-07-13-multi-agent-teams-and-the-measurable-coordination-tax/figure-6-skills.en.png)
+
+When I wrote that project-management piece in 2021, I opened with the line "a bad plan is better than no plan." Back then it was a management aphorism; now it is an engineering proposition you can benchmark. The question those three old posts kept circling — why do more people make a team slower — got its answer from Brooks fifty years ago and its experimental data from agents this year. The answer didn't change. What changed is that, for the first time, it can be checked.
+
+Last era, the valuable skill was raising solo throughput λ. This era, it is lowering alignment cost κ. The curve was always there — we finally got the readout.

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 5 — 能力迁移</title>
+<link rel="stylesheet" href="fonts.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .cols { display: flex; gap: 0; align-items: stretch; }
+  .col { flex: 1; border: 1.5px solid; border-radius: 12px; background: #fff; padding: 16px 18px; }
+  .col-old { border-color: var(--ink-faint); }
+  .col-new { border-color: var(--hi-stroke); background: #fdfaff; }
+  .col h2 { margin: 0; font-size: 16px; font-weight: 600; }
+  .col-old h2 { color: var(--ink-soft); } .col-new h2 { color: var(--hi-stroke); }
+  .col .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.07em;
+              text-transform: uppercase; color: var(--ink-faint); margin-top: 3px; }
+  .col ul { margin: 12px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .col li { font-size: 14px; line-height: 1.45; padding: 8px 12px; border-radius: 8px; }
+  .col-old li { background: #f1f1f1; color: var(--ink-soft); }
+  .col-new li { background: var(--hi-fill); color: var(--ink); }
+  .col-new li b { color: var(--hi-stroke); }
+  .mid { flex: none; width: 58px; display: flex; align-items: center; justify-content: center;
+         font-size: 26px; color: var(--hi-stroke); }
+  .roles { margin-top: 16px; display: flex; gap: 12px; }
+  .role { flex: 1; border: 1.5px solid var(--info-stroke); border-radius: 12px; background: #fff; padding: 12px 15px; }
+  .role h3 { margin: 0; font-size: 13.5px; font-weight: 600; color: var(--info-stroke); }
+  .role p { margin: 5px 0 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 06 — 职业地图</div>
+  <h1>上个时代提高单兵产能，这个时代压低对齐成本</h1>
+  <div class="subtitle">当单兵产能被批发化，稀缺的位置从分子挪到了分母。</div>
+</div>
+<div class="cols"><div class="col col-old"><h2>单兵产能（λ）时代的硬通货</h2><div class="tag">正在被 agent 批发化</div><ul><li>写得快</li><li>bug 少</li><li>精通框架与语言</li><li>单兵产能溢价</li></ul></div><div class="mid">→</div><div class="col col-new"><h2>压对齐成本（κ）的手艺</h2><div class="tag">新的稀缺能力</div><ul><li><b>任务拆分</b>——拆到能并行、边界不打架</li><li><b>协议设计</b>——什么必须同步、什么不许广播</li><li><b>验证标准</b>——机器能裁决的对错越多越好</li><li><b>编排</b>——何时中心化收口、何时放手并行</li></ul></div></div><div class="roles"><div class="role"><h3>一线工程师</h3><p>把功夫从&ldquo;写得快&rdquo;挪一部分到&ldquo;拆得好&rdquo;——你的拆分决定 agent 集群的对齐成本</p></div><div class="role"><h3>架构师 · 技术管理者</h3><p>带团队攒下的直觉，升级为可拿数据验证的工程判断</p></div><div class="role"><h3>组织</h3><p>两个披萨、小团队、流程投资——老经验以编排配置的形式被逐字重写</p></div></div>
+<div class="takeaway"><b>谁能把对齐成本 κ 压下去，谁就是下一个时代的稀缺人才</b>——而且这门手艺第一次有了仪表盘。</div>
+<div class="footer"><span>marvinzhang.dev</span><span>图 6 / 6</span></div>
+</div>
+</body>
+</html>
