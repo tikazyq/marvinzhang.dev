@@ -278,6 +278,28 @@ send_telegram_doc() {
 | [references/wechat-styles.md](references/wechat-styles.md) | WeChat-compatible HTML/CSS inline styles (for manual rendering) |
 | [references/telegram-delivery.md](references/telegram-delivery.md) | Telegram Bot API details, rate limits, formatting |
 
+## Rendering-Defect Response SOP (codified 2026-07)
+
+When the author spots a rendering defect after pasting into 公众号 (usually a
+phone screenshot — e.g. the ul hanging-indent bug):
+
+1. **Reproduce in the generator's output**, not in WeChat: find the exact
+   inline style/markup in `static/wechat/<slug>.html` that causes it.
+2. **Fix the script, never hand-edit the artifact** — `generate-wechat-html.js`
+   (styles/rendering) or `wechat.js` (markdown transforms). Add a code
+   comment naming the trap.
+3. **Sweep the committed historical exports**: other `static/wechat/*.html`
+   files carry the same defect. Apply the identical fix as a mechanical
+   string substitution (do NOT regenerate old exports — their sources may be
+   archived and re-rendering risks content drift).
+4. **Verify at phone width**: render the regenerated HTML at a ~390px
+   viewport and screenshot the affected element. Exit codes and diffs are
+   not enough for visual defects — look at the pixels.
+5. **Re-deliver the corrected HTML in chat** so the author re-pastes from
+   the fixed source.
+6. **Close the loop in this skill**: add a row to the Troubleshooting table
+   below so the defect is recognizable next time.
+
 ## Troubleshooting
 
 | Problem | Solution |
