@@ -58,7 +58,7 @@ Deliverables:
 - Unique value proposition identified
 - Target complexity level defined
 
-### Stage 2: Outline (1 interaction)
+### Stage 2: Outline (1 interaction) — HARD ALIGNMENT GATE
 
 Generate structural blueprint:
 - Introduction (300-500 words): Hook, context, value proposition, roadmap
@@ -67,9 +67,39 @@ Generate structural blueprint:
 
 Deliverables: `drafts/{YYYY-MM-DD-slug}/outline.md`
 
+**Do not start Stage 3 until the author approves the outline AND a hook sample.**
+Present both inline in chat: the outline plus the actual opening paragraphs
+drafted in full. The hook is where voice problems show first — a wrong hook
+approved late costs a full rewrite (learned 2026-07: a complete draft was
+rejected for hook/voice/balance issues that one alignment round would have
+caught). Title is part of this gate: it must not presuppose knowledge of a
+book, paper, or niche reference — the body may explain 《人月神话》, the
+title may not depend on it.
+
 ### Stage 3: Writing (3-6 interactions)
 
 **Write ONE section per interaction** directly to `blog/YYYY-MM-DD-slug.mdx` (with `unlisted: true`).
+
+**Chinese-first for zh-primary articles.** When the main readership is the
+公众号 audience, draft the ZH version natively in the author's voice
+(`foundation/writing-style` → zh-voice red lines), then *restate* — never
+sentence-translate — the EN version from the final ZH. Translation direction
+EN→ZH produces 翻译腔 that survives editing; drafting direction must match
+the primary audience. Record which locale is authoritative in an MDX comment.
+
+**Figures are a default deliverable, not an extra.** Deep articles ship with
+3-6 static figures in the house style (860px canvas, semantic palette,
+bilingual variants), generated from HTML sources in `drafts/{slug}/figures/`
+and rendered to `static/img/blog/{slug}/`. Reference workflow: the
+stack-selection and coordination-tax articles' `figures/gen_figures.py` +
+`render.mjs`. An interactive widget complements figures; it does not replace
+them (exports like WeChat need static images).
+
+**Notation for general readers.** Introduce symbols (λ, σ, κ, …) once with
+plain-language aliases, then keep the alias and symbol riding together at key
+mentions ("对齐成本 κ", "queueing cost σ"). Bare symbols belong only in
+formulas and parameter lists. Add a one-line reader note after the
+definitions ("记不住字母没关系，跟着中文走就行").
 
 Section checklist:
 - [ ] Appropriate word count (600-1000 for main sections)
