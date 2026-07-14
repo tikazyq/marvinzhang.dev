@@ -31,6 +31,43 @@ TELEGRAM_BOT_TOKEN   # Bot token from @BotFather
 TELEGRAM_CHAT_ID     # User's numeric chat ID (from @userinfobot)
 ```
 
+## Per-Article Checklist (codified 2026-07)
+
+Run through these in order — each item came from a real publishing round:
+
+1. **Timing gate**: the article's images are referenced by
+   `https://www.marvinzhang.dev/...` URLs. The article PR must be **merged
+   and production-deployed** before the user pastes into 公众号 — otherwise
+   WeChat's image importer gets 404s.
+2. **Interactive JSX components need a screenshot config.** Before running
+   `pnpm wechat`, add the article's components to `COMPONENT_CONFIGS` in
+   `scripts/screenshot-jsx-components.js`. CSS-module components use the
+   `cssSelector` path (e.g. `{ name: 'ScaleCurveWidget', cssSelector:
+   '[class*="widget"]' }`). The script needs a fresh `pnpm build`, hides the
+   fixed navbar before capture, and prefers the environment Chromium.
+   Visually verify the PNG: full component, no chrome overlap.
+3. **Adapt interactive prose for the static channel.** Lead-ins like
+   "拖动滑杆" are wrong under a screenshot. Edit `wechat-zh.md` AFTER the
+   final `wechat.js` run (it regenerates and would overwrite), rewording to
+   "下图是交互小工具的截图……点文末'阅读原文'即可体验", then re-run ONLY
+   `node scripts/generate-wechat-html.js <slug>`.
+4. **Cover + digest are part of the deliverable.**
+   - Cover: 2.35:1 main (900×383) + optional 1:1 small. Two routes: (a)
+     code-drawn via the article's figures pipeline; (b) — author's current
+     preference — write text-to-image prompts and hand off to an external
+     model. T2I prompts must request **no embedded text** (CJK text renders
+     garbled), leave the left third empty for a later title overlay, and
+     specify `--ar 21:9` (crop to 2.35:1) plus a 1:1 variant.
+   - Digest: ≤120 chars, hook-first, no symbols the reader hasn't met.
+5. **Delivery fallback**: if `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` are
+   absent in the environment, send the bundle as chat files instead
+   (HTML first — it is the paste source — then markdown, component
+   screenshots, covers, digest text). Tell the user the env vars to set if
+   they want phone push restored.
+6. **Post-publish**: user sends back the permanent
+   `https://mp.weixin.qq.com/s/...` link → add `wechat_url` to BOTH locale
+   MDX frontmatters, then archive the drafts workspace to `drafts/archive/`.
+
 ## Quick Start
 
 When the user says "publish X to WeChat" or "发布 X 到微信公众号":
@@ -244,6 +281,7 @@ send_telegram_doc() {
 | Images not sending | Check file path; max 10MB per photo |
 | Content formatting lost in paste | Use markdown-nice mini program for rendering |
 | Literal `**` visible in published article | Bold delimiter has an adjacent space or a broken pair; ensure `fixBoldMarkers` in `scripts/generate-wechat-html.js` runs and consumes one balanced pair at a time (never write a regex that requires a space after the opening `**` — it will match across pairs) |
+| Wrapped bullet lines flow back under the marker (no hanging indent) | `S.ul` needs non-zero `padding-left` (1.4em) with `list-style:disc outside` — `padding-left:0` puts markers in the margin and kills the hanging indent. Fixed in `generate-wechat-html.js` 2026-07; if editing list styles, re-verify at a 390px viewport |
 | Long code lines wrap mid-token / read badly on phone | Code scrolls horizontally: `overflow-x:auto` + `-webkit-overflow-scrolling:touch` on `<pre>`, `white-space:nowrap` on `<code>` (see `S.pre`/`S.precode`). If a published article ever clips instead of scrolling, fall back to `pre-wrap` + `break-all` |
 | Reference list shows no numbers | The `ol` style uses `padding-left: 0`, which clips native markers; emit explicit `[n]` prefixes as plain paragraphs (handled in `scripts/wechat.js`) |
 | In-text reference labels look like plain prose | `wechat.js` wraps former link labels in `<span class="wx-ref">`; `generate-wechat-html.js` swaps the class for inline link-blue styles (`S.ref`/`S.sup`) since WeChat strips classes |
