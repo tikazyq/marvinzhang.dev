@@ -420,13 +420,13 @@ f5_en_body = ('<div class="cols">'
 emit("figure-6-skills", "zh", "图 5 — 能力迁移", "图 06 — 职业地图",
      "上个时代提高单兵产能，这个时代压低对齐成本", "当单兵产能被批发化，稀缺的位置从分子挪到了分母。",
      f5_zh_body,
-     "<b>谁能把对齐成本压下去，谁就是下一个时代的稀缺人才</b>——而且这门手艺第一次有了仪表盘。",
+     "<b>谁能把对齐成本 κ 压下去，谁就是下一个时代的稀缺人才</b>——而且这门手艺第一次有了仪表盘。",
      "marvinzhang.dev", "图 6 / 6", F5_CSS)
 
 emit("figure-6-skills", "en", "Fig. 5 — The skill migration", "FIG 06 — CAREER MAP",
      "Last era: raise solo throughput. This era: lower alignment cost.", "With solo throughput commoditised, scarcity moves from the numerator to the denominator.",
      f5_en_body,
-     "<b>Whoever can press alignment cost down is the scarce talent of the next era</b> — and for the first time, the craft comes with a gauge.",
+     "<b>Whoever can press alignment cost κ down is the scarce talent of the next era</b> — and for the first time, the craft comes with a gauge.",
      "marvinzhang.dev", "FIG 6 / 6", F5_CSS)
 
 print("all done")
@@ -504,11 +504,11 @@ f5b_en_body = ('<div class="duo">'
 emit("figure-5-sigma-kappa", "zh", "图 5 — 排队成本能买，对齐成本只能设计", "图 05 — 两个旋钮",
      "排队成本能买，对齐成本只能设计", "同样压低四倍，两个参数对曲线的影响完全不同（灰色虚线为基线 σ=0.08、κ=0.02，λ=1，两图同一纵轴）。",
      f5b_zh_body,
-     "<b>压排队成本是让现有的队伍干得更顺，压对齐成本才是把队伍规模的天花板往外推</b>——这也是为什么稀缺的本事在后者。",
+     "<b>压排队成本 σ 是让现有的队伍干得更顺，压对齐成本 κ 才是把队伍规模的天花板往外推</b>——这也是为什么稀缺的本事在后者。",
      "<span style=\"text-transform:none\">λ=1 · 基线 σ=0.08 κ=0.02</span>", "图 5 / 6", F5B_CSS)
 
 emit("figure-5-sigma-kappa", "en", "Fig. 5 — Queueing cost can be bought; alignment cost must be designed", "FIG 05 — TWO KNOBS",
      "Queueing cost can be bought; alignment cost must be designed", "The same 4× reduction, applied to each parameter, does very different things to the curve (grey dashed = baseline σ=0.08, κ=0.02, λ=1; both panels share one y-axis).",
      f5b_en_body,
-     "<b>Lowering queueing cost makes the team you have run smoother; lowering alignment cost pushes out the ceiling on how big a team can get</b> — which is why the scarcity lives in the latter.",
+     "<b>Lowering queueing cost σ makes the team you have run smoother; lowering alignment cost κ pushes out the ceiling on how big a team can get</b> — which is why the scarcity lives in the latter.",
      "<span style=\"text-transform:none\">λ=1 · baseline σ=0.08 κ=0.02</span>", "FIG 5 / 6", F5B_CSS)

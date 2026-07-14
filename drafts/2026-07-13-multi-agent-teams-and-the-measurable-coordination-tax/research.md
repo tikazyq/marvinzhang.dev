@@ -11,7 +11,7 @@
 | **Slug** | `multi-agent-teams-and-the-measurable-coordination-tax` |
 | **Date** | 2026-07-13 |
 | **EN title (primary)** | Why AI Agent Teams Can't Escape the Mythical Man-Month |
-| **ZH title (primary)** | 《为什么 AI Agent 团队也逃不过人月神话？》 |
+| **ZH title (primary)** | 《为什么 AI Agent 团队也逃不过"人多了反而慢"？》（2026-07-14 第五轮：标题不预设读者认识《人月神话》）|
 | **EN tags** | `ai`, `agents`, `multi-agent`, `scalability`, `software-engineering` |
 | **ZH tags** | `AI`, `智能体`, `多智能体`, `可扩展性`, `软件工程` |
 | **EN target length** | ~3,400–3,900 words |
