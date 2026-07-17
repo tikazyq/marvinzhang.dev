@@ -64,9 +64,11 @@ The `description` is the human commitment; `steps` and `assertions` are the mach
 
 Reading "drives real interfaces", you might think: isn't this just another Playwright? Quite the opposite — Duhem's browser checks (`ui/*`) are driven by [Playwright](https://playwright.dev/) underneath. The two sit at different layers: Playwright is the engine and test framework you write test programs on top of; Duhem sits a layer above — you write acceptance criteria, checks derive from them, and the verdict decides whether the change can merge and ship.
 
-![A layered comparison of Duhem and e2e frameworks like Playwright: what you write, what it anchors to, mocks, who judges, best position — same engine, different layer](/img/blog/2026-07-17-introducing-duhem/figure-2-vs-e2e.en.png)
+A newer class of tool has emerged in the past two years: AI testing frameworks like [Midscene.js](https://github.com/web-infra-dev/midscene). You write cases in natural language; a multimodal model understands the page at run time, finds elements, performs actions — and can even judge assertions itself (`aiAssert`). They solve the hard problem at the *driving* layer: no selectors to depend on, so UI refactors rarely break them. The price is letting the model into the *judging* loop: the same page can pass this run and fail the next, or fail confidently in the wrong direction. That is exactly the line Duhem won't cross — AI may draft the acceptance criteria, but the verdict must be deterministic.
 
-So they don't compete: keep writing Playwright tests in the inner dev loop; Duhem guards the last gate before shipping — walking the real system, the way users do, end to end.
+![A comparison of three tool classes — e2e frameworks like Playwright, AI testing frameworks like Midscene, and Duhem — across what you write, what it anchors to, mocks, who judges, and best position; the dividing line is the judgment structure](/img/blog/2026-07-17-introducing-duhem/figure-2-vs-e2e.en.png)
+
+So the three don't compete: keep writing Playwright tests in the inner dev loop, and by all means hand exploration and case generation to AI testing frameworks; Duhem guards the last gate before shipping — walking the real system the way users do, with a verdict that carries no probability.
 
 ## The first real bug it caught
 

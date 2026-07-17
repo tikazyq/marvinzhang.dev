@@ -64,9 +64,11 @@ criteria:
 
 看到“驱动真实接口”，你可能会想：这不就是又一个 Playwright 吗？恰恰相反——Duhem 的浏览器检查（`ui/*`）底层就是用 [Playwright](https://playwright.dev/) 驱动的。两者不在同一层：Playwright 是引擎和测试框架，你在它上面写测试程序；Duhem 在更上面一层——你写的是验收标准，检查从标准派生，判定结果直接决定能不能合并、能不能发布。
 
-![Duhem 与 Playwright 这类 e2e 框架的分层对比：你写的东西、锚定在哪、mock、谁来判定、擅长的位置——引擎是同一个，层次不一样](/img/blog/2026-07-17-introducing-duhem/figure-2-vs-e2e.zh.png)
+近两年还冒出另一类工具：[Midscene.js](https://github.com/web-infra-dev/midscene) 这样的 AI 测试框架。用例用自然语言写，多模态模型在运行时理解页面、找到元素、执行动作，连断言都可以交给模型判断（`aiAssert`）。它们解决的是“怎么驱动”这一层的老大难——不依赖选择器，UI 重构不容易断。但代价是把模型请进了判定环节：同一个页面，模型这次判“通过”，下次可能判“不通过”，也可能自信地判错。这在 Duhem 的设计里恰恰是不能让步的一条——AI 可以起草验收标准，判定必须是确定性的。
 
-所以它们不冲突：开发内环里该写的 Playwright 测试照写；Duhem 把守的是出厂前的最后一道关——用用户的走法，把真系统完整过一遍。
+![三类工具的对比：Playwright 这类 e2e 框架、Midscene 这类 AI 测试框架、Duhem——你写的东西、锚定在哪、mock、谁来判定、擅长的位置；分水岭在判定结构](/img/blog/2026-07-17-introducing-duhem/figure-2-vs-e2e.zh.png)
+
+所以三者不冲突：开发内环里该写的 Playwright 测试照写，探索和用例生成尽可以交给 AI 测试框架；Duhem 把守的是出厂前的最后一道关——用用户的走法把真系统过一遍，判定不带一点概率。
 
 ## 它抓住的第一个真 bug
 

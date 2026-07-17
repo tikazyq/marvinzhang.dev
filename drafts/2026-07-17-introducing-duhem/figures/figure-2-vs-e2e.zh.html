@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8" />
-<title>图 02 — 和 e2e 测试框架的关系</title>
+<title>图 02 — 和其他测试工具的关系</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -44,72 +44,80 @@
   }
   .mono { font-family: 'JetBrains Mono', monospace; }
 
-  /* --- comparison --- */
-  .cmp { display: flex; flex-direction: column; gap: 12px; }
-  .heads { display: flex; gap: 12px; }
-  .heads .dim { width: 128px; flex: none; }
+  /* --- comparison, 3 columns --- */
+  .cmp { display: flex; flex-direction: column; gap: 11px; }
+  .heads { display: flex; gap: 11px; }
+  .heads .dim { width: 92px; flex: none; }
   .heads .hd {
-    flex: 1; border-radius: 12px; padding: 11px 15px; font-weight: 600; font-size: 16px;
-    border: 1.5px solid;
+    flex: 1; border-radius: 12px; padding: 10px 13px; font-weight: 600; font-size: 14.5px;
+    line-height: 1.35; border: 1.5px solid; display: flex; align-items: center;
   }
   .hd.pw { border-color: var(--info-stroke); background: var(--info-fill); color: var(--info-stroke); }
+  .hd.ms { border-color: var(--warn-stroke); background: var(--warn-fill); color: var(--warn-stroke); }
   .hd.dh { border-color: var(--hi-stroke); background: var(--hi-fill); color: var(--hi-stroke); }
-  .crow { display: flex; gap: 12px; }
+  .crow { display: flex; gap: 11px; }
   .crow .dim {
-    width: 128px; flex: none; display: flex; align-items: center;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em;
+    width: 92px; flex: none; display: flex; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.04em;
     text-transform: uppercase; color: var(--ink-faint); line-height: 1.5;
   }
   .crow .cell {
     flex: 1; border: 1.5px solid var(--line); border-radius: 12px; background: #fff;
-    padding: 12px 15px; font-size: 14px; line-height: 1.55; color: var(--ink);
+    padding: 11px 13px; font-size: 13.5px; line-height: 1.5; color: var(--ink);
   }
   .crow .cell b { font-weight: 600; }
+  .crow .cell.ms { border-color: #f0d6b3; background: #fffdf8; }
   .crow .cell.dh { border-color: #d9c2e4; background: #fdfaff; }
 </style>
 </head>
 <body>
 <div class="canvas">
 <div class="header">
-  <div class="figno">图 02 — 和 e2e 测试框架的关系</div>
-  <h1>不是替代 Playwright，是站在它上面</h1>
-  <div class="subtitle">Duhem 的浏览器检查底层正是 Playwright 驱动的。差别不在引擎，而在你写什么、锚定什么、谁来判定。</div>
+  <div class="figno">图 02 — 和其他测试工具的关系</div>
+  <h1>差别不在引擎，在判定结构</h1>
+  <div class="subtitle">传统 e2e 框架、Midscene 这类 AI 测试框架、Duhem，站的层不一样：写什么、锚定什么，以及最关键的——谁来判定。</div>
 </div>
 
 <div class="cmp">
   <div class="heads">
     <div class="dim"></div>
     <div class="hd pw">Playwright 这类 e2e 框架</div>
+    <div class="hd ms">Midscene 这类 AI 测试框架</div>
     <div class="hd dh">Duhem</div>
   </div>
   <div class="crow">
     <div class="dim">你写的东西</div>
-    <div class="cell">一段要长期维护的<b>测试程序</b>：异步、等待、重试、fixture</div>
-    <div class="cell dh"><b>验收标准</b>＋从标准派生的声明式检查（YAML）</div>
+    <div class="cell">要长期维护的<b>测试程序</b>：异步、等待、重试</div>
+    <div class="cell ms"><b>自然语言用例</b>，模型运行时解释执行</div>
+    <div class="cell dh"><b>验收标准</b>＋派生的声明式检查（YAML）</div>
   </div>
   <div class="crow">
     <div class="dim">锚定在哪</div>
-    <div class="cell">实现细节——选择器、时序、页面结构，重构就断</div>
-    <div class="cell dh">意图——“做完”应该是什么样，重构不受影响</div>
+    <div class="cell">实现细节——选择器、时序，重构就断</div>
+    <div class="cell ms">页面语义——模型现场理解，抗重构但看模型发挥</div>
+    <div class="cell dh">意图——“做完”应该是什么样</div>
   </div>
   <div class="crow">
     <div class="dim">mock</div>
-    <div class="cell">常与 mock、fixture 搭配，跑的可以是替身</div>
-    <div class="cell dh">不允许 mock，只跑真实交付物、走真实接口</div>
+    <div class="cell">常与 mock、fixture 搭配</div>
+    <div class="cell ms">通常驱动真实界面</div>
+    <div class="cell dh">不允许 mock，只跑真实交付物</div>
   </div>
   <div class="crow">
     <div class="dim">谁来判定</div>
-    <div class="cell">断言写在代码里，谁写代码谁维护——如今常是 AI 自己</div>
-    <div class="cell dh">确定性判定，独立于写代码的 AI，红灯直接卡住发布</div>
+    <div class="cell">断言写在代码里，谁写谁维护——常是 AI 自己</div>
+    <div class="cell ms"><b>模型判定</b>断言（aiAssert），结果是概率性的</div>
+    <div class="cell dh"><b>确定性判定</b>，独立于 AI，红灯卡住发布</div>
   </div>
   <div class="crow">
     <div class="dim">擅长的位置</div>
     <div class="cell">开发内环的功能测试与调试</div>
+    <div class="cell ms">探索性 UI 自动化、用例生成</div>
     <div class="cell dh">合并、发布前的最后一道验收关</div>
   </div>
 </div>
 
-<div class="takeaway">引擎是同一个，层次不一样：<b>Playwright 负责“怎么驱动浏览器”，Duhem 负责“验收标准有没有达到”</b>。开发内环照写测试，出厂那道关交给独立判定。</div>
+<div class="takeaway">判定结构是分水岭：断言交给代码、交给模型，还是交给独立的机械判定。<b>Duhem 欢迎 AI 起草标准，但把模型挡在判定之外</b>——不确定性不能进入 verdict。</div>
 <div class="footer"><span>marvinzhang.dev</span><span>图 2 / 3</span></div>
 </div>
 </body>
