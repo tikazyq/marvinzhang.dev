@@ -58,6 +58,14 @@ criteria:
 
 The `description` is the human commitment; `steps` and `assertions` are the machine's actions and judgment — one file, and neither half can shake off the other.
 
+## Not another e2e testing framework
+
+Reading "drives real interfaces", you might think: isn't this just another Playwright? Quite the opposite — Duhem's browser checks (`ui/*`) are driven by [Playwright](https://playwright.dev/) underneath. The two sit at different layers: Playwright is the engine and test framework you write test programs on top of; Duhem sits a layer above — you write acceptance criteria, checks derive from them, and the verdict decides whether the change can merge and ship.
+
+![A layered comparison of Duhem and e2e frameworks like Playwright: what you write, what it anchors to, mocks, who judges, best position — same engine, different layer](/img/blog/2026-07-17-introducing-duhem/figure-2-vs-e2e.en.png)
+
+So they don't compete: keep writing Playwright tests in the inner dev loop; Duhem guards the last gate before shipping — walking the real system, the way users do, end to end.
+
 ## The first real bug it caught
 
 In mid-July 2026, a `:edge` image build of [Crawlab](https://github.com/crawlab-team/crawlab) Pro — our web-crawler management platform — was stopped by its Duhem acceptance suite: the web front wasn't reachable.
@@ -68,7 +76,7 @@ Here's the part worth dwelling on. **The backend process was completely fine.** 
 
 Duhem's verdict was red, for a plain reason: following the acceptance criteria, it walks the same path users do — open the front, log in, call `/api` — and if that path doesn't work, it doesn't pass. The fix landed quickly (install the missing package; make the render script replace the config only after a successful render), and the same suite confirmed it. Afterward we changed the gate from manually triggered to running automatically after every `:edge` build — a green verdict is now the hard precondition for an image to promote to `:stable` and reach any user:
 
-![An acceptance gate independent of the AI: the :edge build passes through the Duhem acceptance suite (real cluster, real interfaces, mechanical judgment) before promoting to :stable; below, the readings on the day of the envsubst incident — health check, backend process, and pipeline all green, only the Duhem verdict red](/img/blog/2026-07-17-introducing-duhem/figure-2-gate.en.png)
+![An acceptance gate independent of the AI: the :edge build passes through the Duhem acceptance suite (real cluster, real interfaces, mechanical judgment) before promoting to :stable; below, the readings on the day of the envsubst incident — health check, backend process, and pipeline all green, only the Duhem verdict red](/img/blog/2026-07-17-introducing-duhem/figure-3-gate.en.png)
 
 Back to the question in the title: in this incident, trusting the "pass" from the AI and the system's own signals would have shipped that image. It didn't ship — not because anyone was more careful, but because an acceptance gate stood in the way: independent of the AI, mock-free, mechanically judged.
 
@@ -81,15 +89,17 @@ Duhem is open source under Apache-2.0 and currently v0.x — the schema will sti
 ## Getting started
 
 ```sh
-# scaffold a Verification Definition (the default check needs no browser)
-duhem init ./verifications/sample --name sample
+# install (npm; prebuilt binaries also on GitHub Releases)
+npm i -g duhem
 
-# structurally validate it, then run it end-to-end
+# scaffold a Verification Definition (the default check needs no browser),
+# validate it, then run it end-to-end
+duhem init ./verifications/sample --name sample
 duhem validate ./verifications/sample/duhem.yml
 duhem run      ./verifications/sample
 ```
 
-Binaries are on [GitHub Releases](https://github.com/onsager-ai/duhem/releases); the [getting-started guide](https://github.com/onsager-ai/duhem/blob/main/docs/getting-started.md) walks you from zero to authoring your first check. Browser-driven (`ui/*`) checks additionally need a one-time `duhem browser install`.
+Prebuilt binaries are on [GitHub Releases](https://github.com/onsager-ai/duhem/releases); the [getting-started guide](https://github.com/onsager-ai/duhem/blob/main/docs/getting-started.md) walks you from zero to authoring your first check. Browser-driven (`ui/*`) checks additionally need a one-time `duhem browser install`.
 
 ## Looking for a few people to try it on real systems
 

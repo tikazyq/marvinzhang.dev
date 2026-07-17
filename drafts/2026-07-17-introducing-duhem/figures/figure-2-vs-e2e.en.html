@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>FIG 02 — Relation to e2e frameworks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--hi-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--hi-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* --- comparison --- */
+  .cmp { display: flex; flex-direction: column; gap: 12px; }
+  .heads { display: flex; gap: 12px; }
+  .heads .dim { width: 128px; flex: none; }
+  .heads .hd {
+    flex: 1; border-radius: 12px; padding: 11px 15px; font-weight: 600; font-size: 16px;
+    border: 1.5px solid;
+  }
+  .hd.pw { border-color: var(--info-stroke); background: var(--info-fill); color: var(--info-stroke); }
+  .hd.dh { border-color: var(--hi-stroke); background: var(--hi-fill); color: var(--hi-stroke); }
+  .crow { display: flex; gap: 12px; }
+  .crow .dim {
+    width: 128px; flex: none; display: flex; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--ink-faint); line-height: 1.5;
+  }
+  .crow .cell {
+    flex: 1; border: 1.5px solid var(--line); border-radius: 12px; background: #fff;
+    padding: 12px 15px; font-size: 14px; line-height: 1.55; color: var(--ink);
+  }
+  .crow .cell b { font-weight: 600; }
+  .crow .cell.dh { border-color: #d9c2e4; background: #fdfaff; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">FIG 02 — RELATION TO E2E FRAMEWORKS</div>
+  <h1>Not a Playwright replacement — a layer above it</h1>
+  <div class="subtitle">Duhem&rsquo;s browser checks are driven by Playwright underneath. The difference isn&rsquo;t the engine — it&rsquo;s what you write, what it anchors to, and who judges.</div>
+</div>
+
+<div class="cmp">
+  <div class="heads">
+    <div class="dim"></div>
+    <div class="hd pw">e2e frameworks like Playwright</div>
+    <div class="hd dh">Duhem</div>
+  </div>
+  <div class="crow">
+    <div class="dim">What you write</div>
+    <div class="cell">A <b>test program</b> you maintain forever: async, waits, retries, fixtures</div>
+    <div class="cell dh"><b>Acceptance criteria</b> + declarative checks derived from them (YAML)</div>
+  </div>
+  <div class="crow">
+    <div class="dim">Anchored to</div>
+    <div class="cell">Implementation detail — selectors, timing, page structure; refactors break it</div>
+    <div class="cell dh">Intent — what &ldquo;done&rdquo; should look like; refactors don&rsquo;t touch it</div>
+  </div>
+  <div class="crow">
+    <div class="dim">Mocks</div>
+    <div class="cell">Commonly paired with mocks and fixtures — a stand-in may be what runs</div>
+    <div class="cell dh">No mocks — only the real deliverable through its real interfaces</div>
+  </div>
+  <div class="crow">
+    <div class="dim">Who judges</div>
+    <div class="cell">Assertions live in code, maintained by whoever writes it — these days, often the AI itself</div>
+    <div class="cell dh">Deterministic verdict, independent of the coding AI; a red blocks the release</div>
+  </div>
+  <div class="crow">
+    <div class="dim">Best position</div>
+    <div class="cell">Functional testing and debugging in the inner dev loop</div>
+    <div class="cell dh">The final acceptance gate before merge and release</div>
+  </div>
+</div>
+
+<div class="takeaway">Same engine, different layer: <b>Playwright answers &ldquo;how to drive the browser&rdquo;; Duhem answers &ldquo;are the acceptance criteria met&rdquo;</b>. Keep writing tests in the inner loop — hand the shipping gate to an independent judge.</div>
+<div class="footer"><span>marvinzhang.dev</span><span>FIG 2 / 3</span></div>
+</div>
+</body>
+</html>
