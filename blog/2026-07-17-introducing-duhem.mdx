@@ -14,7 +14,7 @@ unlisted: true
 
 If you've worked with an AI coding agent, you've seen this scene: the agent finishes a task and reports, full of confidence — "All tests pass ✅". You open the page. Blank screen. Or the API returns 404. "Pass," it turns out, sometimes just means the agent *believes* it passed.
 
-This is the awkward spot AI-assisted development is in: writing code is no longer the bottleneck — acceptance is. Without watching every change and clicking through every feature yourself, how do you know what the AI delivered actually works, end to end?
+This is the awkward spot AI-assisted development is in: writing code is no longer the bottleneck — acceptance is. Without watching every change and clicking through every feature yourself, how do you know what the AI delivered actually works, end to end? I made the broader case in [The Last Mile of AI Is Infrastructure, Not Intelligence](/blog/ai-last-mile-infrastructure): the intelligence is already good enough; what's missing is exactly this kind of infrastructure.
 
 The two common answers both fall short. **Manual acceptance after every change** can't keep up with an agent's output — and human eyes miss exactly the worst failures, the ones where the system claims it's fine while a critical path is quietly broken. **End-to-end (e2e) tests** are, in practice, a program you maintain forever: async, waits, retries, flakiness — and an agent refactoring the internals breaks them constantly. Worse, these days the tests are often AI-written too. When the player is also the referee, a green light doesn't carry much weight.
 
@@ -28,7 +28,7 @@ To fix false greens, first see where they originate. Line up the common "pass" s
 
 ![Four kinds of "pass" compared: the AI's "all tests pass", unit tests, integration tests with mocks, and container health checks — what each genuinely proves, and what it can't see](/img/blog/2026-07-17-introducing-duhem/figure-1-signals.en.png)
 
-The trouble isn't that any one signal is lazy. They share a structural flaw: **either the thing being verified isn't the real deliverable, or the judge sits too close to the AI**. You're testing a stand-in (mocks, isolated units), or the one grading the work is the one who did it (the AI checking itself). A trustworthy green needs both inverted: verify the real system, with judgment independent of the AI.
+The familiar faces on this list each got their own post over the years — unit tests' limits in [Talking Testing: the love and hate of Unit Tests](/blog/unit-tests-love-hate), and the deeper boundary of automated testing in [Sorry, AI Can't Save Testing: Rice's Theorem Explains Why](/blog/rices-theorem-why-automated-testing-will-fail). But the trouble here isn't that any one signal is lazy. They share a structural flaw: **either the thing being verified isn't the real deliverable, or the judge sits too close to the AI**. You're testing a stand-in (mocks, isolated units), or the one grading the work is the one who did it (the AI checking itself). A trustworthy green needs both inverted: verify the real system, with judgment independent of the AI.
 
 ## What Duhem is
 
@@ -36,10 +36,12 @@ Duhem is designed around exactly those two inversions. It reads your acceptance 
 
 Four design decisions set it apart:
 
-- **The spec is the test.** A Verification Definition carries both things at once: human-readable acceptance criteria and machine-runnable checks. What you read, what runs, and what blocks the release are the same file — spec and implementation can't drift apart.
+- **The spec is the test.** A Verification Definition carries both things at once: human-readable acceptance criteria and machine-runnable checks. What you read, what runs, and what blocks the release are the same file — spec and implementation can't drift apart. It's [Spec-Driven Development](/blog/spec-driven-development) taken one step further: the spec doesn't just drive development, it drives acceptance.
 - **No mocks.** Checks drive the real build artifact, real interfaces, real data and runtime. A green means the real system worked, not that a stand-in did.
 - **No AI in the verdict.** An agent may help draft the criteria; a human owns them; pass/fail is computed from deterministic assertions. No model grades its own work, so there is no confident-but-wrong pass.
 - **You write *what* to verify, not the program that verifies it.** Checks are anchored to intent: an agent can rewrite the internals and the check still means the same thing — no rewrite required.
+
+One boundary worth stating plainly: Rice's theorem means no tool can prove a program "fully correct," and Duhem is no exception — its verdict says the acceptance criteria you wrote are met, not that the program is bug-free.
 
 On disk, a Verification Definition looks like this (trimmed from Crawlab's login verification):
 
@@ -102,6 +104,8 @@ duhem run      ./verifications/sample
 Prebuilt binaries are on [GitHub Releases](https://github.com/onsager-ai/duhem/releases); the [getting-started guide](https://github.com/onsager-ai/duhem/blob/main/docs/getting-started.md) walks you from zero to authoring your first check. Browser-driven (`ui/*`) checks additionally need a one-time `duhem browser install`.
 
 ## Looking for a few people to try it on real systems
+
+Last week's [Why AI Agent Teams Can't Escape the Mythical Man-Month](/blog/multi-agent-teams-and-the-measurable-coordination-tax) listed verification standards among the scarce crafts of the agent era; Duhem is an attempt to turn that craft into infrastructure.
 
 Duhem fits systems that are business-critical, structurally complex, and still evolving — where a silent regression is expensive and "does it still work?" isn't something you can confirm at a glance. Conversely, prototypes and tools you can eyeball don't need it.
 
