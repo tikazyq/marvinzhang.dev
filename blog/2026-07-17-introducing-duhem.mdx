@@ -26,12 +26,7 @@ We built [Duhem](https://github.com/onsager-ai/duhem) — an open-source **holis
 
 To fix false greens, first see where they originate. Line up the common "pass" signals and a pattern emerges: each one genuinely proves *something* — just usually not the thing you care about:
 
-| Signal | What it actually proves | What it can't see |
-| ------ | ----------------------- | ----------------- |
-| The AI's "all tests pass" | The agent believes the work is done | Whether tests really ran, and against the real system |
-| Unit tests | A single function behaves correctly in isolation | How the parts behave once assembled |
-| Integration tests with mocks | The stand-in works | Real configuration, data, and runtime |
-| Container health checks | The process is alive | Whether the path users actually take still works |
+![Four kinds of "pass" compared: the AI's "all tests pass", unit tests, integration tests with mocks, and container health checks — what each genuinely proves, and what it can't see](/img/blog/2026-07-17-introducing-duhem/figure-1-signals.en.png)
 
 The trouble isn't that any one signal is lazy. They share a structural flaw: **either the thing being verified isn't the real deliverable, or the judge sits too close to the AI**. You're testing a stand-in (mocks, isolated units), or the one grading the work is the one who did it (the AI checking itself). A trustworthy green needs both inverted: verify the real system, with judgment independent of the AI.
 
@@ -73,7 +68,7 @@ Here's the part worth dwelling on. **The backend process was completely fine.** 
 
 Duhem's verdict was red, for a plain reason: following the acceptance criteria, it walks the same path users do — open the front, log in, call `/api` — and if that path doesn't work, it doesn't pass. The fix landed quickly (install the missing package; make the render script replace the config only after a successful render), and the same suite confirmed it. Afterward we changed the gate from manually triggered to running automatically after every `:edge` build — a green verdict is now the hard precondition for an image to promote to `:stable` and reach any user:
 
-![An acceptance gate independent of the AI: the :edge build passes through the Duhem acceptance suite (real cluster, real interfaces, mechanical judgment) before promoting to :stable; below, the readings on the day of the envsubst incident — health check, backend process, and pipeline all green, only the Duhem verdict red](/img/blog/2026-07-17-introducing-duhem/figure-1-gate.en.png)
+![An acceptance gate independent of the AI: the :edge build passes through the Duhem acceptance suite (real cluster, real interfaces, mechanical judgment) before promoting to :stable; below, the readings on the day of the envsubst incident — health check, backend process, and pipeline all green, only the Duhem verdict red](/img/blog/2026-07-17-introducing-duhem/figure-2-gate.en.png)
 
 Back to the question in the title: in this incident, trusting the "pass" from the AI and the system's own signals would have shipped that image. It didn't ship — not because anyone was more careful, but because an acceptance gate stood in the way: independent of the AI, mock-free, mechanically judged.
 
