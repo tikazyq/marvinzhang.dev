@@ -1,0 +1,185 @@
+verification: Crawlab ui-next — /next boots, renders sign-in, and guards routes
+
+environment:
+  up: ../regression/scripts/up.sh
+  down: ../regression/scripts/down.sh
+  ready:
+    http:
+      url: http://127.0.0.1:8090/api/health
+      timeout: 240s
+
+inputs:
+  login_url:
+    type: string
+    default: http://127.0.0.1:8090/next/login
+  guarded_url:
+    type: string
+    default: http://127.0.0.1:8090/next/projects
+  username:
+    type: string
+    default: admin
+  password:
+    type: string
+    default: admin
+
+criteria:
+  - id: AC-1
+    checks:
+      - id: AC-1.1
+        steps:
+          - uses: ui/navigate
+            with:
+              url: $inputs.login_url
+          - id: username_visible
+            uses: ui/assert-element
+            with:
+              locator: { role: textbox, name: Username }
+              expected: visible
+              within: 20s
+            outputs:
+              satisfied: satisfied
+          - id: signin_visible
+            uses: ui/assert-element
+            with:
+              locator: { role: button, name: Sign In }
+              expected: visible
+              within: 10s
+            outputs:
+              satisfied: satisfied
+          - id: on_login
+            uses: ui/assert-url
+            with:
+              matches: "/next/login"
+              within: 10s
+            outputs:
+              satisfied: satisfied
+        assertions:
+          - $steps.username_visible.outputs.satisfied == true
+          - $steps.signin_visible.outputs.satisfied == true
+          - $steps.on_login.outputs.satisfied == true
+
+  - id: AC-2
+    checks:
+      - id: AC-2.1
+        steps:
+          - uses: ui/navigate
+            with:
+              url: $inputs.guarded_url
+          - id: redirected_to_login
+            uses: ui/assert-url
+            with:
+              matches: "/next/login"
+              within: 15s
+            outputs:
+              satisfied: satisfied
+          - id: signin_shown
+            uses: ui/assert-element
+            with:
+              locator: { role: button, name: Sign In }
+              expected: visible
+              within: 10s
+            outputs:
+              satisfied: satisfied
+        assertions:
+          - $steps.redirected_to_login.outputs.satisfied == true
+          - $steps.signin_shown.outputs.satisfied == true
+
+  - id: AC-3
+    checks:
+      - id: AC-3.1
+        steps:
+          - uses: ui/navigate
+            with:
+              url: $inputs.login_url
+          - uses: ui/type
+            with:
+              locator: { role: textbox, name: Username }
+              text: $inputs.username
+          - uses: ui/type
+            with:
+              locator: { label: Password }
+              text: $inputs.password
+          - uses: ui/click
+            with: { role: button, name: Sign In }
+          - id: left_signin
+            uses: ui/assert-element
+            with:
+              locator: { role: button, name: Sign In }
+              expected: not_exists
+              within: 15s
+            outputs:
+              satisfied: satisfied
+          - id: on_home
+            uses: ui/assert-url
+            with:
+              matches: "/next/$"
+              within: 15s
+            outputs:
+              satisfied: satisfied
+          - id: home_heading
+            uses: ui/assert-element
+            with:
+              locator: { role: heading, name: Home }
+              expected: visible
+              within: 10s
+            outputs:
+              satisfied: satisfied
+          - uses: ui/navigate
+            with:
+              url: $inputs.guarded_url
+          - id: projects_heading
+            uses: ui/assert-element
+            with:
+              locator: { role: heading, name: Projects }
+              expected: visible
+              within: 15s
+            outputs:
+              satisfied: satisfied
+          - id: still_authed
+            uses: ui/assert-url
+            with:
+              matches: "/next/projects"
+              within: 10s
+            outputs:
+              satisfied: satisfied
+        assertions:
+          - $steps.left_signin.outputs.satisfied == true
+          - $steps.on_home.outputs.satisfied == true
+          - $steps.home_heading.outputs.satisfied == true
+          - $steps.projects_heading.outputs.satisfied == true
+          - $steps.still_authed.outputs.satisfied == true
+  - id: AC-4
+    checks:
+      - id: AC-4.1
+        steps:
+          - uses: ui/navigate
+            with:
+              url: $inputs.login_url
+          - uses: ui/type
+            with:
+              locator: { role: textbox, name: Username }
+              text: $inputs.username
+          - uses: ui/type
+            with:
+              locator: { label: Password }
+              text: not-the-password
+          - uses: ui/click
+            with: { role: button, name: Sign In }
+          - id: still_on_login
+            uses: ui/assert-url
+            with:
+              matches: "/next/login"
+              within: 15s
+            outputs:
+              satisfied: satisfied
+          - id: signin_still_shown
+            uses: ui/assert-element
+            with:
+              locator: { role: button, name: Sign In }
+              expected: visible
+              within: 10s
+            outputs:
+              satisfied: satisfied
+        assertions:
+          - $steps.still_on_login.outputs.satisfied == true
+          - $steps.signin_still_shown.outputs.satisfied == true

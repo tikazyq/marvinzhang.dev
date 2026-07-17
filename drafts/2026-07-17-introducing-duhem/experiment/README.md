@@ -18,3 +18,24 @@ Token 用 tiktoken o200k_base 计。diff 用 `git diff --no-index`。
 
 局限：单场景、smoke 级套件；未测 Playwright 套件规模化后的
 helper/fixture/page-object 积累，也未测模型驱动框架的实际运行开销。
+
+## 一致口径的补充测量（应作者要求）
+
+| 口径 | Duhem VD | Playwright |
+| ---- | -------- | ---------- |
+| A. 机械层 vs 机械层（`vd-mech/`，VD 去掉 description） | 150 行 / 979 token | 42 行 / 534 token |
+| A. R1 需求变更 diff（`r1-vd-mech/`） | +35 行 / ~243 token | +8 行 / ~135 token |
+| B. 带意图 vs 带意图（`pw-intent/`，PW 加同等验收注释） | 188 行 / 1502 token | 59 行 / 837 token |
+
+### VD 机械层 979 token 的构成
+
+- `environment:`+`inputs:` 声明 ≈ 138 token（口径差：PW 侧外部化到 CI/env）
+- 判定管道样板 ≈ 281 token（step id + `outputs: satisfied` 映射 +
+  `assertions` 引用——同一语义写三遍；v0.x schema 的 DX 债，可通过
+  assert 步隐式判定压掉）
+- 其余 ≈ 560 token：步骤/locator 本体，与 PW（534）同量级
+
+单条"按钮可见"断言：VD 62 token vs PW 29 token；差值几乎全是管道样板。
+
+结论修正：笔墨上 VD 不占优（去掉样板税后约打平）；优势在结构
+（意图绑定、no-mock 结构性排除、独立判定与证据、环境定义随身带）。
