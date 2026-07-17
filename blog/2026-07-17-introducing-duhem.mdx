@@ -1,0 +1,63 @@
+---
+slug: introducing-duhem
+title: "The Bug Our Own Health Check Called 'Healthy'"
+authors: ["marvin"]
+tags: ["testing", "ai", "agents", "open-source", "crawlab"]
+date: 2026-07-17
+draft: true
+---
+
+{/* The Chinese version is the primary draft; this English version restates it. */}
+{/* Filename date (2026-07-17) and frontmatter date must match. */}
+{/* draft: true — hold until Duhem's quickstart ships (a newcomer can author a verification from the docs alone). Flip to false to publish. */}
+{/* Headline is story-led. Alt if preferred: "Introducing Duhem: verification that catches what your tests miss." */}
+{/* TODO(maintainer): fill the design-partner contact link in the final section (search TODO). */}
+
+AI agents write code fast. The bottleneck isn't writing it anymore — it's knowing whether what they shipped actually *works*, end to end, without you standing over it clicking around.
+
+Today you get two bad options.
+
+You can **test it by hand** after every change. That doesn't scale with how fast an agent moves, and — worse — it's blind to exactly the failures that matter most: the ones where the app *reports itself healthy* while a real path is quietly broken. You look, it seems fine, you ship it.
+
+Or you can write **end-to-end tests** in something like Playwright. But an e2e test isn't a spec you write once — it's a *program* you maintain forever: async, waits, retries, flakiness, fixtures. It drifts away from what "done" was supposed to mean, and an agent refactoring underneath it breaks it constantly.
+
+We built **[Duhem](https://github.com/onsager-ai/duhem)** because there's a third option, and we needed it for our own products before anyone else.
+
+{/* truncate */}
+
+## What it is
+
+Duhem is holistic verification for AI-built software. You write your acceptance criteria; it turns them into mechanically-judged checks that exercise the *real* thing you ship — code, prompts, tools, data, runtime, all together — and it gates the merge on the verdict. Four things make it different:
+
+- **The spec is the test.** A Verification Definition is one artifact — your readable intent bound to the runnable checks. The thing you read is the thing that runs is the thing that blocks the merge, so your spec, your tests, and your code can't quietly drift apart.
+- **No mocks.** It drives the real shipped artifact through its real interfaces. A green means the real system worked, not that a stand-in did.
+- **No AI in the verdict.** An agent can help draft the criteria; a human owns them; the pass/fail is deterministic. No model grading its own homework, no confident-but-wrong green.
+- **The verification doesn't rot.** You write *what* to verify, not the program that verifies it — anchored to intent, not implementation. An agent can rewrite the internals and the check still means the same thing.
+
+That's the pitch. Here's the part that's real.
+
+## The catch
+
+Crawlab Pro — our web-scraping platform — gates its `:edge` Docker image on a Duhem suite before that image is allowed to promote to `:stable`. One day the gate went red: *the environment wouldn't come up.*
+
+The cause was almost invisible. A new image had shipped without a small utility, `envsubst`. Its absence meant the container's startup script silently rendered an **empty** nginx config. nginx, finding nothing, fell back to its default page — and the entire web front went dead on the port everything talks to. `/api` was gone.
+
+Now here's the part that should make you a little uncomfortable. **The backend was fine.** And the container's *own* built-in health check — the one Docker and Kubernetes read to decide if the thing is alive — reported **healthy**, because it checked a health *file* the backend still wrote, not the front door that was actually broken. A human clicking through would have seen a page fail to load and maybe shrugged. Every automated signal the product shipped with said: green.
+
+Duhem said red. No working front, no pass. It didn't care what the health check claimed; it cared whether the real system did the real thing. It refused to certify a build whose web front was dead — and it refused *before* that build could become `:stable` and reach a single user.
+
+We fixed the image, the same gate verified the fix, and it now runs automatically on every build. Total user impact: zero.
+
+That's the whole value in one incident. **Duhem caught a self-masking regression that everything else — including the product's own health check — was calling healthy.** That's the class of bug manual testing can't see and conventional tests usually don't reach, and it's exactly the class that reaches production and costs you.
+
+## Who this is for
+
+Duhem is for technical owners of business-critical software that's complex and keeps changing — where a silent regression is expensive, and "does it still work?" isn't something you can just eyeball.
+
+It is **not** for prototypes, throwaway apps, or anything where the person who wants it can just look and see it works. If you can verify by looking, you don't need Duhem — and we'd rather tell you that than sell it to you.
+
+## Try it with us
+
+Duhem is open source and early — v0.x, expect breaking changes, we'll migrate you. We're looking for a small number of people running real, business-critical, AI-built systems to try it and shape it with us: direct support, a direct line to the people building it.
+
+If that's you → **`TODO(maintainer): design-partner contact link`**
