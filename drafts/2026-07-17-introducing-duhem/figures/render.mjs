@@ -1,13 +1,14 @@
 // Render figure HTMLs in this directory to 2x PNGs in static/img/blog/{slug}/.
 // Uses the project's playwright; Google Fonts load via the network <link>.
 import { chromium } from 'playwright';
-import { readdirSync } from 'fs';
+import { mkdirSync, readdirSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const slug = '2026-07-17-introducing-duhem';
 const outDir = resolve(here, '../../../static/img/blog/', slug);
+mkdirSync(outDir, { recursive: true });
 
 const files = readdirSync(here).filter((f) => f.endsWith('.html')).sort();
 const browser = await chromium
