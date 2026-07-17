@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 01 — 一道独立的验收关</title>
+<link rel="stylesheet" href="fonts.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 24px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--err-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--err-stroke); }
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* --- gate flow --- */
+  .flow { display: flex; align-items: stretch; gap: 0; }
+  .node {
+    flex: 1; border: 1.5px solid; border-radius: 12px; background: #fff;
+    padding: 14px 16px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .node .t { font-weight: 600; font-size: 16px; line-height: 1.35; }
+  .node .d { font-size: 12.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.45; }
+  .n-build { border-color: var(--info-stroke); background: var(--info-fill); }
+  .n-build .t { color: var(--info-stroke); }
+  .n-suite { border-color: var(--hi-stroke); background: var(--hi-fill); }
+  .n-suite .t { color: var(--hi-stroke); }
+  .n-ok { border-color: var(--ok-stroke); background: var(--ok-fill); }
+  .n-ok .t { color: var(--ok-stroke); }
+  .n-err { border-color: var(--err-stroke); background: var(--err-fill); }
+  .n-err .t { color: var(--err-stroke); }
+  .arr { flex: none; width: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .arr .lbl {
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.04em;
+    color: var(--ink-faint); margin-bottom: 3px; white-space: nowrap;
+  }
+  .arr svg { display: block; }
+  .fail-lane { display: flex; align-items: stretch; margin-top: 12px; }
+  .fail-spacer { flex: 1; }
+  .fail-drop { flex: none; width: 58px; display: flex; justify-content: center; }
+  .split { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+  /* --- incident strip --- */
+  .strip { margin-top: 26px; border: 1.5px dashed var(--line); border-radius: 12px; background: #fff; padding: 16px 18px 18px 18px; }
+  .strip .cap {
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 12px;
+  }
+  .pills { display: flex; gap: 10px; }
+  .pill {
+    flex: 1; border-radius: 10px; border: 1.5px solid; padding: 10px 12px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .pill .who { font-size: 12px; color: var(--ink-soft); line-height: 1.35; }
+  .pill .say { font-weight: 600; font-size: 15px; }
+  .pill.g { border-color: var(--ok-stroke); background: var(--ok-fill); }
+  .pill.g .say { color: var(--ok-stroke); }
+  .pill.r { border-color: var(--err-stroke); background: var(--err-fill); }
+  .pill.r .say { color: var(--err-stroke); }
+  .pill .why { font-size: 11.5px; color: var(--ink-faint); line-height: 1.4; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 01 — 发布验收关</div>
+  <h1>一道独立于 AI 的验收关</h1>
+  <div class="subtitle">Crawlab Pro 的每次 <span class="mono">:edge</span> 构建都要先过 Duhem 验收套件——判定通过，才有资格晋级 <span class="mono">:stable</span>、触达用户。</div>
+</div>
+
+<div class="flow">
+  <div class="node n-build">
+    <div class="t">构建 <span class="mono">:edge</span> 镜像</div>
+    <div class="d">CI 产出真实交付物</div>
+  </div>
+  <div class="arr">
+    <svg width="34" height="14" viewBox="0 0 34 14"><path d="M0 7 H26 M20 1 L27 7 L20 13" fill="none" stroke="#8a8a8a" stroke-width="1.8"/></svg>
+  </div>
+  <div class="node n-suite">
+    <div class="t">Duhem 验收套件</div>
+    <div class="d">真实集群、真实接口、机械判定</div>
+  </div>
+  <div class="arr">
+    <svg width="34" height="14" viewBox="0 0 34 14"><path d="M0 7 H26 M20 1 L27 7 L20 13" fill="none" stroke="#8a8a8a" stroke-width="1.8"/></svg>
+  </div>
+  <div class="split">
+    <div class="node n-ok">
+      <div class="t">判定通过 → 晋级 <span class="mono">:stable</span></div>
+    </div>
+    <div class="node n-err">
+      <div class="t">判定不通过 → 阻断发布</div>
+    </div>
+  </div>
+</div>
+
+<div class="strip">
+  <div class="cap">2026-07 · envsubst 事故当天的各方读数</div>
+  <div class="pills">
+    <div class="pill g">
+      <div class="who">容器健康检查</div>
+      <div class="say">正常</div>
+      <div class="why">查的是后端仍在写的健康文件</div>
+    </div>
+    <div class="pill g">
+      <div class="who">后端进程</div>
+      <div class="say">正常</div>
+      <div class="why">:8000 一切如常</div>
+    </div>
+    <div class="pill g">
+      <div class="who">构建与测试流水线</div>
+      <div class="say">全绿</div>
+      <div class="why">没有一步走过用户入口</div>
+    </div>
+    <div class="pill r">
+      <div class="who">Duhem 判定</div>
+      <div class="say">不通过</div>
+      <div class="why">Web 前端不通，/api 不可达</div>
+    </div>
+  </div>
+</div>
+
+<div class="takeaway">所有自带信号都在报&ldquo;正常&rdquo;，坏掉的恰恰是用户要走的那条路。<b>独立于 AI、不用 mock、机械判定</b>——这道关因此存在。</div>
+<div class="footer"><span>marvinzhang.dev</span><span>图 1 / 1</span></div>
+</div>
+</body>
+</html>

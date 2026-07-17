@@ -1,0 +1,103 @@
+---
+slug: introducing-duhem
+title: "Your AI Says “All Tests Pass” — But Do They?"
+authors: ["marvin"]
+tags: ["testing", "ai", "agents", "open-source", "crawlab"]
+date: 2026-07-17
+unlisted: true
+---
+
+{/* The Chinese version is the primary draft; this English version restates it. */}
+{/* Filename date (2026-07-17) and frontmatter date must match. */}
+{/* unlisted: true — renders in the Vercel preview (reachable by URL) but not on the blog index. The real "don't publish" hold is this PR staying unmerged; remove `unlisted` and merge when ready. */}
+{/* TODO(maintainer): fill the design-partner contact link in the final section (search TODO). */}
+
+If you've worked with an AI coding agent, you've seen this scene: the agent finishes a task and reports, full of confidence — "All tests pass ✅". You open the page. Blank screen. Or the API returns 404. "Pass," it turns out, sometimes just means the agent *believes* it passed.
+
+This is the awkward spot AI-assisted development is in: writing code is no longer the bottleneck — acceptance is. Without watching every change and clicking through every feature yourself, how do you know what the AI delivered actually works, end to end?
+
+The two common answers both fall short. **Manual acceptance after every change** can't keep up with an agent's output — and human eyes miss exactly the worst failures, the ones where the system claims it's fine while a critical path is quietly broken. **End-to-end (e2e) tests** are, in practice, a program you maintain forever: async, waits, retries, flakiness — and an agent refactoring the internals breaks them constantly. Worse, these days the tests are often AI-written too. When the player is also the referee, a green light doesn't carry much weight.
+
+We built [Duhem](https://github.com/onsager-ai/duhem) — an open-source **holistic verification** tool — because we think there's a third way. This post covers what it is, and a real bug it recently caught in our own product: one that fooled even the container's built-in health check, and that Duhem stopped before release.
+
+{/* truncate */}
+
+## Where false "passes" come from
+
+To fix false greens, first see where they originate. Line up the common "pass" signals and a pattern emerges: each one genuinely proves *something* — just usually not the thing you care about:
+
+| Signal | What it actually proves | What it can't see |
+| ------ | ----------------------- | ----------------- |
+| The AI's "all tests pass" | The agent believes the work is done | Whether tests really ran, and against the real system |
+| Unit tests | A single function behaves correctly in isolation | How the parts behave once assembled |
+| Integration tests with mocks | The stand-in works | Real configuration, data, and runtime |
+| Container health checks | The process is alive | Whether the path users actually take still works |
+
+The trouble isn't that any one signal is lazy. They share a structural flaw: **either the thing being verified isn't the real deliverable, or the judge sits too close to the AI**. You're testing a stand-in (mocks, isolated units), or the one grading the work is the one who did it (the AI checking itself). A trustworthy green needs both inverted: verify the real system, with judgment independent of the AI.
+
+## What Duhem is
+
+Duhem is designed around exactly those two inversions. It reads your acceptance criteria, binds them to mechanically-judged checks, drives the **real deliverable** through its real interfaces, and uses the deterministic verdict to decide whether the change can merge or ship.
+
+Four design decisions set it apart:
+
+- **The spec is the test.** A Verification Definition carries both things at once: human-readable acceptance criteria and machine-runnable checks. What you read, what runs, and what blocks the release are the same file — spec and implementation can't drift apart.
+- **No mocks.** Checks drive the real build artifact, real interfaces, real data and runtime. A green means the real system worked, not that a stand-in did.
+- **No AI in the verdict.** An agent may help draft the criteria; a human owns them; pass/fail is computed from deterministic assertions. No model grades its own work, so there is no confident-but-wrong pass.
+- **You write *what* to verify, not the program that verifies it.** Checks are anchored to intent: an agent can rewrite the internals and the check still means the same thing — no rewrite required.
+
+On disk, a Verification Definition looks like this (trimmed from Crawlab's login verification):
+
+```yaml
+criteria:
+  - id: AC-1
+    description: Valid credentials return a usable token, and that token reaches a gated endpoint.
+    checks:
+      - steps:
+          - id: login
+            uses: api/call
+            with: { method: POST, url: $inputs.login_url }
+        assertions:
+          - $steps.login.outputs.status == 200
+```
+
+The `description` is the human commitment; `steps` and `assertions` are the machine's actions and judgment — one file, and neither half can shake off the other.
+
+## The first real bug it caught
+
+In mid-July 2026, a `:edge` image build of [Crawlab](https://github.com/crawlab-team/crawlab) Pro — our web-crawler management platform — was stopped by its Duhem acceptance suite: the web front wasn't reachable.
+
+The cause was well hidden. The new image was missing a system package, so `envsubst` — the small utility that renders the nginx config template — didn't exist. A shell redirect in the startup script first truncated the build-time nginx config to an empty file; then the `envsubst: not found` error was swallowed by an `|| true`. nginx loaded an empty config and fell back to its defaults — nothing listened on the port it should have served: the UI was unreachable and the `/api` reverse proxy was gone.
+
+Here's the part worth dwelling on. **The backend process was completely fine.** And the container's own health check — the signal Docker and Kubernetes use to decide "is this thing alive?" — reported healthy the whole time, because it checked a health-status file the backend was still dutifully writing, not the entrance users actually go through. Every automated signal the image shipped with was green; the one thing broken was the only path users take.
+
+Duhem's verdict was red, for a plain reason: following the acceptance criteria, it walks the same path users do — open the front, log in, call `/api` — and if that path doesn't work, it doesn't pass. The fix landed quickly (install the missing package; make the render script replace the config only after a successful render), and the same suite confirmed it. Afterward we changed the gate from manually triggered to running automatically after every `:edge` build — a green verdict is now the hard precondition for an image to promote to `:stable` and reach any user:
+
+![An acceptance gate independent of the AI: the :edge build passes through the Duhem acceptance suite (real cluster, real interfaces, mechanical judgment) before promoting to :stable; below, the readings on the day of the envsubst incident — health check, backend process, and pipeline all green, only the Duhem verdict red](/img/blog/2026-07-17-introducing-duhem/figure-1-gate.en.png)
+
+Back to the question in the title: in this incident, trusting the "pass" from the AI and the system's own signals would have shipped that image. It didn't ship — not because anyone was more careful, but because an acceptance gate stood in the way: independent of the AI, mock-free, mechanically judged.
+
+## Why "Duhem"
+
+The name comes from the philosopher of science Pierre Duhem, who argued that no scientific hypothesis can be tested in isolation — what gets tested is always the whole web of theory, instruments, and auxiliary assumptions. AI-delivered software is the engineering instance of that thesis: when an agent ships a feature, what's actually delivered is the combination of code, prompts, tool configuration, data state, and runtime — and any one strand can break the whole, like that missing `envsubst`. That's why verification has to be holistic, and why "no mocks" is a design principle rather than a preference.
+
+Duhem is open source under Apache-2.0 and currently v0.x — the schema will still see breaking changes, and we'll provide migration paths. It already runs daily on our own products: Crawlab Pro's release acceptance gate, and Duhem's self-verification of its own contract.
+
+## Getting started
+
+```sh
+# scaffold a Verification Definition (the default check needs no browser)
+duhem init ./verifications/sample --name sample
+
+# structurally validate it, then run it end-to-end
+duhem validate ./verifications/sample/duhem.yml
+duhem run      ./verifications/sample
+```
+
+Binaries are on [GitHub Releases](https://github.com/onsager-ai/duhem/releases); the [getting-started guide](https://github.com/onsager-ai/duhem/blob/main/docs/getting-started.md) walks you from zero to authoring your first check. Browser-driven (`ui/*`) checks additionally need a one-time `duhem browser install`.
+
+## Looking for a few people to try it on real systems
+
+Duhem fits systems that are business-critical, structurally complex, and still evolving — where a silent regression is expensive and "does it still work?" isn't something you can confirm at a glance. Conversely, prototypes and tools you can eyeball don't need it.
+
+We're looking for a small number of engineering owners building such systems with AI, to shape Duhem with us: you get direct support and a direct line to the people building it; we get the test of real-world use. Interested → **`TODO(maintainer): design-partner contact link`**
