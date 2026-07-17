@@ -68,7 +68,9 @@ A newer class of tool has emerged in the past two years: AI testing frameworks l
 
 ![A comparison of three tool classes — e2e frameworks like Playwright, AI testing frameworks like Midscene, and Duhem — across what you write, what it anchors to, mocks, who judges, cost and speed, and best position; the dividing line is the judgment structure](/img/blog/2026-07-17-introducing-duhem/figure-2-vs-e2e.en.png)
 
-So the three don't compete: keep writing Playwright tests in the inner dev loop, and by all means hand exploration and case generation to AI testing frameworks; Duhem guards the last gate before shipping — walking the real system the way users do, with a verdict that carries no probability.
+That "each tool owns its own segment" division deserves one more push, though. As agents take over more of the writing, verifying, and fixing, two things become disproportionately valuable: **stability** and **context**. The feedback signal must be stable — one flaky test or one probabilistic verdict sends the agent's loop sideways: it "fixes" a bug that doesn't exist, or trusts a green it shouldn't, and burns cycles retrying. And context must be cheap — test programs are themselves code the agent has to read, change, and maintain, and they pile up; a declarative, intent-anchored Verification Definition reads the same every time, no matter how many rounds of agents have rewritten the internals.
+
+So in the agent-native era, Duhem's position isn't just "the last gate": it's the non-drifting anchor in the agent's feedback loop — stable, context-cheap, with a verdict that carries no probability. Keep the inner-loop tests, keep the AI-driven exploration; but the "truth" an agent iterates against needs to live on an anchor like that.
 
 ## The first real bug it caught
 
