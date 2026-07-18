@@ -1,0 +1,145 @@
+verification: Crawlab ui-next — /next boots, renders sign-in, and guards routes
+
+environment:
+  up: ../regression/scripts/up.sh
+  down: ../regression/scripts/down.sh
+  ready:
+    http:
+      url: http://127.0.0.1:8090/api/health
+      timeout: 240s
+
+inputs:
+  login_url:
+    type: string
+    default: http://127.0.0.1:8090/next/login
+  guarded_url:
+    type: string
+    default: http://127.0.0.1:8090/next/projects
+  username:
+    type: string
+    default: admin
+  password:
+    type: string
+    default: admin
+
+criteria:
+  - id: AC-1
+    description: |
+      The ui-next React app is served at /next/ and boots: loading the
+      sign-in page renders the login form — the Username field and the
+      Sign In button — with its i18n resolved. This is the smoke that a
+      broken bundle, a missing `/next` nginx location, or an i18n/router
+      boot crash (none of which the REST gate sees) turns RED.
+    checks:
+      - id: AC-1.1
+        description: |
+          Navigate to /next/login and confirm the sign-in form rendered:
+          the Username textbox and the Sign In button are visible and the
+          route is /next/login. One slice over nginx serving /next/, the
+          React bundle booting, i18n resolving (English labels), and
+          TanStack path routing.
+        steps:
+          - uses: ui/navigate
+            with:
+              url: $inputs.login_url
+          - uses: ui/assert-element
+            with:
+              locator: { role: textbox, name: Username }
+              expected: visible
+              within: 20s
+          - uses: ui/assert-element
+            with:
+              locator: { role: button, name: Sign In }
+              expected: visible
+              within: 10s
+          - uses: ui/assert-url
+            with:
+              matches: "/next/login"
+              within: 10s
+
+  - id: AC-2
+    description: |
+      Route protection works end-to-end through the real app: an
+      unauthenticated deep-link to an auth-gated route (/next/projects) is
+      redirected to the sign-in page by the client auth guard. Proves
+      TanStack routing + the guard + a deep-link boot (nginx SPA fallback
+      to /next/index.html), without needing a password Duhem can't type.
+    checks:
+      - id: AC-2.1
+        description: |
+          With a fresh (unauthenticated) browser, navigate directly to
+          /next/projects and confirm the app guards it back to sign-in: the
+          route settles on /next/login and the Sign In button is shown.
+          Per-check browser isolation guarantees no carried-over token.
+        steps:
+          - uses: ui/navigate
+            with:
+              url: $inputs.guarded_url
+          - uses: ui/assert-url
+            with:
+              matches: "/next/login"
+              within: 15s
+          - uses: ui/assert-element
+            with:
+              locator: { role: button, name: Sign In }
+              expected: visible
+              within: 10s
+
+  - id: AC-3
+    description: |
+      A real sign-in through the /next UI reaches the authenticated app:
+      the form POSTs to the backend `/api/login`, the token is stored, and
+      the auth-gated Home dashboard renders — then an auth-gated surface
+      (Projects) renders without a guard redirect. Exercises the full
+      client auth path + authed routing end to end, not just the login
+      shell. The password field (no ARIA `textbox` role) is reached by its
+      label — the capability duhem 0.1.2 added (#240).
+    checks:
+      - id: AC-3.1
+        description: |
+          Load /next/login, type valid credentials (password addressed via
+          its label), submit, and confirm the app leaves the sign-in form
+          for the Home dashboard (URL settles on /next/, the Home heading
+          shows); then navigate to /next/projects and confirm the Projects
+          page renders (its heading, no redirect back to /login).
+          Per-check isolation, so this check does its own sign-in.
+        steps:
+          - uses: ui/navigate
+            with:
+              url: $inputs.login_url
+          - uses: ui/type
+            with:
+              locator: { role: textbox, name: Username }
+              text: $inputs.username
+          - uses: ui/type
+            with:
+              locator: { label: Password }
+              text: $inputs.password
+          - uses: ui/click
+            with: { role: button, name: Sign In }
+          - uses: ui/assert-element
+            with:
+              locator: { role: button, name: Sign In }
+              expected: not_exists
+              within: 15s
+          - uses: ui/assert-url
+            with:
+              matches: "/next/$"
+              within: 15s
+          - uses: ui/assert-element
+            with:
+              locator: { role: heading, name: Home }
+              expected: visible
+              within: 10s
+          - uses: ui/navigate
+            with:
+              url: $inputs.guarded_url
+          - uses: ui/assert-element
+            with:
+              locator: { role: heading, name: Projects }
+              expected: visible
+              within: 15s
+          - uses: ui/assert-url
+            with:
+              matches: "/next/projects"
+              within: 10s

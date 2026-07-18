@@ -1,41 +1,54 @@
-# 实测：VD vs Playwright 的变更成本（文章引用的数字来源）
+# 实测：VD vs Playwright 的体量与变更成本（文章数字来源）
 
-对照对象：`crawlab-pro/.duhem/ui-next/duhem.yml`（真实 VD，剥离叙事注释、
-保留 description 意图层 → `vd/duhem.yml`）vs 同等覆盖、地道写法的
-Playwright 测试（`pw/login.spec.ts` + `playwright.config.ts`）。
+对照对象：`crawlab-pro/.duhem/ui-next/duhem.yml`（真实 VD）vs 同等覆盖、
+地道写法的 Playwright 测试（`pw/login.spec.ts` + `playwright.config.ts`）。
+Token 用 tiktoken o200k_base；diff 用 `git diff --no-index`。
 
-Token 用 tiktoken o200k_base 计。diff 用 `git diff --no-index`。
+## 关键转折：实测暴露了 Duhem 自己的一个 DX 缺陷
 
-| 测量 | Duhem VD | Playwright |
-| ---- | -------- | ---------- |
-| 基线体量 | 188 行 / 1502 token（意图层 description ≈ 468 token） | 42 行 / 534 token |
-| R1 需求变更：加"错误密码必须被拒"（`r1-*`） | +42 行 / ~317 token | +8 行 / ~135 token |
-| R2 实现变更：按钮文案 Sign In→Log in（`r2-*`） | ±7 行 / ~200 token | ±4 行 / ~218 token |
+首轮测量发现：VD 里每个断言步都要写 id + `outputs:{satisfied:satisfied}`
++ `assertions:` 引用三件套，占机械层近三成 token。这不是"声明式"的固有
+代价，而是 v0.x 的样板税。据此在 onsager-ai/duhem 开了 spec #253 并实现
+（PR #254）：断言类动作隐式判定 `satisfied == true`，三件套整体消失。
 
-结论（写进文章的表述）：声明式并不天生省笔墨；VD 多出的重量几乎全是
-意图层。一边倒的是运行时账单：VD/传统 e2e 每次运行零模型调用，
-模型驱动测试每步都烧 token。
+`vd/` = 修复前（含样板）；`vd-terse/` = 修复后（#253 隐式判定形式，已用
+带 #253 的 duhem 二进制 `validate` 通过）。
 
-局限：单场景、smoke 级套件；未测 Playwright 套件规模化后的
-helper/fixture/page-object 积累，也未测模型驱动框架的实际运行开销。
+## 体量（同等覆盖）
 
-## 一致口径的补充测量（应作者要求）
+| | 完整 VD（含意图层描述） | 机械层（剥离描述） |
+| --- | --- | --- |
+| Playwright spec+config | 534 tok | 534 tok |
+| VD 修复前（样板） | 1502 tok | 979 tok |
+| VD 修复后（#253 terse） | 1221 tok | 698 tok |
+| #253 带来的下降 | −281 tok（−18%） | −281 tok（−29%） |
 
-| 口径 | Duhem VD | Playwright |
-| ---- | -------- | ---------- |
-| A. 机械层 vs 机械层（`vd-mech/`，VD 去掉 description） | 150 行 / 979 token | 42 行 / 534 token |
-| A. R1 需求变更 diff（`r1-vd-mech/`） | +35 行 / ~243 token | +8 行 / ~135 token |
-| B. 带意图 vs 带意图（`pw-intent/`，PW 加同等验收注释） | 188 行 / 1502 token | 59 行 / 837 token |
+结论：#253 把机械层从 979 砍到 698（−29%，正好是样板税）。但 VD 机械层
+仍是 Playwright 的约 1.3 倍（698 vs 534，修复前是 1.8 倍）。剩下的差距来自
+两处：① VD 随身带 `environment:`/`inputs:` 声明（约 138 tok，Playwright 侧
+外部化到 CI/env）；② 每个断言步的 YAML 仍比一行 Playwright fluent 调用长几行。
 
-### VD 机械层 979 token 的构成
+意图层（描述，约 468 tok）是 VD 比测试程序多出来的那部分——也正是测试
+程序不携带、agent 换几轮后最值钱的东西。
 
-- `environment:`+`inputs:` 声明 ≈ 138 token（口径差：PW 侧外部化到 CI/env）
-- 判定管道样板 ≈ 281 token（step id + `outputs: satisfied` 映射 +
-  `assertions` 引用——同一语义写三遍；v0.x schema 的 DX 债，可通过
-  assert 步隐式判定压掉）
-- 其余 ≈ 560 token：步骤/locator 本体，与 PW（534）同量级
+## 变更成本：加一条"错误密码必须被拒"
 
-单条"按钮可见"断言：VD 62 token vs PW 29 token；差值几乎全是管道样板。
+| | 行 diff | 变更 token |
+| --- | --- | --- |
+| Playwright | +8 | 135 |
+| VD 修复前 | +42 | 317 |
+| VD 修复后（terse） | +33 | 252 |
 
-结论修正：笔墨上 VD 不占优（去掉样板税后约打平）；优势在结构
-（意图绑定、no-mock 结构性排除、独立判定与证据、环境定义随身带）。
+结论：#253 把新增一条验收从 +42 行降到 +33 行；仍多于 Playwright 的 +8，
+因为每个断言步是几行 YAML 而非一行链式调用。
+
+## 一边倒的账：运行时
+
+VD 与传统 e2e 每次运行零模型调用；模型驱动的 AI 测试框架（Midscene 类）
+每步都过模型，token 是真金白银，且放进每次构建的关卡里越滚越大。这一项
+无论字数怎么算都是 Duhem/传统 e2e 占优。
+
+## 局限
+
+单场景、smoke 级；未测 Playwright 套件规模化后的 helper/fixture/page-object
+积累；未测模型驱动框架的实际运行开销。
