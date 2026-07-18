@@ -1,8 +1,14 @@
-# 实测：VD vs Playwright 的体量与变更成本（文章数字来源）
+# 实测：VD vs Playwright（文章数字来源）
 
 对照对象：`crawlab-pro/.duhem/ui-next/duhem.yml`（真实 VD）vs 同等覆盖、
 地道写法的 Playwright 测试（`pw/login.spec.ts` + `playwright.config.ts`）。
 Token 用 tiktoken o200k_base；diff 用 `git diff --no-index`。
+
+> **注意口径**：下面的"体量/变更成本"是被文章**主动降级**的比较——
+> 字数不是衡量 Duhem 价值的标尺（VD 把 environment 声明随身带，
+> Playwright 把它甩给 compose/global-setup/CI，算全了两边一个量级）。
+> 文章正文改为在三个真正的角度上论证：**确定性判定、运行时零模型
+> 调用、抗漂移**。这里保留原始数字仅作 provenance。
 
 ## 关键转折：实测暴露了 Duhem 自己的一个 DX 缺陷
 
