@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>FIG 04 — What an agent hits editing each</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 24px; }
+  .figno {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase;
+  }
+  h1 { font-size: 29px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 15.5px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway {
+    margin-top: 22px; padding: 15px 20px; border-radius: 12px;
+    background: #fffdf0; border-left: 4px solid var(--hi-stroke);
+    font-size: 15px; line-height: 1.55;
+  }
+  .takeaway b { color: var(--hi-stroke); }
+  .footer {
+    margin-top: 20px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .heads { display: flex; gap: 11px; margin-bottom: 11px; }
+  .heads .lbl { width: 150px; flex: none; }
+  .heads .hd { flex: 1; border-radius: 10px; padding: 9px 14px; font-weight: 600; font-size: 15px; border: 1.5px solid; }
+  .hd.pw { border-color: var(--info-stroke); background: var(--info-fill); color: var(--info-stroke); }
+  .hd.dh { border-color: var(--hi-stroke); background: var(--hi-fill); color: var(--hi-stroke); }
+
+  .row { display: flex; gap: 11px; margin-bottom: 11px; }
+  .row .lbl {
+    width: 150px; flex: none; border-radius: 10px; border: 1.5px solid var(--line);
+    background: #fff; padding: 12px 13px;
+  }
+  .lbl .k { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); }
+  .lbl .v { font-weight: 600; font-size: 14.5px; line-height: 1.4; margin-top: 4px; }
+  .lbl .ex { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.4; }
+  .cell { flex: 1; border-radius: 10px; border: 1.5px solid var(--line); background: #fff; padding: 12px 14px; }
+  .cell.pw { border-color: #cfe6f5; }
+  .cell.dh { border-color: #d9c2e4; background: #fdfaff; }
+  .cell .edit { font-size: 13.5px; line-height: 1.5; }
+  .cell .edit .c { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #f2f2f2; padding: 1px 5px; border-radius: 4px; }
+  .cell .verdict { margin-top: 8px; font-size: 12.5px; line-height: 1.45; display: flex; gap: 7px; align-items: flex-start; }
+  .cell .verdict .mk { flex: none; font-weight: 700; }
+  .cell.pw .verdict .mk { color: var(--err-stroke); }
+  .cell.dh .verdict .mk { color: var(--ok-stroke); }
+  .cell .verdict .tx { color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">FIG 04 — WHAT AN AGENT HITS EDITING EACH</div>
+  <h1>Can you read a diff and tell if the promise moved?</h1>
+  <div class="subtitle">Hand an agent the same two changes — one implementation, one requirement. The difference isn&rsquo;t line count; it&rsquo;s whether, after the edit, you can see if what you promised moved.</div>
+</div>
+
+<div class="heads">
+  <div class="lbl"></div>
+  <div class="hd pw">e2e like Playwright</div>
+  <div class="hd dh">Duhem VD</div>
+</div>
+
+<div class="row">
+  <div class="lbl">
+    <div class="k">Implementation change</div>
+    <div class="v">Button renamed</div>
+    <div class="ex">Sign In → Log in</div>
+  </div>
+  <div class="cell pw">
+    <div class="edit">Edit the scattered <span class="c">getByRole(…'Sign In')</span> calls. Intent has no home of its own — you reconstruct it from selectors + assertions.</div>
+    <div class="verdict"><span class="mk">✗</span><span class="tx">Can&rsquo;t tell if the promise moved — quietly loosen an assertion to go green and it&rsquo;s still green, unnoticed</span></div>
+  </div>
+  <div class="cell dh">
+    <div class="edit">Touch only <span class="c">locator.name</span>. The criterion&rsquo;s description (the promise) is its own line — visibly untouched.</div>
+    <div class="verdict"><span class="mk">✓</span><span class="tx">Touched a check, not a criterion → implementation changed, promise intact</span></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="lbl">
+    <div class="k">Requirement change</div>
+    <div class="v">New rule added</div>
+    <div class="ex">reject empty password</div>
+  </div>
+  <div class="cell pw">
+    <div class="edit">Add a <span class="c">test(…)</span> block. The new intent lives only in the function name and body.</div>
+    <div class="verdict"><span class="mk">✗</span><span class="tx">Looks identical to the rename in the file — the diff can&rsquo;t say if this is a new promise or a tweak</span></div>
+  </div>
+  <div class="cell dh">
+    <div class="edit">Add a <span class="c">criterion</span> + a <span class="c">description</span>. The new promise is written into the acceptance itself.</div>
+    <div class="verdict"><span class="mk">✓</span><span class="tx">A criterion appeared → a new promise, reviewable, gate-able via CODEOWNERS</span></div>
+  </div>
+</div>
+
+<div class="takeaway">The difference isn&rsquo;t how many lines change — it&rsquo;s <b>whether a diff tells you if what you promised moved</b>. A VD does: look at whether it touched a criterion (the promise) or a check (how it&rsquo;s verified). In imperative tests every change looks the same — so the agent&rsquo;s most dangerous move, quietly weakening a check to go green, has nowhere to be caught.</div>
+<div class="footer"><span>marvinzhang.dev</span><span>FIG 4 / 4</span></div>
+</div>
+</body>
+</html>

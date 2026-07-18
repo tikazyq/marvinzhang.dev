@@ -1,0 +1,152 @@
+---
+slug: introducing-duhem
+title: "AI 说“测试通过”，就真的通过了吗？"
+authors: ["marvin"]
+tags: ["testing", "ai", "agents", "open-source", "crawlab"]
+date: 2026-07-17
+---
+
+{/* 中文为初稿语言，本文是权威版本；英文版由本文重述而来。 */}
+
+用过 AI 编程 agent 的人，大概都见过这一幕：agent 忙活了一阵，信心满满地汇报——“所有测试通过 ✅”。你打开页面一看，白屏；或者接口直接 404。所谓“通过”，有时候只是 agent 自己觉得通过了。
+
+这正是当下 AI 辅助开发的尴尬之处：写代码已经不是瓶颈了，瓶颈是验收——在你不亲自盯着、不逐个功能点一遍的前提下，怎么确认 AI 交付的东西端到端真的能用？笔者在[《AI 的最后一公里，不是智能，是基础设施》](/blog/ai-last-mile-infrastructure)里论证过这个判断：智能已经够用了，缺的正是这一类基础设施。
+
+目前常见的两种做法都不理想。一是 **每次改动后人工验收**：跟不上 agent 的产出速度，而且人眼恰恰看不见那类最要命的问题——系统自称一切正常，实际某条关键路径已经悄悄断了。二是写 **端到端（e2e）测试**：e2e 测试本质上是一段需要长期维护的程序——异步、等待、重试、[flaky](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html)——agent 一重构底层实现它就断；更何况如今不少测试本身也是 AI 写的，运动员兼职裁判，这样的绿灯含金量可想而知。
+
+笔者认为还有第三条路，于是我们做了 [Duhem](https://github.com/onsager-ai/duhem)——一个开源的整体性验证（holistic verification）工具。这篇文章介绍它是什么，以及它最近在我们自己的产品上抓住的一个真实 bug：那个 bug 连容器自带的健康检查都骗过了，Duhem 却把它拦在了发布之前。
+
+{/* truncate */}
+
+## 假的“通过”是从哪来的
+
+要解决假绿灯，得先看清它从哪来。把常见的几类“通过”信号摆在一起看，会发现每一类都真实地证明了某件事——只是那件事往往不是你关心的那件：
+
+![四种“通过”信号的对比：AI 汇报的“全部通过”、单元测试、mock 掉环境的集成测试、容器健康检查——每一类真实证明的事，和它看不见的事](/img/blog/2026-07-17-introducing-duhem/figure-1-signals.zh.png)
+
+这张单子上的老面孔，笔者从前分别写过——单元测试的局限在[《浅谈测试：单元测试的爱恨情仇》](/blog/unit-tests-love-hate)，自动化测试更根本的边界在[《抱歉，AI 救不了测试：莱斯定理告诉你为什么》](/blog/rices-theorem-why-automated-testing-will-fail)。但这里的问题不在某一类信号偷懒，而在它们有个共同的毛病：**要么验证的不是真实交付物，要么下判定的离 AI 太近**。测的是替身（mock、隔离单元），或者判的人就是干活的人（AI 自测自评）。想要一个可信的绿灯，这两条都得反过来：测真系统，判定独立于 AI。
+
+## Duhem 是什么
+
+Duhem 就是按这两条反过来的原则设计的。它读入你写的验收标准（criteria），把标准绑定到可机械判定的检查（checks）上，驱动 **真实交付物** 走真实接口，最后用确定性的判定结果决定这次改动能不能合并、能不能发布。
+
+四个设计决定，构成它与现有工具的差别：
+
+- **规格即测试。** 一份验证定义（Verification Definition）同时承载两样东西：人可读的验收标准，和机器可跑的检查。你读的、跑的、卡住发布的是同一份文件，规格和实现不会各自漂移——这是[《规格驱动开发》](/blog/spec-driven-development)的思路再往前一步：规格不只驱动开发，还直接驱动验收。
+- **不用 mock。** 检查驱动的是真实构建产物、真实接口、真实数据和运行时。绿灯意味着真系统跑通了，而不是某个替身跑通了。
+- **判定环节没有 AI。** agent 可以帮你起草标准，人来审定；通过与否由确定性断言算出。没有模型给自己打分，也就没有“自信但错误”的通过。
+- **写的是“验证什么”，不是“怎么验证”的程序。** 检查对准的是意图：agent 把内部实现重写一遍，检查的含义不变，也不用跟着改。
+
+顺带把边界说清楚：莱斯定理决定了没有工具能证明程序“完全正确”，Duhem 也不例外——它判定的是你写下的验收标准有没有达到，不是程序没有 bug。
+
+落到文件里，一份验证定义长这样（节选自 Crawlab 的登录验证）：
+
+```yaml
+criteria:
+  - id: AC-1
+    description: 有效凭证登录返回可用 token，且该 token 能访问受保护接口。
+    checks:
+      - steps:
+          - id: login
+            uses: api/call
+            with: { method: POST, url: $inputs.login_url }
+        assertions:
+          - $steps.login.outputs.status == 200
+```
+
+`description` 是人的承诺，`steps` 和 `assertions` 是机器的动作和判定——同一个文件，谁也甩不开谁。
+
+## 它不是另一个 e2e 测试框架
+
+看到“驱动真实接口”，你可能会想：这不就是又一个 Playwright 吗？恰恰相反——Duhem 的浏览器检查（`ui/*`）底层就是用 [Playwright](https://playwright.dev/) 驱动的。两者不在同一层：Playwright 是引擎和测试框架，你在它上面写测试程序；Duhem 在更上面一层——你写的是验收标准，检查从标准派生，判定结果直接决定能不能合并、能不能发布。
+
+近两年还冒出另一类工具：[Midscene.js](https://github.com/web-infra-dev/midscene) 这样的 AI 测试框架。用例用自然语言写，多模态模型在运行时理解页面、找到元素、执行动作，连断言都可以交给模型判断（`aiAssert`）。它们解决的是“怎么驱动”这一层的老大难——不依赖选择器，UI 重构不容易断。但代价也不小。一是把模型请进了判定环节：同一个页面，模型这次判“通过”，下次可能判“不通过”，也可能自信地判错。二是每一步动作、每一次断言都要过一遍模型：跑得比传统 e2e 慢，token 的开销也是真金白银——放进每次构建都要跑的验收关里，这笔账会越滚越大。第一条在 Duhem 的设计里恰恰是不能让步的：AI 可以起草验收标准，判定必须是确定性的——顺带也就没有第二条的账单。
+
+![三类工具的对比：Playwright 这类 e2e 框架、Midscene 这类 AI 测试框架、Duhem——你写的东西、锚定在哪、mock、谁来判定、成本与速度、擅长的位置；分水岭在判定结构](/img/blog/2026-07-17-introducing-duhem/figure-2-vs-e2e.zh.png)
+
+这里得先劝退一个念头：别拿"谁写得短"来比 Duhem。笔者一开始也犯了这个错——真去量了 Crawlab 登录验收的字数，结论很无聊：同等覆盖下 VD 比地道的 Playwright 测试略长，差距主要是 VD 把环境声明（`environment: up/down`）随身带着，而 Playwright 把这摊事甩给了 docker-compose、global-setup 和 CI 配置——那些没进测试文件，但一样得写、一样得维护。算全了，两边的体量是一个量级，谁略长纯属噪声。（顺带一提，量字数这件事本身有个意外收获：它逼出了 Duhem 自己的一个 DX 缺陷——每个断言步都背着一段样板。我们随手把它修了，[onsager-ai/duhem#253](https://github.com/onsager-ai/duhem/issues/253) 已合入。为一篇文章做测量反倒改进了产品，这正是 dogfood 的意义。）
+
+字数是错的标尺。当写代码、跑验证、修问题的主角越来越多是 agent 时，真正该量的是另外三样：
+
+- **稳定性。** Duhem 的判定是确定性的：同样的输入，永远同样的结论，可复现。模型来判断言的工具做不到这一点——同一个页面它可能这次判过、下次判不过。放进 agent 的循环里，一次概率性的翻转就足以把它带偏：去修一个不存在的 bug，或者信一个不该信的绿灯，然后在重试里空转。
+- **运行时开销。** 这是唯一一边倒、而且对 Duhem 有利的数字：VD 和传统 e2e 每次运行 **零模型调用**；模型驱动的测试每一步动作、每一次断言都要过一遍模型。放进每次构建都跑的关卡，这笔 token 账一天天滚大。
+- **抗漂移。** 你写的是"验证什么"（意图），不是"怎么验证"（那段耦合着选择器和时序的程序）。重构 DOM、换选择器路径，检查的含义都不变，也不用动；即便改个按钮文案要顺手改一下 `locator`，动的也只是"怎么验"，不是"验什么"。而选择器一动就断的测试，重构一次就得修一轮。
+
+回头看 VD 比测试程序多出来的那点篇幅——那段人话写的"做完是什么样"——它不是开销，是 **payload**：agent 要迭代，本来就得先知道"做完"的标准。Duhem 把这份标准明写在验证里；用 Playwright，agent 只能从一堆命令式代码里反推它。VD 大一点，恰恰是因为它把最值钱的东西直接带在身上。
+
+所以在 agent 时代，Duhem 的位置不只是“最后一道关”：它是 agent 反馈回路里那个不漂移的锚点——锚点也会挪，但只随需求主动调整，不随实现被动漂移；稳定、自带意图、判定不带一点概率。内环的测试、探索性的 AI 驱动都可以继续用，但 agent 迭代时对照的那份“真相”，得放在这样的锚点上。
+
+## 它抓住的第一个真 bug
+
+2026 年 7 月中，[Crawlab](https://github.com/crawlab-team/crawlab)（我们的爬虫管理平台）Pro 版的一次 `:edge` 镜像构建，被 Duhem 的验收套件拦了下来：Web 前端不通。
+
+原因隐蔽得很。新镜像里少装了一个系统包，导致 [`envsubst`](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html)（渲染 nginx 配置模板用的小工具）不存在。启动脚本里的重定向先把构建期生成的 nginx 配置截断成了空文件，随后 `envsubst: not found` 的报错又被脚本里的 `|| true` 吞掉。于是 nginx 加载到一份空配置，退回[默认行为](https://nginx.org/en/docs/http/request_processing.html)——本该监听的端口上什么都没有：UI 打不开，`/api` 反向代理也没了。
+
+最值得警惕的是接下来这部分。**后端进程完全正常**，而且容器自带的[健康检查](https://docs.docker.com/reference/dockerfile/#healthcheck)——Docker 和 Kubernetes 判断“它还活着吗”的[依据](https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)——一路报告正常，因为它检查的是后端仍在按时写入的一个健康状态文件，而不是用户真正访问的那个入口。也就是说，这个镜像自带的所有自动化信号都是绿的，坏掉的恰恰是用户唯一要走的那条路。
+
+Duhem 的判定是红的，理由很朴素：它按验收标准走的就是用户那条路——打开前端、登录、调 `/api`——这条路不通，就不通过。红灯长什么样，其实一点不玄乎——就是一次 `duhem run` 的输出，把哪条验收、哪个断言、实际值对期望值，摊开写清楚：
+
+```text
+$ duhem run .duhem/regression
+fail
+  AC-1::AC-1.1:
+    fail  $steps.front.outputs.status == 200
+        (actual 404, expected 200)
+```
+
+`actual 404, expected 200`——前端该返回的页面没了，nginx 的默认后端顶上来回了个 404。没有堆栈、没有猜测，就是"用户那条路上，期望 200、实到 404"。补上缺失的系统包、把渲染脚本改成渲染成功才替换配置之后，同一条命令再跑一遍：
+
+```text
+$ duhem run .duhem/regression
+pass
+```
+
+这件事之后，我们把这道关从手动触发改成了每次 `:edge` 构建后自动运行——绿灯成为镜像晋级 `:stable`、触达用户之前的硬性前提：
+
+![一道独立于 AI 的验收关：:edge 镜像构建先过 Duhem 验收套件（真实集群、真实接口、机械判定），判定通过才能晋级 :stable；下方是 envsubst 事故当天的读数——健康检查、后端进程、流水线全绿，只有 Duhem 判定不通过](/img/blog/2026-07-17-introducing-duhem/figure-3-gate.zh.png)
+
+回到标题的问题：这次事故里，如果只听 AI 和系统自带信号的“通过”，这个镜像就发出去了。它最终没发出去，靠的不是谁更细心，而是有一道独立于 AI、不用 mock、机械判定的验收关。
+
+## 交给 agent 维护时，差别才真正显出来
+
+事故是"抓坏东西"的场景，但更多时候你不是在抓灾难，而是在改东西——而如今动手改的越来越可能是 agent。就在这件日常小事上，VD 和一段命令式测试的差别，才真正显出来。
+
+设想把同样两种改动交给 agent：一是 **实现变更**（按钮文案从 Sign In 改成 Log in），二是 **需求变更**（新增一条"空密码必须被拒"）。
+
+用 Playwright，这两件事都是在改同一段命令式代码。意图没有单独的落点，agent 只能从选择器和断言里反推"这段到底在验什么"——它可能推错。而它最危险的一个动作是：为了让一个 flaky 的用例变绿，顺手把断言放松（`getByRole('button', {name:'Sign In'})` 改成 `getByRole('button')`）。测试照样绿，覆盖却悄悄没了，没人会发现。这不是假想——Duhem 自己的历史里就有一次：一个太松的断言一路绿灯，却没真正验住那个破坏性的写操作。
+
+用 VD，这两种改动落在结构上不同、且带类型的位置：实现变更只动 check 里的 `locator`，需求变更则新增一个 `criterion` 加一段 `description`。于是 **一个 diff 是自解释的**——你读一眼就能判断："我们承诺的东西，到底动没动。"
+
+![agent 改一处会遇到什么：实现变更（按钮改名）和需求变更（新增规则）两种情形下，Playwright 与 Duhem VD 分别改在哪、能不能看出承诺变没变——差别不在改多少行，而在 diff 能不能自我分类](/img/blog/2026-07-17-introducing-duhem/figure-4-agent-edit.zh.png)
+
+说句公道话，这不是白捡的：VD 能保护意图，前提是 `description` 写的是意图，而不是把实现细节（"那个叫 Sign In 的按钮"）抄进去——Duhem 把这层分离做成了结构，但没法逼你把话写好。反过来，一套讲究的 Playwright（page object、清晰的用例命名）也能承载意图。真正的差别是 **结构 vs 约定**：Duhem 把"承诺"和"怎么验"的分家做进了骨架里，Playwright 交给团队自觉。而当动手的越来越多是 agent，约定会像人一样被慢慢磨掉，写进结构里的那部分才靠得住。
+
+## 为什么叫 Duhem
+
+名字来自科学哲学家[皮埃尔·迪昂（Pierre Duhem）](https://plato.stanford.edu/entries/duhem/)。他有个著名论点（后来被称为[迪昂–蒯因论题](https://en.wikipedia.org/wiki/Duhem%E2%80%93Quine_thesis)）：任何科学假设都无法孤立地接受检验——真正受检验的，永远是理论、仪器、辅助假定组成的整体。AI 交付的软件正是这个论点的工程版本：agent 交付一个功能，实际交付的是代码、提示词、工具配置、数据状态、运行时环境的组合，任何一环都可能让整体失效——就像那个缺失的 `envsubst`。所以验证必须整体进行，这也是“不用 mock”写进设计原则的原因。
+
+Duhem 以 Apache-2.0 协议开源，目前是 v0.x——schema 还会有不兼容变更，我们会提供迁移路径。它已经在我们自己的产品线上日常运转：Crawlab Pro 的发布验收关，以及 Duhem 对自身契约的自验证。
+
+## 上手
+
+```sh
+# 安装（npm；也可从 GitHub Releases 下载各平台预编译二进制）
+npm i -g duhem
+
+# 脚手架一份验证定义（默认检查不依赖浏览器），校验，然后端到端跑一遍
+duhem init ./verifications/sample --name sample
+duhem validate ./verifications/sample/duhem.yml
+duhem run      ./verifications/sample
+```
+
+预编译二进制在 [GitHub Releases](https://github.com/onsager-ai/duhem/releases)；[getting-started 指南](https://github.com/onsager-ai/duhem/blob/main/docs/getting-started.md) 会带你从零写出第一个自己的检查。浏览器类（`ui/*`）检查需要额外执行一次 `duhem browser install`。
+
+## 找几位一起用真实系统试它的人
+
+上一篇[《为什么 AI Agent 团队也逃不过“人多了反而慢”？》](/blog/multi-agent-teams-and-the-measurable-coordination-tax)把“验证标准”列为 agent 时代的稀缺能力之一；Duhem 就是把这项能力沉淀成工具的尝试。
+
+Duhem 适合这样的场景：业务关键、结构复杂、还在持续演进的系统——静默回归的代价高，“它还能不能用”不是扫一眼就能确认的事。反过来说，原型和一眼就能看明白的小工具用不上它。
+
+我们想找少数几位正在用 AI 构建这类系统的工程负责人，一起把 Duhem 打磨到好用：你们得到直接的支持和直达开发者的反馈通道，我们得到真实场景的检验。
+
+如果你对笔者的文章或 Duhem 感兴趣，可以加笔者微信 **tikazyq1** 并注明 “Duhem”，我们直接聊；也欢迎到 [Duhem 仓库](https://github.com/onsager-ai/duhem/issues) 提一个 issue。

@@ -1,0 +1,153 @@
+---
+slug: introducing-duhem
+title: "Your AI Says “All Tests Pass” — But Do They?"
+authors: ["marvin"]
+tags: ["testing", "ai", "agents", "open-source", "crawlab"]
+date: 2026-07-17
+---
+
+{/* The Chinese version is the primary draft; this English version restates it. */}
+
+If you've worked with an AI coding agent, you've seen this scene: the agent finishes a task and reports, full of confidence — "All tests pass ✅". You open the page. Blank screen. Or the API returns 404. "Pass," it turns out, sometimes just means the agent *believes* it passed.
+
+This is the awkward spot AI-assisted development is in: writing code is no longer the bottleneck — acceptance is. Without watching every change and clicking through every feature yourself, how do you know what the AI delivered actually works, end to end? I made the broader case in [The Last Mile of AI Is Infrastructure, Not Intelligence](/blog/ai-last-mile-infrastructure): the intelligence is already good enough; what's missing is exactly this kind of infrastructure.
+
+The two common answers both fall short. **Manual acceptance after every change** can't keep up with an agent's output — and human eyes miss exactly the worst failures, the ones where the system claims it's fine while a critical path is quietly broken. **End-to-end (e2e) tests** are, in practice, a program you maintain forever: async, waits, retries, [flakiness](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html) — and an agent refactoring the internals breaks them constantly. Worse, these days the tests are often AI-written too. When the player is also the referee, a green light doesn't carry much weight.
+
+We built [Duhem](https://github.com/onsager-ai/duhem) — an open-source **holistic verification** tool — because we think there's a third way. This post covers what it is, and a real bug it recently caught in our own product: one that fooled even the container's built-in health check, and that Duhem stopped before release.
+
+{/* truncate */}
+
+## Where false "passes" come from
+
+To fix false greens, first see where they originate. Line up the common "pass" signals and a pattern emerges: each one genuinely proves *something* — just usually not the thing you care about:
+
+![Four kinds of "pass" compared: the AI's "all tests pass", unit tests, integration tests with mocks, and container health checks — what each genuinely proves, and what it can't see](/img/blog/2026-07-17-introducing-duhem/figure-1-signals.en.png)
+
+The familiar faces on this list each got their own post over the years — unit tests' limits in [Talking Testing: the love and hate of Unit Tests](/blog/unit-tests-love-hate), and the deeper boundary of automated testing in [Sorry, AI Can't Save Testing: Rice's Theorem Explains Why](/blog/rices-theorem-why-automated-testing-will-fail). But the trouble here isn't that any one signal is lazy. They share a structural flaw: **either the thing being verified isn't the real deliverable, or the judge sits too close to the AI**. You're testing a stand-in (mocks, isolated units), or the one grading the work is the one who did it (the AI checking itself). A trustworthy green needs both inverted: verify the real system, with judgment independent of the AI.
+
+## What Duhem is
+
+Duhem is designed around exactly those two inversions. It reads your acceptance criteria, binds them to mechanically-judged checks, drives the **real deliverable** through its real interfaces, and uses the deterministic verdict to decide whether the change can merge or ship.
+
+Four design decisions set it apart:
+
+- **The spec is the test.** A Verification Definition carries both things at once: human-readable acceptance criteria and machine-runnable checks. What you read, what runs, and what blocks the release are the same file — spec and implementation can't drift apart. It's [Spec-Driven Development](/blog/spec-driven-development) taken one step further: the spec doesn't just drive development, it drives acceptance.
+- **No mocks.** Checks drive the real build artifact, real interfaces, real data and runtime. A green means the real system worked, not that a stand-in did.
+- **No AI in the verdict.** An agent may help draft the criteria; a human owns them; pass/fail is computed from deterministic assertions. No model grades its own work, so there is no confident-but-wrong pass.
+- **You write *what* to verify, not the program that verifies it.** Checks are anchored to intent: an agent can rewrite the internals and the check still means the same thing — no rewrite required.
+
+One boundary worth stating plainly: Rice's theorem means no tool can prove a program "fully correct," and Duhem is no exception — its verdict says the acceptance criteria you wrote are met, not that the program is bug-free.
+
+On disk, a Verification Definition looks like this (trimmed from Crawlab's login verification):
+
+```yaml
+criteria:
+  - id: AC-1
+    description: Valid credentials return a usable token, and that token reaches a gated endpoint.
+    checks:
+      - steps:
+          - id: login
+            uses: api/call
+            with: { method: POST, url: $inputs.login_url }
+        assertions:
+          - $steps.login.outputs.status == 200
+```
+
+The `description` is the human commitment; `steps` and `assertions` are the machine's actions and judgment — one file, and neither half can shake off the other.
+
+## Not another e2e testing framework
+
+Reading "drives real interfaces", you might think: isn't this just another Playwright? Quite the opposite — Duhem's browser checks (`ui/*`) are driven by [Playwright](https://playwright.dev/) underneath. The two sit at different layers: Playwright is the engine and test framework you write test programs on top of; Duhem sits a layer above — you write acceptance criteria, checks derive from them, and the verdict decides whether the change can merge and ship.
+
+A newer class of tool has emerged in the past two years: AI testing frameworks like [Midscene.js](https://github.com/web-infra-dev/midscene). You write cases in natural language; a multimodal model understands the page at run time, finds elements, performs actions — and can even judge assertions itself (`aiAssert`). They solve the hard problem at the *driving* layer: no selectors to depend on, so UI refactors rarely break them. But the price is twofold. First, the model enters the *judging* loop: the same page can pass this run and fail the next, or fail confidently in the wrong direction. Second, every action and every assertion runs through a model: suites run slower than classic e2e, and the token bill is real money — put that inside a gate that fires on every build, and it compounds. The first is exactly the line Duhem won't cross: AI may draft the acceptance criteria, but the verdict must be deterministic — which, as a side effect, also cancels the second bill.
+
+![A comparison of three tool classes — e2e frameworks like Playwright, AI testing frameworks like Midscene, and Duhem — across what you write, what it anchors to, mocks, who judges, cost and speed, and best position; the dividing line is the judgment structure](/img/blog/2026-07-17-introducing-duhem/figure-2-vs-e2e.en.png)
+
+First, a temptation to resist: don't rank Duhem on how few characters it takes. I fell for it — measured the VD against Crawlab's real login acceptance — and the result is boring. At equal coverage a VD runs a bit longer than an idiomatic Playwright spec, and the difference is mostly that the VD carries its environment declaration (`environment: up/down`) inline while Playwright hands that to a docker-compose, a global-setup, and CI config — none of which show up in the test file, all of which you still write and maintain. Count it all and the two are the same order of magnitude; whichever is slightly longer is noise. (Measuring the character count did have one payoff: it surfaced a real DX defect in Duhem itself — every assert step dragged a boilerplate triplet. We fixed it, [onsager-ai/duhem#253](https://github.com/onsager-ai/duhem/issues/253), now merged. A blog measurement improving the product is exactly what dogfooding is for.)
+
+Character count is the wrong ruler. As agents take over more of the writing, verifying, and fixing, three other things are what actually matter:
+
+- **Stability.** Duhem's verdict is deterministic: same input, same conclusion, every time, reproducible. A tool that lets a model judge assertions can't promise that — the same page can pass this run and fail the next. Inside an agent's loop, one probabilistic flip is enough to derail it: it "fixes" a bug that doesn't exist, or trusts a green it shouldn't, and burns cycles retrying.
+- **Runtime cost.** This is the one number that *is* one-sided, and it favors Duhem: a VD and a classic e2e suite make **zero model calls per run**; a model-driven test runs a model on every action and every assertion. Inside a gate that fires on every build, that token bill compounds daily.
+- **Drift resistance.** You write *what* to verify (intent), not *how* (the program tangled up with selectors and timing). Restructure the DOM or change a selector path and the check's meaning is unchanged, with nothing to edit; even a button-copy change that nudges a `locator` touches *how* you verify, not *what* — while a selector-coupled test breaks on every refactor.
+
+As for the bit of extra length the VD carries — that plain-language statement of what "done" means — it isn't overhead, it's the **payload**. An agent iterating needs the definition of done to begin with; Duhem writes it into the verification, where with Playwright the agent has to reverse-engineer it from imperative code. The VD is a little bigger precisely because it carries the most valuable thing on its back.
+
+So in the agent-native era, Duhem's position isn't just "the last gate": it's the non-drifting anchor in the agent's feedback loop — the anchor does move, but only deliberately with requirements, never passively with the implementation; stable, carrying its own intent, with a verdict that carries no probability. Keep the inner-loop tests, keep the AI-driven exploration; but the "truth" an agent iterates against needs to live on an anchor like that.
+
+## The first real bug it caught
+
+In mid-July 2026, a `:edge` image build of [Crawlab](https://github.com/crawlab-team/crawlab) Pro — our web-crawler management platform — was stopped by its Duhem acceptance suite: the web front wasn't reachable.
+
+The cause was well hidden. The new image was missing a system package, so [`envsubst`](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html) — the small utility that renders the nginx config template — didn't exist. A shell redirect in the startup script first truncated the build-time nginx config to an empty file; then the `envsubst: not found` error was swallowed by an `|| true`. nginx loaded an empty config and fell back to its [defaults](https://nginx.org/en/docs/http/request_processing.html) — nothing listened on the port it should have served: the UI was unreachable and the `/api` reverse proxy was gone.
+
+Here's the part worth dwelling on. **The backend process was completely fine.** And the container's own [health check](https://docs.docker.com/reference/dockerfile/#healthcheck) — the signal Docker and Kubernetes use to decide ["is this thing alive?"](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) — reported healthy the whole time, because it checked a health-status file the backend was still dutifully writing, not the entrance users actually go through. Every automated signal the image shipped with was green; the one thing broken was the only path users take.
+
+Duhem's verdict was red, for a plain reason: following the acceptance criteria, it walks the same path users do — open the front, log in, call `/api` — and if that path doesn't work, it doesn't pass. And a red verdict is nothing mystical — it's just the output of a `duhem run`, laying out which criterion, which assertion, and actual-versus-expected:
+
+```text
+$ duhem run .duhem/regression
+fail
+  AC-1::AC-1.1:
+    fail  $steps.front.outputs.status == 200
+        (actual 404, expected 200)
+```
+
+`actual 404, expected 200` — the page the front should have served was gone, and nginx's default backend answered with a 404 instead. No stack trace, no guessing: "on the path users take, expected 200, got 404." After installing the missing package and making the render script swap the config in only on a successful render, the same command runs green:
+
+```text
+$ duhem run .duhem/regression
+pass
+```
+
+Afterward we changed the gate from manually triggered to running automatically after every `:edge` build — a green verdict is now the hard precondition for an image to promote to `:stable` and reach any user:
+
+![An acceptance gate independent of the AI: the :edge build passes through the Duhem acceptance suite (real cluster, real interfaces, mechanical judgment) before promoting to :stable; below, the readings on the day of the envsubst incident — health check, backend process, and pipeline all green, only the Duhem verdict red](/img/blog/2026-07-17-introducing-duhem/figure-3-gate.en.png)
+
+Back to the question in the title: in this incident, trusting the "pass" from the AI and the system's own signals would have shipped that image. It didn't ship — not because anyone was more careful, but because an acceptance gate stood in the way: independent of the AI, mock-free, mechanically judged.
+
+## The difference shows up when an agent maintains it
+
+Catching a disaster is the dramatic case. But most of the time you're not catching disasters — you're changing things, and increasingly the one doing the changing is an agent. It's in that everyday act that a VD and an imperative test really diverge.
+
+Hand an agent the same two changes: an **implementation change** (button copy from "Sign In" to "Log in") and a **requirement change** (now reject an empty password).
+
+In Playwright both are edits to the same imperative code. Intent has no home of its own, so the agent reconstructs "what is this actually verifying?" from selectors and assertions — and it can get that wrong. Its most dangerous move: to make a flaky case go green, it quietly loosens an assertion (`getByRole('button', {name:'Sign In'})` becomes `getByRole('button')`). The test still passes, the coverage is silently gone, and nobody notices. That's not hypothetical — Duhem's own history has one: a too-loose assertion that stayed green while failing to actually verify a destructive write.
+
+In a VD, the two changes land in structurally different, *typed* places: an implementation change touches only the check's `locator`; a requirement change adds a `criterion` with a `description`. So **a diff is self-classifying** — you can read it and tell whether the promise moved.
+
+![What an agent hits editing each: for an implementation change (button rename) and a requirement change (new rule), where Playwright vs a Duhem VD is edited and whether you can tell if the promise moved — the difference isn't line count, it's whether the diff classifies itself](/img/blog/2026-07-17-introducing-duhem/figure-4-agent-edit.en.png)
+
+In fairness, this isn't free. A VD only protects intent if the `description` is written as intent, not implementation copied in ("the button labeled Sign In") — Duhem makes the separation structural, but it can't force you to word it well. And a disciplined Playwright suite (page objects, clear test names) carries intent too. The real difference is **structure vs. convention**: Duhem builds the split between "the promise" and "how it's checked" into the skeleton; Playwright leaves it to the team's discipline. And when more of the editing is done by agents, convention erodes the way it does with people — the part written into the structure is the part you can rely on.
+
+## Why "Duhem"
+
+The name comes from the philosopher of science [Pierre Duhem](https://plato.stanford.edu/entries/duhem/), who argued — in what later became known as the [Duhem–Quine thesis](https://en.wikipedia.org/wiki/Duhem%E2%80%93Quine_thesis) — that no scientific hypothesis can be tested in isolation: what gets tested is always the whole web of theory, instruments, and auxiliary assumptions. AI-delivered software is the engineering instance of that thesis: when an agent ships a feature, what's actually delivered is the combination of code, prompts, tool configuration, data state, and runtime — and any one strand can break the whole, like that missing `envsubst`. That's why verification has to be holistic, and why "no mocks" is a design principle rather than a preference.
+
+Duhem is open source under Apache-2.0 and currently v0.x — the schema will still see breaking changes, and we'll provide migration paths. It already runs daily on our own products: Crawlab Pro's release acceptance gate, and Duhem's self-verification of its own contract.
+
+## Getting started
+
+```sh
+# install (npm; prebuilt binaries also on GitHub Releases)
+npm i -g duhem
+
+# scaffold a Verification Definition (the default check needs no browser),
+# validate it, then run it end-to-end
+duhem init ./verifications/sample --name sample
+duhem validate ./verifications/sample/duhem.yml
+duhem run      ./verifications/sample
+```
+
+Prebuilt binaries are on [GitHub Releases](https://github.com/onsager-ai/duhem/releases); the [getting-started guide](https://github.com/onsager-ai/duhem/blob/main/docs/getting-started.md) walks you from zero to authoring your first check. Browser-driven (`ui/*`) checks additionally need a one-time `duhem browser install`.
+
+## Looking for a few people to try it on real systems
+
+Last week's [Why AI Agent Teams Can't Escape the Mythical Man-Month](/blog/multi-agent-teams-and-the-measurable-coordination-tax) listed verification standards among the scarce crafts of the agent era; Duhem is an attempt to turn that craft into infrastructure.
+
+Duhem fits systems that are business-critical, structurally complex, and still evolving — where a silent regression is expensive and "does it still work?" isn't something you can confirm at a glance. Conversely, prototypes and tools you can eyeball don't need it.
+
+We're looking for a small number of engineering owners building such systems with AI, to shape Duhem with us: you get direct support and a direct line to the people building it; we get the test of real-world use.
+
+If you're interested in Duhem — or in my writing — add me on WeChat at **tikazyq1** with a note saying "Duhem" and let's talk directly; you're also welcome to [open an issue on the Duhem repo](https://github.com/onsager-ai/duhem/issues).
