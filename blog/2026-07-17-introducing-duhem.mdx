@@ -74,7 +74,7 @@ Character count is the wrong ruler. As agents take over more of the writing, ver
 
 - **Stability.** Duhem's verdict is deterministic: same input, same conclusion, every time, reproducible. A tool that lets a model judge assertions can't promise that — the same page can pass this run and fail the next. Inside an agent's loop, one probabilistic flip is enough to derail it: it "fixes" a bug that doesn't exist, or trusts a green it shouldn't, and burns cycles retrying.
 - **Runtime cost.** This is the one number that *is* one-sided, and it favors Duhem: a VD and a classic e2e suite make **zero model calls per run**; a model-driven test runs a model on every action and every assertion. Inside a gate that fires on every build, that token bill compounds daily.
-- **Drift resistance.** You write *what* to verify (intent), not *how* (the program tangled up with selectors and timing). An agent can rewrite the implementation and the check still means the same thing — no edit needed; a selector-coupled test breaks on every refactor.
+- **Drift resistance.** You write *what* to verify (intent), not *how* (the program tangled up with selectors and timing). Restructure the DOM or change a selector path and the check's meaning is unchanged, with nothing to edit; even a button-copy change that nudges a `locator` touches *how* you verify, not *what* — while a selector-coupled test breaks on every refactor.
 
 As for the bit of extra length the VD carries — that plain-language statement of what "done" means — it isn't overhead, it's the **payload**. An agent iterating needs the definition of done to begin with; Duhem writes it into the verification, where with Playwright the agent has to reverse-engineer it from imperative code. The VD is a little bigger precisely because it carries the most valuable thing on its back.
 
@@ -88,11 +88,42 @@ The cause was well hidden. The new image was missing a system package, so [`envs
 
 Here's the part worth dwelling on. **The backend process was completely fine.** And the container's own [health check](https://docs.docker.com/reference/dockerfile/#healthcheck) — the signal Docker and Kubernetes use to decide ["is this thing alive?"](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) — reported healthy the whole time, because it checked a health-status file the backend was still dutifully writing, not the entrance users actually go through. Every automated signal the image shipped with was green; the one thing broken was the only path users take.
 
-Duhem's verdict was red, for a plain reason: following the acceptance criteria, it walks the same path users do — open the front, log in, call `/api` — and if that path doesn't work, it doesn't pass. The fix landed quickly (install the missing package; make the render script replace the config only after a successful render), and the same suite confirmed it. Afterward we changed the gate from manually triggered to running automatically after every `:edge` build — a green verdict is now the hard precondition for an image to promote to `:stable` and reach any user:
+Duhem's verdict was red, for a plain reason: following the acceptance criteria, it walks the same path users do — open the front, log in, call `/api` — and if that path doesn't work, it doesn't pass. And a red verdict is nothing mystical — it's just the output of a `duhem run`, laying out which criterion, which assertion, and actual-versus-expected:
+
+```text
+$ duhem run .duhem/regression
+fail
+  AC-1::AC-1.1:
+    fail  $steps.front.outputs.status == 200
+        (actual 404, expected 200)
+```
+
+`actual 404, expected 200` — the page the front should have served was gone, and nginx's default backend answered with a 404 instead. No stack trace, no guessing: "on the path users take, expected 200, got 404." After installing the missing package and making the render script swap the config in only on a successful render, the same command runs green:
+
+```text
+$ duhem run .duhem/regression
+pass
+```
+
+Afterward we changed the gate from manually triggered to running automatically after every `:edge` build — a green verdict is now the hard precondition for an image to promote to `:stable` and reach any user:
 
 ![An acceptance gate independent of the AI: the :edge build passes through the Duhem acceptance suite (real cluster, real interfaces, mechanical judgment) before promoting to :stable; below, the readings on the day of the envsubst incident — health check, backend process, and pipeline all green, only the Duhem verdict red](/img/blog/2026-07-17-introducing-duhem/figure-3-gate.en.png)
 
 Back to the question in the title: in this incident, trusting the "pass" from the AI and the system's own signals would have shipped that image. It didn't ship — not because anyone was more careful, but because an acceptance gate stood in the way: independent of the AI, mock-free, mechanically judged.
+
+## The difference shows up when an agent maintains it
+
+Catching a disaster is the dramatic case. But most of the time you're not catching disasters — you're changing things, and increasingly the one doing the changing is an agent. It's in that everyday act that a VD and an imperative test really diverge.
+
+Hand an agent the same two changes: an **implementation change** (button copy from "Sign In" to "Log in") and a **requirement change** (now reject an empty password).
+
+In Playwright both are edits to the same imperative code. Intent has no home of its own, so the agent reconstructs "what is this actually verifying?" from selectors and assertions — and it can get that wrong. Its most dangerous move: to make a flaky case go green, it quietly loosens an assertion (`getByRole('button', {name:'Sign In'})` becomes `getByRole('button')`). The test still passes, the coverage is silently gone, and nobody notices. That's not hypothetical — Duhem's own history has one: a too-loose assertion that stayed green while failing to actually verify a destructive write.
+
+In a VD, the two changes land in structurally different, *typed* places: an implementation change touches only the check's `locator`; a requirement change adds a `criterion` with a `description`. So **a diff is self-classifying** — you can read it and tell whether the promise moved.
+
+![What an agent hits editing each: for an implementation change (button rename) and a requirement change (new rule), where Playwright vs a Duhem VD is edited and whether you can tell if the promise moved — the difference isn't line count, it's whether the diff classifies itself](/img/blog/2026-07-17-introducing-duhem/figure-4-agent-edit.en.png)
+
+In fairness, this isn't free. A VD only protects intent if the `description` is written as intent, not implementation copied in ("the button labeled Sign In") — Duhem makes the separation structural, but it can't force you to word it well. And a disciplined Playwright suite (page objects, clear test names) carries intent too. The real difference is **structure vs. convention**: Duhem builds the split between "the promise" and "how it's checked" into the skeleton; Playwright leaves it to the team's discipline. And when more of the editing is done by agents, convention erodes the way it does with people — the part written into the structure is the part you can rely on.
 
 ## Why "Duhem"
 
