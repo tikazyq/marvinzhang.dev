@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fig 2 — Measured vs. Unmeasured</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body { font-family: 'Inter', 'Noto Sans SC', 'WenQuanYi Zen Hei', -apple-system, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 22px; }
+  .figno { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 15.5px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway { margin-top: 22px; padding: 15px 20px; border-radius: 12px; background: #fffdf0; border-left: 4px solid var(--warn-stroke); font-size: 15px; line-height: 1.55; }
+  .takeaway b { color: var(--warn-stroke); }
+  .footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 13px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .zone { border: 1.5px solid; border-radius: 12px; background: #fff; padding: 13px 18px 16px; margin-bottom: 14px; }
+  .zone.done { border-color: var(--info-stroke); }
+  .zone.todo { border-color: var(--ink-faint); border-style: dashed; background: #fbfbfb; }
+  .zt { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .zt h2 { margin: 0; font-size: 16px; font-weight: 600; }
+  .zone.done .zt h2 { color: var(--info-stroke); }
+  .zone.todo .zt h2 { color: var(--ink-soft); }
+  .zt .note { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: var(--ink-faint); text-transform: uppercase; }
+
+  .brow { display: grid; grid-template-columns: 168px 400px 1fr; align-items: center; gap: 12px; margin: 7px 0; }
+  .bname { font-size: 13.5px; color: var(--ink); }
+  .track { position: relative; height: 24px; background: #f0f0f0; border-radius: 5px; }
+  .grid1 { position: absolute; top: -4px; bottom: -4px; left: 200px; width: 2px; background: var(--ink-faint); }
+  .fill { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 5px; display: flex; align-items: center; }
+  .fill span { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: #fff; padding-left: 9px; white-space: nowrap; }
+  .fill.up { background: var(--info-stroke); }
+  .fill.down { background: var(--err-stroke); }
+  .fill.q { background: repeating-linear-gradient(45deg, #cfa8db, #cfa8db 6px, #e6cded 6px, #e6cded 12px); }
+  .fill.q span { color: var(--hi-stroke); }
+  .cav { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-faint); letter-spacing: 0.02em; }
+  .scale { display: grid; grid-template-columns: 168px 400px 1fr; gap: 12px; margin-bottom: 4px; }
+  .ticks { position: relative; height: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint); }
+  .ticks span { position: absolute; transform: translateX(-50%); }
+
+  .empty { display: flex; align-items: center; gap: 16px; padding: 6px 2px; }
+  .qmark { font-size: 44px; font-weight: 700; color: var(--hi-stroke); line-height: 1; }
+  .etxt { font-size: 14.5px; color: var(--ink-soft); line-height: 1.5; }
+  .etxt b { color: var(--hi-stroke); }
+  .fn { font-size: 11.5px; color: var(--ink-faint); margin-top: 6px; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">FIG 02 — REGIME</div>
+  <h1>How big is the leverage? All the evidence is in the wrong regime</h1>
+  <div class="subtitle">Nearly every study is "one human + one assistant," landing between 0.8–1.6×. The real "one human orchestrating a fleet of agents" case has never been seriously measured.</div>
+</div>
+
+<div class="zone done">
+  <div class="zt"><h2>One human + one assistant</h2><span class="note">measured · lands 0.8–1.6×</span></div>
+  <div class="scale"><div></div><div class="ticks"><span style="left:0">0×</span><span style="left:200px">1× break-even</span><span style="left:400px">2×</span></div><div></div></div>
+  <div class="brow"><div class="bname">Copilot RCT</div><div class="track"><div class="grid1"></div><div class="fill up" style="width:312px"><span>1.56×</span></div></div><div class="cav">vendor · toy-task timing</div></div>
+  <div class="brow"><div class="bname">BCG consultants</div><div class="track"><div class="grid1"></div><div class="fill q" style="width:280px"><span>quality +40%</span></div></div><div class="cav">non-code · working paper</div></div>
+  <div class="brow"><div class="bname">Field experiment · 4,867</div><div class="track"><div class="grid1"></div><div class="fill up" style="width:252px"><span>1.26×</span></div></div><div class="cav">vendor · task counts</div></div>
+  <div class="brow"><div class="bname">METR · senior devs</div><div class="track"><div class="grid1"></div><div class="fill down" style="width:162px"><span>0.81× slower</span></div></div><div class="cav">small n · felt faster</div></div>
+</div>
+
+<div class="zone todo">
+  <div class="zt"><h2>One human + a fleet of agents (orchestration)</h2><span class="note">unmeasured</span></div>
+  <div class="empty"><div class="qmark">?</div><div class="etxt">The claim is about <b>exactly this regime</b> — yet search the public research and <b>not one study has seriously measured</b> its leverage. The literature stops at the "single assistant" edge.</div></div>
+</div>
+
+<div class="takeaway">We can name the direction, <b>not the multiplier</b>. And that honest gap is itself part of the argument: the direction is forced by economics, the multiplier no one has measured yet.</div>
+<div class="footer"><span style="text-transform:none">* the four numbers use different metrics (timing / counts / quality) and aren't directly comparable — shown only to place them all in the single-assistant regime</span><span>FIG 2 / 5</span></div>
+</div>
+</body>
+</html>

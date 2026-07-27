@@ -4,7 +4,6 @@ title: "Cheap Code, Scarce Attention"
 authors: ["marvin"]
 tags: ["ai", "agents", "economics", "productivity", "software-engineering"]
 date: 2026-07-27
-unlisted: true
 ---
 
 <!-- 
@@ -17,4 +16,94 @@ IMPORTANT: Date consistency check
 
 <!-- ZH-primary piece: the Chinese file is the authoritative draft. Write ZH natively, then restate this EN version from the final ZH (形不同而意同) — do not sentence-translate. -->
 
+Writing a feature used to take all day. Now you hand a sentence to an agent and it's done in minutes.
 
+Everyone feels the first-order effect: output got cheap. But there's a second-order effect the excitement tends to bury — when something you used to pay for suddenly becomes nearly free, that money doesn't vanish. It just moves house, onto whatever is still scarce.
+
+Code is no longer scarce. So what is? Deciding what to build, knowing where to call a halt, spotting the problem nobody else saw — **your attention**.
+
+This isn't the feel-good line that "people matter more now." It's a concrete piece of accounting: when one input becomes cheap and abundant, the value slides upstream, to whatever is still scarce and complementary to it. AI wholesales a unit of output down to almost nothing; the value migrates to what sits above it — attention.
+
+So the claim is short: **cheap code, scarce attention.** But I want to state it in full. Attention is worth more because its leverage grew — and leverage is double-edged: the same multiplier that amplifies your right calls amplifies your wrong ones. Worse, the moment "attention" becomes the scarce thing we grade, it gets gamed.
+
+Let me walk through it step by step: why this accounting holds, how big the leverage actually is (there's a blank here I have to be honest about), why it turns around and becomes the new bottleneck, and the price it makes you pay.
+
+{/* truncate */}
+
+## Cheap Code: The Value Moved House
+
+First, let's settle the accounting.
+
+Economics has a plain rule: once something turns cheap and plentiful, the value leaves it and moves to whatever it pairs with that's still scarce. Economists call this a shift in **factor share** — which sounds technical but is really one ordinary sentence: money flows to wherever scarcity remains.
+
+This isn't a new observation. Back in 1971, [Herbert Simon pointed out](https://www.veryinteractive.net/pdfs/simon_designing-organizations-for-an-information-rich-world.pdf) that once information floods in, the scarce thing is no longer information but "the attention to receive it" — the more information, the less attention to go around. Half a century later the line finally has a literal referent: AI has pressed the cost of *producing code* to the floor, so scarcity shifts wholesale to the end that consumes it — human attention.
+
+Closer to our trade, labor economist [David Autor](https://doi.org/10.1257/jep.29.3.3) makes the point: automation taking over some tasks doesn't make people redundant — it raises the value of the complementary tasks people still do. The better machines get at building to spec, the more precious "deciding what the spec should be, and judging whether the work is right" becomes. [Acemoglu and Restrepo's model](https://doi.org/10.1257/aer.20160696) writes this as a formula (they're talking about the shares of labor and capital; I'm borrowing the mechanism by analogy): replace one factor, and value flows to the ones you can't replace.
+
+The most vivid analogy is [Baumol's 1967 "cost disease"](http://piketty.pse.ens.fr/files/Baumol1967.pdf): when one sector's productivity soars and another can't speed up, the sector that can't speed up ends up eating an ever-larger share of cost. Attention is that sector that can't speed up — you can't wholesale "thinking it through." One caveat, in fairness: a rising share isn't quite the same as a rising real return per unit of attention (this is exactly where Baumol gets misread); all I'm borrowing is the direction — share concentrating on the end that can't be accelerated.
+
+![A division: output (code) is wholesaled by AI toward a price near zero, so value moves to the still-scarce, complementary denominator — attention — and the leverage on each unit of attention grows](/img/blog/2026-07-27-cheap-code-scarce-attention/figure-1-division.en.png)
+
+The direction is settled at this point: you don't need to know how many times the leverage multiplied — as long as output collapses in price, value must slide toward attention. But "how many times, exactly" is precisely what the next section has to own up to.
+
+## How Big Is the Leverage: An Honest Blank
+
+First, an unmysterious definition: **leverage = output ÷ attention** — how much output one unit of your attention moves. The claim is that it grew. By how much?
+
+Honestly? Nobody has actually measured it, myself included.
+
+The numbers we do have were all taken in a smaller setting: one person plus one assistant. [GitHub Copilot's randomized trial](https://arxiv.org/abs/2302.06590) says programmers were 55.8% faster — but that's the clock on "write a toy HTTP server from scratch," and the paper comes from the tool's own maker. [A field experiment with 4,000-plus people](https://doi.org/10.1287/mnsc.2025.00535) reports about 26% more tasks completed — sample large enough, but again the authors are from the vendor, and what they measure is "task counts," a throughput proxy, with no small variance. [BCG's consultant experiment](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321) found roughly 40% higher quality on tasks "inside the frontier" — but that's consulting, not coding, and once a task falls outside the AI's frontier, the people using AI got things *wrong* more often — their "jagged frontier." The most counterintuitive is [METR's 2025 study](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/): seasoned open-source developers, working in repos they knew well, came out 19% *slower* with AI — while believing they'd gone 20% faster.
+
+Whatever you do, don't stack these: 55.8% is time, 26% is counts, 40% is a quality score, −19% is time in an expert setting — different quantities, different people. But together they pin down one thing: **none of them measures the setting I'm describing.** They're all "one person watching one assistant," landing around 1.5×; the claim that "attention is worth more" is about one person conducting a *fleet* of agents at once.
+
+How big is the leverage in *that* setting? I combed the public research: **not one study seriously measures how much output "one person orchestrating many agents" moves.** The literature stops at the edge of "a single assistant" and goes no further. Autonomous agents have benchmarks (e.g. [SWE-bench](https://arxiv.org/abs/2310.06770)), but those measure how many issues an agent closes on its own — not the human's leverage ratio.
+
+![Leverage multipliers: Copilot 1.56×, a 4,000-plus-person field experiment 1.26×, BCG quality +40%, METR 0.81× (slower) — all landing in the 0.8–1.6× band of "one human + one assistant"; the "one human orchestrating a fleet of agents" setting has never been measured](/img/blog/2026-07-27-cheap-code-scarce-attention/figure-2-regime.en.png)
+
+This blank isn't a soft spot in the argument; it *is* part of the argument: the direction is forced by economics, the multiplier just hasn't been measured. (I do have one striking observation in my own repo — a single convention written into a spec ended up on a third of the branches; but that's an anecdote, not a statistic, the sample far too small, and I won't treat it as evidence.) Getting that number takes a different, long-run kind of measurement — a story for another day.
+
+## The Ceiling: Attention Is Serial
+
+Here someone turns optimistic: if one unit of attention moves more, then hang more agents, run more in parallel, and output has no limit — right?
+
+No. Because attention is **serial** — it can't truly run in parallel. You can hang ten agents at once, but the moments that actually need you to decide, to judge, to catch that something's off still have to pass, one at a time, through your one head. That puts a ceiling on the whole system: however high output climbs, it can't exceed the reciprocal of "how much of your attention each thing costs on average."
+
+I've [already written this constraint up in a measurable framework](/blog/multi-agent-teams-and-the-measurable-coordination-tax): draw team output as a curve that rises then falls with scale, and the "serial, must-queue-through-a-human" term in it (call it σ — never mind the letter, it's just "the part that must pass through you") sets where the ceiling sits. Growing leverage lifts the *height* of the curve — each unit of attention moves more — but it doesn't shift the ceiling, because the ceiling is set by how much must pass serially through a person.
+
+So the real way to raise leverage is, against intuition: **not to make the person handle more, but to make less of it have to pass through the person at all.**
+
+Back to the division: leverage = output ÷ attention. Piling onto the numerator — watching more agents, running more in parallel — hits the ceiling fast, because you've capped the denominator yourself. Shrinking the denominator — taking the decisions that don't actually need your judgment off your plate, fixing them as specs, handing them to automated checks, letting agents converge among themselves — is what actually pushes the ceiling out.
+
+"Taking decisions off your plate" isn't just a nice phrase. Looking back, a fair amount of what I've written lately has been doing the same one thing — finding ways to shrink the part that must pass through a person: writing architectural constraints into a spec once, instead of re-explaining them every conversation ([spec-driven development](/blog/spec-driven-development)); configuring context once so agents come back to ask you less ([context engineering](/blog/context-engineering)); letting agents run as unattended as possible while you make only the high-level calls ([unattended AI coding](/blog/github-copilot-agent-content-migration)); then settling those repeated steps into infrastructure so they never touch a person at all ([the last mile is infrastructure](/blog/ai-last-mile-infrastructure)). At the time each looked like its own thing; in hindsight, they're all pressing on the same ceiling.
+
+![Two saturation curves: hanging more agents only crawls along the same curve toward the same ceiling of 1/σ; shrinking the part that must pass through a person is what raises the ceiling itself, from 6.7 to 12.5](/img/blog/2026-07-27-cheap-code-scarce-attention/figure-3-ceiling.en.png)
+
+In one line: **attention is both the most valuable factor and the one that bottlenecks everything.** Those are two sides of the same fact.
+
+## The Price: Leverage Cuts Both Ways, and the Metric Gets Gamed
+
+Shrinking "the part that must pass through a person" sounds like pure gain. It isn't. High leverage carries two costs you have to book together.
+
+The first: **leverage is a double-edged sword.** The same multiplier amplifies your right calls and your wrong ones. When one person used to make a bad call, it hurt the work in their own hands; now one badly-written spec, one careless default, gets executed faithfully and severalfold by a fleet of agents. That "one convention landed on a third of the branches" observation, flipped over, is the warning: the upside reach equals the blast radius. Leverage doesn't change whether your judgment is right — it only amplifies the consequences.
+
+![Leverage cuts both ways: the same ×N multiplier turns a right call into gain and a wrong call into an equal loss — one good spec lifts a whole branch of work, one bad spec sinks it just as widely](/img/blog/2026-07-27-cheap-code-scarce-attention/figure-4-symmetry.en.png)
+
+The second cost is subtler: **the moment attention is treated as a scarce resource and graded, it gets gamed.** This is an old rule. Sociologist [Donald Campbell said it back in 1979](https://doi.org/10.1016/0149-7189%2879%2990048-X): the more a quantitative indicator is used for decision-making, the more it gets distorted and corrupts the very process it was meant to monitor. As for the most-quoted version — "once a measure becomes a target, it ceases to be a good measure" — one common misattribution to fix: it's usually pinned on Goodhart, but it's actually a paraphrase by [anthropologist Marilyn Strathern in 1997](https://gwern.net/doc/statistics/decision/1997-strathern.pdf).
+
+And attention is harder to measure and easier to fake than lines of code. Lines are at least hard; whether you're "actually judging" can barely be seen from the outside. **When the real thing is invisible, grading falls back on the visible stand-ins — hours online, message count, activity — that is, "presence."** And presence is exactly the easiest thing to perform: a person can sit in the session all day, messages flying, without making a single real judgment. That METR detail comes back here: those developers couldn't even judge whether they'd sped up or slowed down — **being present has never been the same as judging.** Grade "attention invested," and the first thing everyone learns is how to perform presence.
+
+![The metric gets gamed: grade attention as a KPI, and the visible "presence" (hours online, message count) climbs while real judgment quality stays flat or even dips; the widening gap is the performed part — exactly Campbell's point that the more a metric is graded on, the more it gets gamed](/img/blog/2026-07-27-cheap-code-scarce-attention/figure-5-gaming.en.png)
+
+So don't read this as good news. Attention being worth more also means: the cost of a wrong call is higher, and the temptation to grade attention is greater — and easier to fool.
+
+## Spend Attention Where It Cuts
+
+Round trip done, the claim is still that one line: cheap code, scarce attention. Scarce not because people suddenly turned noble, but because output collapsed in price and the value slid to what's still scarce — attention; and each unit of attention now moves far more than it used to.
+
+But to state it in full: the direction is forced by economics, the multiplier hasn't been measured — including my own too-small-sample observation. Getting that number takes long-run measurement of "how much output a single judgment actually moved" — a separate matter.
+
+If only one usable line survives: the craft of this era isn't handling more yourself, it's spending your attention where it cuts — working out which decisions have to be yours, then moving everything that doesn't need your judgment off your plate. **Piling onto the numerator hits the ceiling; shrinking the denominator is what pushes it out.**
+
+Day to day, it comes down to a few plain things (each would take its own piece to unfold; I'll only touch them here): each day, sort out which calls must be yours — the architecture trade-off, whether to ship, whether the direction is right — and hand the rest to specs and automated checks; the moment you catch yourself making the same judgment over and over, that's a signal it should be written into a spec and never cross your desk again; and the high-leverage decisions that *do* get written into specs and defaults deserve you slowing down for one more round of thought — because a fleet of agents will execute them severalfold.
+
+This is exactly where leverage cuts both ways: it rewards your judgment and punishes it by the same multiplier. Which is why the thing worth spending well was never output — it's that attention of yours, the most valuable thing you have and the easiest to waste on yourself.
