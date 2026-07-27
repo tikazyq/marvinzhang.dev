@@ -29,18 +29,19 @@
 
 > 过去写一个功能要一整天。现在，一句话丢给 agent，几分钟就有了。
 >
-> 这件事的第一层意思大家都感受到了：产出变便宜了。但它还有第二层，容易被兴奋盖过去——当你过去要花钱买的东西突然几乎免费，那笔钱不会凭空消失，它只是搬了个家，搬到还稀缺的那个要素头上。
+> 这件事的第一层意思大家都感受到了：产出变便宜了。但它还有第二层，容易被兴奋盖过去——当你过去要花钱买的东西突然几乎免费，那笔钱不会凭空消失，它只是搬了个家，搬到另一样还稀缺的东西头上。
 >
 > 代码不再稀缺。那还有什么稀缺？是你决定做什么、在哪儿喊停、看见那个别人没看见的问题——是你的注意力。
 >
-> 这不是"人更重要了"这类安慰话，而是一道要素份额（factor share）的题：当一种投入的产率暴涨、变得又便宜又充裕，剩下那个稀缺的、互补的要素就会把租值吸走。AI 批发掉的是单位产出；价值搬到了它的上游——注意力。
+> 这不是"人更重要了"这类安慰话，而是一笔很实在的账：当一种投入变得又便宜又充裕，值钱的部分就会顺着往上游挪，挪到那个还稀缺、又跟它互补的环节。AI 把单位产出批发到几乎不要钱；价值于是挪到了它的上游——注意力。
 >
 > 所以这篇的主张很短：**便宜的是代码，贵的是注意力。** 但我想把话说全。注意力更值钱，是因为它的**杠杆**变大了；而杠杆是双刃的——它按同一个倍数放大你对的判断和你错的判断。更麻烦的是，一旦"注意力"成了那个要被考核的稀缺资源，它立刻会被做假：**在场，从来不等于在判断。**
 
 ---
 
-## Section 1 — 便宜的是代码：租值搬了家 (~700–850)
-- **Focus**: the factor-shares mechanism — why cheap+abundant input pushes rent to the scarce complementary factor. Direction, not magnitude.
+## Section 1 — 便宜的是代码：价值搬了家 (~700–850)
+- **Focus**: the factor-shares mechanism — why cheap+abundant input pushes value to the scarce complementary factor. Direction, not magnitude.
+- **Term discipline**: the hook is jargon-free. Introduce **要素份额（factor share）ONCE here**, with a plain-language gloss ("经济学管这个叫…"), then keep going in plain words. Do **not** use 租值/经济租 anywhere reader-facing — say "值钱的部分/回报".
 - **Beats**:
   - Simon 1971: information abundance → attention scarcity (framing lens, flagged as conceptual not data).
   - Autor 2015: automating routine tasks **raises the marginal value of the complementary judgment tasks that remain** (tightest analog).
