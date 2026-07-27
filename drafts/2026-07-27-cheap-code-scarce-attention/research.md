@@ -13,8 +13,7 @@
 | **ZH title (primary)** | 便宜的是代码，贵的是注意力（副题精神：杠杆与代价） |
 | **EN title (restate)** | Cheap Code, Scarce Attention *(working; adjustable at Stage 3/4)* |
 | **Primary locale** | **Chinese** (公众号 audience) — draft ZH natively, restate EN |
-| **EN tags** | `ai`, `agents`, `economics`, `productivity`, `software-engineering` |
-| **ZH tags** | `AI`, `智能体`, `经济学`, `生产力`, `软件工程` |
+| **Tags** (English slugs in **both** locales — repo convention) | `ai`, `agents`, `economics`, `productivity`, `software-engineering` |
 | **Target length** | ~3,000–3,600 词 / characters |
 | **EN MDX** | `blog/2026-07-27-cheap-code-scarce-attention.mdx` |
 | **ZH MDX** | `i18n/zh/docusaurus-plugin-content-blog/2026-07-27-cheap-code-scarce-attention.mdx` |
