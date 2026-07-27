@@ -1,144 +1,65 @@
-# Progress Tracking Template
+# Progress Tracking — Cheap Code, Scarce Attention
 
 ## Project Overview
-- **Article**: Cheap Code, Scarce Attention
+- **Article**: 便宜的是代码，贵的是注意力 (Cheap Code, Scarce Attention)
 - **Slug**: 2026-07-27-cheap-code-scarce-attention
 - **Start Date**: 2026-07-27
-- **Target Completion**: 2026-07-27
-- **Current Status**: [Planning/Research/Writing/Review/Complete]
-- **Primary Agent**: [Who started this]
-- **Contributing Agents**: [Others who have worked on this]
-- **Last Updated**: [YYYY-MM-DD HH:MM]
+- **Current Status**: Writing (Stage 3)
+- **Primary locale**: **Chinese** — sections are written into the ZH MDX first; EN is restated in Stage 4.
+- **Authoritative draft file**: `i18n/zh/docusaurus-plugin-content-blog/2026-07-27-cheap-code-scarce-attention.mdx`
+- **Framing**: independent claim, single callback to the coordination-tax piece.
 
 ## Phase Status
 
 ### ✅ Phase 1: Research & Planning
-- [ ] Research sources gathered
-- [ ] Technical examples identified
-- [ ] Outline created and reviewed
-- [ ] Writing strategy defined
-- **Completed**: [Date] by Scaffold Generator
-- **Notes**: [Any important observations]
+- [x] Research sources gathered (6 verified clusters — see research.md)
+- [x] Outline created and approved (Stage-2 gate)
+- [x] Hook drafted, plain-language-revised, and approved
+- [x] Title approved: 便宜的是代码，贵的是注意力
+- **Notes**: Structural (factor-shares) thesis; own-repo data demoted (not the focus); orchestration multiplier openly treated as unmeasured.
 
-### 🔄 Phase 2: Content Writing
-- [ ] Introduction (300-500 words)
-- [ ] Section 1 (600-1000 words)
-- [ ] Section 2 (600-1000 words)
-- [ ] Section 3 (600-1000 words)
-- [ ] Conclusion (250-400 words)
-- **Current Section**: [Which section is in progress]
-- **Writing Agent**: [Who is currently writing]
+### 🔄 Phase 2: Content Writing (ZH-primary, one section per interaction)
+- [x] Introduction (hook + roadmap) — **done, zh-bold validation PASS**
+- [ ] Section 1 — 便宜的是代码：价值搬了家 (factor-shares mechanism)
+- [ ] Section 2 — 杠杆有多大：一个诚实的空白 (wrong-regime evidence + unmeasured gap)
+- [ ] Section 3 — 天花板：注意力是串行的 (σ face + shrink-the-denominator core)
+- [ ] Section 4 — 代价：杠杆对称，指标会被做假 (symmetry + gaming)
+- [ ] Conclusion — 把注意力花在刀刃上
+- **Current section**: Introduction complete; **Section 1 is next**, pending author read of the intro.
 
 ### ⏳ Phase 3: Review & Finalization
-- [ ] Technical accuracy verification
-- [ ] Code examples tested
-- [ ] Style consistency check
-- [ ] MDX formatting verification
-- [ ] Chinese translation (i18n zh MDX)
-- [ ] Final proofreading
-- [ ] Ready for publication
+- [ ] Figures (4 planned) generated to `static/img/blog/cheap-code-scarce-attention/`
+- [ ] EN restate from finalized ZH (形不同而意同)
+- [ ] `pnpm run build` + `pnpm run validate:zh-bold-source`
+- [ ] Remove `unlisted: true` from both locales at publish
 
 ## Detailed Section Progress
 
-### Introduction
-- **Status**: [Not Started/In Progress/Complete/Needs Revision]
-- **Word Count**: [current/target: 300-500]
-- **Last Updated**: [Date] by Scaffold Generator
-- **File**: `blog/YYYY-MM-DD-slug.mdx`
-- **Quality Check**: [✅/❌/⏳]
-- **Notes**: [Specific feedback or issues]
+### Introduction — ✅ Complete
+- **Word count**: ~330 (target 300–500)
+- **File**: ZH MDX (authoritative)
+- **Quality check**: ✅ zh-bold PASS; jargon-free (租值/要素份额 kept out of the hook)
+- **Notes**: kicker "在场，从来不等于在判断。" split onto its own line (stronger + avoids bold cross-match).
 
-### Section 1
-- **Focus**: [Main concept]
-- **Status**: [Not Started/In Progress/Complete/Needs Revision]
-- **Word Count**: [current/target: 600-1000]
-- **Last Updated**: [Date] by Scaffold Generator
-- **File**: `blog/YYYY-MM-DD-slug.mdx`
-- **Quality Check**: [✅/❌/⏳]
-- **Notes**: [Specific feedback or issues]
-
-### Section 2
-- **Focus**: [Main concept]
-- **Status**: [Not Started/In Progress/Complete/Needs Revision]
-- **Word Count**: [current/target: 600-1000]
-- **Last Updated**: [Date] by Scaffold Generator
-- **File**: `blog/YYYY-MM-DD-slug.mdx`
-- **Quality Check**: [✅/❌/⏳]
-- **Notes**: [Specific feedback or issues]
-
-### Section 3
-- **Focus**: [Main concept]
-- **Status**: [Not Started/In Progress/Complete/Needs Revision]
-- **Word Count**: [current/target: 600-1000]
-- **Last Updated**: [Date] by Scaffold Generator
-- **File**: `blog/YYYY-MM-DD-slug.mdx`
-- **Quality Check**: [✅/❌/⏳]
-- **Notes**: [Specific feedback or issues]
-
-### Conclusion
-- **Status**: [Not Started/In Progress/Complete/Needs Revision]
-- **Word Count**: [current/target: 250-400]
-- **Last Updated**: [Date] by Scaffold Generator
-- **File**: `blog/YYYY-MM-DD-slug.mdx`
-- **Quality Check**: [✅/❌/⏳]
-- **Notes**: [Specific feedback or issues]
+### Sections 1–4 & Conclusion — Not started
+- See outline.md for per-section focus, beats, visual, and term discipline.
 
 ## Work Session Log
-- **[YYYY-MM-DD HH:MM]** by Scaffold Generator: [What was accomplished]
-- **[YYYY-MM-DD HH:MM]** by Scaffold Generator: [What was accomplished]
-- **[YYYY-MM-DD HH:MM]** by Scaffold Generator: [What was accomplished]
-
-## Current Issues & Blockers
-- **Issue 1**: [Description] - [Status: Open/Resolved] - [Assigned to]
-- **Issue 2**: [Description] - [Status: Open/Resolved] - [Assigned to]
+- **2026-07-27**: Scaffolded workspace; wrote research.md (6 clusters) + outline.md (Intro+4+Concl) with full ZH hook.
+- **2026-07-27**: Addressed Copilot review (tags, ZH-primary workflow comments); fixed scaffold SOP so future articles don't inherit EN-first defaults.
+- **2026-07-27**: Plain-languaged the hook per author feedback; author approved outline + hook + title.
+- **2026-07-27**: Wrote the Introduction into the ZH MDX; zh-bold validation passes.
 
 ## Next Steps (Priority Order)
-1. **[Priority 1]**: [Specific next task] - [Assigned to/Available for pickup]
-2. **[Priority 2]**: [Following task] - [Assigned to/Available for pickup]
-3. **[Priority 3]**: [Future consideration] - [Notes]
+1. **Section 1** — 价值搬了家: Simon → Autor → Acemoglu-Restrepo (by analogy) → Baumol (share-capture only). Introduce 要素份额 once, glossed. Direction not magnitude. + numerator/denominator figure.
+2. **Section 2** — the honest blank: Cluster-4 studies (never stacked) → wrong regime → orchestration multiplier unmeasured.
+3. Continue section-by-section; then figures, EN restate, validation.
 
-## Quality Assurance Checklist
-
-### Content Quality
-- [ ] Follows Marvin's established writing style
-- [ ] Technical accuracy verified
-- [ ] Visual-first approach: Mermaid diagrams and tables used over code
-- [ ] Core concepts highlighted with callouts/first-mention emphasis
-- [ ] Inline references to official docs at first mention
-- [ ] Minimal code usage (≤10 lines when essential)
-- [ ] Appropriate depth for target audience
-- [ ] Smooth narrative flow and transitions
-- [ ] Engaging introduction with clear value proposition (300-500 words)
-- [ ] Strong conclusion with actionable takeaways (250-400 words)
-
-### Technical Implementation
-- [ ] Proper MDX formatting throughout
-- [ ] Correct frontmatter structure
-- [ ] Appropriate tags selected
-- [ ] Code syntax highlighting verified
-- [ ] External links checked and working
-- [ ] Image references properly formatted
-
-### Style & Voice
-- [ ] Conversational yet professional tone
-- [ ] Appropriate use of "你" and rhetorical questions
-- [ ] Signature transition words included
-- [ ] Industry context and trends referenced
-- [ ] Reader engagement techniques used effectively
-
-## Handoff Instructions
-**For Next Agent**:
-- Current status: [Brief summary]
-- Immediate next task: [What to work on]
-- Important context: [Key decisions or findings]
-- Files to review: [Which files contain relevant context]
-
-## Completion Criteria
-- [ ] All sections written and reviewed
-- [ ] Technical accuracy verified
-- [ ] Style consistency maintained
-- [ ] Ready for final publication
-- [ ] Bilingual version completed (if required)
+## Handoff Instructions (for next agent/session)
+- **Status**: Stage 3 writing, ZH-primary; Introduction done and validated.
+- **Immediate task**: write Section 1 into the ZH MDX after author signs off on the intro.
+- **Guardrails**: chat-driven, one section per interaction (AGENTS.md); no product as solution; citation traps in research.md (Strathern≠Goodhart, Baumol share≠return, no stacking, Simon page); own 33% at most a flagged one-liner.
+- **Files**: `research.md`, `outline.md`, this file; draft in the ZH MDX.
 
 ---
-**Last Update**: [YYYY-MM-DD HH:MM] by Scaffold Generator
+**Last Update**: 2026-07-27 by Claude (Stage 3, Introduction complete)
