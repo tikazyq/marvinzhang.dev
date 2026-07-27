@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 2 — 测过的，与没测过的</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body { font-family: 'Inter', 'Noto Sans SC', 'WenQuanYi Zen Hei', -apple-system, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 22px; }
+  .figno { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 15.5px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway { margin-top: 22px; padding: 15px 20px; border-radius: 12px; background: #fffdf0; border-left: 4px solid var(--warn-stroke); font-size: 15px; line-height: 1.55; }
+  .takeaway b { color: var(--warn-stroke); }
+  .footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 13px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .zone { border: 1.5px solid; border-radius: 12px; background: #fff; padding: 13px 18px 16px; margin-bottom: 14px; }
+  .zone.done { border-color: var(--info-stroke); }
+  .zone.todo { border-color: var(--ink-faint); border-style: dashed; background: #fbfbfb; }
+  .zt { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .zt h2 { margin: 0; font-size: 16px; font-weight: 600; }
+  .zone.done .zt h2 { color: var(--info-stroke); }
+  .zone.todo .zt h2 { color: var(--ink-soft); }
+  .zt .note { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: var(--ink-faint); text-transform: uppercase; }
+
+  .brow { display: grid; grid-template-columns: 168px 400px 1fr; align-items: center; gap: 12px; margin: 7px 0; }
+  .bname { font-size: 13.5px; color: var(--ink); }
+  .track { position: relative; height: 24px; background: #f0f0f0; border-radius: 5px; }
+  .grid1 { position: absolute; top: -4px; bottom: -4px; left: 200px; width: 2px; background: var(--ink-faint); }
+  .fill { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 5px; display: flex; align-items: center; }
+  .fill span { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: #fff; padding-left: 9px; white-space: nowrap; }
+  .fill.up { background: var(--info-stroke); }
+  .fill.down { background: var(--err-stroke); }
+  .fill.q { background: repeating-linear-gradient(45deg, #cfa8db, #cfa8db 6px, #e6cded 6px, #e6cded 12px); }
+  .fill.q span { color: var(--hi-stroke); }
+  .cav { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-faint); letter-spacing: 0.02em; }
+  .scale { display: grid; grid-template-columns: 168px 400px 1fr; gap: 12px; margin-bottom: 4px; }
+  .ticks { position: relative; height: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint); }
+  .ticks span { position: absolute; transform: translateX(-50%); }
+
+  .empty { display: flex; align-items: center; gap: 16px; padding: 6px 2px; }
+  .qmark { font-size: 44px; font-weight: 700; color: var(--hi-stroke); line-height: 1; }
+  .etxt { font-size: 14.5px; color: var(--ink-soft); line-height: 1.5; }
+  .etxt b { color: var(--hi-stroke); }
+  .fn { font-size: 11.5px; color: var(--ink-faint); margin-top: 6px; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 02 — 测过的，与没测过的</div>
+  <h1>杠杆有多大？现有证据都在"错的场景"里</h1>
+  <div class="subtitle">已有研究几乎都是"一个人 ＋ 一个助手"，落点在 0.8–1.6× 之间；真正"一个人编排一群 agent"的场景，还没人严肃量过。</div>
+</div>
+
+<div class="zone done">
+  <div class="zt"><h2>一个人 ＋ 一个助手</h2><span class="note">已测 · 落点 0.8–1.6×</span></div>
+  <div class="scale"><div></div><div class="ticks"><span style="left:0">0×</span><span style="left:200px">1× 持平</span><span style="left:400px">2×</span></div><div></div></div>
+  <div class="brow"><div class="bname">Copilot 随机对照</div><div class="track"><div class="grid1"></div><div class="fill up" style="width:312px"><span>1.56×</span></div></div><div class="cav">厂商 · 玩具任务计时</div></div>
+  <div class="brow"><div class="bname">BCG 顾问实验</div><div class="track"><div class="grid1"></div><div class="fill q" style="width:280px"><span>质量 +40%</span></div></div><div class="cav">非代码 · 工作论文</div></div>
+  <div class="brow"><div class="bname">现场实验 · 4867 人</div><div class="track"><div class="grid1"></div><div class="fill up" style="width:252px"><span>1.26×</span></div></div><div class="cav">厂商 · 任务条数</div></div>
+  <div class="brow"><div class="bname">METR · 资深开发者</div><div class="track"><div class="grid1"></div><div class="fill down" style="width:162px"><span>0.81× 更慢</span></div></div><div class="cav">小样本 · 自以为更快</div></div>
+</div>
+
+<div class="zone todo">
+  <div class="zt"><h2>一个人 ＋ 一群 agent（编排）</h2><span class="note">未测</span></div>
+  <div class="empty"><div class="qmark">？</div><div class="etxt">主张说的<b>正是这个场景</b>——可翻遍公开研究，<b>没有一篇严肃量过</b>它的杠杆。文献停在"单个助手"这条边上。</div></div>
+</div>
+
+<div class="takeaway">方向能说，<b>倍数说不了</b>。而这个诚实的空白，本身就是论点的一部分：方向由经济学逼出，倍数还没人测到。</div>
+<div class="footer"><span style="text-transform:none">* 四个数口径不同（计时／条数／质量），不能直接比较，此处只为显示它们都落在单助手场景</span><span>图 2 / 5</span></div>
+</div>
+</body>
+</html>

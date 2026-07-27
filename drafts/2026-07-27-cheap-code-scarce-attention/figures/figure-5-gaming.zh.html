@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 5 — 做假</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body { font-family: 'Inter', 'Noto Sans SC', 'WenQuanYi Zen Hei', -apple-system, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 18px; }
+  .figno { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 15.5px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway { margin-top: 18px; padding: 15px 20px; border-radius: 12px; background: #faf5ff; border-left: 4px solid var(--hi-stroke); font-size: 15px; line-height: 1.55; }
+  .takeaway b { color: var(--hi-stroke); }
+  .footer { margin-top: 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 13px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+  .canvas svg text { font-family: 'Inter', 'Noto Sans SC', 'WenQuanYi Zen Hei', sans-serif; }
+  .wrap { border: 1.5px solid var(--line); border-radius: 12px; background: #fff; padding: 10px 8px 6px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 05 — 做假</div>
+  <h1>一旦考核注意力，指标就开始说谎</h1>
+  <div class="subtitle">横轴＝把"注意力"当 KPI 考核的力度。看得见的"在场"（在线时长、消息条数）一路走高，真正的"在判断"却纹丝不动甚至下滑——张开的口，就是被演出来的那部分。</div>
+</div>
+<div class="wrap">
+<svg id="svg" width="772" height="288" viewBox="0 0 772 288"></svg>
+</div>
+<div class="takeaway"><b>指标越被拿去考核，越会被博弈。</b>这正是 Campbell 说的：一个量化指标越用于决策，越容易被扭曲、反噬。你把"在场"考得越漂亮，越说明考的是一个学得会表演的东西。</div>
+<div class="footer"><span style="text-transform:none">Campbell 1979 · Strathern 1997："当测度变成目标，它就不再是好测度"</span><span>图 5 / 5</span></div>
+</div>
+<script>
+  const X0=66, X1=560, YT=46, YB=232;
+  const xm = p => X0 + p*(X1-X0);
+  const ym = v => YB - v*(YB-YT);
+  const metric  = p => 0.30 + 0.64*p;      // 看得见的"在场"：一路走高
+  const reality = p => 0.30 - 0.15*p;      // 真正的判断质量：略降
+  function path(fn){ let d=''; for(let p=0;p<=1.0001;p+=0.05){ d+=(p===0?'M':'L')+xm(p).toFixed(1)+','+ym(fn(p)).toFixed(1); } return d; }
+  const blue = '#01579b', gray = '#8a8a8a', hi = '#7b1fa2';
+  let s = '';
+  // axes
+  s += `<line x1="${X0}" y1="${YT-6}" x2="${X0}" y2="${YB}" stroke="#8a8a8a" stroke-width="1"/>`;
+  s += `<line x1="${X0}" y1="${YB}" x2="${X1+8}" y2="${YB}" stroke="#8a8a8a" stroke-width="1"/>`;
+  s += `<text x="${X0-8}" y="${YT+4}" font-size="11" fill="#8a8a8a" text-anchor="end">高</text>`;
+  s += `<text x="${X0-8}" y="${YB}" font-size="11" fill="#8a8a8a" text-anchor="end">低</text>`;
+  s += `<text x="${X0}" y="${YB+18}" font-size="10.5" fill="#8a8a8a" text-anchor="middle">不考核</text>`;
+  s += `<text x="${X1}" y="${YB+18}" font-size="10.5" fill="#8a8a8a" text-anchor="middle">死盯考核 →</text>`;
+  // gap shading (between metric and reality)
+  let poly = 'M';
+  for(let p=0;p<=1.0001;p+=0.05){ poly += xm(p).toFixed(1)+','+ym(metric(p)).toFixed(1)+' L'; }
+  for(let p=1;p>=-0.0001;p-=0.05){ poly += xm(p).toFixed(1)+','+ym(reality(p)).toFixed(1)+' L'; }
+  poly = poly.replace(/ L$/,' Z');
+  s += `<path d="${poly}" fill="#f3e5f5" opacity="0.85"/>`;
+  // curves
+  s += `<path d="${path(reality)}" fill="none" stroke="${gray}" stroke-width="2.4" stroke-dasharray="6 4"/>`;
+  s += `<path d="${path(metric)}" fill="none" stroke="${blue}" stroke-width="2.8"/>`;
+  // gap label with leader
+  const gp=0.72;
+  const gymid = (ym(metric(gp))+ym(reality(gp)))/2;
+  s += `<line x1="${xm(gp)}" y1="${gymid}" x2="${xm(gp)+40}" y2="${gymid}" stroke="${hi}" stroke-width="1"/>`;
+  s += `<text x="${xm(gp)+46}" y="${gymid-4}" font-size="12.5" font-weight="600" fill="${hi}">＝ 表演在场</text>`;
+  s += `<text x="${xm(gp)+46}" y="${gymid+13}" font-size="11.5" fill="${hi}">（做假的那部分）</text>`;
+  // end labels
+  s += `<circle cx="${xm(1)}" cy="${ym(metric(1))}" r="4" fill="${blue}"/>`;
+  s += `<rect x="574" y="${ym(metric(1))-20}" width="186" height="46" rx="9" fill="#e1f5fe" stroke="${blue}" stroke-width="1.3"/>`;
+  s += `<text x="584" y="${ym(metric(1))-2}" font-size="13" font-weight="600" fill="${blue}">看得见的"在场"</text>`;
+  s += `<text x="584" y="${ym(metric(1))+16}" font-size="11.5" fill="#3a6ea5">在线时长 · 消息条数</text>`;
+  s += `<circle cx="${xm(1)}" cy="${ym(reality(1))}" r="4" fill="${gray}"/>`;
+  s += `<rect x="574" y="${ym(reality(1))-14}" width="186" height="46" rx="9" fill="#f4f4f4" stroke="${gray}" stroke-width="1.3"/>`;
+  s += `<text x="584" y="${ym(reality(1))+4}" font-size="13" font-weight="600" fill="#525252">真正的判断质量</text>`;
+  s += `<text x="584" y="${ym(reality(1))+22}" font-size="11.5" fill="#8a8a8a">几乎看不出 · 纹丝不动</text>`;
+  document.getElementById('svg').innerHTML = s;
+</script>
+</body>
+</html>

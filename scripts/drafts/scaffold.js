@@ -110,40 +110,43 @@ function createArticleWorkspace(title, date) {
 slug: ${slug}
 title: "${title}"
 authors: ["marvin"]
-tags: ["tag1"]
+tags: ["TODO"]
 date: ${date}
 unlisted: true
 ---
 
-<!-- 
-IMPORTANT: Date consistency check
-- Filename: ${date}-${slug}.mdx
-- Frontmatter date: ${date}
-- These MUST match exactly for proper blog functionality
-- AI agents: Always verify date alignment when editing
--->
+<!--
+Date consistency: filename ${date}-${slug}.mdx and frontmatter date ${date} MUST match.
 
-<!-- Write section-by-section. Keep this file as the authoritative English draft. -->
+Before writing (SOP):
+- Tags: replace ["TODO"] with the real set — English slugs, IDENTICAL in the EN and
+  ZH files. Do NOT localize tag slugs (repo convention: English tags in both locales).
+- Primary locale: this is a bilingual article — decide which locale is authoritative for
+  THIS piece. 公众号 deep-dives are Chinese-primary: draft the ZH file natively, then
+  restate this EN version from the final ZH (形不同而意同), never sentence-translate.
+- Write section-by-section; keep the authoritative-locale file as the source of truth.
+-->
 
 `;
   const zhFrontmatter = `---
 slug: ${slug}
 title: "${title}"
 authors: ["marvin"]
-tags: ["标签1"]
+tags: ["TODO"]
 date: ${date}
 unlisted: true
 ---
 
-<!-- 
-重要：日期一致性检查
-- 文件名: ${date}-${slug}.mdx
-- 前置数据日期: ${date}
-- 这些必须完全匹配以确保博客功能正常
-- AI代理：编辑时请始终验证日期对齐
--->
+<!--
+日期一致性：文件名 ${date}-${slug}.mdx 与 frontmatter date ${date} 必须一致。
 
-<!-- 中文草稿：英文稳定后再翻译。 -->
+开始写作前（SOP）：
+- 标题：本篇若以中文为主稿，请将上方 title 改为中文主标题（脚手架默认填入的是英文标题）。
+- 标签：将 ["TODO"] 换成真实标签——英文 slug，且 EN/ZH 两个文件完全一致，勿本地化标签（仓库惯例：两个语言都用英文标签）。
+- 主稿语言：双语文章，请先确定本篇主稿语言。公众号深度文一般以中文为主稿——
+  先用中文原生成文，英文再由定稿中文复述而来（形不同而意同），非逐句翻译。
+- 逐节写作，以主稿语言的文件为准。
+-->
 
 `;
 
@@ -176,9 +179,9 @@ unlisted: true
   console.log('📝 Next steps:');
   console.log('1. Start with research.md to gather sources and plan visuals');
   console.log('2. Create detailed outline in outline.md');
-  console.log('3. Write sections directly in blog/MDX with unlisted: true');
+  console.log('3. Write sections into the authoritative-locale MDX (unlisted: true) — ZH for 公众号 deep-dives');
   console.log('4. Update progress.md after each section');
-  console.log('5. Translate to the zh MDX during Stage 4');
+  console.log('5. Restate the other locale from the finalized primary draft (Stage 4; 形不同而意同, not sentence translation)');
   console.log('');
   console.log('🤖 For AI agents:');
   console.log(`   • Article date: ${date} (used in filename AND frontmatter)`);

@@ -292,3 +292,8 @@ ai-agents:
   label: AI Agents
   permalink: /ai-agents
   description: AI agent systems, harnesses, and agent-driven workflows
+
+economics:
+  label: Economics
+  permalink: /economics
+  description: Economic reasoning applied to software, AI, and productivity

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 3 — 天花板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body { font-family: 'Inter', 'Noto Sans SC', 'WenQuanYi Zen Hei', -apple-system, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 22px; }
+  .figno { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 15.5px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway { margin-top: 22px; padding: 15px 20px; border-radius: 12px; background: #f3faf4; border-left: 4px solid var(--ok-stroke); font-size: 15px; line-height: 1.55; }
+  .takeaway b { color: var(--ok-stroke); }
+  .footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 13px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .duo { display: flex; gap: 16px; }
+  .pan { flex: 1; border: 1.5px solid; border-radius: 12px; background: #fff; padding: 15px 16px 12px; }
+  .p-a { border-color: var(--warn-stroke); } .p-b { border-color: var(--ok-stroke); }
+  .pan h2 { margin: 0 0 1px; font-size: 16px; font-weight: 600; }
+  .p-a h2 { color: var(--warn-stroke); } .p-b h2 { color: var(--ok-stroke); }
+  .pan .sub { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 6px; line-height: 1.4; min-height: 34px; }
+  .pan svg { display: block; }
+  .verdict { margin-top: 8px; border-radius: 9px; padding: 8px 12px; font-size: 13px; line-height: 1.45; }
+  .p-a .verdict { background: var(--warn-fill); color: var(--warn-stroke); }
+  .p-b .verdict { background: var(--ok-fill); color: var(--ok-stroke); }
+  .verdict b { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 03 — 天花板</div>
+  <h1>注意力是串行的：堆分子撞它，压分母抬它</h1>
+  <div class="subtitle">纵轴＝产出，横轴＝你挂的 agent／并发数。天花板 ＝ 1 ／（每件事必须过人的那部分）。两图同一纵轴。</div>
+</div>
+<div class="duo">
+  <div class="pan p-a">
+    <h2>堆分子：撞天花板</h2>
+    <div class="sub">盯更多 agent、开更多并发——只是沿同一条曲线往右，逼近同一个天花板。</div>
+    <svg id="svgA" width="340" height="200" viewBox="0 0 340 200"></svg>
+    <div class="verdict">再加 agent，产出也超不过 <b>1/σ</b>：分母被你自己顶死了。</div>
+  </div>
+  <div class="pan p-b">
+    <h2>压分母：抬天花板</h2>
+    <div class="sub">减少"必须过人"的那部分——定规范、交给自动检查、让 agent 自己收敛——天花板本身升高。</div>
+    <svg id="svgB" width="340" height="200" viewBox="0 0 340 200"></svg>
+    <div class="verdict">天花板从 <b>6.7</b> 抬到 <b>12.5</b>：同样的注意力，撬动更多。</div>
+  </div>
+</div>
+<div class="takeaway"><b>堆分子撞天花板，压分母抬天花板。</b>注意力既是最值钱的要素，也是那个卡住全局的要素——这是同一件事的两面。</div>
+<div class="footer"><span style="text-transform:none">Amdahl 型饱和曲线 · T(a)=a/(1+σ(a−1)) · 天花板=1/σ</span><span>图 3 / 5</span></div>
+</div>
+<script>
+  const X0=30, X1=330, Y0=178, Y1=20, AMAX=30, YMAX=14;
+  const xm = a => X0 + (a-1)/(AMAX-1)*(X1-X0);
+  const ym = t => Y0 - Math.min(t,YMAX)/YMAX*(Y0-Y1);
+  const T = (a,s) => a/(1+s*(a-1));
+  function curve(s){ let d=''; for(let a=1;a<=AMAX;a+=0.5){ d+=(a===1?'M':'L')+xm(a).toFixed(1)+','+ym(T(a,s)).toFixed(1); } return d; }
+  function axes(svg){
+    return `<line x1="${X0}" y1="${Y1-2}" x2="${X0}" y2="${Y0}" stroke="#8a8a8a" stroke-width="1"/>`
+         + `<line x1="${X0}" y1="${Y0}" x2="${X1}" y2="${Y0}" stroke="#8a8a8a" stroke-width="1"/>`
+         + `<text x="${X0}" y="193" font-size="10" fill="#8a8a8a" text-anchor="middle">1</text>`
+         + `<text x="${X1}" y="193" font-size="10" fill="#8a8a8a" text-anchor="middle">30 →</text>`;
+  }
+  function ceil(t,color,dash,label,ly){ const y=ym(t);
+    return `<line x1="${X0}" y1="${y}" x2="${X1}" y2="${y}" stroke="${color}" stroke-width="1.4" stroke-dasharray="${dash}"/>`
+         + `<text x="${X1}" y="${(ly||y-6)}" font-size="11" fill="${color}" text-anchor="end" font-family="JetBrains Mono, monospace">${label}</text>`;
+  }
+  // Panel A: single curve, fixed ceiling 1/0.15 = 6.67
+  document.getElementById('svgA').innerHTML =
+    axes() + ceil(1/0.15,'#e65100','5 4','天花板 6.7')
+    + `<path d="${curve(0.15)}" fill="none" stroke="#e65100" stroke-width="2.6"/>`
+    + `<text x="238" y="${ym(4.1)}" font-size="11" fill="#e65100" text-anchor="middle">再加也没用 →</text>`;
+  // Panel B: baseline (faint, s=0.15) + improved (s=0.08, ceiling 12.5)
+  document.getElementById('svgB').innerHTML =
+    axes() + ceil(1/0.15,'#b0b0b0','3 3','6.7')
+    + ceil(1/0.08,'#2e7d32','5 4','天花板 12.5')
+    + `<path d="${curve(0.15)}" fill="none" stroke="#b0b0b0" stroke-width="1.8" stroke-dasharray="5 4"/>`
+    + `<path d="${curve(0.08)}" fill="none" stroke="#2e7d32" stroke-width="2.6"/>`
+    + `<path d="M300,${ym(7.2)} L300,${ym(11.6)}" fill="none" stroke="#2e7d32" stroke-width="1.6"/>`
+    + `<path d="M295,${ym(11.0)} L300,${ym(11.9)} L305,${ym(11.0)}" fill="none" stroke="#2e7d32" stroke-width="1.6"/>`;
+</script>
+</body>
+</html>
