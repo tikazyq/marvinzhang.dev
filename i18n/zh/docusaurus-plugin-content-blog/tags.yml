@@ -292,3 +292,8 @@ ai-agents:
   label: AI 智能体
   permalink: /ai-agents
   description: AI 智能体系统、harness 与智能体驱动的工作流
+
+economics:
+  label: 经济学
+  permalink: /economics
+  description: 用经济学视角看软件、AI 与生产力

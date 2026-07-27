@@ -18,14 +18,14 @@
 - [x] Title approved: 便宜的是代码，贵的是注意力
 - **Notes**: Structural (factor-shares) thesis; own-repo data demoted (not the focus); orchestration multiplier openly treated as unmeasured.
 
-### 🔄 Phase 2: Content Writing (ZH-primary, one section per interaction)
-- [x] Introduction (hook + roadmap) — **done, zh-bold validation PASS**
-- [ ] Section 1 — 便宜的是代码：价值搬了家 (factor-shares mechanism)
-- [ ] Section 2 — 杠杆有多大：一个诚实的空白 (wrong-regime evidence + unmeasured gap)
-- [ ] Section 3 — 天花板：注意力是串行的 (σ face + shrink-the-denominator core)
-- [ ] Section 4 — 代价：杠杆对称，指标会被做假 (symmetry + gaming)
-- [ ] Conclusion — 把注意力花在刀刃上
-- **Current section**: Introduction complete; **Section 1 is next**, pending author read of the intro.
+### ✅ Phase 2: Content Writing (ZH-primary) — FULL DRAFT DONE
+- [x] Introduction (hook + roadmap)
+- [x] Section 1 — 便宜的是代码：价值搬了家 (factor-shares mechanism)
+- [x] Section 2 — 杠杆有多大：一个诚实的空白 (wrong-regime evidence + unmeasured gap)
+- [x] Section 3 — 天花板：注意力是串行的 (σ face + shrink-the-denominator core)
+- [x] Section 4 — 代价：杠杆对称，指标会被做假 (symmetry + gaming)
+- [x] Conclusion — 把注意力花在刀刃上
+- **Status**: complete ZH draft written per author request ("整篇写完我再看"). `pnpm run build` PASSES (EN+ZH); zh-bold validation PASS. Added `economics` tag to both tags.yml. **Awaiting author's full-draft review.**
 
 ### ⏳ Phase 3: Review & Finalization
 - [ ] Figures (4 planned) generated to `static/img/blog/cheap-code-scarce-attention/`
