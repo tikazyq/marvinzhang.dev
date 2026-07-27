@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 4 — 双刃</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body { font-family: 'Inter', 'Noto Sans SC', 'WenQuanYi Zen Hei', -apple-system, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 20px; }
+  .figno { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 15.5px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway { margin-top: 20px; padding: 15px 20px; border-radius: 12px; background: #fff5f5; border-left: 4px solid var(--err-stroke); font-size: 15px; line-height: 1.55; }
+  .takeaway b { color: var(--err-stroke); }
+  .footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 13px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+  .canvas svg text { font-family: 'Inter', 'Noto Sans SC', 'WenQuanYi Zen Hei', sans-serif; }
+  .wrap { border: 1.5px solid var(--line); border-radius: 12px; background: #fff; padding: 8px 6px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 04 — 双刃</div>
+  <h1>杠杆是对称的</h1>
+  <div class="subtitle">同一个倍数，放大你对的判断，也放大你错的判断——它只放大后果，不改判断的对错。</div>
+</div>
+<div class="wrap">
+<svg width="772" height="286" viewBox="0 0 772 286">
+  <!-- mirror axis -->
+  <line x1="300" y1="34" x2="748" y2="34" stroke="none"/>
+  <line x1="366" y1="143" x2="700" y2="143" stroke="#c8c8c8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="700" y="133" font-size="11" fill="#a0a0a0" text-anchor="end">同一个倍数</text>
+
+  <!-- input decision -->
+  <rect x="24" y="110" width="150" height="66" rx="12" fill="#fff" stroke="#8a8a8a" stroke-width="1.5"/>
+  <text x="99" y="139" font-size="15" font-weight="600" fill="#1f1f1f" text-anchor="middle">一个决定</text>
+  <text x="99" y="160" font-size="12" fill="#525252" text-anchor="middle">一行规范 / 一次判断</text>
+
+  <!-- arrow to lever -->
+  <line x1="174" y1="143" x2="232" y2="143" stroke="#8a8a8a" stroke-width="2"/>
+  <path d="M225,138 L234,143 L225,148" fill="none" stroke="#8a8a8a" stroke-width="2"/>
+
+  <!-- lever node -->
+  <circle cx="286" cy="143" r="46" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+  <text x="286" y="139" font-size="26" font-weight="700" fill="#7b1fa2" text-anchor="middle">×N</text>
+  <text x="286" y="160" font-size="12" fill="#7b1fa2" text-anchor="middle">杠杆</text>
+
+  <!-- fan arrows -->
+  <path d="M332,132 L470,72" fill="none" stroke="#2e7d32" stroke-width="2.4"/>
+  <path d="M459,66 L474,70 L462,80" fill="none" stroke="#2e7d32" stroke-width="2.4"/>
+  <path d="M332,154 L470,214" fill="none" stroke="#c62828" stroke-width="2.4"/>
+  <path d="M462,206 L474,216 L459,220" fill="none" stroke="#c62828" stroke-width="2.4"/>
+
+  <!-- gain block (up) -->
+  <rect x="470" y="44" width="278" height="58" rx="11" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="486" y="70" font-size="15" font-weight="600" fill="#2e7d32">对的判断 → 收益放大 N 倍</text>
+  <text x="486" y="90" font-size="12.5" fill="#3f7a44">一句好规约，整片分支跟着受益</text>
+
+  <!-- loss block (down) -->
+  <rect x="470" y="184" width="278" height="58" rx="11" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+  <text x="486" y="210" font-size="15" font-weight="600" fill="#c62828">错的判断 → 损失放大 N 倍</text>
+  <text x="486" y="230" font-size="12.5" fill="#b03535">一句写歪的规约，整片分支一起翻车</text>
+</svg>
+</div>
+<div class="takeaway"><b>撬动面有多大，翻车面就有多大。</b>过去拍错一次板，只毁手上那点活；如今一个想当然的默认，会被一群 agent 忠实地、成倍地执行下去。</div>
+<div class="footer"><span>marvinzhang.dev</span><span>图 4 / 4</span></div>
+</div>
+</body>
+</html>

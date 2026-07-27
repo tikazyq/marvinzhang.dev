@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 1 — 一道除法</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', 'WenQuanYi Zen Hei', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .takeaway { margin-top: 24px; padding: 15px 20px; border-radius: 12px; background: #faf5ff; border-left: 4px solid var(--hi-stroke); font-size: 15px; line-height: 1.55; }
+  .takeaway b { color: var(--hi-stroke); }
+  .footer { margin-top: 22px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 13px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .row { display: flex; align-items: center; gap: 26px; }
+  .move { flex: none; width: 46px; align-self: stretch; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .move .lab { font-size: 12px; line-height: 1.35; letter-spacing: 0.04em; color: var(--hi-stroke); font-weight: 600; text-align: center; }
+  .frac { flex: 1; display: flex; flex-direction: column; }
+  .term { border: 1.5px solid; border-radius: 12px; padding: 16px 20px; background: #fff; }
+  .term .k { font-size: 21px; font-weight: 600; }
+  .term .tag { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.05em; margin-top: 6px; }
+  .num { border-color: var(--line); background: #f4f4f4; }
+  .num .k { color: var(--ink-soft); }
+  .num .price { color: var(--ink-faint); }
+  .num .price s { text-decoration-thickness: 2px; }
+  .num .tag { color: var(--ink-faint); }
+  .bar { height: 4px; background: var(--ink); border-radius: 3px; margin: 13px 4px; }
+  .den { border-color: var(--hi-stroke); background: #fdfaff; }
+  .den .k { color: var(--hi-stroke); }
+  .den .tag { color: var(--hi-stroke); }
+  .eq { flex: none; font-size: 40px; color: var(--ink-faint); font-weight: 300; }
+  .lev { flex: none; width: 220px; border: 1.5px solid var(--ok-stroke); border-radius: 12px; background: #f3faf4; padding: 18px 20px; text-align: center; }
+  .lev .t { font-size: 15px; color: var(--ok-stroke); font-weight: 600; letter-spacing: 0.02em; }
+  .lev .big { font-size: 30px; font-weight: 700; color: var(--ok-stroke); margin: 4px 0 2px; }
+  .lev .n { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 01 — 一道除法</div>
+  <h1>便宜的是代码，贵的是注意力</h1>
+  <div class="subtitle">杠杆 ＝ 产出 ÷ 注意力。AI 把分子的价格打到接近零，值钱的位置就滑向分母。</div>
+</div>
+
+<div class="row">
+  <div class="move">
+    <svg width="24" height="150" viewBox="0 0 24 150"><line x1="12" y1="4" x2="12" y2="140" stroke="#7b1fa2" stroke-width="2"/><path d="M5,131 L12,144 L19,131" fill="none" stroke="#7b1fa2" stroke-width="2"/></svg>
+    <span class="lab">价值<br>搬家</span>
+  </div>
+  <div class="frac">
+    <div class="term num">
+      <div class="k">产出 · 代码</div>
+      <div class="price"><s>贵</s> → 价格 ≈ 0</div>
+      <div class="tag">被 AI 批发 · 不再稀缺</div>
+    </div>
+    <div class="bar"></div>
+    <div class="term den">
+      <div class="k">注意力 · 判断</div>
+      <div class="tag">还稀缺 · 与产出互补 · 吸走价值</div>
+    </div>
+  </div>
+  <div class="eq">=</div>
+  <div class="lev">
+    <div class="t">杠杆</div>
+    <div class="big">↑ 变大</div>
+    <div class="n">每一份注意力，能撬动的产出比过去多得多</div>
+  </div>
+</div>
+
+<div class="takeaway">产出这一端塌了价，价值就必然往还稀缺、又和它互补的<b>注意力</b>那端挪——这是<b>要素份额</b>的迁移，不是"人更重要了"的鸡汤。</div>
+<div class="footer"><span>marvinzhang.dev</span><span>图 1 / 4</span></div>
+</div>
+</body>
+</html>
