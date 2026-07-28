@@ -188,7 +188,12 @@ function createRenderer() {
       return `<span style="${S.ref}">${text}</span>`;
     },
     image({ href, text }) {
-      return `<img style="${S.img}" src="${href}" alt="${text || ''}" />\n`;
+      // Attribute-escape alt: it goes inside a "-delimited attribute, so a raw
+      // ASCII " in the alt (common in ZH figure captions like "在场") would
+      // terminate the attribute and break WeChat/browser parsing. escapeHtml
+      // covers &<>; add " → &quot; for the attribute context.
+      const alt = escapeHtml(text || '').replace(/"/g, '&quot;');
+      return `<img style="${S.img}" src="${href}" alt="${alt}" />\n`;
     },
     blockquote({ tokens }) {
       const body = this.parser.parse(tokens);
