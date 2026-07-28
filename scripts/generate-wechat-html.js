@@ -314,6 +314,27 @@ function convertMarkdownToWeChatHTML(mdContent) {
   return `<section style="${S.body}">${html}</section>`;
 }
 
+// Defense-in-depth: catch any attribute value that emitted a raw ASCII " and
+// broke its "-delimited attribute (the 2026-07 image-alt bug, where ZH figure
+// captions like "在场" terminated alt=""). For every start tag, strip the
+// well-formed name="value" pairs and boolean attrs; a leftover " means a value
+// contained an unescaped quote. Throw loudly rather than ship invalid HTML.
+function assertWellFormedTags(html, label) {
+  const bad = [];
+  for (const tag of html.match(/<[a-zA-Z][^>]*>/g) || []) {
+    const stripped = tag
+      .replace(/\s+[a-zA-Z_:][-\w:.]*\s*=\s*"[^"]*"/g, '') // attr="value"
+      .replace(/\s+[a-zA-Z_:][-\w:.]*(?=[\s/>])/g, '');     // boolean attrs
+    if (stripped.includes('"')) bad.push(tag.slice(0, 140));
+  }
+  if (bad.length) {
+    throw new Error(
+      `[wechat] Malformed HTML in ${label}: ${bad.length} tag(s) contain an unescaped " ` +
+      `inside an attribute (a custom renderer likely skipped escaping). First offender:\n${bad[0]}`
+    );
+  }
+}
+
 function generateHTMLFile(wechatFile) {
   const content = fs.readFileSync(wechatFile.path, 'utf-8');
   // Strip frontmatter if present
@@ -341,6 +362,8 @@ ${htmlBody}
 </body>
 </html>
 `;
+
+  assertWellFormedTags(fullDoc, outputName);
 
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   fs.writeFileSync(outputPath, fullDoc, 'utf-8');

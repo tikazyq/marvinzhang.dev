@@ -56,6 +56,27 @@ Hard rules, each learned from a real incident (2026-07):
    not the first tester; a red Vercel deploy on a published article is a
    user-visible outage of the preview link.
 
+## Draft Handoff Discipline
+
+Learned from the cheap-code review round (2026-07), where a dozen one-line
+Chinese naturalness edits trickled in over as many push cycles:
+
+1. **Run the zh-voice red-line pass BEFORE presenting a ZH draft as done.**
+   The checklist lives at `foundation/writing-style/references/zh-voice.md` —
+   it catches literary-metaphor translationese (承重墙／加冕／量纲／腐蚀／
+   投下阴影…), English-calqued phrasing, and "would the author say this out
+   loud to a colleague?" failures. Localization already mandates it; treat it
+   as a hard gate, not an afterthought. When handing the draft over, list the
+   lines you yourself flagged as possibly awkward so the author reviews those
+   first instead of finding them one at a time.
+2. **Batch author nits, then verify once.** Collect a round of small edits and
+   push them together rather than commit-build-push per nit — it cuts
+   round-trips and CI/preview churn. Verification Discipline rule 2 still
+   holds: run a full `pnpm build` on the batch before pushing (frontmatter and
+   MDX-syntax errors don't surface in `validate:zh-bold-source` alone). Only a
+   truly trivial single-token ZH prose swap with no MDX-special characters may
+   rely on `validate:zh-bold-source` by itself.
+
 ## Validation Commands
 
 ```bash

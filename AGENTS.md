@@ -75,6 +75,7 @@ marvinzhang.dev/
 - Manage tasks via todo list tool (one in-progress at a time)
 - Write blog content directly to final MDX paths
 - Keep explanations skimmable—share deltas, not full plans
+- Routine Vercel deploy webhooks (Building/Ready with no failure) need no reply—stay silent and keep working. Only surface CI *failures*, review comments, or merge-conflict / base-recovered notices. (Codified 2026-07 after a review round produced ~15 "routine, no action" acknowledgements.)
 
 ## Drafts Workflow
 
