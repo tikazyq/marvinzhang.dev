@@ -62,8 +62,8 @@ Learned from the cheap-code review round (2026-07), where a dozen one-line
 Chinese naturalness edits trickled in over as many push cycles:
 
 1. **Run the zh-voice red-line pass BEFORE presenting a ZH draft as done.**
-   The checklist lives at `foundation/writing-style/references/zh-voice.md` —
-   it catches literary-metaphor translationese (承重墙／加冕／量纲／腐蚀／
+   The checklist lives at `../writing-style/references/zh-voice.md` (relative
+   to this skill) — it catches literary-metaphor translationese (承重墙／加冕／量纲／腐蚀／
    投下阴影…), English-calqued phrasing, and "would the author say this out
    loud to a colleague?" failures. Localization already mandates it; treat it
    as a hard gate, not an afterthought. When handing the draft over, list the

@@ -22,21 +22,26 @@ if (!target || !out) {
   console.error('usage: node scripts/screenshot.mjs <url-or-file> <out.png> [width] [height] [selector]');
   process.exit(1);
 }
-const url = /^https?:\/\//.test(target) ? target : 'file://' + resolve(target);
+// Accept http(s):// and file:// URLs as-is; treat anything else as a local
+// path to wrap in file:// (don't double-prefix an existing file:// URL).
+const url = /^(https?|file):\/\//.test(target) ? target : 'file://' + resolve(target);
 
 const browser = await chromium
   .launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] })
   .catch(() => chromium.launch({ args: ['--no-sandbox'] }));
-const page = await browser.newPage({
-  viewport: { width: Number(width), height: Number(height) },
-  deviceScaleFactor: 2,
-});
-await page.goto(url, { waitUntil: 'networkidle' }).catch(() => page.goto(url, { waitUntil: 'load' }));
-await page.waitForTimeout(800); // font-paint safety margin
-if (selector) {
-  await page.locator(selector).screenshot({ path: resolve(out) });
-} else {
-  await page.screenshot({ path: resolve(out), fullPage: true });
+try {
+  const page = await browser.newPage({
+    viewport: { width: Number(width), height: Number(height) },
+    deviceScaleFactor: 2,
+  });
+  await page.goto(url, { waitUntil: 'networkidle' }).catch(() => page.goto(url, { waitUntil: 'load' }));
+  await page.waitForTimeout(800); // font-paint safety margin
+  if (selector) {
+    await page.locator(selector).screenshot({ path: resolve(out) });
+  } else {
+    await page.screenshot({ path: resolve(out), fullPage: true });
+  }
+  console.log('screenshot ->', out);
+} finally {
+  await browser.close(); // always clean up, even if goto/screenshot throws
 }
-await browser.close();
-console.log('screenshot ->', out);
