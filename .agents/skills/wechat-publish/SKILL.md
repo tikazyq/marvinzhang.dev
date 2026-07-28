@@ -57,8 +57,10 @@ Run through these in order — each item came from a real publishing round:
      code-drawn via the article's figures pipeline; (b) — author's current
      preference — write text-to-image prompts and hand off to an external
      model. T2I prompts must request **no embedded text** (CJK text renders
-     garbled), leave the left third empty for a later title overlay, and
-     specify `--ar 21:9` (crop to 2.35:1) plus a 1:1 variant.
+     garbled) and specify `--ar 21:9` (crop to 2.35:1) plus a 1:1 variant.
+     Compose to fill the full frame — do NOT reserve empty space for a title
+     overlay (author preference 2026-07; 公众号 renders its own title, so a
+     reserved gap just wastes the cover).
    - Digest: ≤120 chars, hook-first, no symbols the reader hasn't met.
 5. **Delivery**: send the bundle as files in the Claude chat — HTML
    first (paste source), then markdown, component screenshots, covers;
