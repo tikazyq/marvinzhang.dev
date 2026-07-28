@@ -67,7 +67,7 @@
 
 回到那道除法：杠杆 ＝ 产出 ÷ 注意力。往分子上堆——盯更多 agent、开更多并发——很快就撞天花板，因为分母被你自己顶死了。压分母——把那些其实不需要你判断的决定从你这儿拿走，定成规范、交给自动检查、让 agent 之间自己收敛——才真正把天花板往外推。
 
-"把决定从你这儿拿走"不是一句漂亮话。回头看，最近我陆陆续续写的不少东西，其实都在做同一件事——想办法减少必须过人的那部分：把架构约束一次写成规范、不必每次对话都重讲一遍（<span class="wx-ref">规范驱动开发</span><sup>[10]</sup>）；把上下文一次配置好、让 agent 少回头问你（<span class="wx-ref">上下文工程</span><sup>[11]</sup>）；让 agent 尽量无人值守地跑、你只在高层拍板（<span class="wx-ref">无人值守的 AI 编程</span><sup>[12]</sup>）；再把这些重复的步骤沉淀进基础设施、让它们根本不用过人（<span class="wx-ref">最后一公里是基础设施</span><sup>[13]</sup>）。当时看是各写各的，现在看，都是在压同一个天花板。
+"把决定从你这儿拿走"不是一句漂亮话。回头看，最近我陆陆续续写的不少东西，其实都在做同一件事——想办法减少必须过人的那部分：把架构约束一次写成规范、不必每次对话都重讲一遍（[规范驱动开发](https://mp.weixin.qq.com/s/3cPZ0TsLnLz92LCfcR91LA)）；把上下文一次配置好、让 agent 少回头问你（[上下文工程](https://mp.weixin.qq.com/s/QI2JBQG7myXZbOLTgt4MsQ)）；让 agent 尽量无人值守地跑、你只在高层拍板（[无人值守的 AI 编程](https://mp.weixin.qq.com/s/Lo8vw4ORLRwuIoJqZHstqg)）；再把这些重复的步骤沉淀进基础设施、让它们根本不用过人（[最后一公里是基础设施](https://mp.weixin.qq.com/s/JTirLoFdU63m8VPw8S6s5w)）。当时看是各写各的，现在看，都是在压同一个天花板。
 
 ![两幅饱和曲线：堆更多 agent 只是沿同一条曲线逼近同一个天花板 1/σ，减少"必须过人"的那部分才把天花板从 6.7 抬到 12.5](https://www.marvinzhang.dev/img/blog/2026-07-27-cheap-code-scarce-attention/figure-3-ceiling.zh.png)
 
@@ -81,7 +81,7 @@
 
 ![杠杆双刃：同一个 ×N 倍数，把对的判断放大成收益，也把错的判断放大成等量的损失——一句好规约让整片分支受益，一句写歪的规约让整片分支一起翻车](https://www.marvinzhang.dev/img/blog/2026-07-27-cheap-code-scarce-attention/figure-4-symmetry.zh.png)
 
-第二笔更隐蔽：**注意力一旦被当成稀缺资源拿去考核，它立刻会被做假**。这是老规律了。社会学家 <span class="wx-ref">Donald Campbell 早在 1979 年就说过</span><sup>[14]</sup>：一个量化指标越是被用来做决策，就越容易被扭曲、被反噬。至于那句流传最广的"一旦一个指标变成了目标，它就不再是个好指标"——顺带纠正一个常见误会，它常被安到 Goodhart 头上，其实出自<span class="wx-ref">人类学家 Marilyn Strathern 1997 年</span><sup>[15]</sup>的转述。
+第二笔更隐蔽：**注意力一旦被当成稀缺资源拿去考核，它立刻会被做假**。这是老规律了。社会学家 <span class="wx-ref">Donald Campbell 早在 1979 年就说过</span><sup>[10]</sup>：一个量化指标越是被用来做决策，就越容易被扭曲、被反噬。至于那句流传最广的"一旦一个指标变成了目标，它就不再是个好指标"——顺带纠正一个常见误会，它常被安到 Goodhart 头上，其实出自<span class="wx-ref">人类学家 Marilyn Strathern 1997 年</span><sup>[11]</sup>的转述。
 
 而注意力比代码行数更难测、更好演。行数好歹是硬的；"在不在认真判断"却几乎没法从外面看出来。**真东西看不见，考核就只能退而求其次，去数那些看得见的替身——在线时长、消息条数、活跃度，也就是"在场"**。可"在场"恰恰是最好演的：一个人可以整天挂在会话里、消息刷得飞快，却一个真判断都没做。前面 METR 那个细节在这里又回来了：那批开发者连自己是快了还是慢了都判断错了——**在场，从来不等于在判断**。你要真拿"注意力投入"去考核，大家最先学会的一定是怎么表演在场。
 
@@ -132,22 +132,10 @@ https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/
 [9] SWE-bench  
 https://arxiv.org/abs/2310.06770
 
-[10] 规范驱动开发  
-https://www.marvinzhang.dev/zh/blog/spec-driven-development
-
-[11] 上下文工程  
-https://www.marvinzhang.dev/zh/blog/context-engineering
-
-[12] 无人值守的 AI 编程  
-https://www.marvinzhang.dev/zh/blog/github-copilot-agent-content-migration
-
-[13] 最后一公里是基础设施  
-https://www.marvinzhang.dev/zh/blog/ai-last-mile-infrastructure
-
-[14] Donald Campbell 早在 1979 年就说过  
+[10] Donald Campbell 早在 1979 年就说过  
 https://doi.org/10.1016/0149-7189%2879%2990048-X
 
-[15] 人类学家 Marilyn Strathern 1997 年  
+[11] 人类学家 Marilyn Strathern 1997 年  
 https://gwern.net/doc/statistics/decision/1997-strathern.pdf
 
 ---

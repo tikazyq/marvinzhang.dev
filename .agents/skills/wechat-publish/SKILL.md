@@ -57,8 +57,10 @@ Run through these in order — each item came from a real publishing round:
      code-drawn via the article's figures pipeline; (b) — author's current
      preference — write text-to-image prompts and hand off to an external
      model. T2I prompts must request **no embedded text** (CJK text renders
-     garbled), leave the left third empty for a later title overlay, and
-     specify `--ar 21:9` (crop to 2.35:1) plus a 1:1 variant.
+     garbled) and specify `--ar 21:9` (crop to 2.35:1) plus a 1:1 variant.
+     Compose to fill the full frame — do NOT reserve empty space for a title
+     overlay (author preference 2026-07; 公众号 renders its own title, so a
+     reserved gap just wastes the cover).
    - Digest: ≤120 chars, hook-first, no symbols the reader hasn't met.
 5. **Delivery**: send the bundle as files in the Claude chat — HTML
    first (paste source), then markdown, component screenshots, covers;
@@ -315,6 +317,7 @@ phone screenshot — e.g. the ul hanging-indent bug):
 | Reference list shows no numbers | The `ol` style uses `padding-left: 0`, which clips native markers; emit explicit `[n]` prefixes as plain paragraphs (handled in `scripts/wechat.js`) |
 | In-text reference labels look like plain prose | `wechat.js` wraps former link labels in `<span class="wx-ref">`; `generate-wechat-html.js` swaps the class for inline link-blue styles (`S.ref`/`S.sup`) since WeChat strips classes |
 | Code loses line breaks when pasted into WeChat | WeChat collapses raw `\n`/space text nodes inside `<pre>`; `hardenCodeWhitespace` bakes them in as `<br/>`/`&nbsp;` — never rely on `white-space` alone |
+| Image caption/layout breaks after a quote in the alt (e.g. a ZH figure caption with `"在场"`) | The custom `image()` renderer emitted `alt="${text}"` without attribute-escaping, so a raw ASCII `"` in the caption terminated the attribute. Fixed 2026-07 in `generate-wechat-html.js`: `escapeHtml(text)` then `"`→`&quot;`. `escapeHtml` only covers `&<>`, so the `"` step is required for attribute context. Patch old exports by string substitution, don't regenerate |
 | 公众号助手 paste loses styles | Paste rendered HTML (from markdown-nice), not raw markdown |
 | Table spacing/gap issues (md2weixin-core) | Theme CSS adds margins to headings before tables. Post-process HTML to reduce `margin-bottom` on `<h3>` preceding `<table>`. See `references/wechat-styles.md` > Tables > Known Issues |
 | Table styles not matching design | Use Method A (custom renderer) for full style control instead of md2weixin-core themes |
