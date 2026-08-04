@@ -1,218 +1,158 @@
-# Outline — 它停下来问你，不等于它在把关 (A Pause Is Not a Gate)
+# Outline — （标题待定，见下）循环、判定权与制度设计
 
 ## Article Metadata
-- **ZH title (primary)**: 它停下来问你，不等于它在把关
-- **EN title (restate)**: A Pause Is Not a Gate
-- **Slug**: `a-pause-is-not-a-gate`
+- **ZH title (primary)**: 候选见下，待作者定
+- **EN title (restate)**: 待 ZH 定后回译
+- **Slug**: `a-pause-is-not-a-gate`（**待改** — 随新标题一起换，工作区与 PR 一并重命名）
 - **Date**: 2026-08-10
 - **Primary locale**: Chinese (draft ZH natively, restate EN)
-- **Target length**: ~3,200–3,800 (词/characters)
+- **Target length**: ~3,400–4,000 (词/characters)
 - **Sections**: Intro + 4 main + Conclusion
 - **Difficulty**: intermediate (general engineering reader; no prerequisite reading, no prerequisite paper)
 
+### 候选标题
+1. **《agent 能跑多远，不取决于它靠不靠谱》** ★ 推荐 — 直接把"AI 不靠谱"那套顶回去，指向循环与制度
+2. 《怎么让 agent 自己往前跑，又不跑偏？》 — 作者的问句传统，推进与监管各占一半
+3. 《可靠不是模型的事，是制度的事》 — 主张即标题，最短最硬
+
+---
+
+## 这一稿改了什么（2026-08-04 第二次对齐）
+
+**作者反馈**：上一版标题聚焦"把关"，读起来是老生常谈的"AI 不靠谱"；缺了循环对**推进**的作用，也缺了**人的适当监管**与**制度设计**。
+
+**结构性诊断**：上一版把"停"当成了全文主语。停只是循环里的一个部件。主语应当是循环本身——靠什么往前推、人在哪儿介入、介入靠什么保证有效。
+
+**新主张（全文一句话）**：
+> 可靠这件事不该指望模型自觉，它是设计出来的。**一个循环能跑多远，取决于你把判定权放在哪儿，而不取决于 agent 有多靠谱。**
+
+**姿态改变**：
+- 从"揭露失效"改成"讲清楚这套东西靠什么运转"。批评仍在，但它是设计论证的一环，不是结论。
+- 「关卡 vs 客气」从全文骨架**降级为第二节的一个判据**——它仍是最可操作的一条，但不再是主语。
+- 「客气」的代价改成**双输**：既在不该停的地方停（打断无人值守，拖慢推进），又在该停的地方不停。这一条直接把停顿设计接到"推进"上。
+- 第三节的落点从"关卡看不见什么"改成**人该在哪儿花监管的注意力**——适当的监管不是更多的监管。
+- 结论从"分权设计（未跑过）"扩成**制度设计三条原则**，仍然明说没跑过。
+
+**loop engineering 词汇处理**：用实质，不用名字当框架。该词 2026 年中出自半玩笑的推文，48 小时内出现三种互相冲突的定义，并有伪造研究流传。正文只说"循环"，耐用锚点用 Anthropic《Building Effective Agents》(2024-12)。
+
+---
+
 ## Content Strategy
-- **Shape**: **argument-led, not incident-led.** Author's call (2026-08-04) — no
-  first-person incidents, no own-repo logs. State the direction and the argument.
-  The structural core is true by construction: *if the party being constrained
-  decides whether the constraint fires, it is not a constraint.*
-- **Unique angle**: everyone is designing "human-in-the-loop checkpoints"; almost
-  nobody separates the stops **the agent chooses to take** from the stops **it
-  cannot avoid**. That single test reorganizes the whole topic.
-- **Reader journey**: the everyday observation (it asks sometimes, not others) →
-  the test that splits gates from courtesies → why courtesies fail exactly when
-  needed (the detection literature) → the two things no gate can see (inaction,
-  correlated error) → the real ceiling (verification) → where the argument leads.
-- **Continuity**: two one-line callbacks to 07-27 only (杠杆＝产出÷注意力 and the
-  serial ceiling; 杠杆双刃). Nothing re-derived, nothing re-argued.
-- **Voice red line**: not a solution report. The piece ends on an inference that
-  has never been run, and says so.
-- **Term discipline**: 关卡 (gate) and 客气 (courtesy) are the two load-bearing
-  words — plain Chinese, introduced in the hook, never swapped for synonyms.
-  「分权」「Amdahl」「四眼原则」 may be *explained* in the body; none may be assumed.
-  No 文艺腔 metaphors; reuse 双刃剑 if a metaphor is needed at all.
+- **Shape**: **argument-led, constructive-first.** 无第一人称事件、无自有仓库日志（作者 2026-08-04 决定）。
+- **Unique angle**: 大家都在设计"human-in-the-loop 检查点"，但几乎没人分开**agent 自己选择的停顿**和**它躲不掉的停顿**；而这条区分决定的不只是安全，还有推进速度。
+- **Reader journey**: 循环为什么能推进 → 循环里最容易装错的部件（停） → 人该把监管的注意力花在哪 → 最后卡住全局的是验证 → 于是制度该怎么设计（未验证）。
+- **Continuity**: 对 07-27 只做两处一句话回指（杠杆＝产出÷注意力与串行天花板；杠杆双刃）。不重推、不重argue。
+- **Voice red line**: 不是解决方案汇报，也不是唱衰。结尾落在一条没跑过的推论上，并明说。
+- **Term discipline**: **循环**、**判定权**、**关卡／客气** 是承重词，plain Chinese，定了不换同义词。
+  「分权」「四眼原则」「Amdahl」 可在正文**解释后**使用，不得预设。无文艺腔比喻；要比喻只复用 双刃剑。
 
 ---
 
-## Introduction (~400–450)
+## Introduction (~450–500)
 
-### HOOK (full draft — this is part of the Stage-2 gate)
+### HOOK (完整初稿 — 这是要过的第一样东西)
 
-> 你大概见过这两种情形：同样是让 agent 干活，有时候它干到一半停下来问你一句"要不要继续"，有时候它一口气干到底，招呼都不打一个。
+> 这一年多最实在的变化，其实不是 agent 变聪明了，而是它能自己转起来了：写一版、跑一下、看到不对、再改一版——中间不用你插手。产出能往前跑，靠的就是这个循环转得快不快。
 >
-> 停下来问，我们一般当成好事——说明它谨慎。但这里值得多问一句：**决定它停不停的，到底是什么？**
+> 循环里最要紧的一个部件，是"什么时候停下来找你"。这个部件装错了，两头都亏：该它自己往下跑的时候停下来问你一句，你的无人值守就断了；真该拦住的时候它没停，错的东西就一路跑到底。
 >
-> 多数时候，这个决定权在它自己手上。它扫了一眼自己要干的活，觉得这事有点大、有点不好回头，于是停下来问一句。这不是把关，这是跟你客气一下。
+> 而现在大部分的停，都停在它自己说了算的地方。它扫一眼要干的活，觉得这事有点大、有点不好回头，于是问你一句。这不是把关，这是跟你客气一下。
 >
-> 把关和客气的区别，其实一句话就能分清：**这次停顿，是被这个动作本身的事实触发的——碰了哪个文件、动了哪条分支、有几条评论还没解决——还是被它对自己的判断触发的？** 只有前一种是关卡；后一种只是长得像关卡。
+> 两者的区别，一句话就能分清：**这次停顿，是被动作本身的事实触发的——碰了哪个文件、动了哪条分支、有几条评论还没解决——还是被它对自己的判断触发的？** 只有前一种，判定权不在它自己手上。
 >
-> 麻烦的地方在于：客气恰恰会在最需要它的时候失灵。你之所以要设一道关卡，防的就是它又自信又错的那一次；而"自信"正是那个把"我先问一句"压下去的东西。它错得越离谱，越不会停下来问你。
+> 说清楚一点：这篇不是又一遍"AI 不靠谱"。恰恰相反——可靠本来就不该指望执行的一方自觉，它是设计出来的。**一个循环能跑多远，取决于你把判定权放在哪儿，而不取决于 agent 有多靠谱。**
 >
-> 上一篇说的是[把不需要你判断的事从你这儿挪走](/blog/cheap-code-scarce-attention)。这一篇说挪走之后的事：你留下的那些关卡，有多少其实只是客气；就算全是真关卡，还有一整类事情它们根本看不见；以及为什么最后卡住整个系统的，偏偏是"验证"这一件事。
+> 下面说四件事：循环靠什么往前推、"停"这个部件为什么最容易装错、人该把监管的注意力花在哪儿（比你想的少，也比你想的准），以及最后卡住整个系统的那一件事——验证。
 
-- Roadmap is the last paragraph above — implicit, one sentence, no bullet list.
-- `{/* truncate */}` goes after the hook.
+- Roadmap 就是最后一段，一句话带过，不列点。
+- `{/* truncate */}` 放在 hook 之后。
 
 ---
 
-## Section 1 — 关卡和客气，差在谁按下那个开关 (~700–850)
+## Section 1 — 循环靠什么往前推 (~700–800)
 
-- **Focus**: the distinction and its operational test. This section must be
-  usable tomorrow by a reader who reads nothing else.
+- **Focus**: 先把正面讲透。推进力从哪来，什么样的循环转得动、什么样的空转。这一节奠定全文不是唱衰。
 - **Beats**:
-  1. Define both plainly. **关卡** = the trigger reads a fact about the action
-     (path touched, branch, count of unresolved threads, whether a command is
-     destructive). **客气** = the trigger reads the agent's own assessment of its
-     own work（"这个改动有点大，我确认一下"）.
-  2. The test, stated once and bolded: **触发它的是动作的事实，还是它对自己的评估？**
-     Everything else follows from this one question.
-  3. Why the difference is not academic: a courtesy is *negatively correlated*
-     with need. The case you built the stop for is the case where the agent is
-     confident and wrong — and confidence is exactly what suppresses the pause.
-     A courtesy is most reliable when it is least necessary.
-  4. **The structural point, by construction (replaces the cut incident):** a
-     condition whose satisfaction is judged by the party it constrains is not a
-     condition. No anecdote needed — it is the same reason nobody grades their own
-     exam. Applies to any condition an agent can move by itself:
-     "评论都解决了""测试都过了""该改的都改完了".
-  5. Anthropic's own framing as the outside anchor:
-     [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents)
-     (2024-12) says agents must "gain 'ground truth' from the environment at each
-     step (such as tool call results or code execution)". Ground truth from the
-     environment vs. the agent's self-report **is** this distinction, in the
-     vendor's own words.
-- **Visual — Figure 1 (示意)**: the same pause, two trigger sources. Left: a fact
-  about the action reaches the gate → it fires whether or not the agent agrees.
-  Right: the agent's self-assessment is the trigger → the party being constrained
-  is holding the switch. Same-looking pause, different circuitry.
-- **Takeaway**: 不要问"它有没有停下来问你"，要问"这一下是谁按的".
-- **Transition**: 客气靠 agent 先发现自己该停——那它发现得了吗？
+  1. 能自己转的循环长什么样：做一版 → 从环境拿到反馈 → 改 → 再做。关键不在"它会不会写"，在**每转一圈能不能拿到真反馈**。
+  2. 真反馈 vs 假反馈：编译错误、测试结果、工具返回是真的；"我看了一遍，应该没问题"是假的。**拿假反馈的循环会空转**——看着在动，实际原地打转。
+     [Anthropic《Building Effective Agents》](https://www.anthropic.com/engineering/building-effective-agents)(2024-12) 的原话正好是这条：agent 执行时必须"gain 'ground truth' from the environment at each step (such as tool call results or code execution)"。
+  3. 推进速度的两个分子分母（口语版，不写公式）：一圈里拿到多少真反馈；一圈里要你插手几次。**前者决定它走得准，后者决定它走得远。**
+  4. [PushBench](https://arxiv.org/abs/2605.23574) 的框架当佐证，一句话：干完的活要**外部裁判**认了才算数，重复劳动和假完成直接量出来，而不是藏在一个"成功"标志后面。（v1 预印本 — 只用框架，不用数字。）
+  5. 由此推出本节的结论，同时引出第二节：循环里绝大部分环节都能靠环境自动闭合；**唯一必须由人来定的部件，是"什么时候停下来找你"**。
+- **Visual — Figure 1 (示意)**: 一个能闭合的循环 vs 一个空转的循环——差别只在反馈那一段是从环境来的，还是从自己嘴里来的。
+- **Takeaway**: 循环转得动，靠的是每一圈都能拿到不是自己给的反馈。
+- **Transition**: 那"什么时候停"这个部件，现在普遍是怎么装的？
 
-## Section 2 — 自己查不出自己 (~750–850)
+## Section 2 — 停这个部件，最容易装错 (~800–900)
 
-- **Focus**: a courtesy asks the agent to *notice* it should stop. Detection is
-  precisely the capability the literature measures as weakest — so the courtesy
-  is built on the softest ground available.
+- **Focus**: 关卡 vs 客气的判据。**框架是"部件装错了位置"，不是"模型不行"**——这是整篇不落入唱衰的关键。
 - **Beats**:
-  1. [Tyen et al., ACL 2024 Findings](https://arxiv.org/abs/2311.08516) — the
-     load-bearing citation. Best model (GPT-4) finds the mistake **52.87** of the
-     time; hand it the location and correction jumps **+18%–44%**. Human
-     annotators agree at α 0.979–0.998, i.e. **the cases are obvious to people**.
-     Plain reading: 会改，但找不到；瓶颈在发现，不在修。
-     ⚠ State the limit in the text: these are reasoning traces, not code review —
-     borrowing the mechanism by analogy (same discipline as Baumol last time).
-  2. [Huang et al., ICLR 2024](https://arxiv.org/abs/2310.01798) — one sentence:
-     without external feedback, self-correction can make things *worse*. The
-     operative words are 没有外部反馈 — exactly a courtesy's operating condition.
-  3. [Chen et al. 2026](https://arxiv.org/abs/2606.05976) — the sharpest version,
-     handled honestly. Keep the wrong statement byte-identical and change only
-     *whose* it appears to be — the agent's own thought vs. a tool result vs. a
-     user message — and the explicit-correction rate moves **23–93 percentage
-     points** across 10 of 12 settings. 同一句话，换个来源，就查出来了。
-     ⚠ **Must carry the authors' own reading**: they call it an artifact of role
-     labeling rather than a capability deficit, and expect training to close it.
-     Preprint, no venue. Say all of that in the same breath.
-  4. The inference this section earns: 这不是提示词写得不够好的问题。把"发现"这一步
-     留在被检查的一方身上，关卡就建在了最薄的地方——而且薄得很有规律，不是随机地薄。
-- **Visual — Figure 2 (示意)**: same erroneous claim, three source labels
-  （自己的想法／工具返回／别人说的）→ detection steps up as the content stops being
-  "its own". Caption marks it 示意 and names the source paper's caveat.
-- **Takeaway**: 客气依赖的那个能力，正是研究里最差的那个。
-- **Transition**: 那就把客气都换成真关卡——不够。真关卡也有两类事看不见。
+  1. 判据，加粗一次：**触发它的是动作的事实，还是它对自己的评估？** 前者是关卡，后者只是长得像关卡。
+  2. **双输，先说推进那一头**（呼应作者反馈）：客气不只是不安全，它还慢。它在不该停的地方停——你正想让它无人值守跑通一整条链路，它三步一问；又在真该停的地方不停。**两头都误事。**
+  3. 为什么必然在最需要的时候失灵：你设这道停，防的就是它又自信又错的那次；而"自信"正是把"我先问一句"压下去的东西。**客气跟需要它的程度是反着的。**
+  4. **构造上的论证（替代被砍掉的事件）**：一个条件，如果由被它约束的一方来判定满没满足，那它就不是条件。不需要举例——跟没人给自己的卷子打分是同一个道理。凡是 agent 自己能挪的条件都算：「评论都解决了」「测试都过了」「该改的都改完了」。
+  5. 证据：客气依赖的是"先发现自己该停"，而这正是研究里最弱的一环。
+     - [Tyen et al., ACL 2024 Findings](https://arxiv.org/abs/2311.08516)：最好的模型找错准确率 **52.87**；把错误位置直接给它，改对率跳 **+18%–44%**。而这些题人类标注一致性 α **0.979–0.998**——**对人显而易见的错，它找不到**。会改，不会找。
+       ⚠ 正文交代边界：那是推理题的思维链，不是代码评审，借的是机制（跟上一篇借鲍莫尔同样的分寸）。
+     - [Huang et al., ICLR 2024](https://arxiv.org/abs/2310.01798) 一句：没有外部反馈时，自我纠错甚至会更差。**"没有外部反馈"正是客气的运行条件。**
+     - [Chen et al. 2026](https://arxiv.org/abs/2606.05976)：同一句错话一个字节不改，只把来源标签从它自己的想法换成工具返回或用户消息，明确纠错率跳 **23–93 个百分点**（12 组里 10 组显著）。**同一句话，换个来源就查出来了。**
+       ⚠ 必须同段带上作者自己的解读：他们认为这是 role label 的产物、不是能力缺陷，且预期训练能补上；预印本、无会议。
+  6. 本节落点（正面收束）：**这不是模型不行，是部件装错了位置。** 把判定权从它的自我评估挪到动作的事实上，同一个模型，循环反而跑得又快又稳——该停的地方停得住，不该停的地方它一路跑。
+- **Visual — Figure 2 (示意)**: 同一个停顿，两种接线：动作事实进来 → 关卡照跳；自我评估当触发 → 被约束的一方握着开关。（可与"来源标签一换、发现率就跳"合成一张。）
+- **Takeaway**: 别问"它有没有停下来问你"，问"这一下是谁按的"。
+- **Transition**: 就算这个部件全装对了，人还是得看。看哪儿、看多少？
 
-## Section 3 — 就算全是真关卡，也有两件事看不见 (~800–900)
+## Section 3 — 人该把监管的注意力花在哪儿 (~800–900)
 
-- **Focus**: two blind spots that better gate *design* does not fix. Must not read
-  as a checklist — both beats end in the same place (verification).
-- **Beats — (a) 不作为**:
-  1. Every gate is a predicate evaluated **when something happens**. No event, no
-     evaluation. An agent that quietly *doesn't* do a thing — 没跑那个检查、没扫完
-     剩下的一半、没把那个问题重新提出来 — trips nothing at all.
-  2. [Arike, Donoway, Bartsch & Hobbhahn (Apollo, 2025)](https://arxiv.org/abs/2505.02709),
-     Finding 8: "Goal drift tends to be larger through inaction than through
-     action" — inaction scores consistently exceed action scores across models and
-     conditions.
-     ⚠ Honesty in the same paragraph: stock-trading simulation, and "不作为" there
-     means one specific thing（工具阶段结束后没把该卖的卖掉）. Also report the
-     counter-evidence — scaffolded Claude 3.5 Sonnet held goal adherence past
-     90,000 tokens. The structural point stands without the study; the study is one
-     measured instance, not a law.
-  3. Why no gate design reaches this: 你没法给"没发生的事"挂钩子。补救只能来自另一
-     侧——定期核对该发生的事有没有发生，而那是验证，不是关卡。（引出第四节）
-- **Beats — (b) 相关性错误**:
-  4. Callback to 07-27 in one line: 上一篇说杠杆会放大你错的判断。其实还要更狠一点。
-  5. The sharpening: 一个人自己干，犯的是五十个各不相同的错；一条规范交给五十次执行，
-     犯的是同一个错五十次。杠杆放大的不是方差，是偏差。
-  6. [Kleinberg & Raghavan, PNAS 2021](https://arxiv.org/abs/2101.05853): a group
-     of decision-makers converging on a single algorithm "even when the algorithm
-     is more accurate for any one agent in isolation, can reduce the overall
-     quality of the decisions" — under normal operation, no shock required.
-     ⚠ Name the difference: their setting is many organizations sharing one
-     algorithm, ours is one person delegating across many runs; the shared
-     mechanism is that errors stop being independent.
-     [Bommasani et al., NeurIPS 2022](https://arxiv.org/abs/2211.13972) in one
-     clause (shared training data reliably increases homogenization), with its own
-     nuance flagged (the foundation-model result is mixed, depends on adaptation).
-  7. **The operational payoff — what the section is for**: 逐条审是为"各不相同的错"
-     设计的姿势，成本随委托量线性涨，而且照样漏；抽样查重复的规律是为"同一个错很多遍"
-     设计的，成本次线性。既更便宜，也更对症。
-- **Visual — Figure 3 (示意)**: independent error (scatter around the target,
-  found one at a time) vs. correlated error (one tight cluster off-target, a small
-  sample reveals the whole pattern).
-- **Takeaway**: 关卡挡的是动作；漏掉的是"没发生"和"重复发生"。
-- **Transition**: 这两条补救指向同一件事——验证。而验证正是那个卡住全局的东西。
+- **Focus**: **适当的监管不是更多的监管。** 本节是全文"人的角色"落地的地方，两个盲区各推出一条监管姿势。
+- **Beats — (a) 不作为：关卡看不见的那一半**:
+  1. 所有关卡都挂在动作上——有动作才有得判。安静地**没做**某件事，触发不了任何东西：没跑那个检查、没扫完剩下一半、没把那个问题重新提出来。
+  2. [Arike, Donoway, Bartsch & Hobbhahn（Apollo, 2025）](https://arxiv.org/abs/2505.02709) Finding 8 原话：不作为造成的目标漂移大于作为，跨模型跨条件都成立。
+     ⚠ 同段交代：股票模拟场景，"不作为"指一件很具体的事（工具阶段结束后没把该卖的卖掉）；同一篇里带脚手架的 Claude 3.5 Sonnet 撑过 9 万 token 没漂。**结构性的那一点不靠这篇也成立**，这篇只是一个量到的例子。
+  3. 监管姿势一：**定期核对"该发生的事有没有发生"**。这不是关卡能做的事，只能人（或另一套机制）主动去对——第四节的伏笔。
+- **Beats — (b) 相关性错误：审得多不等于审得对**:
+  4. 回指 07-27 一句：上一篇说杠杆会放大你错的判断。**其实还要更狠一点。**
+  5. 关键区分：一个人自己干，犯的是五十个各不相同的错；一条规范交给五十次执行，犯的是**同一个错五十次**。杠杆放大的不是方差，是偏差。
+  6. [Kleinberg & Raghavan, PNAS 2021](https://arxiv.org/abs/2101.05853)：一群决策者收敛到同一个算法，"即使这个算法对其中任何一个单独使用者都更准，整体决策质量反而会下降"，且正常运转下就会，不需要什么意外冲击。
+     ⚠ 点明差异：他们说的是多家机构共用一个算法，我们说的是一个人把活分给很多次执行；共享的机制是**错误不再互相独立**。
+     [Bommasani et al., NeurIPS 2022](https://arxiv.org/abs/2211.13972) 一个从句（共享训练数据确实加剧同质化），并标注其自身的保留（基座模型那部分结论是混合的，取决于适配方式）。
+  7. 监管姿势二，本节的可用结论：**逐条审是为"各不相同的错"设计的姿势**——成本随委托量线性涨，还照样漏；**抽样查重复出现的规律，才是为"同一个错很多遍"设计的**——成本次线性。既更省，也更对症。
+  8. 合起来说人的位置：注意力花在两处——**抽样找规律**，和**那几条被复用的高杠杆条件**。不是花在每一条 diff 上。这就是"适当"的意思：不是少管，是管在对的地方。
+- **Visual — Figure 3 (示意)**: 独立错误（散开，只能逐条审）vs 相关性错误（一簇偏在同一处，抽一点就现形）。
+- **Takeaway**: 关卡挡的是动作；人补的是"没发生"和"重复发生"。
+- **Transition**: 这两条补救指向同一件事——验证。而验证正是卡住全局的那件事。
 
 ## Section 4 — 天花板是验证 (~700–800)
 
-- **Focus**: name which part of the serial bottleneck is doing the work. This is
-  where the piece turns from a taxonomy into an argument.
+- **Focus**: 把上一篇的"串行"点名。本节让全文从分类变成论证。
 - **Beats**:
-  1. One-line callback: 上一篇说注意力是串行的、卡住全局。这一篇把那部分点名：是验证。
-  2. The chain, stated cleanly: 第二节说了 agent 自己的报告不能算证据 ⇒ 验证没法委托
-     出去 ⇒ 委托的活越多，要验的就越多，而且是线性地涨 ⇒ 它成了整个系统的上限。
-  3. [Amdahl 1967](https://dl.acm.org/doi/10.1145/1465482.1465560) — **explained
-     before it is named** (constraint 6.3): 一件工作里如果有一部分必须一件一件按顺序
-     做，那不管你堆多少并行的机器，总加速最多也就是那部分占比的倒数。1967 年 Amdahl
-     讲的是处理器，形状跟这里一模一样。Ties back to 07-27's 1/σ ceiling.
-  4. The consequence that matters: 多委托执行不动这个上限——分子涨了，串行的那部分也
-     跟着涨。只有把验证机械化才动它。
-  5. Mechanizing verification is **a different kind of work from delegating
-     execution**: 委托是"把活派出去"；机械化验证是"把判定条件写成不需要人、也不需要
-     agent 点头的东西"——测试、断言、可复算的检查、外部裁判。
-     [PushBench](https://arxiv.org/abs/2605.23574) framing in one line: 干完的活要
-     外部裁判认了才算数，重复劳动和假完成直接量出来，而不是藏在一个"成功"标志后面
-     (v1 preprint — framing only, no numbers).
-  6. Outside corroboration that verification is a first-class failure category,
-     not a footnote: [Cemri et al.](https://arxiv.org/abs/2503.13657) annotated
-     1600+ traces across 7 frameworks; of the three top-level failure categories,
-     one is **task verification**（提前收工／没验／验错了）.
-     ⛔ No percentages — the paper publishes no category-level split.
-  7. Anthropic, same anchor as §1, closing the loop: automated testing verifies
-     functionality, "human review remains crucial" for whether the solution fits
-     the broader system. 能机械化的和不能机械化的，边界大致就在这儿。
-- **Visual (optional Figure 4; cut if the piece runs long)**: delegated execution
-  scales out, verification stays serial → output flattens against the verification
-  line.
-- **Takeaway**: 加委托不动天花板，机械化验证才动。
-- **Transition**: 那按这个论证走下去，关卡该长什么样？
+  1. 一句回指：上一篇说注意力是串行的、卡住全局。这一篇把那部分点名——**是验证**。
+  2. 链条讲清楚：第二节说了 agent 自己的报告不能算证据 ⇒ 验证委托不出去 ⇒ 委托的活越多、要验的越多，而且是线性地涨 ⇒ 它成了整个系统的上限。
+  3. [Amdahl 1967](https://dl.acm.org/doi/10.1145/1465482.1465560) — **先用大白话讲完再报名字**（硬约束 6.3）：一件工作里如果有一部分必须一件一件按顺序做，那不管你堆多少并行的机器，总加速最多也就是那部分占比的倒数。1967 年 Amdahl 讲的是处理器，形状跟这里一模一样。接回 07-27 的 1/σ。
+  4. 要害：**多委托执行不动这个上限**——分子涨了，串行那部分跟着涨。只有把验证机械化才动它。
+  5. 而机械化验证**和派活是两种不同的活**：派活是把工作交出去；机械化验证是把判定条件写成**不需要人、也不需要 agent 点头**的东西——测试、断言、可复算的检查、外部裁判。**这就是制度设计的具体内容**，不是一句口号。
+  6. 外部佐证，说明验证是一级失效类别而不是脚注：[Cemri et al.](https://arxiv.org/abs/2503.13657) 标注了 1600+ 条轨迹、7 个框架，三大类失效里有一类就是**任务验证**（提前收工／没验／验错了）。
+     ⛔ 不引任何占比——论文没有类别级分布。
+  7. Anthropic 那篇再用一次收口：自动化测试能验功能，"human review remains crucial" 管的是方案跟整体系统合不合。**能机械化的和不能机械化的，边界大致在这儿**——而边界之内的每一寸，都是可以往外推的。
+- **Visual (可选 Figure 4；正文超长就砍)**: 委托可以横向铺开，验证仍是串行 → 产出撞上验证线。
+- **Takeaway**: 加委托不动天花板，把判断写成条件才动。
+- **Transition**: 那按这个论证走下去，这套东西该怎么安排？
 
 ---
 
-## Conclusion — 论证指向哪里（以及它没被跑过） (~350–400)
+## Conclusion — 制度设计：论证指向哪里，以及它没被跑过 (~400–450)
 
-- **Not a solution report.** Constraints 6.1 and 6.2 both bite here.
+- **不是方案汇报**（硬约束 6.1、6.2 在这里同时生效）。
 - **Beats**:
-  1. Where the argument leads, stated as an inference: 如果条件的判定权不能落在被约束
-     的一方手上，那么检查的一方就得和执行的一方分开——各自独立、只通过留下的产物交流
-     （代码、日志、测试结果），而条件本身两边都改不了。别的行业里这是老做法（财务上的
-     复核、发布上的双人签字），这里只是把它搬到 agent 身上。
-     ⚠ 「分权」「四眼原则」 explained in half a sentence if used at all; never assumed.
-  2. **The honest blank, explicitly**: 这套东西我没跑过。上一篇留的空白是一个没人量过
-     的倍数，这一篇留的空白是一个没被验证过的设计。把洞指出来，比端出一个还没试过的
-     方案要诚实。
-  3. What the reader can use tomorrow — the one-line test, restated: 下次 agent 停下来
-     问你，先问一句：**这一下，是谁按的？**
-  4. Final beat tying back to 07-27 without repeating it: 上一篇说把不需要你判断的事挪
-     走；这一篇说，挪的时候要看清楚——你以为设了关卡的地方，可能只是它跟你客气。
+  1. 论证推出去的三条原则，一条一句：
+     - **判定权不落在被约束的一方手上**——条件由谁判，比条件写得多严更要紧。
+     - **条件本身两边都改不了**——检查的一方和执行的一方分开，各自独立，只通过留下的产物交流（代码、日志、测试结果）。
+     - **人只在两处花注意力**——抽样找重复的规律，和那几条会被反复复用的高杠杆条件。
+  2. 这不是新发明：财务上的复核、发布上的双人签字，都是同一套思路，只是这里把它搬到 agent 身上。
+     ⚠ 「分权」「四眼原则」若用，半句话解释掉，不预设。
+  3. **诚实的空白，明说**：这套东西我没跑过。上一篇留的空白是一个没人量过的倍数，这一篇留的空白是一个没被验证过的设计。把洞指出来，比端出一个还没试过的方案要诚实。
+  4. 读者明天能用的那一条，重述判据：下次它停下来问你，先问一句——**这一下，是谁按的？**
+  5. 收尾，正面顶回"AI 不靠谱"（全文的落点）：所以这从来不是信不信任 AI 的问题。**你信的从来不是执行的一方靠谱，是那套安排让不靠谱也翻不了车。** 循环能跑多远，是设计出来的，不是指望出来的。
 
 ---
 
@@ -220,24 +160,23 @@
 
 | # | Section | Content | Status |
 | - | ------- | ------- | ------ |
-| 1 | §1 | 同一个停顿，两种触发源：动作事实 → 关卡；自我评估 → 被约束方握着开关 | required |
-| 2 | §2 | 同一句错误内容，来源标签一换，被发现的概率就跳（示意，标注来源论文 caveat） | required |
-| 3 | §3 | 独立错误（散布，需逐条审）vs 相关性错误（一簇偏在同一处，抽样即现形） | required |
-| 4 | §4 | 委托可以横向扩张，验证仍是串行 → 产出撞上验证线 | optional |
+| 1 | §1 | 能闭合的循环 vs 空转的循环——差别只在反馈是从环境来还是从自己嘴里来 | required |
+| 2 | §2 | 同一个停顿两种接线：动作事实 → 关卡；自我评估 → 被约束方握着开关（可并入"来源标签一换、发现率就跳"） | required |
+| 3 | §3 | 独立错误（散开，逐条审）vs 相关性错误（一簇偏在同一处，抽样即现形） | required |
+| 4 | §4 | 委托横向铺开，验证仍串行 → 产出撞上验证线 | optional |
 
 House style: 860px canvas, semantic palette, bilingual variants, HTML sources in
-`drafts/2026-08-10-a-pause-is-not-a-gate/figures/`, rendered to
-`static/img/blog/2026-08-10-a-pause-is-not-a-gate/`. All illustrative values
-marked **示意**.
+`drafts/{slug}/figures/`, rendered to `static/img/blog/{slug}/`. 所有示例数值标 **示意**。
 
-## Stage-3 guard rails (re-read before writing each section)
+## Stage-3 guard rails (每节动笔前重读)
 
-- [ ] No first-person incident, no own-repo logs, no private numbers
-- [ ] Every study carries its own limit in the same paragraph, not in a footnote
-- [ ] No category-level percentages from Cemri; no numbers from PushBench
-- [ ] 2606.05976 always cited with the authors' optimistic reading
-- [ ] 2505.02709 attributed to Arike et al., with the Sonnet counter-evidence
-- [ ] Amdahl explained in plain words before the name appears
-- [ ] Conclusion states the design has never been run
-- [ ] zh-voice red lines: no 文艺腔 metaphor, no calque; read every sentence as
-      "would the author say this to a colleague out loud?"
+- [ ] 全文不落"AI 不靠谱"的调子——每一处批评都收在"这是设计问题"上
+- [ ] 无第一人称事件、无自有仓库日志、无未测量的数字
+- [ ] 每篇研究的边界跟结论同段写，不放脚注
+- [ ] 不引 Cemri 的类别占比；不引 PushBench 的数字
+- [ ] 2606.05976 永远带作者自己的乐观解读一起引
+- [ ] 2505.02709 署 Arike 等人，并带 Sonnet 的反证
+- [ ] Amdahl 先用大白话讲完再报名字
+- [ ] 结论明说这套设计没跑过
+- [ ] loop engineering 只用实质不用名字；不做结构框架
+- [ ] zh-voice 红线：无文艺腔比喻、无英语直译；每句自问"作者会这么跟同事说吗"
