@@ -258,6 +258,69 @@ The operational test, and the one line a reader should be able to use tomorrow:
 
 ---
 
+## Cluster E — Management / organizational control (the spine)
+
+### E1 ✅ PRIMARY, READ IN FULL TEXT — Ouchi, *Management Science* 1979
+- William G. Ouchi, "A Conceptual Framework for the Design of Organizational
+  Control Mechanisms", *Management Science* **25(9): 833–848**, 1979.
+  https://pubsonline.informs.org/doi/10.1287/mnsc.25.9.833
+- **Table 3, "Conditions Determining the Measurement of Behavior and of Output"**,
+  read verbatim from the PDF. Axes: *Ability to Measure Outputs* (High / Low) ×
+  *Knowledge of the Transformation Process* (Perfect / Imperfect).
+  - High × Perfect → "Behavior or Output Measurement (Apollo Program)"
+  - Low × Perfect → "Behavior Measurement (Tin Can Plant)"
+  - High × Imperfect → "Output Measurement (Women's Boutique)"
+  - Low × Imperfect → "Ritual and Ceremony, 'Clan' Control (Research Laboratory)"
+- **Verbatim, the tin-can passage:** "if all behaviors and processes conform to our
+  desired transformation steps, then we know with certainty that proper tin cans
+  are coming out the other end, even without looking."
+- **Verbatim, the boutique passage:** "What it takes to be a successful buyer or
+  merchandiser is beyond our understanding, so we could not possibly hope to
+  create a set of rules which, if followed by our buyers, would assure success."
+  They can, however, measure markdowns, turnover, volume and margin — "thus
+  giving us the alternative of an output control mechanism."
+- **Also verbatim:** "the ability to measure either output or behavior which is
+  relevant to the desired performance is critical to the 'rational' application of
+  market and bureaucratic forms of control."
+- **How the article uses it (the diagnosis):** we do not understand the agent's
+  transformation process ⇒ Imperfect column ⇒ behavior control cannot produce
+  control, which is exactly what babysitting attempts. Output is not measurable
+  either ⇒ we fall into the bottom-right cell, where only clan control remains —
+  and clan control presumes long shared socialization we do not have with an
+  agent. **The only exit is to make the output measurable**, i.e. mechanize
+  acceptance. Tests / compilers / type checks are precisely that, which is why the
+  same agent runs far in a well-tested repo and needs watching in an untested one.
+- **⚠ Usage rule:** the Chinese rendering of the tin-can line in the article is
+  **my own translation**, not an established published translation — the author
+  should decide whether it keeps quotation marks.
+
+### E2 ⚠️ CONCEPT CORROBORATED, PRIMARY BOOK NOT REACHED — March & Simon 1958
+- James G. March & Herbert A. Simon, *Organizations*, Wiley, 1958 — the concept
+  of **uncertainty absorption**.
+- **Status:** no full-text-searchable copy of the book was reachable. The widely
+  circulated verbatim definition ("Uncertainty absorption takes place when
+  inferences are drawn from a body of evidence and the inferences, instead of the
+  evidence itself, are then communicated", cited to p. 165) is attested
+  identically across many sources but **was not read in the book itself**.
+- **What IS corroborated by a peer-reviewed source** — the *Journal of Management
+  Studies* 60-years special-issue introduction (escholarship qt811454w1) states
+  M&S's own sense directly: uncertainty absorption "means that, because
+  organization members have very limited capacity to assess objective evidence
+  directly, most of their decisions rely on information from other people." The
+  same paper warns that management scholars commonly stretch the term into a
+  generic label for "uncertainty reduction" — **our usage is the narrow, correct
+  one.**
+- **⚠ Usage rule (as written in the draft):** the article paraphrases the concept
+  and attributes it to the book. It asserts **no page number and no verbatim
+  quotation**, so nothing is claimed beyond what is corroborated. If the author
+  prefers zero residual risk, the sentence can be cut — the chain (report is not
+  evidence ⇒ acceptance cannot be delegated) stands without it.
+
+### E3 ✅ CLASSICAL — Amdahl 1967
+- See D3 above. Explained in plain language in the body before the name appears.
+
+---
+
 ## Discarded / do-not-use
 
 | Item | Why |
