@@ -1,4 +1,4 @@
-# Research — 它停下来问你，不等于它在把关 (A Pause Is Not a Gate)
+# Research — 怎么才能不给 agent 当保姆？(How Do I Stop Babysitting My Agent?)
 
 > **Stage 1 discipline note.** Every source below was opened at its primary page
 > (arXiv abs/html, publisher, vendor engineering blog) and the quoted lines were
@@ -16,27 +16,36 @@
 
 | Field | Value |
 | ----- | ----- |
-| **Slug** | `a-pause-is-not-a-gate` |
+| **Slug** | `stop-babysitting-your-agent` |
 | **Date** | 2026-08-10 |
-| **ZH title (primary)** | 它停下来问你，不等于它在把关 |
-| **EN title (restate)** | A Pause Is Not a Gate |
+| **ZH title (primary)** | 怎么才能不给 agent 当保姆？ |
+| **EN title (restate)** | How Do I Stop Babysitting My Agent? |
 | **Primary locale** | **Chinese** (公众号 audience) — draft ZH natively, restate EN |
 | **Tags** (English slugs in **both** locales — repo convention) | `ai`, `agents`, `software-engineering`, `productivity` |
 | **Target length** | ~3,200–3,800 词 / characters |
-| **EN MDX** | `blog/2026-08-10-a-pause-is-not-a-gate.mdx` |
-| **ZH MDX** | `i18n/zh/docusaurus-plugin-content-blog/2026-08-10-a-pause-is-not-a-gate.mdx` |
+| **EN MDX** | `blog/2026-08-10-stop-babysitting-your-agent.mdx` |
+| **ZH MDX** | `i18n/zh/docusaurus-plugin-content-blog/2026-08-10-stop-babysitting-your-agent.mdx` |
 | **Relation to prior work** | Continuation of `2026-07-27-cheap-code-scarce-attention`. Two one-line callbacks only (杠杆＝产出÷注意力／串行天花板；杠杆双刃). Nothing re-derived. |
 
 ---
 
-## Core Thesis
+## The question the piece answers
 
-**大多数"agent 停下来问你"的时刻不是关卡，是客气——是它自己选择的停顿。而客气恰恰在最需要的时候失效，因为你需要关卡的那一次，正是它又自信又错的那一次。**
+作者原话（也是全文的出发点）：**"我需要 babysit 这个 agent，而不是让它自主循环去做事。"**
+文章是一个问题—答案结构：**为什么你走不开？怎么才能走开？**
+
+**主张（一句话）**：
+> 你走不开，不是因为 agent 不行，是因为**"什么时候停"这件事由它自己说了算**，
+> 而**验证又委托不出去**。前者能改，后者只能靠机械化一点点往回推。
 
 The operational test, and the one line a reader should be able to use tomorrow:
 
 > **这次停顿，是被动作本身的事实触发的，还是被 agent 对自己的评估触发的？**
 > 只有前者是关卡。后者只是长得像关卡的客气。
+
+**标题许诺"怎么办"，正文必须兑现三条可做的**：判定权换成动作事实（§2）、监管从逐条审
+换成抽样查规律 + 定期核对该发生的（§3）、把判断写成不需要人点头的条件（§4）。第四条
+（检查方与执行方分开）明说没跑过。**不能收在"反正很难"。**
 
 ### Four claims this piece must carry (none in the 07-27 piece)
 
