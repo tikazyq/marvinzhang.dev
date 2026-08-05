@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 1 — 你在哪个格子里（新标准原型）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./base.css" />
+<style>
+  /* At this width a left gutter for row labels would cost ~20% of the canvas.
+     Row labels ride on a rule above each row instead. */
+  .rowband {
+    display: flex; align-items: center; gap: calc(8px * var(--s));
+    margin: calc(13px * var(--s)) 0 calc(7px * var(--s));
+  }
+  .rowband .k { font-size: var(--t-label); font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .rowband .r { flex: 1; height: calc(1px * var(--s)); background: var(--line); }
+
+  .colhead { display: grid; grid-template-columns: 1fr 1fr; gap: calc(12px * var(--s)); }
+  .colhead .c {
+    text-align: center; font-size: var(--t-label); font-weight: 600;
+    color: var(--ink-soft); line-height: 1.3;
+  }
+  .colhead .c .sub {
+    display: block; font-weight: 400; font-size: var(--t-mono);
+    color: var(--ink-faint); margin-top: calc(2px * var(--s));
+  }
+
+  .cols { gap: calc(12px * var(--s)); }
+  .panel { padding: calc(13px * var(--s)) calc(13px * var(--s)); }
+  .cell { position: relative; }
+  /* Cells carry a label and an example, never a paragraph. The argument lives in
+     the article; a figure that repeats it just makes itself unreadable. */
+  .cell .mode { font-size: var(--t-lead); font-weight: 600; line-height: 1.3; }
+  .cell.dim  .mode { color: var(--ink-soft); }
+  .cell.here { border-color: var(--err-stroke); background: var(--err-fill); }
+  .cell.here .mode { color: var(--err-stroke); }
+  .cell.goal { border-color: var(--ok-stroke); background: var(--ok-fill); }
+  .cell.goal .mode { color: var(--ok-stroke); }
+
+  .pin {
+    position: absolute; top: calc(-8px * var(--s)); right: calc(9px * var(--s));
+    font-size: var(--t-tag); font-weight: 700; letter-spacing: .03em;
+    padding: calc(2px * var(--s)) calc(8px * var(--s));
+    border-radius: 999px; color: #fff; white-space: nowrap;
+  }
+  .pin.now { background: var(--err-stroke); }
+  .pin.out { background: var(--ok-stroke); }
+
+  .arrow {
+    display: flex; justify-content: flex-end; align-items: center;
+    gap: calc(6px * var(--s)); margin-top: calc(11px * var(--s));
+  }
+  .arrow .txt { font-size: var(--t-body); font-weight: 600; color: var(--ok-stroke); }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 01 — 你在哪个格子里</div>
+  <h1>什么时候盯得住，什么时候盯了也白盯</h1>
+  <div class="subtitle">大内 1979 年：能用哪种控制，取决于这两件事。</div>
+</div>
+
+<div class="colhead">
+  <div class="c">懂工序<span class="sub">说得清该怎么做</span></div>
+  <div class="c">不懂工序<span class="sub">说不清</span></div>
+</div>
+
+<div class="rowband"><span class="k">结果好量</span><span class="r"></span></div>
+<div class="cols">
+  <div class="panel cell dim">
+    <div class="mode">看动作或看结果</div>
+    <div class="mono">阿波罗计划</div>
+  </div>
+  <div class="panel cell goal">
+    <div class="pin out">出路在这</div>
+    <div class="mode">只能看结果</div>
+    <div class="mono">时装买手</div>
+  </div>
+</div>
+
+<div class="rowband"><span class="k">结果不好量</span><span class="r"></span></div>
+<div class="cols">
+  <div class="panel cell dim">
+    <div class="mode">只能看动作</div>
+    <div class="mono">罐头厂</div>
+  </div>
+  <div class="panel cell here">
+    <div class="pin now">你现在在这</div>
+    <div class="mode">只剩「自己人」式信任</div>
+    <div class="mono">研究所</div>
+  </div>
+</div>
+
+<div class="arrow">
+  <span class="txt">让「算不算做对了」变成机器能量的</span>
+  <svg width="46" height="14" viewBox="0 0 46 14"><line x1="1" y1="7" x2="36" y2="7" stroke="#2e7d32" stroke-width="2.2"/><path d="M30,2 L40,7 L30,12" fill="none" stroke="#2e7d32" stroke-width="2.2"/></svg>
+</div>
+
+<div class="takeaway">你在右下角，而<b>盯本身在这一格里就没用</b>。</div>
+<div class="footer"><span>marvinzhang.dev</span><span>图 1 / 4</span></div>
+</div>
+</body>
+</html>
