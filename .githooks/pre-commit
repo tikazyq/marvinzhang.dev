@@ -31,10 +31,20 @@ for f in $staged_posts; do
   node scripts/validate-internal-links.js --file "$f" || failed=1
 done
 
+# --- Figure type sizes -----------------------------------------------------
+# One PNG is delivered at 358px and 738px; checking one end is what produced
+# both the 5px and the 36px failures.
+staged_figs=$(git diff --cached --name-only --diff-filter=ACM -- 'drafts/*/figures/*.html')
+
+for f in $staged_figs; do
+  node scripts/validate-figure-type.js --file "$f" || failed=1
+done
+
 if [ "$failed" -ne 0 ]; then
   echo "提交被拦下：上面的问题请先改掉。"
   echo "语感确属有意为之：pnpm run validate:zh-voice:update-baseline"
   echo "确实无可引的文章：在正文里写 {/* internal-links: none — 理由 */}"
+  echo "图表字号确属有意为之：pnpm run validate:figure-type:update-baseline"
   echo "强行跳过：git commit --no-verify"
   exit 1
 fi

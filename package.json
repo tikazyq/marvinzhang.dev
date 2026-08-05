@@ -34,7 +34,9 @@
     "validate:zh-voice": "node scripts/validate-zh-voice.js",
     "validate:zh-voice:update-baseline": "node scripts/validate-zh-voice.js --update-baseline",
     "validate:internal-links": "node scripts/validate-internal-links.js",
-    "validate:internal-links:update-baseline": "node scripts/validate-internal-links.js --update-baseline"
+    "validate:internal-links:update-baseline": "node scripts/validate-internal-links.js --update-baseline",
+    "validate:figure-type": "node scripts/validate-figure-type.js",
+    "validate:figure-type:update-baseline": "node scripts/validate-figure-type.js --update-baseline"
   },
   "dependencies": {
     "@docusaurus/core": "3.8.1",

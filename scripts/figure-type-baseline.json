@@ -1,0 +1,38 @@
+{
+  "note": "Figures with type outside the band, grandfathered. Lower these numbers; never raise them. A figure with no entry must sit inside the band entirely.",
+  "updated": "2026-08-05",
+  "files": {
+    "drafts/2026-05-12-vsm-cybernetics-system-organization/figures/figure-1-history.en.html": {
+      "tooSmall": 6,
+      "tooBig": 2
+    },
+    "drafts/2026-05-12-vsm-cybernetics-system-organization/figures/figure-1-history.zh.html": {
+      "tooSmall": 6,
+      "tooBig": 2
+    },
+    "drafts/2026-05-12-vsm-cybernetics-system-organization/figures/figure-2-vsm.en.html": {
+      "tooSmall": 7,
+      "tooBig": 3
+    },
+    "drafts/2026-05-12-vsm-cybernetics-system-organization/figures/figure-2-vsm.zh.html": {
+      "tooSmall": 7,
+      "tooBig": 3
+    },
+    "drafts/2026-05-12-vsm-cybernetics-system-organization/figures/figure-3-compression.en.html": {
+      "tooSmall": 11,
+      "tooBig": 4
+    },
+    "drafts/2026-05-12-vsm-cybernetics-system-organization/figures/figure-3-compression.zh.html": {
+      "tooSmall": 11,
+      "tooBig": 3
+    },
+    "drafts/2026-05-12-vsm-cybernetics-system-organization/figures/figure-4-goodhart.en.html": {
+      "tooSmall": 9,
+      "tooBig": 1
+    },
+    "drafts/2026-05-12-vsm-cybernetics-system-organization/figures/figure-4-goodhart.zh.html": {
+      "tooSmall": 9,
+      "tooBig": 1
+    }
+  }
+}
