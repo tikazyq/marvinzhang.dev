@@ -53,12 +53,13 @@ Run through these in order — each item came from a real publishing round:
    "下图是交互小工具的截图……点文末'阅读原文'即可体验", then re-run ONLY
    `node scripts/generate-wechat-html.js <slug>`.
 4. **Cover + digest are part of the deliverable.**
-   - Cover: **one image, 2.35:1, and nothing else.** Ask for `--ar 21:9` and
-     ship what comes back — 21:9 is 2.333:1 against a target of 2.350:1, a
-     0.7% difference that works out to about 3px on a 900px-wide cover. Do not
-     crop it, and do not tell the author to. (Corrected 2026-08: this section
-     used to ask for a crop step and a 1:1 square variant alongside. The crop
-     is noise, and the square was never used — 公众号 takes the one cover.)
+   - Cover: **one image, and only one.** Ask for `--ar 21:9` and ship what
+     comes back. 公众号's cover slot is nominally 2.35:1 (900×383); 21:9 is
+     2.333:1, so the output is close to that target without being exactly it —
+     0.7% off, about 3px on a 900px-wide cover. Do not crop it, and do not
+     tell the author to. (Corrected 2026-08: this section used to ask for a
+     crop step and a 1:1 square variant alongside. The crop is noise, and the
+     square was never used — 公众号 takes the one cover.)
    - Two routes to the image: (a) code-drawn via the article's figures
      pipeline; (b) — author's current preference — write a text-to-image
      prompt and hand it off to an external model. Give **one prompt for the
