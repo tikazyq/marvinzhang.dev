@@ -29,6 +29,19 @@ jobs:
   validate-formatting:
     name: Validate ZH Bold Formatting
     runs-on: ubuntu-latest
+
+    # Without this block GITHUB_TOKEN takes the repository default, which is
+    # read-only — and the "Comment on PR with results" step below then 403s with
+    # "Resource not accessible by integration". It did exactly that, silently, on
+    # every failing run from the day it was written until 2026-08, because a step
+    # gated on `if: failure()` never runs on a green build and nobody had made
+    # this workflow fail on purpose. Naming every scope is required: once
+    # `permissions` is set, anything unlisted becomes `none`, so contents: read
+    # has to be spelled out or checkout breaks.
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     
     steps:
       - name: Checkout code
