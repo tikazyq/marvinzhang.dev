@@ -53,6 +53,7 @@ unit-tests 等）总结的中文用词习惯。中文版初稿和译文都要按
 | the villain of the piece | 全文的反派 | 全文批判的对象 |
 | expensive to reach, random to reproduce | 触达昂贵、复现随机 | 暴露出来代价已经很高，复现全凭运气 |
 | framed entirely as | 完全框定为 | 都当成 |
+| where the analogy breaks down | 类比断掉的地方 | 这个比方到这儿就不灵了 |
 | interface as docs, autocomplete as comfort | 接口即文档，自动补全即舒适 | 接口就是文档，自动补全让写代码舒服了不少 |
 
 规律：英语爱用**名词化抽象**（productization、mechanics、layer）和
