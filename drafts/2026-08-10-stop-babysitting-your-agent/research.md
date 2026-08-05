@@ -41,7 +41,7 @@
 The operational test, and the one line a reader should be able to use tomorrow:
 
 > **这次停顿，是被动作本身的事实触发的，还是被 agent 对自己的评估触发的？**
-> 只有前者是关卡。后者只是长得像关卡的客气。
+> 只有前者是关卡。后者只是长得像关卡，实际是靠它自觉。
 
 **标题许诺"怎么办"，正文必须兑现三条可做的**：判定权换成动作事实（§2）、监管从逐条审
 换成抽样查规律 + 定期核对该发生的（§3）、把判断写成不需要人点头的条件（§4）。第四条
@@ -49,7 +49,7 @@ The operational test, and the one line a reader should be able to use tomorrow:
 
 ### Four claims this piece must carry (none in the 07-27 piece)
 
-1. **关卡 vs 客气** — the distinction and its operational test. A stop is a gate
+1. **关卡 vs 靠自觉** — the distinction and its operational test. A stop is a gate
    only if something other than the agent decides it fires.
 2. **相关性错误** — delegation does not scatter errors, it clones one. Leverage
    amplifies **bias, not variance**. ⇒ the right posture is sampling for repeated
