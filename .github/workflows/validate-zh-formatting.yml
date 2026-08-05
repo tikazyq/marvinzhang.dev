@@ -1,36 +1,63 @@
 name: Validate Chinese Blog Formatting
 
+# The checkers and their baselines are in the path filter too: editing a
+# validator or a baseline changes what ships just as much as editing a post,
+# and without them a change that breaks a check sails through unexercised.
+# (GitHub Actions does not expand YAML anchors, so the two lists are duplicated.)
 on:
   pull_request:
     paths:
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.mdx'
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
+      - 'blog/**/*.mdx'
+      - 'scripts/validate-*.js'
+      - 'scripts/*-baseline.json'
+      - 'drafts/**/figures/*.html'
+      - '.github/workflows/validate-zh-formatting.yml'
   push:
     branches:
       - main
     paths:
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.mdx'
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
+      - 'blog/**/*.mdx'
+      - 'scripts/validate-*.js'
+      - 'scripts/*-baseline.json'
+      - 'drafts/**/figures/*.html'
+      - '.github/workflows/validate-zh-formatting.yml'
   workflow_dispatch:
 
 jobs:
   validate-formatting:
     name: Validate ZH Bold Formatting
     runs-on: ubuntu-latest
+
+    # Without this block GITHUB_TOKEN takes the repository default, which is
+    # read-only — and the "Comment on PR with results" step below then 403s with
+    # "Resource not accessible by integration". It did exactly that, silently, on
+    # every failing run from the day it was written until 2026-08, because a step
+    # gated on `if: failure()` never runs on a green build and nobody had made
+    # this workflow fail on purpose. Naming every scope is required: once
+    # `permissions` is set, anything unlisted becomes `none`, so contents: read
+    # has to be spelled out or checkout breaks.
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 10
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -39,20 +66,29 @@ jobs:
       - name: Validate Chinese blog formatting
         run: pnpm run validate:zh-bold-source
 
-      # Runs even when the bold check failed, so one CI round reports both.
+      # Later checks run even when an earlier one failed, so one CI round
+      # reports everything instead of revealing problems one commit at a time.
       - name: Validate Chinese voice (AI sentence-rhythm drift)
         if: '!cancelled()'
         run: pnpm run validate:zh-voice
 
+      - name: Validate internal cross-links (both locales)
+        if: '!cancelled()'
+        run: pnpm run validate:internal-links
+
+      - name: Validate figure type sizes (phone floor + desktop ceiling)
+        if: '!cancelled()'
+        run: pnpm run validate:figure-type
+
       - name: Comment on PR with results
         if: failure() && github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const issue_number = context.issue.number;
-            const message = `## ⚠️ Chinese Blog Checks Failed
+            const message = `## ⚠️ Blog Checks Failed
 
-            Two checks run here. The job log says which one failed and points at the
+            Four checks run here. The job log says which one failed and points at the
             exact lines — start there.
 
             **Bold formatting**
@@ -71,6 +107,30 @@ jobs:
 
             Replacement table: \`.agents/skills/foundation/writing-style/references/zh-voice.md\` (红线三).
             If a hit is deliberate: \`pnpm run validate:zh-voice:update-baseline\`.
+
+            **Internal cross-links** — a link to a slug that doesn't exist (Docusaurus only
+            warns on those, so they ship), or a new post that cites nothing from the archive.
+
+            \`\`\`bash
+            pnpm run validate:internal-links
+            \`\`\`
+
+            For the second one: find the prior posts that argued a point this one leans on
+            and link them at that sentence. Don't pad the count. If there is genuinely
+            nothing to cite, record why in the post: \`{/* internal-links: none — reason */}\`.
+
+            **Figure type sizes** — one figure PNG is delivered at 358px on a phone and
+            738px on desktop, so a size that reads at one end fails at the other. This
+            repo has shipped both failures: 5px text on phones, then a 36px title on
+            desktop after a uniform rescale.
+
+            \`\`\`bash
+            pnpm run validate:figure-type
+            \`\`\`
+
+            Size per element, not by one multiplier: title 32px on an 860px canvas,
+            nothing else above 21px. Cut copy to pay for larger type, and drop
+            \`min-height\` with it. Rule: \`.agents/skills/foundation/formatting/SKILL.md\`.
 
             ### Formatting Rules
             

@@ -43,6 +43,8 @@ Prioritize sources in this order:
 
 **Minimum**: 5 authoritative sources for any research output.
 
+**Plus one tier that isn't external**: this repo's own `blog/` directory. See rule 4.
+
 ### 3. Evidence Collection
 
 For each source, document:
@@ -145,9 +147,48 @@ what was actually measured, and any place the authors themselves read their
 result differently than you do. Those change how far a claim carries. Venue
 doesn't.
 
+### 4. Search the archive, not just the web
+
+The failure mode is structural, so expect it rather than hoping to remember.
+You come to a draft holding the sources you just read and **no memory of what
+this blog has already argued**. The result is a piece that is well-sourced
+externally and orphaned internally: it re-derives a claim a prior post already
+established, and the reader who has been following along gets no thread back.
+
+So make it a research step, not a polish step. Before drafting, list the
+article's load-bearing claims, then grep `blog/*.mdx` titles for each one.
+Every hit is a candidate.
+
+What earns a link: a prior post that **argued a specific claim this one leans
+on**. Attach it to the sentence making that claim, and say in the same breath
+what the earlier post established, so the link is worth something to a reader
+who doesn't click it.
+
+What doesn't: "I've also written about this topic." A link that carries no
+information is a distraction, and enough of them make a reader feel they need
+to go read four other things before this one makes sense. Placement matters as
+much as count. Don't append one after a paragraph's closing line — it flattens
+the emphasis the paragraph was built to land.
+
+Mechanized: `pnpm run validate:internal-links` fires on commit and in CI. It
+hard-fails on a slug that doesn't exist (Docusaurus only warns on those, so
+they reach production) and flags a new post carrying fewer than 3 distinct
+internal links. **The floor is a prompt to go look, not a quota** — measured
+across the corpus, recent posts run 4 to 13, and padding to clear the number
+produces exactly the distraction described above. When a post genuinely has
+nothing to cite, record the reason in it: `{/* internal-links: none — reason */}`.
+
+Caught in review (2026-08): the babysitting article shipped with 1 distinct
+internal link while four prior posts spoke directly to its claims — one had
+already argued that agent-reported green tests mean little, another had measured
+the same serial-bottleneck ceiling, another opened on the exact
+nothing-triggers-on-inaction failure. All four were invisible from inside the
+draft.
+
 ## Quality Gates
 
 - [ ] Minimum 5 authoritative sources cited
+- [ ] Archive searched; prior posts on load-bearing claims linked at the claim
 - [ ] All numerical claims have verifiable sources
 - [ ] Methodology described for any measurements
 - [ ] Sources dated (no undated claims)

@@ -118,6 +118,8 @@ The three-piece kit is the default path for deep articles, not a hard requiremen
 | Chinese formatting | `pnpm run validate:zh-bold-source`     | Before committing Chinese posts       |
 | Auto-fix Chinese   | `pnpm run validate:zh-bold-source:fix` | To fix formatting issues              |
 | Chinese voice      | `pnpm run validate:zh-voice`           | Automatic — fires on file write, on commit, and in CI |
+| Internal links     | `pnpm run validate:internal-links`     | Automatic — fires on commit and in CI (broken slugs + posts citing nothing from the archive) |
+| Figure type        | `pnpm run validate:figure-type`        | Automatic — fires on commit and in CI (phone floor + desktop ceiling; one PNG serves both) |
 | WeChat export      | `pnpm wechat <slug> --zh -o`           | After Chinese translation complete    |
 | Medium export      | `pnpm medium <slug> --en -o`           | After English article complete        |
 

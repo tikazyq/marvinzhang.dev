@@ -444,6 +444,13 @@ const processArticles = async () => {
     // surfaces these literally if they survive — `{/* ... */}` is treated as
     // text once the file leaves the MDX renderer.
     processedContent = processedContent.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+
+    // Same for HTML comments. Source posts carry an editorial header here —
+    // drafting invariants, voice red lines, notes on decisions the author made —
+    // and it is written for whoever edits the post next, not for readers. Only
+    // `{/* ... */}` was stripped until 2026-08, so the two posts whose ZH source
+    // uses `<!-- -->` shipped their entire header into the paste source.
+    processedContent = processedContent.replace(/<!--[\s\S]*?-->/g, '');
     
     // Convert admonitions
     processedContent = processedContent.replace(

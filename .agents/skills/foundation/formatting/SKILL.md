@@ -90,6 +90,94 @@ HTML sources in `drafts/{slug}/figures/`, rendered by `render.mjs` into
 Cheap check before shipping a table: **does any sentence near it point at a
 specific cell?** If yes, it wants to be a figure.
 
+### Figure type: check both ends, and size each element separately
+
+A figure PNG has no width constraint, so `max-width: 100%` makes it fill the
+article column. Measured on the built site, the same image is delivered at:
+
+| | delivered width | vs 860px canvas |
+| --- | --- | --- |
+| Wide desktop | 738px | ×0.858 |
+| 390px phone (and roughly 公众号) | 358px | ×0.416 |
+
+**One image serves a 2.06× width range.** The number in the CSS is not the
+number either reader sees:
+
+```
+phone   = font-size × 358 / 860
+desktop = font-size × 738 / 860
+```
+
+**Compute both before rendering.** Checking one end is what produces the two
+failure modes below, and this repo has now shipped both.
+
+#### The two failures, in order
+
+**Too small (2026-08, all 60 figures).** Smallest text at **4.5–5.7px
+effective** on a phone, median 5.2px. Nobody wrote a 5px font; they wrote
+11.5px on a wide canvas and never looked at the phone end.
+
+**Too big (the fix for it, same week).** Every size was then scaled by a
+uniform 1.6×. On desktop the figure title landed at 36px against 18px body
+copy, and the figure shouted over the prose it sits in. The author's verdict:
+"在 PC 上是个灾难."
+
+The lesson is the one worth keeping: **only the small text had a problem.**
+The title was already 30px on the canvas, i.e. 12.5px on a phone and perfectly
+readable. Enlarging it bought nothing at the small end and cost everything at
+the large end. A uniform multiplier cannot be right when only part of the range
+is broken.
+
+#### The rule
+
+Size per element, against the desktop ceiling and the phone floor:
+
+| element | canvas (860px) | phone | desktop |
+| --- | --- | --- | --- |
+| title | 32px | 13.3 | 27.5 |
+| cell/panel title | 21px | 8.7 | 18.0 |
+| body, notes | 20px | 8.3 | 17.2 |
+| examples, eyebrow | 19px | 7.9 | 16.3 |
+| footer, pins | 18px | 7.5 | 15.4 |
+
+**Ceiling: nothing except the title exceeds 21px**, which is 18px on desktop —
+no larger than body copy. A figure is a supporting element; it does not get to
+out-typeset the prose.
+
+**Floor: nothing below ~7.5px on the phone.** Under that it is decoration.
+
+#### Three things that go with a resize
+
+1. **Cut copy to pay for it.** Larger type on the same layout makes the figure
+   taller, and the layout is what the reader recognises. Recover height by
+   cutting words: cells hold a label and an example, and the sentence
+   explaining them belongs in the prose beside the figure, which already says
+   it.
+2. **Cut the `min-height` too.** Notes trimmed to one line under a floor sized
+   for three leave dead space at the bottom of every cell, which reads as
+   inflated on top of whatever the type is doing. Missed on the first pass;
+   132px → 108px fixed it.
+3. **Re-check symmetry.** A label that fit one line at 11.5px may wrap at 21px,
+   and in a two-panel figure one side wrapping while the other doesn't throws
+   the panels' innards out of alignment. That misalignment is the usual tell
+   that type was scaled without re-reading the layout.
+
+Also: **SVG `font-size="11"` attributes are not CSS `font-size:`** and won't be
+caught by a search-and-replace over the stylesheet. Same for text positioned by
+a raw SVG `y` coordinate — it doesn't move when the font grows, so enlarged
+labels collide with whatever they were sitting beside.
+
+#### The residual tension is structural — don't re-litigate it
+
+A single raster serving a 2.06× range cannot be optimal at both ends. The
+values above are the compromise, chosen deliberately.
+
+Capping the display width (`img[src*="/figure-"] { max-width: 560px }`) would
+collapse the range to 1.56× and resolve it properly. **It was proposed twice
+and declined twice** (2026-08) — the author wants figures at full column width
+and the layout untouched. Do not propose it a third time; work within the
+per-element rule instead.
+
 ### Mermaid Theme-Aware Styling
 
 Always style nodes explicitly for light/dark mode:
