@@ -19,7 +19,7 @@ pnpm wechat <slug> --zh          ← Step 1: Generate markdown + images
         ↓
 Convert MD → styled content      ← Step 2: Apply WeChat formatting
         ↓
-Send files in the Claude chat     ← Step 3: HTML + md + screenshots + covers + digest
+Send files in the Claude chat     ← Step 3: HTML + md + screenshots + cover + digest
         ↓
 User: 公众号助手 → paste → publish ← Step 4: User publishes
 ```
@@ -29,7 +29,7 @@ User: 公众号助手 → paste → publish ← Step 4: User publishes
 **Chat-direct is the canonical channel (author decision 2026-07): send the
 bundle as files in the Claude conversation** — rendered HTML first (it is
 the paste source, viewable inline), then the markdown, component
-screenshots, covers, and the digest as message text. Do NOT use Telegram;
+screenshots, the cover, and the digest as message text. Do NOT use Telegram;
 that path is deprecated (see Legacy section at the end).
 
 ## Per-Article Checklist (codified 2026-07)
@@ -53,17 +53,27 @@ Run through these in order — each item came from a real publishing round:
    "下图是交互小工具的截图……点文末'阅读原文'即可体验", then re-run ONLY
    `node scripts/generate-wechat-html.js <slug>`.
 4. **Cover + digest are part of the deliverable.**
-   - Cover: 2.35:1 main (900×383) + optional 1:1 small. Two routes: (a)
-     code-drawn via the article's figures pipeline; (b) — author's current
-     preference — write text-to-image prompts and hand off to an external
-     model. T2I prompts must request **no embedded text** (CJK text renders
-     garbled) and specify `--ar 21:9` (crop to 2.35:1) plus a 1:1 variant.
-     Compose to fill the full frame — do NOT reserve empty space for a title
-     overlay (author preference 2026-07; 公众号 renders its own title, so a
-     reserved gap just wastes the cover).
+   - Cover: **one image, 2.35:1, and nothing else.** Ask for `--ar 21:9` and
+     ship what comes back — 21:9 is 2.333:1 against a target of 2.350:1, a
+     0.7% difference that works out to about 3px on a 900px-wide cover. Do not
+     crop it, and do not tell the author to. (Corrected 2026-08: this section
+     used to ask for a crop step and a 1:1 square variant alongside. The crop
+     is noise, and the square was never used — 公众号 takes the one cover.)
+   - Two routes to the image: (a) code-drawn via the article's figures
+     pipeline; (b) — author's current preference — write a text-to-image
+     prompt and hand it off to an external model. Give **one prompt for the
+     whole cover**, not per-element prompts (author preference 2026-07).
+   - Non-negotiables in a T2I prompt:
+     - **No text of any kind** — state it explicitly and emphatically. CJK
+       renders as garbage, and the model will add signage unless forbidden.
+     - **Fill the frame edge to edge.** Do not reserve space for a title;
+       公众号 renders its own, so a reserved gap just wastes the cover.
+     - **Carry the article's illustrations into the cover** when it has any:
+       name the recurring character's clothing and the palette so the cover
+       reads as part of the same set rather than a stock image bolted on.
    - Digest: ≤120 chars, hook-first, no symbols the reader hasn't met.
 5. **Delivery**: send the bundle as files in the Claude chat — HTML
-   first (paste source), then markdown, component screenshots, covers;
+   first (paste source), then markdown, component screenshots, the cover;
    digest goes in the message text. Telegram is deprecated — do not use it
    even if credentials exist.
 6. **Post-publish**: user sends back the permanent
