@@ -87,7 +87,14 @@ The operational test, and the one line a reader should be able to use tomorrow:
   of its sampling headroom"; Gemini-3.5-flash recovers 43%.
 - **The finding that matters:** "the cliff widens with generation ability rather
   than closing: the stronger generator has the larger absolute gap."
-- **Why this replaced Tyen as the lead citation:** the author objected that a
+- **DEMOTED 2026-08-05.** The author twice could not see the link between
+  "picks the right one of its own eight answers" and "notices it should stop and
+  ask you" — and he was right, that link is an inference, not something this study
+  measures. Self-selection is a *relative* judgment among candidates; stopping is
+  an *absolute* judgment about one output, which is what A0b and A3 actually test.
+  This paper now carries **one sentence only**, answering "won't newer models fix
+  this?" — its unique contribution, since it is the frontier-model datapoint.
+- **Originally added because:** the author objected that a
   2024 result on GPT-4 can't carry a claim about today's models. It can't. This
   one is measured on current frontier models — and it refutes the natural
   hypothesis (that newer models would have closed the gap) rather than confirming
@@ -96,6 +103,23 @@ The operational test, and the one line a reader should be able to use tomorrow:
   not *error localization in a diff*. Related, not identical. 86 problems, two
   model families, single author. State the boundary in the text; borrow the
   mechanism, not the exact numbers.
+
+### A0b ✅ LEAD EVIDENCE — "Self-Correction Bench", COLM 2026
+- Ken Tsui, "Self-Correction Bench: Uncovering and Addressing the Self-Correction
+  Blind Spot in Large Language Models". https://arxiv.org/abs/2507.02778
+  (v1 2025-07-03, v3 2026-08-02). **Accepted to COLM 2026.**
+- **Design — this is why it leads:** it injects *the same error* and varies only
+  whether it is attributed to the model itself or to the user, "keeping all other
+  context identical". That isolates exactly the capability a courtesy depends on:
+  noticing a problem in one's own output.
+- **Numbers:** a **64.5%** self-correction blind spot on internal errors; models
+  correct external errors but "fail on identical internal ones". Appending "Wait"
+  cuts the blind spot by 89.3%; fine-tuning on 5,306 correction sequences cuts it
+  by 76.0%.
+- **⚠ Usage rule:** **14 open-source non-reasoning models** — frontier models are
+  not covered. Pair with A3 (Chen et al.), which runs the same manipulation across
+  12 model-domain combinations including closed-weight APIs. Say in the text that
+  the blind-spot number comes from the open-source cohort.
 
 ### A1 ✅ PRIMARY, MECHANISM — Tyen et al., ACL 2024 Findings
 - Gladys Tyen, Hassan Mansoor, Victor Cărbune, Peter Chen, Tony Mak,
