@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 3 — 五十个不同的错，还是同一个错五十次</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ok-fill:#e8f5e9; --ok-stroke:#2e7d32;
+    --err-fill:#ffebee; --err-stroke:#c62828;
+    --info-stroke:#01579b; --hi-stroke:#7b1fa2;
+    --canvas:#fafafa; --ink:#1f1f1f; --ink-soft:#525252;
+    --ink-faint:#8a8a8a; --line:#e0e0e0;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; padding:0; background:#fff; }
+  body { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .canvas { width:860px; padding:42px 44px 34px 44px; background:var(--canvas); }
+  .header { margin-bottom:24px; }
+  .figno { font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.08em; color:var(--ink-faint); text-transform:uppercase; }
+  h1 { font-size:30px; font-weight:600; margin:6px 0 0; line-height:1.25; }
+  .subtitle { font-size:16px; color:var(--ink-soft); margin-top:8px; line-height:1.55; }
+  .takeaway { margin-top:24px; padding:15px 20px; border-radius:12px; background:#faf5ff; border-left:4px solid var(--hi-stroke); font-size:15px; line-height:1.6; }
+  .takeaway b { color:var(--hi-stroke); }
+  .footer { margin-top:22px; display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-faint); letter-spacing:.06em; text-transform:uppercase; }
+
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .panel { border:1.5px solid var(--line); border-radius:14px; background:#fff; padding:18px 20px 20px; }
+  .ptitle { font-size:18px; font-weight:600; }
+  .psub { font-size:13px; color:var(--ink-soft); margin-top:5px; line-height:1.45; min-height:38px; }
+  .plot { margin-top:12px; border-radius:10px; background:#fff; border:1px solid var(--line); }
+  .how { margin-top:14px; border-radius:9px; padding:11px 13px; font-size:13.5px; line-height:1.5; }
+  .how.bad { background:#fdf3f3; border:1px solid var(--err-stroke); color:#8e1c1c; }
+  .how.ok  { background:var(--ok-fill); border:1px solid var(--ok-stroke); color:#1b5e20; }
+  .how b { font-weight:700; }
+  .cost { font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.04em; margin-top:8px; color:var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">图 03 — 错误长什么样，决定了该怎么审</div>
+  <h1>五十个不同的错，还是同一个错五十次</h1>
+  <div class="subtitle">一个人自己干，犯的错互相独立；一条规范交给五十次执行，犯的是同一个错。审法得跟着变。</div>
+</div>
+
+<div class="cols">
+  <div class="panel">
+    <div class="ptitle">一个人自己干</div>
+    <div class="psub">错误互相独立，散在四周。抽到的那几条告诉不了你别的条什么样。</div>
+    <svg class="plot" width="100%" height="200" viewBox="0 0 360 200">
+      <circle cx="180" cy="100" r="52" fill="none" stroke="#01579b" stroke-width="1.2" stroke-dasharray="4 4"/>
+      <circle cx="180" cy="100" r="4" fill="#01579b"/>
+      <text x="180" y="88" text-anchor="middle" font-size="11" fill="#01579b" font-family="monospace">TARGET</text>
+      <g fill="#c62828" opacity="0.78">
+        <circle cx="126" cy="66" r="4.5"/><circle cx="238" cy="72" r="4.5"/>
+        <circle cx="152" cy="146" r="4.5"/><circle cx="215" cy="152" r="4.5"/>
+        <circle cx="106" cy="112" r="4.5"/><circle cx="256" cy="118" r="4.5"/>
+        <circle cx="168" cy="46" r="4.5"/><circle cx="196" cy="158" r="4.5"/>
+        <circle cx="134" cy="98" r="4.5"/><circle cx="228" cy="96" r="4.5"/>
+        <circle cx="200" cy="60" r="4.5"/><circle cx="146" cy="122" r="4.5"/>
+      </g>
+    </svg>
+    <div class="how bad">只能<b>逐条审</b>。成本随委托量线性涨，而且照样漏。</div>
+    <div class="cost">COST ∝ N</div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">一条规范跑五十次</div>
+    <div class="psub">错误挤在同一处偏差上。抽十条冒出两次同样的毛病，剩下四十条大概率也有。</div>
+    <svg class="plot" width="100%" height="200" viewBox="0 0 360 200">
+      <circle cx="180" cy="100" r="52" fill="none" stroke="#01579b" stroke-width="1.2" stroke-dasharray="4 4"/>
+      <circle cx="180" cy="100" r="4" fill="#01579b"/>
+      <text x="180" y="88" text-anchor="middle" font-size="11" fill="#01579b" font-family="monospace">TARGET</text>
+      <circle cx="268" cy="60" r="30" fill="#ffebee" stroke="#c62828" stroke-width="1.4"/>
+      <g fill="#c62828" opacity="0.85">
+        <circle cx="258" cy="52" r="4.5"/><circle cx="274" cy="50" r="4.5"/>
+        <circle cx="266" cy="62" r="4.5"/><circle cx="280" cy="64" r="4.5"/>
+        <circle cx="252" cy="66" r="4.5"/><circle cx="272" cy="74" r="4.5"/>
+        <circle cx="262" cy="42" r="4.5"/><circle cx="284" cy="56" r="4.5"/>
+        <circle cx="248" cy="58" r="4.5"/><circle cx="276" cy="40" r="4.5"/>
+        <circle cx="258" cy="76" r="4.5"/><circle cx="288" cy="70" r="4.5"/>
+      </g>
+      <text x="268" y="106" text-anchor="middle" font-size="11.5" fill="#c62828" font-weight="600">同一个偏差</text>
+    </svg>
+    <div class="how ok"><b>抽样查重复的规律</b>就够。抽到两次一样的，问题就现形了。</div>
+    <div class="cost">COST ≪ N</div>
+  </div>
+</div>
+
+<div class="takeaway">杠杆放大的是偏差，不是方差。<b>逐条审是为左边那张图设计的姿势</b>，用在右边既贵又不对症；右边要做的是抽一小把，看有没有同一个毛病反复出现。</div>
+<div class="footer"><span>marvinzhang.dev</span><span>图 3 / 3</span></div>
+</div>
+</body>
+</html>

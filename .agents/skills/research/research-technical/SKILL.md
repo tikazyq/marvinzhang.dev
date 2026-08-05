@@ -87,6 +87,44 @@ Produce a structured research document:
 - [What practitioners should know]
 ```
 
+## Two rules learned from author review (2026-08)
+
+### 1. Check the model generation before citing an AI-capability result
+
+A study that measured GPT-4 is measuring a system three years old. Whatever
+direction the finding points, the reader is entitled to ask "does that still
+hold?" — so **before citing any claim about what models can or can't do, search
+for a newer measurement of the same thing.**
+
+What to do with what you find:
+
+- **Newer evidence agrees** → cite the newer one, keep the old as supporting.
+- **Newer evidence disagrees** → say so plainly and lead with the newer result.
+  A reversal is more interesting than the original claim.
+- **No newer measurement exists** → keep the old one and **date it in the text**
+  ("2024 年那批模型上测的"), so the reader can discount it themselves.
+
+Worked example: the babysitting article first rested on Tyen et al. (ACL 2024,
+best model GPT-4 at 52.87 mistake-finding accuracy). The author pushed back that
+old models distort the picture. Searching turned up *The Self-Verification Cliff*
+(ICML 2026) on GPT-5.4-mini and Gemini-3.5-flash — and it found the
+generation-versus-self-selection gap **widens with capability rather than
+closing**. The hypothesis that newer models would have fixed it was wrong, but
+checking still replaced a stale citation with a current and stronger one.
+
+### 2. Don't burden the reader with publication status
+
+Whether something is a preprint, a workshop paper, or a journal article is a
+**research-side** concern: it belongs in `research.md`, where it calibrates how
+much weight to put on a source. It does not belong in the article. Lines like
+"那还是个预印本，我只借它的立场" and "论文还没经过同行评议" tell the reader
+nothing they can use — what matters is the claim and whether it holds.
+
+Still required in the text: the **substantive** limits — sample size, domain,
+what was actually measured, and any place the authors themselves read their
+result differently than you do. Those change how far a claim carries. Venue
+doesn't.
+
 ## Quality Gates
 
 - [ ] Minimum 5 authoritative sources cited

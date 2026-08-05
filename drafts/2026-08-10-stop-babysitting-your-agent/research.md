@@ -76,7 +76,28 @@ The operational test, and the one line a reader should be able to use tomorrow:
 
 ## Cluster A — Self-verification fails from the inside (claim ①)
 
-### A1 ✅ PRIMARY — Tyen et al., ACL 2024 Findings
+### A0 ✅ PRIMARY, CURRENT-GENERATION — "The Self-Verification Cliff", ICML 2026
+- Arihant Jain, "The Self-Verification Cliff: Generation Outpaces Self-Selection
+  in Frontier LLMs, and It Widens With Capability", ICML 2026.
+  https://icml.cc/virtual/2026/82529
+- **Setup:** 86 AIME competition problems, integer answers, so grading is "an
+  exact, noise-free oracle". Two frontier model families, k=8 samples per problem.
+- **Numbers, from the abstract:** GPT-5.4-mini "reaches a correct solution on
+  54.7% of problems but self-selects correctly on only 41.9%, recovering just 36%
+  of its sampling headroom"; Gemini-3.5-flash recovers 43%.
+- **The finding that matters:** "the cliff widens with generation ability rather
+  than closing: the stronger generator has the larger absolute gap."
+- **Why this replaced Tyen as the lead citation:** the author objected that a
+  2024 result on GPT-4 can't carry a claim about today's models. It can't. This
+  one is measured on current frontier models — and it refutes the natural
+  hypothesis (that newer models would have closed the gap) rather than confirming
+  it. See `research-technical` skill, rule 1.
+- **⚠ Usage rule:** what is measured is *self-selection among its own samples*,
+  not *error localization in a diff*. Related, not identical. 86 problems, two
+  model families, single author. State the boundary in the text; borrow the
+  mechanism, not the exact numbers.
+
+### A1 ✅ PRIMARY, MECHANISM — Tyen et al., ACL 2024 Findings
 - Gladys Tyen, Hassan Mansoor, Victor Cărbune, Peter Chen, Tony Mak,
   "LLMs cannot find reasoning errors, but can correct them given the error location",
   Findings of ACL 2024. https://arxiv.org/abs/2311.08516 (v1 2023-11-14, v3 2024-06-04)
@@ -92,7 +113,8 @@ The operational test, and the one line a reader should be able to use tomorrow:
     cases are unambiguous to people, and models still miss them.
   - 5 tasks: word sorting, tracking shuffled objects, logical deduction,
     multi-step arithmetic, Dyck languages.
-- **Relevance:** the load-bearing citation. A courtesy asks the agent to *notice*
+- **Relevance:** now the *mechanism* citation (find vs fix), with A0 carrying the
+  current-generation weight. A courtesy asks the agent to *notice*
   it should stop; noticing is exactly the capability measured here as weakest.
 - **⚠ Usage rule:** BIG-Bench-style reasoning traces, not code review. Borrow the
   mechanism by analogy and **say so in the text** (same discipline as Baumol in 07-27).
