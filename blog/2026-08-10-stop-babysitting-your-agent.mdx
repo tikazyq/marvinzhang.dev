@@ -4,7 +4,6 @@ title: "How Do I Stop Babysitting My Agent?"
 authors: ["marvin"]
 tags: ["ai", "agents", "software-engineering", "productivity"]
 date: 2026-08-10
-unlisted: true
 ---
 
 <!--
@@ -14,8 +13,169 @@ Invariants to keep true on every edit:
 - Tags: English slugs, IDENTICAL in the EN and ZH files. Never localize tag slugs
   (repo convention: English tags in both locales).
 - Primary locale for this piece: CHINESE. The ZH file is the source of truth —
-  draft it natively, then restate this EN version from the final ZH
-  (形不同而意同), never sentence-translate.
-- Write section-by-section against the ZH file; this EN file is restated at Stage 4.
+  it was drafted natively, and this EN version is restated from the final ZH
+  (形不同而意同), never sentence-translated. Any substantive change goes into
+  the ZH file first.
+- Figures: this file points at the `.en` variants. Illustrations carry no text
+  and are shared across locales.
 -->
 
+Start somewhere that has nothing to do with agents.
+
+You have two kinds of people working for you. One takes the assignment and goes quiet, delivers on the date, and comes back to you exactly once along the way, about something they genuinely couldn't call and genuinely shouldn't have. The other asks you eight times a day: can I change this? do it now or later? is this approach okay? Every step waits on your nod. You call it managing. What you're actually doing is working alongside them.
+
+![Two desks side by side. On the left the work is finished and sitting on the desk, and the manager is way back in their chair, relaxed, not looking. On the right the desk is covered in half-decided things, the manager is leaning in over it with steam coming off their head, and empty speech bubbles float between them. Same two reports; the difference is whether the manager can leave](/img/blog/2026-08-10-stop-babysitting-your-agent/illus-two-employees.png)
+
+We tend to say the second one "isn't ready yet." Anyone who has run a team knows it usually isn't about the person. Nobody has told them where their authority ends, so they can't tell which calls are theirs and which have to come upstairs. Nobody has told them what "done" looks like, so they can't tell when to stop. Leave those two things unwritten and even a strong person has no choice but to keep turning around to ask.
+
+Now swap in an agent. The one you have is the second kind.
+
+![Someone sitting in an office chair with a coffee. The machine next to them is running perfectly well on its own, and yet a robotic arm keeps reaching over to tap them on the shoulder. They're yawning. Nothing is wrong; they just can't leave the chair](/img/blog/2026-08-10-stop-babysitting-your-agent/illus-babysitting.png)
+
+And it's a bit worse than a new hire. When a new hire is unsure, they know they're unsure. Being unsure about its own work is the single thing an agent is worst at, and there's data on that further down. So waiting for it to "mature" is even less promising than waiting for a person to. The only path is to write things down.
+
+That's the question here: **how do you stop being the babysitter.** Four parts. Why watching buys you nothing. What the part it already runs on its own is actually resting on. How to decide when it should come find you. And where you should be looking, plus the one job you can't hand off.
+
+{/* truncate */}
+
+## Why watching buys you nothing
+
+The question isn't new. Management research asked exactly this half a century ago: **when you can't watch every step, what is it you're actually controlling with?**
+
+In 1979, [William Ouchi laid out a framework in *Management Science*](https://pubsonline.informs.org/doi/10.1287/mnsc.25.9.833). The answer depends on two things: whether you understand how the work gets done, and whether you can measure the result. Cross them and you get four cells.
+
+![Ouchi's 1979 control framework as a two-by-two. Columns: whether you understand how the work gets done. Rows: whether the output is measurable. Top left the Apollo program, where both behavior and output can be watched; bottom left a tin can plant, behavior only; top right a fashion buyer, output only; bottom right a research lab, where only "one of us" trust is left. Agents sit in the bottom right today, and the way out is the cell above it](/img/blog/2026-08-10-stop-babysitting-your-agent/figure-1-control.en.png)
+
+The tin can plant is the cleanest of the four. When the process is fully specified, you watch the workers and the machines, and as long as every step conforms, you know proper cans are coming out the far end without going to look. The fashion buyer is the mirror image: nobody can say what makes someone pick the right stock, so there's no process to specify — but turnover and margin per buyer are measurable, so you grade the output.
+
+Put an agent on that grid and the problem stops being mysterious.
+
+**You can't specify its process.** You can't lay out the steps it should follow to write good code; if you could, you wouldn't need it. So you're in the right-hand column.
+
+And in the right-hand column, watching behavior controls nothing. You can follow every step, see which tool it reached for and which line it touched, and still not be able to say whether that's the right road, because you couldn't describe the right road in the first place.
+
+**The reason babysitting is exhausting has nothing to do with how conscientious you are. In this cell, watching is simply not a control.**
+
+That leaves one option in this column: judge the output. But "is this change correct" is exactly what you can't measure, so you slide into the bottom right, where all that's left is trusting its judgment. Ouchi calls that cell clan control, and it runs on standards built up over years of working together. **You have no such history with an agent.** So it isn't trust. It's having nothing else.
+
+Which makes the exit exactly one move: **get yourself from the bottom-right cell to the top-right one.** Stop trying to watch harder, and make "did this come out right" into something a machine can answer. That sounds abstract, and it isn't — you're already doing it, you just haven't named it.
+
+## The part it runs on its own rests on someone else signing off
+
+First, credit where it's due: agents really do loop now. Write a version, run it, see it fail, write another. You genuinely don't have to be in that.
+
+But the reason it loops may not be the one you assume. It isn't mostly about being smart. **What matters is that every time around, it gets an answer that didn't come from itself.**
+
+Anthropic's [*Building Effective Agents*](https://www.anthropic.com/engineering/building-effective-agents) (December 2024) says it plainly: every step an agent takes needs "ground truth from the environment (such as tool call results or code execution)." A compiler error is real feedback. A failing test is real feedback. A type error is real feedback. "I looked it over and it seems fine" is not — that's the work grading itself. **A loop fed on fake feedback spins**, and it looks busy the whole time.
+
+Back to Ouchi's grid: **tests, compilers, type checkers, linters — that's already a set of automated acceptance criteria.** None of them ask how you wrote it. They answer whether the work passes. Which means that wherever you have them, you're already standing in the measure-the-output cell. The one doing the measuring just isn't you.
+
+![A conveyor belt carries finished parts past a simple gauge. Good ones roll on; the bad one gets pushed into a bin at the side. A person stands a few steps back with their hands in their pockets, glancing over, free to walk away at any moment](/img/blog/2026-08-10-stop-babysitting-your-agent/illus-auto-check.png)
+
+This also explains something a lot of people feel but can't quite name: **the same agent runs a long way by itself in a repo with good tests, and needs you at its elbow in a legacy project without any.** The model is barely the variable. What matters is whether that cell has a ruler in it.
+
+[A recent benchmark called PushBench](https://arxiv.org/abs/2605.23574) makes this a rule of the evaluation itself: whether a task is finished isn't up to the agent's own say-so, it takes an **external judge**. Redundant work and false completion get measured directly instead of hiding behind a "success" flag.
+
+So the direction is already in your hands. For nearly every link in the loop, the environment can do the signing off for you. **Exactly one thing still has to come from a person: when it should stop and come find you.** And right now, that call belongs to the agent.
+
+## "When to come find me" can't be left to its own judgment
+
+Back to the employee. A serviceable escalation rule reads like this: **anything over this amount comes to me, anything touching production config comes to me, any refund request gets escalated.** There's a reason it reads that way. Every condition is a fact someone else can check, and none of it depends on how important the person felt it was at the time.
+
+"Come find me if you think it's important" isn't a rule. It's leaving it to their discretion.
+
+Now look at the moments your agent actually stops to ask. Almost all of them are the second kind. It glances at what it's about to do, decides this one feels big, or hard to walk back, and asks. **That's its discretion, not a gate.**
+
+One question separates them:
+
+> **Was this pause triggered by a fact about the action — which file it touched, which branch it moved, how many comments are still unresolved, whether the command is reversible — or by its own assessment of itself?**
+
+Only the first is a gate. The second just looks like one.
+
+Discretion fails you in both directions. You want an unattended run through a whole chain, and it stops three steps in to ask; the loop breaks. And when it really should stop, it doesn't. **Both directions put you back in the room**, which is the direct reason you can't leave.
+
+The worse half: the time it most needs to stop is the time it probably won't. The whole point of the checkpoint is the case where it's confident and wrong — and the more confident it is, the less likely "let me just check" is to occur to it. **The more you need it to stop, the less it will.**
+
+There's a harder version of this that needs no examples to hold: **a condition whose satisfaction is judged by the party it constrains is not a condition.** Same reason nobody grades their own exam. Every judgment the agent makes about itself falls in this bucket: "all comments addressed," "tests pass," "everything that needed changing is changed."
+
+Someone will say it just isn't mature enough yet, and more coaching will fix it. This is where the employee analogy stops carrying weight, and it's why I said up top that it's worse than a new hire.
+
+**When a person is unsure, they know it. The agent doesn't.**
+
+There's a clean way to test that: **take the same error, label it once as the model's own and once as coming from somewhere else, change nothing else, and see whether it catches it.**
+
+The two sides are far apart. [A 2026 study](https://arxiv.org/abs/2606.05976) ran exactly that comparison: the same faulty statement, byte for byte, with only the source label switched from the model's own reasoning to a tool result or a user message. The rate at which it explicitly flagged the error moved by **23 to 93 percentage points**.
+
+[Independent work](https://arxiv.org/abs/2507.02778) measures the same effect and gives it a name, the *self-correction blind spot*: errors pointed out by someone else get fixed, and the identical error in its own output goes untouched **64.5% of the time on average**.
+
+This is the same thing as whether it should stop. You're hoping it stops and asks you, which requires it to notice it might be wrong. And its own output is precisely what it has the least judgment about. **Same flaw, someone else's name on it, and it sees it.**
+
+![The same faulty chain of reasoning, identical content and identical context, with only the source label changed. Labeled as coming from outside (a tool result, a user message), the model flags the error 23 to 93 percentage points more often; labeled as its own, it leaves the error alone 64.5% of the time on average, which the researchers call the self-correction blind spot](/img/blog/2026-08-10-stop-babysitting-your-agent/figure-2-same-error.en.png)
+
+[Tyen et al. (ACL 2024)](https://arxiv.org/abs/2311.08516) put it most compactly: point at where the mistake is and it can fix it; ask it to find the mistake and it can't. It can repair, it can't locate. [Huang et al. (ICLR 2024)](https://arxiv.org/abs/2310.01798) found that self-correction without external feedback sometimes makes results worse — and "without external feedback" is precisely the operating condition of discretion.
+
+Won't stronger models grow out of this? The evidence doesn't say so. [A study at ICML 2026](https://icml.cc/virtual/2026/82529) measured the same family of ability on frontier models and found the gap between producing a correct answer and picking it out gets *wider* as generation gets stronger, not narrower.
+
+The limits are worth stating. These measure reasoning and math problems, not code review, and that blind-spot number comes from open-weight models. I'm borrowing the mechanism, not the figures — don't carry them over to your repo. And the authors of the first study read their own result optimistically: they take it as an artifact of role labels in the chat template rather than a capability gap, and expect training to close it.
+
+**So the first thing you can change is here: move the trigger for stopping from its assessment of itself to a fact about the action.** Did it touch production config, did it move a database migration, is this command reversible, are there unresolved comments. All checkable from outside, none of it dependent on what the model happened to think at the time. Move the judgment out of its hands, and the same model stops where it should and runs where it should. Then you can leave.
+
+![The same pause wired two ways. On the left it's triggered by a fact about the action — production config touched, database migration moved, command irreversible, comments unresolved — so the judgment sits with the condition and it stops whether it agrees or not. On the right it's triggered by its own assessment ("this change feels big"), so the judgment sits with the party being constrained, and if it feels fine it doesn't stop](/img/blog/2026-08-10-stop-babysitting-your-agent/figure-3-trigger.en.png)
+
+## Where to look, and the one job you can't hand off
+
+Even with all the conditions written down, you still have to look. But how you look has to change.
+
+**First, gates only catch actions.** Every condition fires after something happens. Quietly *not* doing something triggers nothing: the check that never ran, the other half of the sweep that never got done, the problem that never got raised again. None of that lights up red.
+
+This has been measured. [Apollo Research's 2025 goal-drift evaluation](https://arxiv.org/abs/2505.02709) reports it directly: drift through inaction exceeded drift through action, across models and conditions. The setting matters here — it's a simulated stock-trading environment, and "inaction" means something quite specific, failing to sell down a position after a phase ended. In the same paper, a scaffolded Claude 3.5 Sonnet ran for over ninety thousand tokens without drifting. So this is one measured instance, not a general law. **The structural point stands without it, though: you can't hang a hook on something that didn't happen.**
+
+There's only one fix in that direction: **check on a schedule that the things that should have happened did**, instead of waiting to be told. Gates can't do that job.
+
+**Second, reviewing more isn't reviewing better.** Last time I wrote that [leverage amplifies your bad judgment](/blog/cheap-code-scarce-attention); the sharper version is this. A person working alone makes fifty different mistakes. One spec handed to fifty executions makes the same mistake fifty times.
+
+**Leverage amplifies bias, not variance.**
+
+Other fields settled this a while ago. [Kleinberg and Raghavan's 2021 PNAS paper](https://arxiv.org/abs/2101.05853) has a counterintuitive result: when a population of decision-makers converges on a single algorithm, overall decision quality can decline *even when that algorithm is more accurate than any of them individually* — and it doesn't take a shock, it happens in ordinary operation. They're describing many institutions sharing one algorithm and I'm describing one person spreading work across many executions, but the mechanism is the same: **the errors stop being independent.**
+
+([Bommasani et al. (2022)](https://arxiv.org/abs/2211.13972) tested this too and confirmed that shared training data does worsen homogenization, though their results on foundation models specifically are mixed and depend on how the model is adapted.)
+
+That changes the review directly. Going through everything one by one is a posture designed for fifty different mistakes; it costs linearly in how much you delegate and still misses things. **Sampling for repeated patterns is the one that fits**: pull ten and see the same flaw twice, and the other forty probably have it too. Cheaper and more accurate at once.
+
+**So the second thing you can change: swap item-by-item review for sampled pattern-hunting, plus a periodic check that what should have happened did.** That's what "stop babysitting" concretely means. You still look. You just don't have to stand there while you do.
+
+![Two error distributions. Working alone, errors scatter independently around the target, so item-by-item review is the only option and cost grows linearly with how much you delegate. One spec run fifty times clusters the errors in a single offset spot, so pulling ten and seeing the same flaw twice exposes it at a fraction of the cost](/img/blog/2026-08-10-stop-babysitting-your-agent/figure-4-correlated.en.png)
+
+**Third, the last piece can't be handed off.** You can delegate the work. You can't let the party doing the work decide whether it's done.
+
+That sounds obvious, and it has an old name. March and Simon, in *Organizations* (1958), call it **uncertainty absorption**: as information travels up, what gets passed along is the inferences drawn from the evidence, not the evidence itself, so the person above can't judge for themselves and has to accept. "I fixed it, tests pass" is one act of uncertainty absorption.
+
+Follow the chain and it closes: **its report doesn't count as evidence, so acceptance can't be delegated, so the more you hand out, the more you personally have to verify — linearly.**
+
+Amdahl described the identical shape in 1967: if some fraction of a job has to be done sequentially, no amount of parallel hardware gets you past the reciprocal of that fraction. He meant processors, and it applies here unchanged. **The more agents you run, the less you can leave.** Handing out more work doesn't move the ceiling, because raising the numerator raises the serial part with it. (That's the second half of the line from [last time](/blog/cheap-code-scarce-attention) about attention being serial: the genuinely serial part is acceptance, and only acceptance.)
+
+**So the third thing you can change, and the only one that actually takes you off babysitting duty: every judgment you turn into a condition that needs neither your nod nor the agent's is one fewer thing to watch.** Tests, assertions, recomputable checks, an external judge. This is entirely different work from "delegate more." Delegating moves the task out. Writing a condition pins the judgment down.
+
+Worth noting this isn't a corner case. [A study spanning 7 frameworks with over sixteen hundred annotated traces](https://arxiv.org/abs/2503.13657) sorts multi-agent failures into three families, and one whole family is **task verification**: finishing early, skipping the check, checking the wrong thing.
+
+Anthropic's piece closes the loop nicely: automated tests verify functionality, but "human review remains crucial" — whether the solution fits the wider system is still a human call. **That's roughly where mechanizable ends and unmechanizable begins, and every inch inside that line can be pushed further out.**
+
+## Three things you can do, and one I haven't run
+
+Back to the title: how do you stop babysitting an agent.
+
+Three you can do today:
+
+1. **Move the trigger for stopping to facts about the action**, and off its own judgment. The call can't sit with the party being constrained.
+2. **Swap item-by-item review for sampled pattern-hunting**, and add a periodic check that what should have happened did.
+3. **Every judgment you turn into a condition that needs no human nod is one fewer thing to watch.** This is the only category of work that actually reduces the load.
+
+Push the argument one step further and a fourth appears: separate the checking side from the doing side, keep them independent, have them communicate only through artifacts (code, logs, test results), and put the conditions themselves out of reach of both. Other industries have done this forever — financial review, two-person sign-off before a release. This is just moving it onto agents.
+
+**But I'll be straight about this one: I haven't run it.** Last time I left a gap that was an unmeasured multiple; this time the gap is an untested arrangement. Naming the hole is more honest than serving up a design I haven't tried.
+
+If you take one thing away, take the test: next time it stops to ask you, ask first — **who pressed this?**
+
+And back to Ouchi's grid one last time. You're exhausted because you're in the cell where watching isn't a control, and you're watching as hard as you can. Getting off babysitting duty doesn't come from waiting for it to mature into a good employee. You write down the three things — authority, escalation, acceptance — and let the machine do the measuring. **How far it can run is designed, not hoped for.**
+
+![A closed loop of track running by itself, cars moving around it at a steady pace, with fixed gateposts standing on the track that every car has to pass through. In the foreground a person is walking unhurriedly out of frame, not looking back](/img/blog/2026-08-10-stop-babysitting-your-agent/illus-walk-away.png)
