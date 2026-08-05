@@ -112,7 +112,27 @@ generation-versus-self-selection gap **widens with capability rather than
 closing**. The hypothesis that newer models would have fixed it was wrong, but
 checking still replaced a stale citation with a current and stronger one.
 
-### 2. Don't burden the reader with publication status
+### 2. Translate the benchmark into the reader's situation, in the same breath
+
+A benchmark reports what it reports: recovered headroom, pass@k, category F1. Those
+are internal to the paper. Dropping them into an article leaves the reader staring
+at a number wondering what it has to do with anything.
+
+Every cited result needs **one sentence that names the bridge** — what this measures,
+and why it decides the thing the article is arguing about. If you cannot write that
+sentence, the citation is decoration and should be cut.
+
+Caught in review (2026-08): the babysitting draft said a model "recovered just 36%
+of its sampling headroom", and the author's reaction was "I can't see what this is
+even about." The fix was to state the finding in plain terms (*it produced a correct
+answer among its eight tries and still couldn't pick it out*) and then add the bridge
+outright: *you're hoping it will stop and ask you, which requires it to notice it
+might be wrong first.* Same study, same numbers, suddenly load-bearing.
+
+Corollary: prefer the paper's raw observation over its derived metric. "八份里有对
+的，它挑不出来" travels; "recovered 36% of headroom" doesn't.
+
+### 3. Don't burden the reader with publication status
 
 Whether something is a preprint, a workshop paper, or a journal article is a
 **research-side** concern: it belongs in `research.md`, where it calibrates how
