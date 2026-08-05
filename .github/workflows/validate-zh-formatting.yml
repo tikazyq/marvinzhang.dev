@@ -29,20 +29,33 @@ jobs:
   validate-formatting:
     name: Validate ZH Bold Formatting
     runs-on: ubuntu-latest
+
+    # Without this block GITHUB_TOKEN takes the repository default, which is
+    # read-only — and the "Comment on PR with results" step below then 403s with
+    # "Resource not accessible by integration". It did exactly that, silently, on
+    # every failing run from the day it was written until 2026-08, because a step
+    # gated on `if: failure()` never runs on a green build and nobody had made
+    # this workflow fail on purpose. Naming every scope is required: once
+    # `permissions` is set, anything unlisted becomes `none`, so contents: read
+    # has to be spelled out or checkout breaks.
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 10
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -63,7 +76,7 @@ jobs:
 
       - name: Comment on PR with results
         if: failure() && github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const issue_number = context.issue.number;
