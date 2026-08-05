@@ -12,6 +12,7 @@ on:
       - 'blog/**/*.mdx'
       - 'scripts/validate-*.js'
       - 'scripts/*-baseline.json'
+      - 'drafts/**/figures/*.html'
       - '.github/workflows/validate-zh-formatting.yml'
   push:
     branches:
@@ -22,6 +23,7 @@ on:
       - 'blog/**/*.mdx'
       - 'scripts/validate-*.js'
       - 'scripts/*-baseline.json'
+      - 'drafts/**/figures/*.html'
       - '.github/workflows/validate-zh-formatting.yml'
   workflow_dispatch:
 
@@ -74,6 +76,10 @@ jobs:
         if: '!cancelled()'
         run: pnpm run validate:internal-links
 
+      - name: Validate figure type sizes (phone floor + desktop ceiling)
+        if: '!cancelled()'
+        run: pnpm run validate:figure-type
+
       - name: Comment on PR with results
         if: failure() && github.event_name == 'pull_request'
         uses: actions/github-script@v9
@@ -82,7 +88,7 @@ jobs:
             const issue_number = context.issue.number;
             const message = `## ⚠️ Blog Checks Failed
 
-            Three checks run here. The job log says which one failed and points at the
+            Four checks run here. The job log says which one failed and points at the
             exact lines — start there.
 
             **Bold formatting**
@@ -112,6 +118,19 @@ jobs:
             For the second one: find the prior posts that argued a point this one leans on
             and link them at that sentence. Don't pad the count. If there is genuinely
             nothing to cite, record why in the post: \`{/* internal-links: none — reason */}\`.
+
+            **Figure type sizes** — one figure PNG is delivered at 358px on a phone and
+            738px on desktop, so a size that reads at one end fails at the other. This
+            repo has shipped both failures: 5px text on phones, then a 36px title on
+            desktop after a uniform rescale.
+
+            \`\`\`bash
+            pnpm run validate:figure-type
+            \`\`\`
+
+            Size per element, not by one multiplier: title 32px on an 860px canvas,
+            nothing else above 21px. Cut copy to pay for larger type, and drop
+            \`min-height\` with it. Rule: \`.agents/skills/foundation/formatting/SKILL.md\`.
 
             ### Formatting Rules
             
