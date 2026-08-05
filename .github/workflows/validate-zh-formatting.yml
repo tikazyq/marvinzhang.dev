@@ -61,6 +61,11 @@ jobs:
         if: '!cancelled()'
         run: pnpm run validate:internal-links
 
+      # TEMPORARY (PR #56): forces a failure so the comment step below actually
+      # runs under github-script v9. Reverted in the next commit.
+      - name: TEMP force failure to exercise the comment path
+        run: exit 1
+
       - name: Comment on PR with results
         if: failure() && github.event_name == 'pull_request'
         uses: actions/github-script@v9
