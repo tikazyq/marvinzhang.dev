@@ -1,11 +1,18 @@
 name: Validate Chinese Blog Formatting
 
+# The checkers and their baselines are in the path filter too: editing a
+# validator or a baseline changes what ships just as much as editing a post,
+# and without them a change that breaks a check sails through unexercised.
+# (GitHub Actions does not expand YAML anchors, so the two lists are duplicated.)
 on:
   pull_request:
     paths:
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.mdx'
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
       - 'blog/**/*.mdx'
+      - 'scripts/validate-*.js'
+      - 'scripts/*-baseline.json'
+      - '.github/workflows/validate-zh-formatting.yml'
   push:
     branches:
       - main
@@ -13,6 +20,9 @@ on:
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.mdx'
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
       - 'blog/**/*.mdx'
+      - 'scripts/validate-*.js'
+      - 'scripts/*-baseline.json'
+      - '.github/workflows/validate-zh-formatting.yml'
   workflow_dispatch:
 
 jobs:

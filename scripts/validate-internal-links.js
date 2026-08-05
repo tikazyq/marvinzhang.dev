@@ -193,8 +193,11 @@ function main() {
       if (!slugs.has(l.slug)) broken.push({ name, ...l });
     }
 
+    // A known post is held to its own recorded count: a legacy post sitting at 0
+    // stays fine, and a post at 5 can't quietly shed links down to the floor.
+    // A post with no entry is new, so it answers to the floor.
     const recorded = baseline[key(p)];
-    const min = recorded === undefined ? FLOOR : Math.min(recorded, FLOOR);
+    const min = recorded === undefined ? FLOOR : recorded;
     if (distinct.size < min && !optOut) {
       thin.push({ name, count: distinct.size, min, isNew: recorded === undefined });
     }
