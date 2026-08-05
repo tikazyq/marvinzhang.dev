@@ -7,6 +7,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 <style>
+  /*
+   * Type is sized for the phone, where these are actually read. The PNG fills
+   * the article column: 358px on a 390px phone against this 860px canvas, so
+   * everything here renders at 0.42x. A 13px label was arriving as 5.4px.
+   * Sizes below are ~1.6x the original, which lands the smallest text near 8px
+   * effective. Layout and style are unchanged on purpose - the room comes from
+   * shorter copy, not from moving anything.
+   *
+   * If you edit this file: check the effective size, not the number you typed.
+   * effective = size * 358 / 860.
+   */
   :root {
     --ok-fill:#e8f5e9; --ok-stroke:#2e7d32;
     --err-fill:#ffebee; --err-stroke:#c62828;
@@ -20,33 +31,33 @@
   body { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
   .canvas { width:860px; padding:42px 44px 34px 44px; background:var(--canvas); }
   .header { margin-bottom:22px; }
-  .figno { font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.08em; color:var(--ink-faint); text-transform:uppercase; }
-  h1 { font-size:30px; font-weight:600; margin:6px 0 0; line-height:1.25; }
-  .subtitle { font-size:16px; color:var(--ink-soft); margin-top:8px; line-height:1.55; }
-  .takeaway { margin-top:22px; padding:15px 20px; border-radius:12px; background:#faf5ff; border-left:4px solid var(--hi-stroke); font-size:15px; line-height:1.6; }
+  .figno { font-family:'JetBrains Mono',monospace; font-size: 21px; letter-spacing:.08em; color:var(--ink-faint); text-transform:uppercase; }
+  h1 { font-size: 48px; font-weight:600; margin:6px 0 0; line-height:1.25; }
+  .subtitle { font-size: 26px; color:var(--ink-soft); margin-top:8px; line-height:1.55; }
+  .takeaway { margin-top:22px; padding:15px 20px; border-radius:12px; background:#faf5ff; border-left:4px solid var(--hi-stroke); font-size: 24px; line-height:1.6; }
   .takeaway b { color:var(--hi-stroke); }
-  .footer { margin-top:20px; display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-faint); letter-spacing:.06em; text-transform:uppercase; }
+  .footer { margin-top:20px; display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size: 18px; color:var(--ink-faint); letter-spacing:.06em; text-transform:uppercase; }
 
   .seed { border:1.6px solid var(--info-stroke); background:var(--info-fill); border-radius:12px; padding:13px 18px; text-align:center; }
-  .seed .cap { font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.05em; color:var(--info-stroke); }
-  .seed .q { font-size:17px; font-weight:600; margin-top:5px; }
-  .seed .n { font-size:13px; color:var(--ink-soft); margin-top:4px; }
+  .seed .cap { font-family:'JetBrains Mono',monospace; font-size: 18px; letter-spacing:.05em; color:var(--info-stroke); }
+  .seed .q { font-size: 27px; font-weight:600; margin-top:5px; }
+  .seed .n { font-size: 21px; color:var(--ink-soft); margin-top:4px; }
 
   .split { display:flex; justify-content:center; padding:4px 0 2px; }
   .cols { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .lane { border:1.5px solid var(--line); border-radius:14px; background:#fff; padding:16px 18px 18px; }
   .lane.good { border-color:var(--ok-stroke); background:#f5fbf6; }
   .lane.bad  { border-color:var(--err-stroke); background:#fdf5f5; }
-  .tag { display:inline-block; font-size:12px; font-weight:700; letter-spacing:.04em; padding:3px 11px; border-radius:999px; color:#fff; }
+  .tag { display:inline-block; font-size: 19px; font-weight:700; letter-spacing:.04em; padding:3px 11px; border-radius:999px; color:#fff; }
   .tag.good { background:var(--ok-stroke); }
   .tag.bad  { background:var(--err-stroke); }
-  .lane .who { font-size:16px; font-weight:600; margin-top:9px; }
-  .lane .eg { font-size:12.5px; color:var(--ink-soft); margin-top:4px; line-height:1.45; }
+  .lane .who { font-size: 26px; font-weight:600; margin-top:9px; }
+  .lane .eg { font-size: 20px; color:var(--ink-soft); margin-top:4px; line-height:1.45; }
   .out { margin-top:13px; border-radius:10px; padding:11px 13px; background:#fff; border:1.3px solid var(--line); }
-  .out .r { font-size:15.5px; font-weight:600; }
+  .out .r { font-size: 25px; font-weight:600; }
   .lane.good .out .r { color:var(--ok-stroke); }
   .lane.bad  .out .r { color:var(--err-stroke); }
-  .out .num { font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin-top:6px; line-height:1.55; }
+  .out .num { font-family:'JetBrains Mono',monospace; font-size: 20px; color:var(--ink-soft); margin-top:6px; line-height:1.55; }
 </style>
 </head>
 <body>
@@ -54,13 +65,13 @@
 <div class="header">
   <div class="figno">Figure 02 — Same error, different byline</div>
   <h1>It sees the identical error once someone else's name is on it</h1>
-  <div class="subtitle">Two independent studies run the same comparison: the error is unchanged byte for byte, and only its source label is switched.</div>
+  <div class="subtitle">Two independent studies, same comparison: the error is unchanged byte for byte, only its source label switched.</div>
 </div>
 
 <div class="seed">
   <div class="cap">SAME ERROR, BYTE FOR BYTE</div>
   <div class="q">One faulty chain of reasoning</div>
-  <div class="n">Identical content, identical context, one difference only: who wrote it</div>
+  <div class="n">Identical content and context. One difference: who wrote it</div>
 </div>
 
 <div class="split">
@@ -76,25 +87,25 @@
   <div class="lane good">
     <span class="tag good">Labeled as someone else's</span>
     <div class="who">Tool result · user message</div>
-    <div class="eg">Same faulty statement, source label switched to external</div>
+    <div class="eg">Source label switched to external</div>
     <div class="out">
       <div class="r">It catches it</div>
-      <div class="num">Explicit error flagging<br>23–93 points higher than the other side</div>
+      <div class="num">Explicit error flagging<br>23–93 points higher</div>
     </div>
   </div>
 
   <div class="lane bad">
     <span class="tag bad">Labeled as its own</span>
     <div class="who">Its own reasoning</div>
-    <div class="eg">Same faulty statement, source label switched to internal</div>
+    <div class="eg">Source label switched to internal</div>
     <div class="out">
       <div class="r">It doesn't see it</div>
-      <div class="num">Leaves it untouched 64.5% of the time<br>the paper calls this the self-correction blind spot</div>
+      <div class="num">Untouched 64.5% of the time<br>the "self-correction blind spot"</div>
     </div>
   </div>
 </div>
 
-<div class="takeaway">For it to stop and ask you, it first has to notice it might be wrong. Its own output is the one category it can't see problems in. <b>Leaving the noticing to the agent builds the gate on its weakest ground.</b></div>
+<div class="takeaway">To stop and ask, it must first notice it might be wrong. Its own output is the one thing it can't see problems in. <b>Leaving the noticing to the agent builds the gate on its weakest ground.</b></div>
 <div class="footer"><span>marvinzhang.dev</span><span>Figure 2 / 4</span></div>
 </div>
 </body>
