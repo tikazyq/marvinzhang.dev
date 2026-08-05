@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Figure 1 — Which cell are you in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --info-fill: #e1f5fe;  --info-stroke: #01579b;
+    --warn-fill: #fff3e0;  --warn-stroke: #e65100;
+    --ok-fill:   #e8f5e9;  --ok-stroke:   #2e7d32;
+    --hi-fill:   #f3e5f5;  --hi-stroke:   #7b1fa2;
+    --err-fill:  #ffebee;  --err-stroke:  #c62828;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
+    --ink-faint: #8a8a8a; --line: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', 'WenQuanYi Zen Hei', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+  }
+  .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
+  .header { margin-bottom: 26px; }
+  .figno { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+  h1 { font-size: 30px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: -0.005em; line-height: 1.25; }
+  .subtitle { font-size: 16px; color: var(--ink-soft); margin-top: 8px; line-height: 1.55; }
+  .takeaway { margin-top: 24px; padding: 15px 20px; border-radius: 12px; background: #faf5ff; border-left: 4px solid var(--hi-stroke); font-size: 15px; line-height: 1.6; }
+  .takeaway b { color: var(--hi-stroke); }
+  .footer { margin-top: 22px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 13px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .grid { display: grid; grid-template-columns: 136px 1fr 1fr; grid-template-rows: 52px 1fr 1fr; gap: 12px; }
+  .colhead, .rowhead { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 14.5px; font-weight: 600; color: var(--ink-soft); line-height: 1.35; }
+  .colhead .sub { display: block; font-weight: 400; font-size: 12.5px; color: var(--ink-faint); margin-top: 3px; }
+  .corner { }
+
+  .cell { border: 1.5px solid var(--line); border-radius: 12px; padding: 15px 17px; background: #fff; min-height: 138px; position: relative; }
+  .cell .mode { font-size: 17px; font-weight: 600; line-height: 1.3; }
+  .cell .eg { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-faint); letter-spacing: 0.03em; margin-top: 7px; }
+  .cell .note { font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin-top: 9px; }
+
+  .cell.dim .mode { color: var(--ink-soft); }
+  .cell.here { border-color: var(--err-stroke); background: var(--err-fill); }
+  .cell.here .mode { color: var(--err-stroke); }
+  .cell.goal { border-color: var(--ok-stroke); background: var(--ok-fill); }
+  .cell.goal .mode { color: var(--ok-stroke); }
+
+  .pin { position: absolute; top: -11px; right: 14px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; padding: 3px 10px; border-radius: 999px; color: #fff; }
+  .pin.now { background: var(--err-stroke); }
+  .pin.out { background: var(--ok-stroke); }
+
+  .arrow { display: flex; justify-content: flex-end; margin-top: 10px; align-items: center; gap: 9px; }
+  .arrow .txt { font-size: 13.5px; font-weight: 600; color: var(--ok-stroke); }
+</style>
+</head>
+<body>
+<div class="canvas">
+<div class="header">
+  <div class="figno">Figure 01 — Which cell are you in</div>
+  <h1>When watching works, and when it buys you nothing</h1>
+  <div class="subtitle">William Ouchi's 1979 framework: which kind of control is available to you depends on two things, whether you understand how the work gets done, and whether you can measure the result.</div>
+</div>
+
+<div class="grid">
+  <div class="corner"></div>
+  <div class="colhead">You understand the process<span class="sub">steps can be specified</span></div>
+  <div class="colhead">You don't<span class="sub">steps can't be specified</span></div>
+
+  <div class="rowhead">Output is measurable</div>
+  <div class="cell dim">
+    <div class="mode">Watch behavior or output</div>
+    <div class="eg">Apollo program</div>
+    <div class="note">Both roads are open, so take the cheaper one. One failure costs too much, so they staffed hundreds of controllers on every step.</div>
+  </div>
+  <div class="cell goal">
+    <div class="pin out">the way out</div>
+    <div class="mode">Watch output only</div>
+    <div class="eg">Fashion buyer</div>
+    <div class="note">Nobody can write rules for picking the right stock, but markdowns, turnover and margin are all measurable, so you grade those.</div>
+  </div>
+
+  <div class="rowhead">Output isn't measurable</div>
+  <div class="cell dim">
+    <div class="mode">Watch behavior only</div>
+    <div class="eg">Tin can plant</div>
+    <div class="note">When every step conforms to the specified process, you know proper cans are coming out the far end without looking.</div>
+  </div>
+  <div class="cell here">
+    <div class="pin now">you are here</div>
+    <div class="mode">Only “one of us” trust is left</div>
+    <div class="eg">Research lab</div>
+    <div class="note">It runs on standards built up over years together. You have no such history with an agent, so this isn't trust, it's having no other option.</div>
+  </div>
+</div>
+
+<div class="arrow">
+  <span class="txt">Make “did this come out right” machine-measurable</span>
+  <svg width="70" height="22" viewBox="0 0 70 22"><line x1="2" y1="11" x2="58" y2="11" stroke="#2e7d32" stroke-width="2.5"/><path d="M50,4 L62,11 L50,18" fill="none" stroke="#2e7d32" stroke-width="2.5"/></svg>
+</div>
+
+<div class="takeaway">You can't specify the steps an agent should take to write good code, which puts you in the right-hand column. In that column, watching behavior produces no control at all, and that is why babysitting feels endless. <b>The only exit is one cell up</b>: tests, compilers and type checks already measure the result for you.</div>
+<div class="footer"><span>marvinzhang.dev</span><span>Figure 1 / 4</span></div>
+</div>
+</body>
+</html>

@@ -66,8 +66,29 @@ Validation: `pnpm run validate:zh-bold-source` before committing.
 ## Visual-First Approach
 
 - **Mermaid diagrams**: For processes, flows, architectures
-- **Tables**: For all comparisons and feature lists
+- **Tables**: For comparisons and feature lists — see the limit below
+- **Rendered figures**: For anything the argument leans on
 - **Minimal code**: ≤10 lines only when syntax is the learning point
+
+### A table that carries the argument should be a figure
+
+Learned 2026-08: an article's central 2×2 shipped as a bare markdown table and
+the author's verdict was "太难看了". The rule that came out of it:
+
+| The visual is… | Ship it as |
+| -------------- | ---------- |
+| A reference list the reader scans (options, versions, pros/cons) | Markdown table |
+| A structure the argument depends on (2×2, quadrants, before/after, a position being claimed) | **Rendered figure** |
+
+A markdown table can't show *where you are* in it. The moment the prose says
+"you're in this cell and the way out is that one", the table is the wrong
+medium — you need highlighting, a callout, an arrow. Build it in the house
+figure style instead (860px canvas, semantic palette, bilingual variants,
+HTML sources in `drafts/{slug}/figures/`, rendered by `render.mjs` into
+`static/img/blog/{slug}/`).
+
+Cheap check before shipping a table: **does any sentence near it point at a
+specific cell?** If yes, it wants to be a figure.
 
 ### Mermaid Theme-Aware Styling
 

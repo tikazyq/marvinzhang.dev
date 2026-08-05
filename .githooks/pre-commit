@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# Blocks a commit that adds AI sentence-rhythm drift to a Chinese blog post.
+#
+# Installed automatically by `pnpm install` (the `prepare` script points
+# core.hooksPath here). To skip once: git commit --no-verify
+#
+# An agent running `git commit` sees this output in its tool result and can fix
+# the flagged lines before retrying — that is the point of putting it here
+# rather than only in CI.
+
+staged=$(git diff --cached --name-only --diff-filter=ACM \
+  -- 'i18n/zh/docusaurus-plugin-content-blog/*.mdx')
+
+[ -z "$staged" ] && exit 0
+
+failed=0
+for f in $staged; do
+  node scripts/validate-zh-voice.js --file "$f" || failed=1
+done
+
+if [ "$failed" -ne 0 ]; then
+  echo "提交被拦下：上面的中文语感问题请先改掉。"
+  echo "确属有意为之：pnpm run validate:zh-voice:update-baseline"
+  echo "强行跳过：git commit --no-verify"
+  exit 1
+fi
+
+exit 0
