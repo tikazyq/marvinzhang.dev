@@ -32,6 +32,9 @@ Validation gates and checklists for marvinzhang.dev articles.
 ### Visual Content
 - [ ] Mermaid diagrams for processes/architectures
 - [ ] Tables for comparisons (no prose lists)
+- [ ] **No argument-carrying table left as a bare table** — if the prose points at
+      a specific cell ("you're here", "the way out is there"), it must be a
+      rendered figure, not markdown (see `foundation/formatting`)
 - [ ] Code blocks ≤10 lines
 - [ ] All diagrams theme-aware (explicit colors)
 
@@ -69,7 +72,13 @@ Chinese naturalness edits trickled in over as many push cycles:
    as a hard gate, not an afterthought. When handing the draft over, list the
    lines you yourself flagged as possibly awkward so the author reviews those
    first instead of finding them one at a time.
-2. **Batch author nits, then verify once.** Collect a round of small edits and
+2. **Run the AI-句式 check too, and treat a hit as a rewrite, not a swap.**
+   `pnpm run validate:zh-voice` catches the drift the eye misses (em dashes went
+   0 → 94 per article over eighteen months without anyone deciding to). When it
+   fires, don't just delete the character: the sentence usually wants
+   restructuring into the author's own connectors. Details and the replacement
+   table are in `../writing-style/references/zh-voice.md` 红线三.
+3. **Batch author nits, then verify once.** Collect a round of small edits and
    push them together rather than commit-build-push per nit — it cuts
    round-trips and CI/preview churn. Verification Discipline rule 2 still
    holds: run a full `pnpm build` on the batch before pushing (frontmatter and
@@ -89,6 +98,9 @@ pnpm dev
 # Chinese formatting validation
 pnpm run validate:zh-bold-source
 pnpm run validate:zh-bold-source:fix
+
+# Chinese voice: AI sentence-rhythm drift (em dash, 恰恰, 不是…而是 overuse)
+pnpm run validate:zh-voice
 
 # Export for distribution
 pnpm wechat <slug> --zh -o    # WeChat

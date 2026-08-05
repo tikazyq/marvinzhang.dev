@@ -1,0 +1,123 @@
+{
+  "note": "Recorded counts of AI-tell patterns per file. The check fails when a file exceeds its recorded count, or when a file with no entry has any hit at all. Lower these numbers; never raise them.",
+  "updated": "2026-08-05",
+  "files": {
+    "2021-03-24-golang.mdx": {
+      "not-a-but-b": 1
+    },
+    "2022-10-18-divide-conquer-algorithm-nature.mdx": {
+      "not-a-but-b": 1
+    },
+    "2022-12-09-software-project-complexity.mdx": {
+      "not-a-but-b": 1
+    },
+    "2023-01-18-graph-theory.mdx": {
+      "not-a-but-b": 1
+    },
+    "2023-03-25-intelligent-web-crawlers.mdx": {
+      "not-a-but-b": 1
+    },
+    "2024-08-31-llms-industrial-revolution.mdx": {
+      "not-a-but-b": 1
+    },
+    "2025-02-11-deepseek.mdx": {
+      "em-dash": 3,
+      "not-a-but-b": 2
+    },
+    "2025-08-05-ai-productivity.mdx": {
+      "em-dash": 1,
+      "not-a-but-b": 1
+    },
+    "2025-08-19-vercel-ai-sdk.mdx": {
+      "em-dash": 4
+    },
+    "2025-09-10-github-copilot-agent-content-migration.mdx": {
+      "em-dash": 1,
+      "not-a-but-b": 1
+    },
+    "2025-09-14-context-engineering.mdx": {
+      "em-dash": 7,
+      "not-a-but-b": 7
+    },
+    "2025-09-16-spec-driven-development.mdx": {
+      "em-dash": 14,
+      "not-a-but-b": 3
+    },
+    "2025-09-24-enterprise-ai-application-architecture.mdx": {
+      "em-dash": 23,
+      "not-a-but-b": 7
+    },
+    "2025-10-02-rices-theorem-why-automated-testing-will-fail.mdx": {
+      "em-dash": 26,
+      "not-a-but-b": 4,
+      "qiaqia": 2
+    },
+    "2025-10-04-fundamental-limits-in-computing.mdx": {
+      "em-dash": 41,
+      "not-a-but-b": 10
+    },
+    "2025-10-05-fundamental-limits-in-computing-part-2.mdx": {
+      "em-dash": 30,
+      "not-a-but-b": 4
+    },
+    "2025-10-09-ai-leadership-from-tool-to-collaborative-partner.mdx": {
+      "em-dash": 27,
+      "not-a-but-b": 5,
+      "qiaqia": 2
+    },
+    "2025-10-11-why-your-code-reviews-are-failing-and-how-to-fix-them.mdx": {
+      "em-dash": 15,
+      "not-a-but-b": 4
+    },
+    "2025-10-22-sdd-tools-practices.mdx": {
+      "em-dash": 34,
+      "not-a-but-b": 2
+    },
+    "2025-11-27-introducing-leanspec.mdx": {
+      "em-dash": 16
+    },
+    "2026-01-24-ai-agents-engineering.mdx": {
+      "em-dash": 48,
+      "not-a-but-b": 1
+    },
+    "2026-03-23-agent-landscape.mdx": {
+      "em-dash": 25,
+      "not-a-but-b": 2
+    },
+    "2026-04-21-ai-last-mile-infrastructure.mdx": {
+      "em-dash": 36,
+      "not-a-but-b": 11,
+      "qiaqia": 1
+    },
+    "2026-05-12-vsm-cybernetics-system-organization.mdx": {
+      "em-dash": 77,
+      "not-a-but-b": 9,
+      "qiaqia": 1
+    },
+    "2026-06-25-industrialization-of-intelligence.mdx": {
+      "em-dash": 94,
+      "not-a-but-b": 14,
+      "qiaqia": 1,
+      "rather-than": 1
+    },
+    "2026-07-06-stack-selection-in-the-agent-era.mdx": {
+      "em-dash": 57,
+      "not-a-but-b": 1,
+      "qiaqia": 3
+    },
+    "2026-07-13-multi-agent-teams-and-the-measurable-coordination-tax.mdx": {
+      "em-dash": 49,
+      "not-a-but-b": 1
+    },
+    "2026-07-17-introducing-duhem.mdx": {
+      "em-dash": 44,
+      "not-a-but-b": 2,
+      "qiaqia": 5
+    },
+    "2026-07-27-cheap-code-scarce-attention.mdx": {
+      "em-dash": 29,
+      "not-a-but-b": 5,
+      "qiaqia": 2
+    }
+  }
+}

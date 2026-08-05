@@ -29,7 +29,9 @@
     "medium:zh": "node scripts/medium.js --zh",
     "validate:zh-bold-source": "node scripts/validate-zh-bold-formatting-source.js",
     "validate:zh-bold-source:fix": "node scripts/validate-zh-bold-formatting-source.js --fix",
-    "validate:zh-bold-source:file": "node scripts/validate-zh-bold-formatting-source.js --file"
+    "validate:zh-bold-source:file": "node scripts/validate-zh-bold-formatting-source.js --file",
+    "validate:zh-voice": "node scripts/validate-zh-voice.js",
+    "validate:zh-voice:update-baseline": "node scripts/validate-zh-voice.js --update-baseline"
   },
   "dependencies": {
     "@docusaurus/core": "3.8.1",
