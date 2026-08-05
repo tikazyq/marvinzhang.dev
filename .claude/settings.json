@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "检查中文语感",
+            "timeout": 20,
+            "command": "jq -r '.tool_input.file_path // .tool_response.filePath // empty' | { read -r f; [ -n \"$f\" ] || exit 0; node \"${CLAUDE_PROJECT_DIR:-.}/scripts/validate-zh-voice.js\" --file \"$f\" 1>&2 || exit 2; }"
+          }
+        ]
+      }
+    ]
+  }
+}

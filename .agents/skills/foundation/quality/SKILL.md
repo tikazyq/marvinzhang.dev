@@ -86,6 +86,29 @@ Chinese naturalness edits trickled in over as many push cycles:
    truly trivial single-token ZH prose swap with no MDX-special characters may
    rely on `validate:zh-bold-source` by itself.
 
+## Where the ZH voice check fires (and who sees it)
+
+A check only helps if someone reads it. The Chinese-voice check is wired at three
+points, ordered by how early the agent doing the work finds out:
+
+| 层 | 触发时机 | 谁看得见 |
+| --- | --- | --- |
+| **Claude Code hook** (`.claude/settings.json`, PostToolUse on Write\|Edit) | 写完那一刻 | 写文件的 agent，当场看到行号和原句，同一轮就能改 |
+| **git pre-commit** (`.githooks/pre-commit`, installed by `pnpm install`) | `git commit` 时 | 跑 commit 的 agent，在 Bash 结果里看到，改完重试 |
+| **CI** (`.github/workflows/validate-zh-formatting.yml`) | 推上去之后 | 盯 PR 的 agent 收到 CI 失败事件；PR 上也会留评论 |
+
+The first tier is the one that matters most: it fires while the paragraph is still
+in the agent's head. The other two exist because the first can be skipped (hooks
+disabled, a different tool writing the file).
+
+**No auto-fix, by design.** Deleting the character is not the fix; the sentence
+wants restructuring into the author's own connectors. The report gives file, line,
+the offending sentence, and what to do instead — enough to act on without reading
+the rule first.
+
+Escape hatches: `git commit --no-verify` for one commit,
+`pnpm run validate:zh-voice:update-baseline` when a hit is genuinely intended.
+
 ## Validation Commands
 
 ```bash
