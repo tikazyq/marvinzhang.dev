@@ -7,45 +7,56 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 <style>
+  /*
+   * Type is sized for the phone, where these are actually read. The PNG fills
+   * the article column: 358px on a 390px phone against this 860px canvas, so
+   * everything here renders at 0.42x. A 13px label was arriving as 5.4px.
+   * Sizes below are ~1.6x the original, which lands the smallest text near 8px
+   * effective. Layout and style are unchanged on purpose - the room comes from
+   * shorter copy, not from moving anything.
+   *
+   * If you edit this file: check the effective size, not the number you typed.
+   * effective = size * 358 / 860.
+   */
   :root {
     --ok-fill: #e8f5e9; --ok-stroke: #2e7d32;
     --err-fill: #ffebee; --err-stroke: #c62828;
     --hi-stroke: #7b1fa2;
-    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #525252;
-    --ink-faint: #8a8a8a; --line: #e0e0e0;
+    --canvas: #fafafa; --ink: #1f1f1f; --ink-soft: #4a4a4a;
+    --ink-faint: #767676; --line: #e0e0e0;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: #fff; }
   body { font-family: 'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
   .canvas { width: 860px; padding: 42px 44px 34px 44px; background: var(--canvas); }
   .header { margin-bottom: 24px; }
-  .figno { font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.08em; color:var(--ink-faint); text-transform:uppercase; }
-  h1 { font-size:30px; font-weight:600; margin:6px 0 0; line-height:1.25; }
-  .subtitle { font-size:16px; color:var(--ink-soft); margin-top:8px; line-height:1.55; }
-  .takeaway { margin-top:24px; padding:15px 20px; border-radius:12px; background:#faf5ff; border-left:4px solid var(--hi-stroke); font-size:15px; line-height:1.6; }
+  .figno { font-family:'JetBrains Mono',monospace; font-size: 21px; letter-spacing:.08em; color:var(--ink-faint); text-transform:uppercase; }
+  h1 { font-size: 48px; font-weight:600; margin:6px 0 0; line-height:1.25; }
+  .subtitle { font-size: 26px; color:var(--ink-soft); margin-top:8px; line-height:1.55; }
+  .takeaway { margin-top:24px; padding:15px 20px; border-radius:12px; background:#faf5ff; border-left:4px solid var(--hi-stroke); font-size: 24px; line-height:1.6; }
   .takeaway b { color: var(--hi-stroke); }
-  .footer { margin-top:22px; display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-faint); letter-spacing:.06em; text-transform:uppercase; }
+  .footer { margin-top:22px; display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size: 18px; color:var(--ink-faint); letter-spacing:.06em; text-transform:uppercase; }
 
   .cols { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .panel { border:1.5px solid var(--line); border-radius:14px; background:#fff; padding:18px 20px 20px; }
   .panel.good { border-color:var(--ok-stroke); background:#f5fbf6; }
   .panel.bad  { border-color:var(--err-stroke); background:#fdf5f5; }
-  .ptitle { font-size:18px; font-weight:600; }
+  .ptitle { font-size: 29px; font-weight:600; }
   .panel.good .ptitle { color:var(--ok-stroke); }
   .panel.bad  .ptitle { color:var(--err-stroke); }
-  .plabel { font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.05em; color:var(--ink-faint); margin-top:4px; }
+  .plabel { font-family:'JetBrains Mono',monospace; font-size: 18px; letter-spacing:.05em; color:var(--ink-faint); margin-top:4px; }
 
   .chain { margin-top:16px; }
-  .node { border:1.4px solid var(--line); border-radius:10px; background:#fff; padding:10px 13px; font-size:13.5px; line-height:1.45; }
-  .node .k { font-weight:600; font-size:14px; display:block; margin-bottom:3px; }
-  .node .d { color:var(--ink-soft); font-size:12.5px; }
+  .node { border:1.4px solid var(--line); border-radius:10px; background:#fff; padding:10px 13px; font-size: 22px; line-height:1.45; }
+  .node .k { font-weight:600; font-size: 22px; display:block; margin-bottom:3px; }
+  .node .d { color:var(--ink-soft); font-size: 20px; }
   .node.src-out { border-color:var(--ok-stroke); background:#eef8ef; }
   .node.src-self { border-color:var(--err-stroke); background:#fdeeee; }
   .arrow { display:flex; justify-content:center; padding:7px 0; }
 
   .gate { display:flex; align-items:center; gap:10px; border:1.4px dashed var(--ink-faint); border-radius:10px; padding:10px 13px; background:#fff; }
-  .gate .g { font-size:14px; font-weight:600; }
-  .verdict { margin-top:14px; border-radius:9px; padding:10px 13px; font-size:13.5px; line-height:1.5; }
+  .gate .g { font-size: 22px; font-weight:600; }
+  .verdict { margin-top:14px; border-radius:9px; padding:10px 13px; font-size: 22px; line-height:1.5; }
   .verdict.ok  { background:var(--ok-fill);  color:#1b5e20; border:1px solid var(--ok-stroke); }
   .verdict.bad { background:var(--err-fill); color:#8e1c1c; border:1px solid var(--err-stroke); }
   .verdict b { font-weight:700; }
@@ -56,17 +67,17 @@
 <div class="header">
   <div class="figno">Figure 03 — Who pressed this</div>
   <h1>One pause, wired two ways</h1>
-  <div class="subtitle">Both look like “it stopped and asked you something.” The difference is whose hand was on the button.</div>
+  <div class="subtitle">Both look like “it stopped and asked.” The difference is whose hand was on the button.</div>
 </div>
 
 <div class="cols">
   <div class="panel good">
     <div class="ptitle">A real gate</div>
-    <div class="plabel">TRIGGER = FACT ABOUT THE ACTION</div>
+    <div class="plabel">TRIGGER = FACT ABOUT ACTION</div>
     <div class="chain">
       <div class="node src-out">
         <span class="k">A fact about the action</span>
-        <span class="d">Production config touched · database migration moved · command irreversible · 2 comments unresolved</span>
+        <span class="d">Production config touched · migration moved · command irreversible</span>
       </div>
       <div class="arrow"><svg width="18" height="26" viewBox="0 0 18 26"><line x1="9" y1="1" x2="9" y2="18" stroke="#2e7d32" stroke-width="2"/><path d="M3,13 L9,22 L15,13" fill="none" stroke="#2e7d32" stroke-width="2"/></svg></div>
       <div class="gate"><span class="g">Stop and get a human</span></div>
@@ -80,7 +91,7 @@
     <div class="chain">
       <div class="node src-self">
         <span class="k">Its assessment of itself</span>
-        <span class="d">“This change feels big” · “might be hard to walk back” · “safer to double-check”</span>
+        <span class="d">“This feels big” · “safer to double-check”</span>
       </div>
       <div class="arrow"><svg width="18" height="26" viewBox="0 0 18 26"><line x1="9" y1="1" x2="9" y2="18" stroke="#c62828" stroke-width="2"/><path d="M3,13 L9,22 L15,13" fill="none" stroke="#c62828" stroke-width="2"/></svg></div>
       <div class="gate"><span class="g">Stop and get a human</span></div>
@@ -89,7 +100,7 @@
   </div>
 </div>
 
-<div class="takeaway">The more you need it to stop, the less it will: the checkpoint exists for the case where it's confident and wrong, and the more confident it is, the less likely “let me just check” is to occur to it. <b>Don't ask whether it stopped to check with you. Ask who pressed this.</b></div>
+<div class="takeaway">The more you need it to stop, the less it will: the checkpoint exists for when it's confident and wrong, and confidence is what stops “let me just check” occurring to it. <b>Don't ask whether it stopped. Ask who pressed this.</b></div>
 <div class="footer"><span>marvinzhang.dev</span><span>Figure 3 / 4</span></div>
 </div>
 </body>

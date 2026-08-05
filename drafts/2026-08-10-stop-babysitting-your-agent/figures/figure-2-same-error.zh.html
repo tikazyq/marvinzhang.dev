@@ -7,6 +7,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 <style>
+  /*
+   * Type is sized for the phone, where these are actually read. The PNG fills
+   * the article column: 358px on a 390px phone against this 860px canvas, so
+   * everything here renders at 0.42x. A 13px label was arriving as 5.4px.
+   * Sizes below are ~1.6x the original, which lands the smallest text near 8px
+   * effective. Layout and style are unchanged on purpose - the room comes from
+   * shorter copy, not from moving anything.
+   *
+   * If you edit this file: check the effective size, not the number you typed.
+   * effective = size * 358 / 860.
+   */
   :root {
     --ok-fill:#e8f5e9; --ok-stroke:#2e7d32;
     --err-fill:#ffebee; --err-stroke:#c62828;
@@ -20,33 +31,33 @@
   body { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
   .canvas { width:860px; padding:42px 44px 34px 44px; background:var(--canvas); }
   .header { margin-bottom:22px; }
-  .figno { font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.08em; color:var(--ink-faint); text-transform:uppercase; }
-  h1 { font-size:30px; font-weight:600; margin:6px 0 0; line-height:1.25; }
-  .subtitle { font-size:16px; color:var(--ink-soft); margin-top:8px; line-height:1.55; }
-  .takeaway { margin-top:22px; padding:15px 20px; border-radius:12px; background:#faf5ff; border-left:4px solid var(--hi-stroke); font-size:15px; line-height:1.6; }
+  .figno { font-family:'JetBrains Mono',monospace; font-size: 21px; letter-spacing:.08em; color:var(--ink-faint); text-transform:uppercase; }
+  h1 { font-size: 48px; font-weight:600; margin:6px 0 0; line-height:1.25; }
+  .subtitle { font-size: 26px; color:var(--ink-soft); margin-top:8px; line-height:1.55; }
+  .takeaway { margin-top:22px; padding:15px 20px; border-radius:12px; background:#faf5ff; border-left:4px solid var(--hi-stroke); font-size: 24px; line-height:1.6; }
   .takeaway b { color:var(--hi-stroke); }
-  .footer { margin-top:20px; display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-faint); letter-spacing:.06em; text-transform:uppercase; }
+  .footer { margin-top:20px; display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size: 18px; color:var(--ink-faint); letter-spacing:.06em; text-transform:uppercase; }
 
   .seed { border:1.6px solid var(--info-stroke); background:var(--info-fill); border-radius:12px; padding:13px 18px; text-align:center; }
-  .seed .cap { font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.05em; color:var(--info-stroke); }
-  .seed .q { font-size:17px; font-weight:600; margin-top:5px; }
-  .seed .n { font-size:13px; color:var(--ink-soft); margin-top:4px; }
+  .seed .cap { font-family:'JetBrains Mono',monospace; font-size: 18px; letter-spacing:.05em; color:var(--info-stroke); }
+  .seed .q { font-size: 27px; font-weight:600; margin-top:5px; }
+  .seed .n { font-size: 21px; color:var(--ink-soft); margin-top:4px; }
 
   .split { display:flex; justify-content:center; padding:4px 0 2px; }
   .cols { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .lane { border:1.5px solid var(--line); border-radius:14px; background:#fff; padding:16px 18px 18px; }
   .lane.good { border-color:var(--ok-stroke); background:#f5fbf6; }
   .lane.bad  { border-color:var(--err-stroke); background:#fdf5f5; }
-  .tag { display:inline-block; font-size:12px; font-weight:700; letter-spacing:.04em; padding:3px 11px; border-radius:999px; color:#fff; }
+  .tag { display:inline-block; font-size: 19px; font-weight:700; letter-spacing:.04em; padding:3px 11px; border-radius:999px; color:#fff; }
   .tag.good { background:var(--ok-stroke); }
   .tag.bad  { background:var(--err-stroke); }
-  .lane .who { font-size:16px; font-weight:600; margin-top:9px; }
-  .lane .eg { font-size:12.5px; color:var(--ink-soft); margin-top:4px; line-height:1.45; }
+  .lane .who { font-size: 26px; font-weight:600; margin-top:9px; }
+  .lane .eg { font-size: 20px; color:var(--ink-soft); margin-top:4px; line-height:1.45; }
   .out { margin-top:13px; border-radius:10px; padding:11px 13px; background:#fff; border:1.3px solid var(--line); }
-  .out .r { font-size:15.5px; font-weight:600; }
+  .out .r { font-size: 25px; font-weight:600; }
   .lane.good .out .r { color:var(--ok-stroke); }
   .lane.bad  .out .r { color:var(--err-stroke); }
-  .out .num { font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin-top:6px; line-height:1.55; }
+  .out .num { font-family:'JetBrains Mono',monospace; font-size: 20px; color:var(--ink-soft); margin-top:6px; line-height:1.55; }
 </style>
 </head>
 <body>
@@ -54,13 +65,13 @@
 <div class="header">
   <div class="figno">图 02 — 同一个错，换个署名</div>
   <h1>一模一样的错，标成别人的它就看见了</h1>
-  <div class="subtitle">两项独立研究用的是同一种对照：错误内容一个字节不改，只换它的来源标签。</div>
+  <div class="subtitle">两项独立研究的同一种对照：错误一个字节不改，只换来源标签。</div>
 </div>
 
 <div class="seed">
   <div class="cap">SAME ERROR, BYTE FOR BYTE</div>
   <div class="q">一段有错的推理</div>
-  <div class="n">内容完全相同，上下文完全相同，只有一处不一样：这是谁写的</div>
+  <div class="n">内容和上下文完全相同，只差一处：这是谁写的</div>
 </div>
 
 <div class="split">
@@ -76,25 +87,25 @@
   <div class="lane good">
     <span class="tag good">标成别人写的</span>
     <div class="who">工具返回 · 用户消息</div>
-    <div class="eg">同样的错话，来源标签换成外部</div>
+    <div class="eg">来源标签换成外部</div>
     <div class="out">
       <div class="r">它挑出来了</div>
-      <div class="num">明确指出错误的比例<br>比另一边高 23–93 个百分点</div>
+      <div class="num">明确指出错误的比例<br>高 23–93 个百分点</div>
     </div>
   </div>
 
   <div class="lane bad">
     <span class="tag bad">标成它自己写的</span>
     <div class="who">它自己的思考</div>
-    <div class="eg">同样的错话，来源标签换成内部</div>
+    <div class="eg">来源标签换成内部</div>
     <div class="out">
       <div class="r">它看不见</div>
-      <div class="num">平均 64.5% 的情况下不动<br>研究管这叫「自我纠错盲区」</div>
+      <div class="num">平均 64.5% 的情况下不动<br>研究叫它「自我纠错盲区」</div>
     </div>
   </div>
 </div>
 
-<div class="takeaway">要它主动停下来问你，前提是它先看出这次可能不对。可"自己写的"偏偏是它唯一看不出问题的那一类。<b>把发现问题这一步留给它自己，等于把关卡建在它最弱的地方。</b></div>
+<div class="takeaway">要它主动停下来问你，前提是它先看出可能不对。可"自己写的"正是它唯一看不出问题的那一类。<b>把发现问题留给它自己，等于把关卡建在它最弱的地方。</b></div>
 <div class="footer"><span>marvinzhang.dev</span><span>图 2 / 4</span></div>
 </div>
 </body>
