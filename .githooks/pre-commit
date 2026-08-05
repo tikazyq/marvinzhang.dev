@@ -1,27 +1,40 @@
 #!/bin/sh
 #
-# Blocks a commit that adds AI sentence-rhythm drift to a Chinese blog post.
+# Blocks a commit that adds AI sentence-rhythm drift to a Chinese blog post, or
+# that ships a post with broken / missing internal cross-links.
 #
 # Installed automatically by `pnpm install` (the `prepare` script points
 # core.hooksPath here). To skip once: git commit --no-verify
 #
 # An agent running `git commit` sees this output in its tool result and can fix
 # the flagged lines before retrying — that is the point of putting it here
-# rather than only in CI.
-
-staged=$(git diff --cached --name-only --diff-filter=ACM \
-  -- 'i18n/zh/docusaurus-plugin-content-blog/*.mdx')
-
-[ -z "$staged" ] && exit 0
+# rather than only in CI. Both checks run even if the first one fails, so one
+# commit attempt reports everything.
 
 failed=0
-for f in $staged; do
+
+# --- Chinese voice (ZH posts only) ---------------------------------------
+staged_zh=$(git diff --cached --name-only --diff-filter=ACM \
+  -- 'i18n/zh/docusaurus-plugin-content-blog/*.mdx')
+
+for f in $staged_zh; do
   node scripts/validate-zh-voice.js --file "$f" || failed=1
 done
 
+# --- Internal cross-links (both locales) ---------------------------------
+# Checked at commit time rather than on every edit: a post being drafted
+# section by section legitimately has no links yet.
+staged_posts=$(git diff --cached --name-only --diff-filter=ACM \
+  -- 'blog/*.mdx' 'i18n/zh/docusaurus-plugin-content-blog/*.mdx')
+
+for f in $staged_posts; do
+  node scripts/validate-internal-links.js --file "$f" || failed=1
+done
+
 if [ "$failed" -ne 0 ]; then
-  echo "提交被拦下：上面的中文语感问题请先改掉。"
-  echo "确属有意为之：pnpm run validate:zh-voice:update-baseline"
+  echo "提交被拦下：上面的问题请先改掉。"
+  echo "语感确属有意为之：pnpm run validate:zh-voice:update-baseline"
+  echo "确实无可引的文章：在正文里写 {/* internal-links: none — 理由 */}"
   echo "强行跳过：git commit --no-verify"
   exit 1
 fi

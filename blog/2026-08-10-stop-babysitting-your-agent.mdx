@@ -64,7 +64,7 @@ Which makes the exit exactly one move: **get yourself from the bottom-right cell
 
 First, credit where it's due: agents really do loop now. Write a version, run it, see it fail, write another. You genuinely don't have to be in that.
 
-But the reason it loops may not be the one you assume. It isn't mostly about being smart. **What matters is that every time around, it gets an answer that didn't come from itself.**
+But the reason it loops may not be the one you assume. It isn't mostly about being smart, which is a point I gave [a whole post to](/blog/ai-agents-engineering). **What matters is that every time around, it gets an answer that didn't come from itself.**
 
 Anthropic's [*Building Effective Agents*](https://www.anthropic.com/engineering/building-effective-agents) (December 2024) says it plainly: every step an agent takes needs "ground truth from the environment (such as tool call results or code execution)." A compiler error is real feedback. A failing test is real feedback. A type error is real feedback. "I looked it over and it seems fine" is not — that's the work grading itself. **A loop fed on fake feedback spins**, and it looks busy the whole time.
 
@@ -98,6 +98,8 @@ The worse half: the time it most needs to stop is the time it probably won't. Th
 
 There's a harder version of this that needs no examples to hold: **a condition whose satisfaction is judged by the party it constrains is not a condition.** Same reason nobody grades their own exam. Every judgment the agent makes about itself falls in this bucket: "all comments addressed," "tests pass," "everything that needed changing is changed."
 
+"Tests pass" in particular [got a post of its own](/blog/introducing-duhem): there's more between the green light it reports and the thing actually working end to end than most people assume. And these days plenty of those tests were written by the agent too.
+
 Someone will say it just isn't mature enough yet, and more coaching will fix it. This is where the employee analogy stops carrying weight, and it's why I said up top that it's worse than a new hire.
 
 **When a person is unsure, they know it. The agent doesn't.**
@@ -130,6 +132,8 @@ Even with all the conditions written down, you still have to look. But how you l
 
 This has been measured. [Apollo Research's 2025 goal-drift evaluation](https://arxiv.org/abs/2505.02709) reports it directly: drift through inaction exceeded drift through action, across models and conditions. The setting matters here — it's a simulated stock-trading environment, and "inaction" means something quite specific, failing to sell down a position after a phase ended. In the same paper, a scaffolded Claude 3.5 Sonnet ran for over ninety thousand tokens without drifting. So this is one measured instance, not a general law. **The structural point stands without it, though: you can't hang a hook on something that didn't happen.**
 
+It holds for a whole team too: [every dashboard green, a competitor ships a feature users had been asking about for six months, and not one person and not one agent notices](/blog/vsm-cybernetics-system-organization). Go looking afterwards for which link in the chain failed, and the answer is that no link was ever responsible for catching it.
+
 There's only one fix in that direction: **check on a schedule that the things that should have happened did**, instead of waiting to be told. Gates can't do that job.
 
 **Second, reviewing more isn't reviewing better.** Last time I wrote that [leverage amplifies your bad judgment](/blog/cheap-code-scarce-attention); the sharper version is this. A person working alone makes fifty different mistakes. One spec handed to fifty executions makes the same mistake fifty times.
@@ -152,7 +156,7 @@ That sounds obvious, and it has an old name. March and Simon, in *Organizations*
 
 Follow the chain and it closes: **its report doesn't count as evidence, so acceptance can't be delegated, so the more you hand out, the more you personally have to verify — linearly.**
 
-Amdahl described the identical shape in 1967: if some fraction of a job has to be done sequentially, no amount of parallel hardware gets you past the reciprocal of that fraction. He meant processors, and it applies here unchanged. **The more agents you run, the less you can leave.** Handing out more work doesn't move the ceiling, because raising the numerator raises the serial part with it. (That's the second half of the line from [last time](/blog/cheap-code-scarce-attention) about attention being serial: the genuinely serial part is acceptance, and only acceptance.)
+Amdahl described the identical shape in 1967: if some fraction of a job has to be done sequentially, no amount of parallel hardware gets you past the reciprocal of that fraction. He meant processors, and it applies here unchanged. **The more agents you run, the less you can leave.** Handing out more work doesn't move the ceiling, because raising the numerator raises the serial part with it. [Last time the binding constraint was coordination between agents](/blog/multi-agent-teams-and-the-measurable-coordination-tax); here it's your own acceptance. Same shape. (That's the second half of the line from [last time](/blog/cheap-code-scarce-attention) about attention being serial: the genuinely serial part is acceptance, and only acceptance.)
 
 **So the third thing you can change, and the only one that actually takes you off babysitting duty: every judgment you turn into a condition that needs neither your nod nor the agent's is one fewer thing to watch.** Tests, assertions, recomputable checks, an external judge. This is entirely different work from "delegate more." Delegating moves the task out. Writing a condition pins the judgment down.
 
@@ -160,19 +164,16 @@ Worth noting this isn't a corner case. [A study spanning 7 frameworks with over 
 
 Anthropic's piece closes the loop nicely: automated tests verify functionality, but "human review remains crucial" — whether the solution fits the wider system is still a human call. **That's roughly where mechanizable ends and unmechanizable begins, and every inch inside that line can be pushed further out.**
 
-## Three things you can do, and one I haven't run
+## Four things you can do
 
 Back to the title: how do you stop babysitting an agent.
-
-Three you can do today:
 
 1. **Move the trigger for stopping to facts about the action**, and off its own judgment. The call can't sit with the party being constrained.
 2. **Swap item-by-item review for sampled pattern-hunting**, and add a periodic check that what should have happened did.
 3. **Every judgment you turn into a condition that needs no human nod is one fewer thing to watch.** This is the only category of work that actually reduces the load.
+4. **Separate the checking side from the doing side.** Keep them independent, have them communicate only through artifacts (code, logs, test results), and put the conditions themselves out of reach of both. This is the arrangement that makes the third one hold.
 
-Push the argument one step further and a fourth appears: separate the checking side from the doing side, keep them independent, have them communicate only through artifacts (code, logs, test results), and put the conditions themselves out of reach of both. Other industries have done this forever — financial review, two-person sign-off before a release. This is just moving it onto agents.
-
-**But I'll be straight about this one: I haven't run it.** Last time I left a gap that was an unmeasured multiple; this time the gap is an untested arrangement. Naming the hole is more honest than serving up a design I haven't tried.
+The fourth sounds like the newest and is the oldest. Financial review, two-person sign-off before a release: all of it says one thing, that nobody gets to be both the party doing the work and the party ruling on whether the work passes. "Nobody grades their own exam," one level up. Moving it onto agents just means pulling the checking out of the loop being checked, so the agent can't wave itself through on the way past.
 
 If you take one thing away, take the test: next time it stops to ask you, ask first — **who pressed this?**
 

@@ -1,16 +1,28 @@
 name: Validate Chinese Blog Formatting
 
+# The checkers and their baselines are in the path filter too: editing a
+# validator or a baseline changes what ships just as much as editing a post,
+# and without them a change that breaks a check sails through unexercised.
+# (GitHub Actions does not expand YAML anchors, so the two lists are duplicated.)
 on:
   pull_request:
     paths:
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.mdx'
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
+      - 'blog/**/*.mdx'
+      - 'scripts/validate-*.js'
+      - 'scripts/*-baseline.json'
+      - '.github/workflows/validate-zh-formatting.yml'
   push:
     branches:
       - main
     paths:
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.mdx'
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
+      - 'blog/**/*.mdx'
+      - 'scripts/validate-*.js'
+      - 'scripts/*-baseline.json'
+      - '.github/workflows/validate-zh-formatting.yml'
   workflow_dispatch:
 
 jobs:
@@ -39,10 +51,15 @@ jobs:
       - name: Validate Chinese blog formatting
         run: pnpm run validate:zh-bold-source
 
-      # Runs even when the bold check failed, so one CI round reports both.
+      # Later checks run even when an earlier one failed, so one CI round
+      # reports everything instead of revealing problems one commit at a time.
       - name: Validate Chinese voice (AI sentence-rhythm drift)
         if: '!cancelled()'
         run: pnpm run validate:zh-voice
+
+      - name: Validate internal cross-links (both locales)
+        if: '!cancelled()'
+        run: pnpm run validate:internal-links
 
       - name: Comment on PR with results
         if: failure() && github.event_name == 'pull_request'
@@ -50,9 +67,9 @@ jobs:
         with:
           script: |
             const issue_number = context.issue.number;
-            const message = `## ⚠️ Chinese Blog Checks Failed
+            const message = `## ⚠️ Blog Checks Failed
 
-            Two checks run here. The job log says which one failed and points at the
+            Three checks run here. The job log says which one failed and points at the
             exact lines — start there.
 
             **Bold formatting**
@@ -71,6 +88,17 @@ jobs:
 
             Replacement table: \`.agents/skills/foundation/writing-style/references/zh-voice.md\` (红线三).
             If a hit is deliberate: \`pnpm run validate:zh-voice:update-baseline\`.
+
+            **Internal cross-links** — a link to a slug that doesn't exist (Docusaurus only
+            warns on those, so they ship), or a new post that cites nothing from the archive.
+
+            \`\`\`bash
+            pnpm run validate:internal-links
+            \`\`\`
+
+            For the second one: find the prior posts that argued a point this one leans on
+            and link them at that sentence. Don't pad the count. If there is genuinely
+            nothing to cite, record why in the post: \`{/* internal-links: none — reason */}\`.
 
             ### Formatting Rules
             
