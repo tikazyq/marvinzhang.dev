@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>图 4 — 五十个不同的错，还是同一个错五十次</title>
+<title>Figure 4 — Fifty different mistakes, or one mistake fifty times</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -29,7 +29,7 @@
   .cols { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .panel { border:1.5px solid var(--line); border-radius:14px; background:#fff; padding:18px 20px 20px; }
   .ptitle { font-size:18px; font-weight:600; }
-  .psub { font-size:13px; color:var(--ink-soft); margin-top:5px; line-height:1.45; min-height:38px; }
+  .psub { font-size:13px; color:var(--ink-soft); margin-top:5px; line-height:1.45; min-height:56px; }
   .plot { margin-top:12px; border-radius:10px; background:#fff; border:1px solid var(--line); }
   .how { margin-top:14px; border-radius:9px; padding:11px 13px; font-size:13.5px; line-height:1.5; }
   .how.bad { background:#fdf3f3; border:1px solid var(--err-stroke); color:#8e1c1c; }
@@ -41,15 +41,15 @@
 <body>
 <div class="canvas">
 <div class="header">
-  <div class="figno">图 04 — 错误长什么样，决定了该怎么审</div>
-  <h1>五十个不同的错，还是同一个错五十次</h1>
-  <div class="subtitle">一个人自己干，犯的错互相独立；一条规范交给五十次执行，犯的是同一个错。审法得跟着变。</div>
+  <div class="figno">Figure 04 — What the errors look like decides how to review</div>
+  <h1>Fifty different mistakes, or one mistake fifty times</h1>
+  <div class="subtitle">Work alone and your errors are independent. Hand one spec to fifty executions and they're all the same error. The review has to change with them.</div>
 </div>
 
 <div class="cols">
   <div class="panel">
-    <div class="ptitle">一个人自己干</div>
-    <div class="psub">错误互相独立，散在四周。抽到的那几条告诉不了你别的条什么样。</div>
+    <div class="ptitle">One person working alone</div>
+    <div class="psub">Errors are independent and scattered. The few you sample tell you nothing about the rest.</div>
     <svg class="plot" width="100%" height="200" viewBox="0 0 360 200">
       <circle cx="180" cy="100" r="52" fill="none" stroke="#01579b" stroke-width="1.2" stroke-dasharray="4 4"/>
       <circle cx="180" cy="100" r="4" fill="#01579b"/>
@@ -63,13 +63,13 @@
         <circle cx="200" cy="60" r="4.5"/><circle cx="146" cy="122" r="4.5"/>
       </g>
     </svg>
-    <div class="how bad">只能<b>逐条审</b>。成本随委托量线性涨，而且照样漏。</div>
-    <div class="cost">COST ∝ N</div>
+    <div class="how bad">Only <b>item-by-item review</b> works. Cost grows with how much you delegate, and it still misses things.</div>
+    <div class="cost">COST &#8733; N</div>
   </div>
 
   <div class="panel">
-    <div class="ptitle">一条规范跑五十次</div>
-    <div class="psub">错误挤在同一处偏差上。抽十条冒出两次同样的毛病，剩下四十条大概率也有。</div>
+    <div class="ptitle">One spec run fifty times</div>
+    <div class="psub">Errors cluster on a single offset. Pull ten, see the same flaw twice, and the other forty probably have it too.</div>
     <svg class="plot" width="100%" height="200" viewBox="0 0 360 200">
       <circle cx="180" cy="100" r="52" fill="none" stroke="#01579b" stroke-width="1.2" stroke-dasharray="4 4"/>
       <circle cx="180" cy="100" r="4" fill="#01579b"/>
@@ -83,15 +83,15 @@
         <circle cx="248" cy="58" r="4.5"/><circle cx="276" cy="40" r="4.5"/>
         <circle cx="258" cy="76" r="4.5"/><circle cx="288" cy="70" r="4.5"/>
       </g>
-      <text x="268" y="106" text-anchor="middle" font-size="11.5" fill="#c62828" font-weight="600">同一个偏差</text>
+      <text x="282" y="108" text-anchor="middle" font-size="11.5" fill="#c62828" font-weight="600">shared bias</text>
     </svg>
-    <div class="how ok"><b>抽样查重复的规律</b>就够。抽到两次一样的，问题就现形了。</div>
-    <div class="cost">COST ≪ N</div>
+    <div class="how ok"><b>Sample for repeated patterns</b>. Two hits of the same flaw and the problem is out in the open.</div>
+    <div class="cost">COST &#8810; N</div>
   </div>
 </div>
 
-<div class="takeaway">杠杆放大的是偏差，不是方差。<b>逐条审是为左边那张图设计的姿势</b>，用在右边既贵又不对症；右边要做的是抽一小把，看有没有同一个毛病反复出现。</div>
-<div class="footer"><span>marvinzhang.dev</span><span>图 4 / 4</span></div>
+<div class="takeaway">Leverage amplifies bias, not variance. <b>Item-by-item review is a posture designed for the left-hand picture</b>; on the right it's expensive and off-target. What the right-hand picture needs is a small sample checked for the same flaw showing up twice.</div>
+<div class="footer"><span>marvinzhang.dev</span><span>Figure 4 / 4</span></div>
 </div>
 </body>
 </html>
