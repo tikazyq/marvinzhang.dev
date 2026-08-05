@@ -19,7 +19,7 @@ pnpm wechat <slug> --zh          ← Step 1: Generate markdown + images
         ↓
 Convert MD → styled content      ← Step 2: Apply WeChat formatting
         ↓
-Send files in the Claude chat     ← Step 3: HTML + md + screenshots + covers + digest
+Send files in the Claude chat     ← Step 3: HTML + md + screenshots + cover + digest
         ↓
 User: 公众号助手 → paste → publish ← Step 4: User publishes
 ```
@@ -29,7 +29,7 @@ User: 公众号助手 → paste → publish ← Step 4: User publishes
 **Chat-direct is the canonical channel (author decision 2026-07): send the
 bundle as files in the Claude conversation** — rendered HTML first (it is
 the paste source, viewable inline), then the markdown, component
-screenshots, covers, and the digest as message text. Do NOT use Telegram;
+screenshots, the cover, and the digest as message text. Do NOT use Telegram;
 that path is deprecated (see Legacy section at the end).
 
 ## Per-Article Checklist (codified 2026-07)
@@ -53,17 +53,28 @@ Run through these in order — each item came from a real publishing round:
    "下图是交互小工具的截图……点文末'阅读原文'即可体验", then re-run ONLY
    `node scripts/generate-wechat-html.js <slug>`.
 4. **Cover + digest are part of the deliverable.**
-   - Cover: 2.35:1 main (900×383) + optional 1:1 small. Two routes: (a)
-     code-drawn via the article's figures pipeline; (b) — author's current
-     preference — write text-to-image prompts and hand off to an external
-     model. T2I prompts must request **no embedded text** (CJK text renders
-     garbled) and specify `--ar 21:9` (crop to 2.35:1) plus a 1:1 variant.
-     Compose to fill the full frame — do NOT reserve empty space for a title
-     overlay (author preference 2026-07; 公众号 renders its own title, so a
-     reserved gap just wastes the cover).
+   - Cover: **one image, and only one.** Ask for `--ar 21:9` and ship what
+     comes back. 公众号's cover slot is nominally 2.35:1 (900×383); 21:9 is
+     2.333:1, so the output is close to that target without being exactly it —
+     0.7% off, about 3px on a 900px-wide cover. Do not crop it, and do not
+     tell the author to. (Corrected 2026-08: this section used to ask for a
+     crop step and a 1:1 square variant alongside. The crop is noise, and the
+     square was never used — 公众号 takes the one cover.)
+   - Two routes to the image: (a) code-drawn via the article's figures
+     pipeline; (b) — author's current preference — write a text-to-image
+     prompt and hand it off to an external model. Give **one prompt for the
+     whole cover**, not per-element prompts (author preference 2026-07).
+   - Non-negotiables in a T2I prompt:
+     - **No text of any kind** — state it explicitly and emphatically. CJK
+       renders as garbage, and the model will add signage unless forbidden.
+     - **Fill the frame edge to edge.** Do not reserve space for a title;
+       公众号 renders its own, so a reserved gap just wastes the cover.
+     - **Carry the article's illustrations into the cover** when it has any:
+       name the recurring character's clothing and the palette so the cover
+       reads as part of the same set rather than a stock image bolted on.
    - Digest: ≤120 chars, hook-first, no symbols the reader hasn't met.
 5. **Delivery**: send the bundle as files in the Claude chat — HTML
-   first (paste source), then markdown, component screenshots, covers;
+   first (paste source), then markdown, component screenshots, the cover;
    digest goes in the message text. Telegram is deprecated — do not use it
    even if credentials exist.
 6. **Post-publish**: user sends back the permanent
@@ -312,6 +323,7 @@ phone screenshot — e.g. the ul hanging-indent bug):
 | Images not sending | Check file path; max 10MB per photo |
 | Content formatting lost in paste | Use markdown-nice mini program for rendering |
 | Literal `**` visible in published article | Bold delimiter has an adjacent space or a broken pair; ensure `fixBoldMarkers` in `scripts/generate-wechat-html.js` runs and consumes one balanced pair at a time (never write a regex that requires a space after the opening `**` — it will match across pairs) |
+| Numbered list publishes with no numbers | `S.ol` had `padding-left:0`, which puts the digits in the margin for WeChat to clip. Same trap as `S.ul`, and `ol` was **missed when `ul` was fixed in 2026-07** — the two live on adjacent lines and only one got the treatment. Fixed 2026-08: `padding-left:1.9em` with `list-style:decimal outside`, wider than `ul` because digits need more room than a disc. When you fix a list style, fix both |
 | Wrapped bullet lines flow back under the marker (no hanging indent) | `S.ul` needs non-zero `padding-left` (1.4em) with `list-style:disc outside` — `padding-left:0` puts markers in the margin and kills the hanging indent. Fixed in `generate-wechat-html.js` 2026-07; if editing list styles, re-verify at a 390px viewport |
 | Long code lines wrap mid-token / read badly on phone | Code scrolls horizontally: `overflow-x:auto` + `-webkit-overflow-scrolling:touch` on `<pre>`, `white-space:nowrap` on `<code>` (see `S.pre`/`S.precode`). If a published article ever clips instead of scrolling, fall back to `pre-wrap` + `break-all` |
 | Reference list shows no numbers | The `ol` style uses `padding-left: 0`, which clips native markers; emit explicit `[n]` prefixes as plain paragraphs (handled in `scripts/wechat.js`) |

@@ -56,7 +56,11 @@ const S = {
   // room for the (still CSS-outside) markers so continuation lines hang-align
   // under the first line's text.
   ul: 'padding-left:1.4em;margin:8px 0;list-style:disc outside;',
-  ol: 'padding-left:0;margin:8px 0;',
+  // Same trap, and ol was missed when ul was fixed in 2026-07: at padding-left:0
+  // the numbers sit in the margin and WeChat clips them, so a numbered list
+  // publishes with no numbers at all. Wider than ul because digits take more
+  // room than a disc.
+  ol: 'padding-left:1.9em;margin:8px 0;list-style:decimal outside;',
   li: 'margin-bottom:4px;font-size:14px;line-height:1.8em;letter-spacing:0.02em;color:rgb(43,43,43);',
   hr: 'border:none;border-top:2px solid rgba(64,184,250,0.4);margin:10px 0;',
   // Info box (for ℹ️ blocks)
