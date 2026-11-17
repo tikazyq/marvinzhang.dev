@@ -9,11 +9,11 @@ unlisted: true
 
 {/* EN restated from the ZH primary draft (形不同而意同). Keep the two in sync on facts, not sentences. */}
 
-On November 14, I told one agent in T3 Code to move the CI for two of my projects back onto GitHub's own runners.
+For the past two weeks, more than a hundred agents have been working for me, and I haven't managed a single one directly.
 
-After that I mostly stayed out of it. The agent opened a new thread and handed the job to an agent that looks after my infrastructure. That agent read the config in both repositories, noticed that one of the projects belongs to a different agent, and went to that agent to sort it out. The other agent asked which branch the PR should be based on. A few minutes later each repository had a PR. Along the way it found that CI had been switched off during an earlier cost cleanup, so it turned it back on. It also found a broken local clone, left it alone, and told me about it.
+I only talk to five agents. Four each own one open source project and the fifth handles infrastructure, so they act as project managers. They split the work, hand it out, talk things over with each other, and report back to me when it's done. I'm the head of this agent team, a bit like a director in a company.
 
-In T3 Code, every thread has an agent behind it. I keep five agents running. Four of them each own one open source project, acting as its project manager, and the fifth handles infrastructure. They run on Anthropic's Claude. They break the work down and hand the pieces to sub-agents, which mostly run on OpenAI's GPT models. Recently those sub-agents number well over a hundred, and I haven't managed a single one directly. I run this agent team: I stay out of the actual work and only deal with a handful of project managers, a bit like a director in a company.
+What makes this possible is a free tool called T3 Code.
 
 People often call T3 Code the VS Code of the agent era. But the features I can't give up are described almost word for word in Paseo's docs, and the official Codex and Claude apps ship a new version nearly every week. Anyone can build the features. So why T3 Code?
 
@@ -53,7 +53,7 @@ So the question becomes: who will be the neutral workbench of the agent era?
 
 It runs agents in parallel, previews pages inside the app, and lets you approve the next step from your phone, and all of that works well. What I really can't give up is something else: **orchestration**.
 
-An agent in T3 can open new threads, send messages to other threads, wait for their results, and dispatch work to another machine, another harness or another vendor's model. Threads can talk to each other, work together, and even manage each other.
+An agent in T3 can open new threads (each thread has an agent behind it), send messages to other threads, wait for their results, and dispatch work to another machine, another harness or another vendor's model. Threads can talk to each other, work together, and even manage each other.
 
 ![One T3 Code thread dispatching four sub-agents at once, running on Claude, Codex, Muse and Gemini, with their progress listed on the right](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/screenshot-subagents.webp)
 
@@ -75,7 +75,11 @@ I only talk to these five agents. When a project manager gets a task, it splits 
 
 ![I sit at the top and only talk to five standing agents running on Claude Opus: four project managers and an Infra Manager. Under each one hangs a list of sub-agents doing builds, research and PR reviews, mostly on GPT models. A two-way link between the Tolmap PM and the Infra Manager shows they talk it out themselves](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/figure-2-org.en.png)
 
-The CI migration from the opening is what this structure looks like in motion. Here is who talked to whom:
+Here's an example. On November 14, I told one agent to move the CI for two of my projects back onto GitHub's own runners.
+
+After that I mostly stayed out of it. The agent opened a new thread and handed the job to an agent that looks after my infrastructure. That agent read the config in both repositories, noticed that one of the projects belongs to a different agent, and went to that agent to sort it out. The other agent asked which branch the PR should be based on. A few minutes later each repository had a PR. Along the way it found that CI had been switched off during an earlier cost cleanup, so it turned it back on. It also found a broken local clone, left it alone, and told me about it.
+
+Here is who talked to whom:
 
 ![Who talked to whom during the November 14 CI migration: I made one request to an agent; that agent opened a thread for the Infra Manager with explicit limits; the Infra Manager found that tolmap-hub belongs to the Tolmap PM and asked about ownership, and the Tolmap PM asked which branch to base the PR on; the Infra Manager opened one PR each in semon-hub and tolmap-hub and re-enabled CI; a broken clone and stale conflicting PRs were out of bounds, so it only reported them; finally it reported back to me](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/figure-3-topology.en.png)
 
