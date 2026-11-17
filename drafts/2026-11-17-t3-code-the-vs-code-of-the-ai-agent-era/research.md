@@ -102,3 +102,6 @@ Paseo already claims cross-provider, cross-machine agent-to-agent orchestration 
 - 1000 of 1158 sessions in 30d window (10-22 → 11-17). 694 sessions, 249 subagents, 57 codex-runs. Opus 518, Sonnet 160, GPT ~220, Haiku 28.
 - 165 subagents = GPT models inside Claude Code harness. **Author (2026-11-17): these are converted via Magpie** (author's gateway; T3 lists "Remote magpie" / "Onsager Magpie" model groups routing Codex, Kiro, Copilot, OpenRouter models). So hook wording: "子 agent 大多用 OpenAI 的 GPT 模型"; section 2 can mention a gateway lets one harness drive many vendors' models.
 - hp-code-1 stats: delegated via T3 to a Haiku child on hp-code-1 (pending).
+
+## HAPI correction (2026-11-17, author)
+- Author: HAPI supports cross-harness / cross-machine / cross-session communication. Confirmed in docs/guide/how-it-works.md: MCP peer tools `list_peers`, `inspect_peer`, `ping_peer` (message, optional waitForReply), `spawn_peer`; work from runner sessions even when the hub is on another host; "Remote Spawn - Start new sessions on any connected machine". Table updated to ✅ for 跨机器 and agent 之间通信.

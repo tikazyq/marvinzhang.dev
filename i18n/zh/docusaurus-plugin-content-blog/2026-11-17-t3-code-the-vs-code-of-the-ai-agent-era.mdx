@@ -87,9 +87,9 @@ T3 里的 agent 可以开新对话，可以给别的对话发消息，可以等�
 
 ![作者在最上面，只和五个常驻 agent 说话：四个项目经理和一个基础设施负责人，它们跑在 Claude Opus 上。每个项目经理下面挂着一串子 agent，干实现、调研、审 PR，大多用 GPT 模型。基础设施负责人和 Tolmap 项目经理之间有一条横向的线，表示它们自己商量](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/figure-2-org.zh.png)
 
-开头那次 CI 迁移，就是这套结构跑起来的样子。把过程摊开看：
+开头那次 CI 迁移，就是这套结构跑起来的样子。把谁和谁说了话画出来：
 
-![11 月 14 日那次 CI 迁移的时间线：作者在一个对话里提出要求；那个 agent 新开了基础设施负责人的对话，并附上任务说明和权限边界；基础设施负责人读两个仓库的配置，发现 tolmap-hub 归 Tolmap 项目经理管，主动去问；Tolmap 项目经理回问 PR 该基于哪个分支；两个仓库各开出一个 PR；基础设施负责人发现 CI 被关掉，自己重新打开，发现本地副本损坏和四个会冲突的旧 PR，只报告不动手](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/figure-3-timeline.zh.png)
+![11 月 14 日那次 CI 迁移里谁和谁说了话：作者向一个 agent 提出要求；那个 agent 新开了基础设施负责人的对话，附上权限边界；基础设施负责人发现 tolmap-hub 归 Tolmap 项目经理管，去问归属，对方回问 PR 该基于哪个分支；基础设施负责人给 semon-hub 和 tolmap-hub 各开一个 PR，重新打开 CI；碰到损坏的代码副本和会冲突的旧 PR，属于权限之外，只报告；最后向作者汇报结论](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/figure-3-topology.zh.png)
 
 有两个细节值得一提。
 
@@ -118,15 +118,15 @@ T3 也有明显的短板。中途给一个对话换模型，新模型拿不到�
 | | T3 Code | Paseo | Happy | HAPI |
 |---|---|---|---|---|
 | 跨模型、跨 harness | ✅ | ✅ | ✅ | ✅ |
-| 跨机器 | ✅ | ✅ | 文档未写 | 文档未写清 |
-| agent 之间互相派活、通信 | ✅ | ✅ | 只有派子 agent | 文档未写 |
+| 跨机器 | ✅ | ✅ | 文档未写 | ✅ |
+| agent 之间互相派活、通信 | ✅ | ✅ | 只有派子 agent | ✅ |
 | 主要形态 | 桌面 + 手机 | 桌面 + 手机 | 手机优先 | 手机优先 |
 | 开源协议 | MIT | Apache-2.0 | MIT | AGPL-3.0 |
 | GitHub 星标 | 63k+ | 24.2k | 24.7k | 5.4k |
 
 {/* 星标数据取自各项目页面，2026-11-17 */}
 
-Happy 和 HAPI 更像手机上的遥控器，编排做得浅。Paseo 不一样，它的 [README](https://github.com/getpaseo/paseo) 写着 agent 可以「创建 worktree、启动别的 agent、和它们对话，跨 provider」，也支持多台机器。从文档看，我在 T3 里用的那套编排，Paseo 几乎都有。
+Happy 更像手机上的遥控器，编排做得浅。Paseo 和 HAPI 不一样。Paseo 的 [README](https://github.com/getpaseo/paseo) 写着 agent 可以「创建 worktree、启动别的 agent、和它们对话，跨 provider」，也支持多台机器。HAPI 的[文档](https://github.com/tiann/hapi/blob/main/docs/guide/how-it-works.md)里有一组给 agent 用的工具，能找到其他会话、读它们的内容、给它们发消息、新开会话，对方在另一台机器上也行。从文档看，我在 T3 里用的那套编排，这两家几乎都有。
 
 我没有用过 Paseo，所以没法说它做得好还是不好。网上的评价不少是正面的：在 [Hacker News 的一个讨论](https://news.ycombinator.com/item?id=49234056)里，有用户说喜欢它是因为可以自由搭配不同的 harness 和模型，有人说它的手机端和桌面端一致，还有人说它的会话同步比 Claude Code 的手机 app 好用。
 
