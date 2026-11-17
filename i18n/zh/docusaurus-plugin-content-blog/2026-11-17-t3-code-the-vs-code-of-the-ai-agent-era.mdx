@@ -65,11 +65,17 @@ T3 Code 常被称作 Agent 时代的 VS Code。可仔细想想，让我离不开
 
 [T3 Code](https://t3.codes/) 是 Ping Labs 做的开源桌面应用，MIT 协议，免费。牵头的 Theo Browne 在美国开发者圈很有名，做过 Twitch 的工程师，后来创业，T3 Stack、T3 Chat 都出自他的团队，他本人也是一个观点鲜明的技术 YouTuber。T3 Code 自己不带模型，它在你的机器上起一个本地服务，去驱动你已经装好的各家 agent：Claude Code、Codex、Cursor、OpenCode、Grok Build 等等，用的是你自己的订阅。桌面端、网页端、手机端都只是这个本地服务的窗口。
 
-{/* TODO：截图待作者提供（侧边栏、派出子 agent 的片段、手机端） */}
+![T3 Code 桌面端：左边是按项目排列的对话列表，中间是 agent 的工作结果和改动文件，右边是分支、提交和 PR；旁边的手机端正在请求批准一条命令](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/screenshot-desktop-mobile.webp)
+
+*图片来源：[T3 Code 的 GitHub 仓库](https://github.com/pingdotgg/t3code)*
 
 并行跑多个 agent、在应用里直接预览页面、手机上批准下一步，这些它都有，也都好用。但让我真正离不开的，是另一件事：**编排**。
 
 T3 里的 agent 可以开新对话，可以给别的对话发消息，可以等别的对话的结果，还可以把任务派到另一台机器、另一个 harness、另一家的模型上。对话和对话之间能通信、能协作，甚至能互相管理。
+
+![T3 Code 里一个对话同时派出四个子 agent，分别跑在 Claude、Codex、Muse 和 Gemini 上，右侧列出这几个子 agent 的进度](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/screenshot-subagents.webp)
+
+*图片来源：[T3 Code 官网](https://t3.codes/)。一句话派出四个子 agent，用的是四家的模型。*
 
 我现在的用法是这样的：
 

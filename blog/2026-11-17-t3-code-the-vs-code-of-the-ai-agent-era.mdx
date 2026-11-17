@@ -47,11 +47,17 @@ So the question becomes: who will be the neutral workbench of the agent era?
 
 [T3 Code](https://t3.codes/) is an open source desktop app from Ping Labs, MIT licensed and free. It's led by Theo Browne, who is well known among US developers: a former Twitch engineer turned founder whose team built the T3 Stack and T3 Chat, and an outspoken tech YouTuber. T3 Code ships no model of its own. It runs a local server on your machine that drives the agents you already have installed, such as Claude Code, Codex, Cursor, OpenCode and Grok Build, on your own subscriptions. The desktop, web and mobile apps are all just windows onto that local server.
 
-{/* TODO: screenshots pending from the author (sidebar, a sub-agent dispatch, mobile) */}
+![T3 Code on desktop: threads grouped by project on the left, the agent's result and changed files in the middle, branch, commit and PR controls on the right, next to the phone app asking to approve a command](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/screenshot-desktop-mobile.webp)
+
+*Image: [T3 Code GitHub repository](https://github.com/pingdotgg/t3code)*
 
 It runs agents in parallel, previews pages inside the app, and lets you approve the next step from your phone, and all of that works well. What I really can't give up is something else: **orchestration**.
 
 An agent in T3 can open new threads, send messages to other threads, wait for their results, and dispatch work to another machine, another harness or another vendor's model. Threads can talk to each other, work together, and even manage each other.
+
+![One T3 Code thread dispatching four sub-agents at once, running on Claude, Codex, Muse and Gemini, with their progress listed on the right](/img/blog/2026-11-17-t3-code-the-vs-code-of-the-ai-agent-era/screenshot-subagents.webp)
+
+*Image: [T3 Code website](https://t3.codes/). One request, four sub-agents, four vendors' models.*
 
 This is how I use it:
 
