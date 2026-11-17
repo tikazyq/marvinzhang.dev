@@ -2,13 +2,12 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8" />
-<title>图 2 总监和项目经理</title>
+<title>图 2 团队老大和项目经理</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 <style>
   /* 860px canvas. phone = size*358/860, desktop = size*738/860.
      title 32 (13.3 / 27.5), body 21 (8.7 / 18.0), small 18 (7.5 / 15.4). */
-  :root { --canvas:#fafafa; --ink:#1f1f1f; --soft:#4a4a4a; --faint:#767676; --line:#e0e0e0;
-          --vendor:#eef2f7; --vendor-s:#90a4ae; --hub:#7b1fa2; --hub-f:#f6effa; --gap:#c62828; }
+  :root { --canvas:#fafafa; --ink:#1f1f1f; --soft:#4a4a4a; --faint:#767676; --line:#e0e0e0; --hub:#7b1fa2; }
   * { box-sizing:border-box; }
   html,body { margin:0; background:#fff; }
   body { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
@@ -16,49 +15,104 @@
   .figno { font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.08em; color:var(--faint); }
   h1 { font-size:32px; font-weight:600; margin:6px 0 0; line-height:1.25; }
   .subtitle { font-size:21px; color:var(--soft); margin-top:8px; line-height:1.55; }
+  svg { display:block; margin-top:24px; }
+  svg text { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; }
+  .n { font-size:21px; font-weight:600; fill:var(--ink); }
+  .s { font-size:18px; fill:var(--soft); }
+  .e { font-size:18px; fill:var(--hub); }
+  .legend { margin-top:14px; display:flex; flex-wrap:wrap; gap:24px; font-size:18px; color:var(--soft); }
+  .legend i { display:inline-block; width:18px; height:18px; border-radius:4px; vertical-align:-3px; margin-right:8px; }
   .footer { margin-top:22px; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size:18px; color:var(--faint); }
 </style>
-<style>
-  .me { margin:24px auto 0; width:300px; text-align:center; background:#1f1f1f; color:#fff; border-radius:12px; padding:12px; font-size:21px; font-weight:600; }
-  .me small { display:block; font-weight:400; font-size:18px; color:#cfcfcf; }
-  .stem { width:2px; height:22px; background:var(--faint); margin:0 auto; }
-  .tier-l { font-family:'JetBrains Mono',monospace; font-size:18px; color:var(--faint); margin:6px 0 8px; }
-  .pms { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
-  .pm { background:var(--hub-f); border:2px solid var(--hub); border-radius:12px; padding:10px 8px; text-align:center; font-size:21px; font-weight:600; line-height:1.3; }
-  .pm small { display:block; font-weight:400; font-size:18px; color:var(--soft); }
-  .peer { margin:10px 0 0; display:grid; grid-template-columns:repeat(5,1fr); }
-  .peer .bar { grid-column:4 / span 2; border-top:2.5px dashed var(--hub); text-align:center; font-size:18px; color:var(--hub); padding-top:4px; }
-  .subs { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:12px; }
-  .col { display:flex; flex-direction:column; gap:6px; }
-  .s { background:#eef6ff; border:1.2px solid #64b5f6; border-radius:8px; padding:6px 8px; font-size:18px; line-height:1.3; }
-  .s.c { background:#fff4e5; border-color:#ffb74d; }
-  .more { font-size:18px; color:var(--faint); text-align:center; }
-  .legend { margin-top:18px; display:flex; gap:22px; font-size:18px; color:var(--soft); }
-  .legend i { display:inline-block; width:16px; height:16px; border-radius:4px; vertical-align:-2px; margin-right:6px; }
-</style>
-<body><div class="canvas">
+</head>
+<body>
+<div class="canvas">
   <div class="figno">图 02</div>
   <h1>我只和五个 agent 说话</h1>
-  <div class="subtitle">项目经理自己拆任务、派子 agent、互相商量。</div>
-  <div class="me">我<small>总监</small></div>
-  <div class="stem"></div>
-  <div class="tier-l">常驻 agent · Claude Opus</div>
-  <div class="pms">
-    <div class="pm">Semon<small>项目经理</small></div>
-    <div class="pm">Duhem<small>项目经理</small></div>
-    <div class="pm">Ostrom<small>项目经理</small></div>
-    <div class="pm">Tolmap<small>项目经理</small></div>
-    <div class="pm">基础设施<small>负责人</small></div>
+  <div class="subtitle">项目经理自己拆任务、派子 agent，有事互相商量。</div>
+  <svg width="772" height="380" viewBox="-4 0 772 380">
+    <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b1fa2"/></marker></defs>
+    <rect x="301.0" y="10" width="160" height="62" rx="12" fill="#1f1f1f"/>
+    <text x="381.0" y="40" text-anchor="middle" class="n" style="fill:#fff">我</text>
+    <text x="381.0" y="62" text-anchor="middle" class="s" style="fill:#cfcfcf">团队老大</text>
+    <path d="M381.0 72V100M66.0 100H696.0" stroke="#767676" stroke-width="2" fill="none"/>
+    <line x1="66.0" y1="100" x2="66.0" y2="128" stroke="#767676" stroke-width="2"/>
+    <rect x="0" y="130" width="132" height="70" rx="12" fill="#f6effa" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="66.0" y="162" text-anchor="middle" class="n">Semon</text>
+    <text x="66.0" y="188" text-anchor="middle" class="s">项目经理</text>
+    <line x1="12" y1="200" x2="12" y2="332" stroke="#90a4ae" stroke-width="2"/>
+    <line x1="12" y1="240" x2="26" y2="240" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="26" y="222" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="79.0" y="246" text-anchor="middle" class="s" style="fill:#1f1f1f">实现</text>
+    <line x1="12" y1="286" x2="26" y2="286" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="26" y="268" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="79.0" y="292" text-anchor="middle" class="s" style="fill:#1f1f1f">调研</text>
+    <line x1="12" y1="332" x2="26" y2="332" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="26" y="314" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="79.0" y="338" text-anchor="middle" class="s" style="fill:#1f1f1f">审 PR</text>
+    <text x="79.0" y="380" text-anchor="middle" class="s">…</text>
+    <line x1="212.0" y1="100" x2="212.0" y2="128" stroke="#767676" stroke-width="2"/>
+    <rect x="146" y="130" width="132" height="70" rx="12" fill="#f6effa" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="212.0" y="162" text-anchor="middle" class="n">Duhem</text>
+    <text x="212.0" y="188" text-anchor="middle" class="s">项目经理</text>
+    <line x1="158" y1="200" x2="158" y2="332" stroke="#90a4ae" stroke-width="2"/>
+    <line x1="158" y1="240" x2="172" y2="240" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="172" y="222" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="225.0" y="246" text-anchor="middle" class="s" style="fill:#1f1f1f">实现</text>
+    <line x1="158" y1="286" x2="172" y2="286" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="172" y="268" width="106" height="36" rx="8" fill="#fff4e5" stroke="#ffb74d" stroke-width="1.2"/>
+    <text x="225.0" y="292" text-anchor="middle" class="s" style="fill:#1f1f1f">设计</text>
+    <line x1="158" y1="332" x2="172" y2="332" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="172" y="314" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="225.0" y="338" text-anchor="middle" class="s" style="fill:#1f1f1f">修复</text>
+    <text x="225.0" y="380" text-anchor="middle" class="s">…</text>
+    <line x1="358.0" y1="100" x2="358.0" y2="128" stroke="#767676" stroke-width="2"/>
+    <rect x="292" y="130" width="132" height="70" rx="12" fill="#f6effa" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="358.0" y="162" text-anchor="middle" class="n">Ostrom</text>
+    <text x="358.0" y="188" text-anchor="middle" class="s">项目经理</text>
+    <line x1="304" y1="200" x2="304" y2="332" stroke="#90a4ae" stroke-width="2"/>
+    <line x1="304" y1="240" x2="318" y2="240" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="318" y="222" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="371.0" y="246" text-anchor="middle" class="s" style="fill:#1f1f1f">实现</text>
+    <line x1="304" y1="286" x2="318" y2="286" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="318" y="268" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="371.0" y="292" text-anchor="middle" class="s" style="fill:#1f1f1f">审 PR</text>
+    <line x1="304" y1="332" x2="318" y2="332" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="318" y="314" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="371.0" y="338" text-anchor="middle" class="s" style="fill:#1f1f1f">修复</text>
+    <text x="371.0" y="380" text-anchor="middle" class="s">…</text>
+    <line x1="504.0" y1="100" x2="504.0" y2="128" stroke="#767676" stroke-width="2"/>
+    <rect x="438" y="130" width="132" height="70" rx="12" fill="#f6effa" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="504.0" y="162" text-anchor="middle" class="n">Tolmap</text>
+    <text x="504.0" y="188" text-anchor="middle" class="s">项目经理</text>
+    <line x1="450" y1="200" x2="450" y2="332" stroke="#90a4ae" stroke-width="2"/>
+    <line x1="450" y1="240" x2="464" y2="240" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="464" y="222" width="106" height="36" rx="8" fill="#fff4e5" stroke="#ffb74d" stroke-width="1.2"/>
+    <text x="517.0" y="246" text-anchor="middle" class="s" style="fill:#1f1f1f">实现</text>
+    <line x1="450" y1="286" x2="464" y2="286" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="464" y="268" width="106" height="36" rx="8" fill="#fff4e5" stroke="#ffb74d" stroke-width="1.2"/>
+    <text x="517.0" y="292" text-anchor="middle" class="s" style="fill:#1f1f1f">调研</text>
+    <line x1="450" y1="332" x2="464" y2="332" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="464" y="314" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="517.0" y="338" text-anchor="middle" class="s" style="fill:#1f1f1f">修复</text>
+    <text x="517.0" y="380" text-anchor="middle" class="s">…</text>
+    <line x1="696.0" y1="100" x2="696.0" y2="128" stroke="#767676" stroke-width="2"/>
+    <rect x="630" y="130" width="132" height="70" rx="12" fill="#f6effa" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="696.0" y="162" text-anchor="middle" class="n">基础设施</text>
+    <text x="696.0" y="188" text-anchor="middle" class="s">负责人</text>
+    <line x1="642" y1="200" x2="642" y2="240" stroke="#90a4ae" stroke-width="2"/>
+    <line x1="642" y1="240" x2="656" y2="240" stroke="#90a4ae" stroke-width="2"/>
+    <rect x="656" y="222" width="106" height="36" rx="8" fill="#eef6ff" stroke="#64b5f6" stroke-width="1.2"/>
+    <text x="709.0" y="246" text-anchor="middle" class="s" style="fill:#1f1f1f">改 CI</text>
+    <line x1="574" y1="172" x2="626" y2="172" stroke="#7b1fa2" stroke-width="2.5" marker-start="url(#a)" marker-end="url(#a)"/>
+    <text x="600" y="158" text-anchor="middle" class="e">商量</text>
+  </svg>
+  <div class="legend">
+    <span><i style="background:#f6effa;border:2px solid #7b1fa2"></i>常驻 agent，Claude Opus</span>
+    <span><i style="background:#eef6ff;border:1.2px solid #64b5f6"></i>子 agent，GPT</span>
+    <span><i style="background:#fff4e5;border:1.2px solid #ffb74d"></i>子 agent，Claude</span>
   </div>
-  <div class="peer"><div class="bar">自己商量</div></div>
-  <div class="tier-l">子 agent · 大多是 GPT</div>
-  <div class="subs">
-    <div class="col"><div class="s">实现</div><div class="s">调研</div><div class="s">审 PR</div><div class="more">…</div></div>
-    <div class="col"><div class="s">实现</div><div class="s c">设计</div><div class="s">修复</div><div class="more">…</div></div>
-    <div class="col"><div class="s">实现</div><div class="s">审 PR</div><div class="s">修复</div><div class="more">…</div></div>
-    <div class="col"><div class="s c">实现</div><div class="s c">调研</div><div class="s">修复</div><div class="more">…</div></div>
-    <div class="col"><div class="s">改 CI</div></div>
-  </div>
-  <div class="legend"><span><i style="background:#eef6ff;border:1.2px solid #64b5f6"></i>GPT</span><span><i style="background:#fff4e5;border:1.2px solid #ffb74d"></i>Claude</span></div>
   <div class="footer">MARVINZHANG.DEV</div>
-</div></body></html>
+</div>
+</body>
+</html>

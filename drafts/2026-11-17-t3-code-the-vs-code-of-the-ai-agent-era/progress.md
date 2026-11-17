@@ -161,3 +161,7 @@
 - (2026-11-17, author) **Outline + hook APPROVED.** Drop MCP/agent-side ecosystem twist. No Ostrom "restarting" note. Don't mention author building Ostrom-like orchestration.
 - (2026-11-17, author) Needs illustrations: visualize author's own experience; T3 UI screenshots; orchestration / communication diagrams.
 - (2026-11-17, author) Name Magpie in the article (well known in tech circles, but add a one-line explanation for readers who have not heard of it). Screenshots: not urgent, leave placeholders.
+- (2026-11-17) Figure 3 redrawn as topology (author). HAPI corrected: has cross-machine peer messaging (author + docs). Figure 2 rebuilt as SVG tree.
+- (2026-11-17, author) 「总监」 is only an analogy; the author is the head of the whole agent team. Used once in the hook; elsewhere 「团队老大」 / "run a team of agents".
+- (2026-11-17) Magpie linked (yetone/magpie, MIT). JetBrains line → 「专业版各自收费」.
+- (2026-11-17) EN restatement written + EN figures. Remaining: author review, screenshots, PM-structure duration ("一段时间"), WeChat/Medium export, CI build.

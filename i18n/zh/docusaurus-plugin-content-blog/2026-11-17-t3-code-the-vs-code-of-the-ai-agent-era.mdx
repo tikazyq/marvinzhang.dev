@@ -21,7 +21,7 @@ unlisted: true
 - Magpie 可点名，给一句解释。
 - Semon 的统计数字不进正文。
 
-用词：thread → 对话（首次注明 T3 叫它 thread）；PM → 项目经理；director → 总监；
+用词：thread → 对话（首次注明 T3 叫它 thread）；PM → 项目经理；我 = 整个 agent 团队的老大（「总监」只在开头当比喻用一次）；
 sub-agent → 子 agent；harness 保留英文不解释；agent、CI、PR 保留。
 
 语感红线：正文 0 破折号；不用「不是……而是……」「恰恰」。
@@ -31,7 +31,7 @@ sub-agent → 子 agent；harness 保留英文不解释；agent、CI、PR 保留
 
 接下来的事我基本没插手。它新开了一个对话，交给一个专管基础设施的 agent。这个 agent 读完两个仓库的配置，发现其中一个项目归另一个 agent 负责，就自己去找对方商量。对方回问它，改动该基于哪个分支提交。几分钟后，两个仓库各提了一个 PR。它还发现，CI 在之前一次节省开支的清理中被关掉了，就顺手重新打开；本地有一份代码副本坏了，它没去碰，只是告诉了我。
 
-在 T3 Code 里，每个对话（T3 叫它 thread）背后就是一个 agent。我手上常驻的 agent 有五个，四个各负责一个开源项目，相当于项目经理，另一个负责基础设施。它们跑在 Anthropic 的 Claude 上，把任务拆好后，再派给子 agent 去干，这些子 agent 大多用的是 OpenAI 的 GPT 模型。最近派出去的子 agent 有一百多个，我一个都没直接管过。我的位置有点像公司里的总监，具体的活不碰，只管几个项目经理。
+在 T3 Code 里，每个对话（T3 叫它 thread）背后就是一个 agent。我手上常驻的 agent 有五个，四个各负责一个开源项目，相当于项目经理，另一个负责基础设施。它们跑在 Anthropic 的 Claude 上，把任务拆好后，再派给子 agent 去干，这些子 agent 大多用的是 OpenAI 的 GPT 模型。最近派出去的子 agent 有一百多个，我一个都没直接管过。我是这支 agent 团队的老大，具体的活不碰，只管几个项目经理，有点像公司里的总监。
 
 T3 Code 常被称作 Agent 时代的 VS Code。可仔细想想，让我离不开的这些功能，Paseo 的文档里几乎一字不差地写着，官方的 Codex 和 Claude app 也在一周一版地追赶。功能谁都能做，凭什么是它？
 
@@ -43,7 +43,7 @@ T3 Code 常被称作 Agent 时代的 VS Code。可仔细想想，让我离不开
 
 十几年前，写代码用什么工具，基本由你写什么决定。
 
-写 C# 用 Visual Studio，它和 Windows、.NET 绑在一起。写 iOS 用 Xcode，离开苹果的平台就用不了。写 Java 的人在 Eclipse 和 IntelliJ 之间选，Eclipse 插件多，但又慢又重。JetBrains 后来把这套做法推到了极致：Java 用 IntelliJ，Python 用 PyCharm，前端用 WebStorm，Go 用 GoLand，一门语言一个 IDE，每个都要单独付费。这些工具都很强，强到今天还有很多人离不开。
+写 C# 用 Visual Studio，它和 Windows、.NET 绑在一起。写 iOS 用 Xcode，离开苹果的平台就用不了。写 Java 的人在 Eclipse 和 IntelliJ 之间选，Eclipse 插件多，但又慢又重。JetBrains 后来把这套做法推到了极致：Java 用 IntelliJ，Python 用 PyCharm，前端用 WebStorm，Go 用 GoLand，一门语言一个 IDE，专业版各自收费。这些工具都很强，强到今天还有很多人离不开。
 
 2015 年微软发布 VS Code 的时候，它在功能上比不过任何一个对手。调试不如 Visual Studio，重构不如 IntelliJ，它最初只是一个启动很快的编辑器。
 
@@ -93,11 +93,9 @@ T3 里的 agent 可以开新对话，可以给别的对话发消息，可以等�
 
 有两个细节值得一提。
 
-一是**权限有边界**。派给基础设施负责人的任务说明里写着：不许自己删掉旧的 CI 服务器，要整套删除部署流程之前先问我。所以它碰到损坏的代码副本和会冲突的旧 PR 时，只报告，不动手。总监给项目经理授权，本来就该这样：说清楚能做什么，也说清楚哪些事得先请示。
+一是**权限有边界**。派给基础设施负责人的任务说明里写着：不许自己删掉旧的 CI 服务器，要整套删除部署流程之前先问我。所以它碰到损坏的代码副本和会冲突的旧 PR 时，只报告，不动手。带团队的人给手下授权，本来就该这样：说清楚能做什么，也说清楚哪些事得先请示。
 
-二是**跨模型几乎没有成本**。项目经理用 Claude，子 agent 大多用 GPT，切换只是派任务时填的一个参数。这里我用了 Magpie，一个在技术圈挺流行的模型网关，它能让同一个 harness 调用好几家的模型。T3 本身也支持把任务直接派给另一个 harness，比如从 Claude Code 派给 Codex。
-
-{/* TODO：补 Magpie 的链接，请作者确认 */}
+二是**跨模型几乎没有成本**。项目经理用 Claude，子 agent 大多用 GPT，切换只是派任务时填的一个参数。这里我用了 [Magpie](https://github.com/yetone/magpie)，一个在技术圈挺流行的开源模型网关，它能让同一个 harness 调用好几家的模型。T3 本身也支持把任务直接派给另一个 harness，比如从 Claude Code 派给 Codex。
 
 这套做法在我手上跑了一段时间，暂时没出过问题：没有汇报失真，没有项目经理之间扯皮，也没有越权。不过时间还短，样本也不大，我不敢说它能一直这样。[多 agent 团队的协调成本](/blog/multi-agent-teams-and-the-measurable-coordination-tax)是真实存在的，层级越多，信息在传递中走样的机会就越多。我之所以愿意多加一层项目经理，是因为[我的注意力比代码贵](/blog/cheap-code-scarce-attention)。以前我得盯着每一个 agent，现在只用盯五个，[不再给 agent 当保姆](/blog/stop-babysitting-your-agent)。这和[控制论里的可生存系统模型](/blog/vsm-cybernetics-system-organization)讲的是同一件事：每一层只处理自己那一层的复杂度，处理不了的才往上报。
 
@@ -158,4 +156,4 @@ VS Code 当年赢在三件事：免费开源、中立、扩展生态。T3 Code �
 
 不过我也想说，拿编辑器来比，其实低估了它。VS Code 解决的是一个人怎么更顺手地写代码。我在 T3 里做的事，更接近一个人怎么管一个团队：我不写代码，也不盯 agent，我只跟几个项目经理说话，它们之间自己协作。这件事 VS Code 从来没有做过，因为它出现的时候，还没有需要被管理的 agent。
 
-也许十年后再回头看，人们会记得 T3 Code 是第一个让普通开发者当上总监的工具。前提是，它得先把生态这一步走完。
+也许十年后再回头看，人们会记得 T3 Code 是第一个让普通开发者带起一支 agent 团队的工具。前提是，它得先把生态这一步走完。

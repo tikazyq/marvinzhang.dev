@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Figure 1 One per vendor, then neutral</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  /* 860px canvas. phone = size*358/860, desktop = size*738/860.
+     title 32 (13.3 / 27.5), body 21 (8.7 / 18.0), small 18 (7.5 / 15.4). */
+  :root { --canvas:#fafafa; --ink:#1f1f1f; --soft:#4a4a4a; --faint:#767676; --line:#e0e0e0;
+          --vendor:#eef2f7; --vendor-s:#90a4ae; --hub:#7b1fa2; --hub-f:#f6effa; --gap:#c62828; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; background:#fff; }
+  body { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .canvas { width:860px; padding:42px 44px 34px; background:var(--canvas); }
+  .figno { font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.08em; color:var(--faint); }
+  h1 { font-size:32px; font-weight:600; margin:6px 0 0; line-height:1.25; }
+  .subtitle { font-size:21px; color:var(--soft); margin-top:8px; line-height:1.55; }
+  .era { margin-top:26px; border:1.5px solid var(--line); border-radius:14px; background:#fff; padding:18px 20px 20px; }
+  .era-t { font-size:21px; font-weight:600; }
+  .era-y { font-family:'JetBrains Mono',monospace; font-size:18px; color:var(--faint); margin-left:8px; }
+  .row { display:grid; grid-template-columns:1fr 46px 250px; align-items:center; margin-top:14px; }
+  .vendors { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .v { background:var(--vendor); border:1.2px solid var(--vendor-s); border-radius:10px; padding:9px 12px; font-size:21px; line-height:1.35; }
+  .v small { display:block; font-size:18px; color:var(--soft); }
+  .arrow { display:flex; justify-content:center; }
+  .hub { background:var(--hub-f); border:2px solid var(--hub); border-radius:12px; padding:12px 14px; font-size:21px; line-height:1.45; }
+  .hub b { color:var(--hub); }
+  .hub .miss { color:var(--gap); font-weight:600; }
+  .hub small { display:block; font-size:18px; color:var(--soft); }
+  .footer { margin-top:22px; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size:18px; color:var(--faint); }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="figno">FIG 01</div>
+  <h1>First one per vendor, then a neutral one</h1>
+  <div class="subtitle">Agent tools are walking the road IDEs already walked.</div>
+
+  <div class="era">
+    <div><span class="era-t">The IDE era</span><span class="era-y">2000s–2015</span></div>
+    <div class="row">
+      <div class="vendors">
+        <div class="v">Visual Studio<small>Tied to Windows and .NET</small></div>
+        <div class="v">Xcode<small>Tied to Apple platforms</small></div>
+        <div class="v">Eclipse<small>Many plugins, slow and heavy</small></div>
+        <div class="v">JetBrains suite<small>One IDE per language</small></div>
+      </div>
+      <div class="arrow"><svg width="30" height="20" viewBox="0 0 30 20"><path d="M2 10h24M18 3l8 7-8 7" fill="none" stroke="#7b1fa2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="hub"><b>VS Code</b><small>Free and open · LSP covers every language · extension marketplace</small></div>
+    </div>
+  </div>
+
+  <div class="era">
+    <div><span class="era-t">The agent era</span><span class="era-y">2025–</span></div>
+    <div class="row">
+      <div class="vendors">
+        <div class="v">Claude app<small>Runs only Claude</small></div>
+        <div class="v">Codex app<small>Runs only Codex</small></div>
+        <div class="v">Cursor<small>Own harness and model</small></div>
+        <div class="v">Antigravity<small>Google's own</small></div>
+      </div>
+      <div class="arrow"><svg width="30" height="20" viewBox="0 0 30 20"><path d="M2 10h24M18 3l8 7-8 7" fill="none" stroke="#7b1fa2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="hub"><b>T3 Code?</b><small>Free and open · runs every vendor's agent</small><span class="miss">Missing: extension ecosystem</span></div>
+    </div>
+  </div>
+
+  <div class="footer">MARVINZHANG.DEV</div>
+</div>
+</body>
+</html>
