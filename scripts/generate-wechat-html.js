@@ -48,7 +48,8 @@ const S = {
   // hardenCodeWhitespace still apply.
   pre: 'background-color:rgb(30,30,30);padding:15px;border-radius:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;',
   precode: 'background:none;padding:0;border-radius:0;font-size:13px;line-height:1.6;font-family:Operator Mono,Consolas,Monaco,Menlo,monospace;color:#abb2bf;white-space:nowrap;',
-  table: 'width:100%;border-collapse:collapse;margin:10px 0;font-size:14px;',
+  tablewrap: 'overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;',
+  table: 'width:100%;min-width:max-content;border-collapse:collapse;margin:0;font-size:14px;',
   th: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);background:rgb(240,240,240);color:rgb(89,89,89);font-weight:bold;font-size:14px;line-height:1.5em;letter-spacing:0.02em;min-width:85px;',
   td: 'padding:5px 10px;text-align:left;border:1px solid rgba(204,204,204,0.4);font-size:14px;line-height:1.5em;letter-spacing:0.02em;color:rgb(89,89,89);min-width:85px;',
   // padding-left:0 with outside discs breaks hanging indent in WeChat —
@@ -212,7 +213,9 @@ function createRenderer() {
       return `<code style="${S.code}">${text}</code>`;
     },
     table({ header, rows }) {
-      let html = `<table style="${S.table}">\n<thead>\n<tr>\n`;
+      // Wide tables (4+ columns) clip at phone width; WeChat keeps overflow-x on a
+      // wrapping <section>, same trick as code blocks, so the reader can swipe.
+      let html = `<section style="${S.tablewrap}"><table style="${S.table}">\n<thead>\n<tr>\n`;
       for (const cell of header) {
         const text = this.parser.parseInline(cell.tokens);
         html += `<th style="${S.th}">${text}</th>\n`;
@@ -226,7 +229,7 @@ function createRenderer() {
         }
         html += '</tr>\n';
       }
-      html += '</tbody>\n</table>\n';
+      html += '</tbody>\n</table></section>\n';
       return html;
     },
     list({ ordered, items }) {
