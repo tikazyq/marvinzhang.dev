@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 2 总监和项目经理</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  /* 860px canvas. phone = size*358/860, desktop = size*738/860.
+     title 32 (13.3 / 27.5), body 21 (8.7 / 18.0), small 18 (7.5 / 15.4). */
+  :root { --canvas:#fafafa; --ink:#1f1f1f; --soft:#4a4a4a; --faint:#767676; --line:#e0e0e0;
+          --vendor:#eef2f7; --vendor-s:#90a4ae; --hub:#7b1fa2; --hub-f:#f6effa; --gap:#c62828; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; background:#fff; }
+  body { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .canvas { width:860px; padding:42px 44px 34px; background:var(--canvas); }
+  .figno { font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.08em; color:var(--faint); }
+  h1 { font-size:32px; font-weight:600; margin:6px 0 0; line-height:1.25; }
+  .subtitle { font-size:21px; color:var(--soft); margin-top:8px; line-height:1.55; }
+  .footer { margin-top:22px; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size:18px; color:var(--faint); }
+</style>
+<style>
+  .me { margin:24px auto 0; width:300px; text-align:center; background:#1f1f1f; color:#fff; border-radius:12px; padding:12px; font-size:21px; font-weight:600; }
+  .me small { display:block; font-weight:400; font-size:18px; color:#cfcfcf; }
+  .stem { width:2px; height:22px; background:var(--faint); margin:0 auto; }
+  .tier-l { font-family:'JetBrains Mono',monospace; font-size:18px; color:var(--faint); margin:6px 0 8px; }
+  .pms { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+  .pm { background:var(--hub-f); border:2px solid var(--hub); border-radius:12px; padding:10px 8px; text-align:center; font-size:21px; font-weight:600; line-height:1.3; }
+  .pm small { display:block; font-weight:400; font-size:18px; color:var(--soft); }
+  .peer { margin:10px 0 0; display:grid; grid-template-columns:repeat(5,1fr); }
+  .peer .bar { grid-column:4 / span 2; border-top:2.5px dashed var(--hub); text-align:center; font-size:18px; color:var(--hub); padding-top:4px; }
+  .subs { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:12px; }
+  .col { display:flex; flex-direction:column; gap:6px; }
+  .s { background:#eef6ff; border:1.2px solid #64b5f6; border-radius:8px; padding:6px 8px; font-size:18px; line-height:1.3; }
+  .s.c { background:#fff4e5; border-color:#ffb74d; }
+  .more { font-size:18px; color:var(--faint); text-align:center; }
+  .legend { margin-top:18px; display:flex; gap:22px; font-size:18px; color:var(--soft); }
+  .legend i { display:inline-block; width:16px; height:16px; border-radius:4px; vertical-align:-2px; margin-right:6px; }
+</style>
+<body><div class="canvas">
+  <div class="figno">图 02</div>
+  <h1>我只和五个 agent 说话</h1>
+  <div class="subtitle">项目经理自己拆任务、派子 agent、互相商量。</div>
+  <div class="me">我<small>总监</small></div>
+  <div class="stem"></div>
+  <div class="tier-l">常驻 agent · Claude Opus</div>
+  <div class="pms">
+    <div class="pm">Semon<small>项目经理</small></div>
+    <div class="pm">Duhem<small>项目经理</small></div>
+    <div class="pm">Ostrom<small>项目经理</small></div>
+    <div class="pm">Tolmap<small>项目经理</small></div>
+    <div class="pm">基础设施<small>负责人</small></div>
+  </div>
+  <div class="peer"><div class="bar">自己商量</div></div>
+  <div class="tier-l">子 agent · 大多是 GPT</div>
+  <div class="subs">
+    <div class="col"><div class="s">实现</div><div class="s">调研</div><div class="s">审 PR</div><div class="more">…</div></div>
+    <div class="col"><div class="s">实现</div><div class="s c">设计</div><div class="s">修复</div><div class="more">…</div></div>
+    <div class="col"><div class="s">实现</div><div class="s">审 PR</div><div class="s">修复</div><div class="more">…</div></div>
+    <div class="col"><div class="s c">实现</div><div class="s c">调研</div><div class="s">修复</div><div class="more">…</div></div>
+    <div class="col"><div class="s">改 CI</div></div>
+  </div>
+  <div class="legend"><span><i style="background:#eef6ff;border:1.2px solid #64b5f6"></i>GPT</span><span><i style="background:#fff4e5;border:1.2px solid #ffb74d"></i>Claude</span></div>
+  <div class="footer">MARVINZHANG.DEV</div>
+</div></body></html>

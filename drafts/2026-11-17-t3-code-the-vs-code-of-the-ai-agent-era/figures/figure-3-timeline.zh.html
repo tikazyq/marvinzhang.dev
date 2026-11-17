@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>图 3 一次 CI 迁移</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  /* 860px canvas. phone = size*358/860, desktop = size*738/860.
+     title 32 (13.3 / 27.5), body 21 (8.7 / 18.0), small 18 (7.5 / 15.4). */
+  :root { --canvas:#fafafa; --ink:#1f1f1f; --soft:#4a4a4a; --faint:#767676; --line:#e0e0e0;
+          --vendor:#eef2f7; --vendor-s:#90a4ae; --hub:#7b1fa2; --hub-f:#f6effa; --gap:#c62828; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; background:#fff; }
+  body { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .canvas { width:860px; padding:42px 44px 34px; background:var(--canvas); }
+  .figno { font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.08em; color:var(--faint); }
+  h1 { font-size:32px; font-weight:600; margin:6px 0 0; line-height:1.25; }
+  .subtitle { font-size:21px; color:var(--soft); margin-top:8px; line-height:1.55; }
+  .footer { margin-top:22px; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size:18px; color:var(--faint); }
+</style>
+<style>
+  .tl { margin-top:24px; position:relative; padding-left:34px; }
+  .tl:before { content:''; position:absolute; left:11px; top:6px; bottom:6px; width:2px; background:var(--line); }
+  .st { position:relative; margin-bottom:14px; }
+  .st:before { content:''; position:absolute; left:-29px; top:8px; width:14px; height:14px; border-radius:50%; background:#fff; border:2.5px solid var(--hub); }
+  .who { font-size:18px; font-family:'JetBrains Mono',monospace; color:var(--hub); }
+  .what { font-size:21px; line-height:1.45; }
+  .st.me:before { border-color:#1f1f1f; background:#1f1f1f; } .st.me .who { color:#1f1f1f; }
+  .st.stop:before { border-color:var(--gap); } .st.stop .who { color:var(--gap); }
+  .st.peer .what { background:var(--hub-f); border-radius:8px; padding:6px 10px; }
+</style>
+<body><div class="canvas">
+  <div class="figno">图 03</div>
+  <h1>一句话之后发生了什么</h1>
+  <div class="subtitle">11 月 14 日，把两个项目的 CI 换回 GitHub 的机器。</div>
+  <div class="tl">
+    <div class="st me"><div class="who">我</div><div class="what">「把两个项目的 CI 都换回 GitHub 自己的机器上跑」</div></div>
+    <div class="st"><div class="who">接到要求的 agent</div><div class="what">新开基础设施负责人的对话，附上背景和权限边界</div></div>
+    <div class="st"><div class="who">基础设施负责人</div><div class="what">读两个仓库的配置，发现 tolmap-hub 归 Tolmap 项目经理</div></div>
+    <div class="st peer"><div class="who">基础设施负责人 ⇄ Tolmap 项目经理</div><div class="what">主动去问；对方回问 PR 该基于哪个分支</div></div>
+    <div class="st"><div class="who">基础设施负责人</div><div class="what">两个仓库各开一个 PR；发现 CI 被关掉，重新打开</div></div>
+    <div class="st stop"><div class="who">权限之外</div><div class="what">代码副本损坏、四个旧 PR 会冲突：只报告，不动手</div></div>
+    <div class="st me"><div class="who">我</div><div class="what">收到一份汇报</div></div>
+  </div>
+  <div class="footer">MARVINZHANG.DEV</div>
+</div></body></html>
