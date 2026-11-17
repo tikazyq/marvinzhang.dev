@@ -165,3 +165,4 @@
 - (2026-11-17, author) 「总监」 is only an analogy; the author is the head of the whole agent team. Used once in the hook; elsewhere 「团队老大」 / "run a team of agents".
 - (2026-11-17) Magpie linked (yetone/magpie, MIT). JetBrains line → 「专业版各自收费」.
 - (2026-11-17) EN restatement written + EN figures. Remaining: author review, screenshots, PM-structure duration ("一段时间"), WeChat/Medium export, CI build.
+- (2026-11-17, author) PM structure duration: about two weeks.

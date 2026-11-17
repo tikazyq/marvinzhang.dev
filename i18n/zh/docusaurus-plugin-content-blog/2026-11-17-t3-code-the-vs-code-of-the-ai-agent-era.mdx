@@ -97,7 +97,7 @@ T3 里的 agent 可以开新对话，可以给别的对话发消息，可以等�
 
 二是**跨模型几乎没有成本**。项目经理用 Claude，子 agent 大多用 GPT，切换只是派任务时填的一个参数。这里我用了 [Magpie](https://github.com/yetone/magpie)，一个在技术圈挺流行的开源模型网关，它能让同一个 harness 调用好几家的模型。T3 本身也支持把任务直接派给另一个 harness，比如从 Claude Code 派给 Codex。
 
-这套做法在我手上跑了一段时间，暂时没出过问题：没有汇报失真，没有项目经理之间扯皮，也没有越权。不过时间还短，样本也不大，我不敢说它能一直这样。[多 agent 团队的协调成本](/blog/multi-agent-teams-and-the-measurable-coordination-tax)是真实存在的，层级越多，信息在传递中走样的机会就越多。我之所以愿意多加一层项目经理，是因为[我的注意力比代码贵](/blog/cheap-code-scarce-attention)。以前我得盯着每一个 agent，现在只用盯五个，[不再给 agent 当保姆](/blog/stop-babysitting-your-agent)。这和[控制论里的可生存系统模型](/blog/vsm-cybernetics-system-organization)讲的是同一件事：每一层只处理自己那一层的复杂度，处理不了的才往上报。
+这套做法在我手上跑了两周左右，暂时没出过问题：没有汇报失真，没有项目经理之间扯皮，也没有越权。不过时间还短，样本也不大，我不敢说它能一直这样。[多 agent 团队的协调成本](/blog/multi-agent-teams-and-the-measurable-coordination-tax)是真实存在的，层级越多，信息在传递中走样的机会就越多。我之所以愿意多加一层项目经理，是因为[我的注意力比代码贵](/blog/cheap-code-scarce-attention)。以前我得盯着每一个 agent，现在只用盯五个，[不再给 agent 当保姆](/blog/stop-babysitting-your-agent)。这和[控制论里的可生存系统模型](/blog/vsm-cybernetics-system-organization)讲的是同一件事：每一层只处理自己那一层的复杂度，处理不了的才往上报。
 
 T3 也有明显的短板。中途给一个对话换模型，新模型拿不到之前的推理过程和工具调用记录，上下文会丢一部分。新对话默认给 agent 完全权限，而 T3 自己的文档也说，权限模式算不上真正的安全边界。各家 agent 的新功能，T3 的适配层也总要晚一步才跟上。
 
