@@ -167,3 +167,4 @@
 - (2026-11-17) EN restatement written + EN figures. Remaining: author review, screenshots, PM-structure duration ("一段时间"), WeChat/Medium export, CI build.
 - (2026-11-17, author) PM structure duration: about two weeks.
 - (2026-11-17, author) Use official screenshots instead of the author's own: README hero (desktop + mobile) and t3.codes desktop (4 sub-agents across vendors), credited.
+- (2026-11-17, author) Hook too technical. New hook: team image first (100+ agents, none managed directly); CI story moved into section 2 as the example.
