@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Figure 3 Topology of a CI migration</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  /* 860px canvas. phone = size*358/860, desktop = size*738/860.
+     title 32 (13.3 / 27.5), body 21 (8.7 / 18.0), small 18 (7.5 / 15.4). */
+  :root { --canvas:#fafafa; --ink:#1f1f1f; --soft:#4a4a4a; --faint:#767676; --line:#e0e0e0;
+          --vendor:#eef2f7; --vendor-s:#90a4ae; --hub:#7b1fa2; --hub-f:#f6effa; --gap:#c62828; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; background:#fff; }
+  body { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .canvas { width:860px; padding:42px 44px 34px; background:var(--canvas); }
+  .figno { font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.08em; color:var(--faint); }
+  h1 { font-size:32px; font-weight:600; margin:6px 0 0; line-height:1.25; }
+  .subtitle { font-size:21px; color:var(--soft); margin-top:8px; line-height:1.55; }
+  svg { display:block; margin-top:22px; }
+  svg text { font-family:'Inter','Noto Sans SC','WenQuanYi Zen Hei',sans-serif; }
+  .n { font-size:21px; font-weight:600; fill:var(--ink); }
+  .s { font-size:18px; fill:var(--soft); }
+  .e { font-size:18px; fill:var(--hub); }
+  .e.red { fill:var(--gap); }
+  .e.grey { fill:var(--faint); }
+  .legend { margin-top:10px; font-size:18px; color:var(--soft); display:flex; gap:26px; flex-wrap:wrap; }
+  .legend i { display:inline-block; width:34px; vertical-align:middle; margin-right:8px; border-top:2.5px solid var(--hub); }
+  .legend i.red { border-top:2.5px dashed var(--gap); }
+  .legend i.grey { border-top:2px dashed var(--faint); }
+  .footer { margin-top:22px; border-top:1px solid var(--line); padding-top:13px; font-family:'JetBrains Mono',monospace; font-size:18px; color:var(--faint); }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="figno">FIG 03</div>
+  <h1>After one sentence, who talked to whom</h1>
+  <div class="subtitle">Nov 14: move two projects' CI back to GitHub's own runners. Numbers show the order.</div>
+
+  <svg width="772" height="530" viewBox="0 0 772 530">
+    <defs>
+      <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b1fa2"/></marker>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c62828"/></marker>
+      <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#767676"/></marker>
+    </defs>
+
+    <!-- edges -->
+    <g fill="none" stroke-width="2.5" stroke-linecap="round">
+      <line x1="345" y1="66" x2="225" y2="135" stroke="#7b1fa2" marker-end="url(#ap)"/>
+      <line x1="175" y1="193" x2="248" y2="278" stroke="#7b1fa2" marker-end="url(#ap)"/>
+      <line x1="415" y1="300" x2="530" y2="300" stroke="#7b1fa2" marker-end="url(#ap)"/>
+      <line x1="532" y1="324" x2="417" y2="324" stroke="#7b1fa2" marker-end="url(#ap)"/>
+      <line x1="320" y1="340" x2="380" y2="438" stroke="#7b1fa2" marker-end="url(#ap)"/>
+      <line x1="395" y1="340" x2="598" y2="438" stroke="#7b1fa2" marker-end="url(#ap)"/>
+      <line x1="235" y1="340" x2="160" y2="438" stroke="#c62828" stroke-dasharray="7 6" marker-end="url(#ar)"/>
+      <line x1="405" y1="278" x2="405" y2="68" stroke="#7b1fa2" marker-end="url(#ap)"/>
+      <line x1="642" y1="340" x2="642" y2="438" stroke="#767676" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#ag)"/>
+    </g>
+
+    <!-- edge labels -->
+    <text class="e" x="280" y="92" text-anchor="end">① One request</text>
+    <text class="e" x="192" y="236" text-anchor="end">② New thread</text>
+    <text class="e" x="192" y="260" text-anchor="end">with limits</text>
+    <text class="e" x="473" y="288" text-anchor="middle">③ Owner?</text>
+    <text class="e" x="473" y="352" text-anchor="middle">Branch?</text>
+    <text class="e" x="442" y="398" text-anchor="middle">④ Open PRs</text>
+    <text class="e" x="442" y="421" text-anchor="middle">re-enable CI</text>
+    <text class="e red" x="180" y="392" text-anchor="end">⑤ Report only</text>
+    <text class="e" x="418" y="178">⑥ Report back</text>
+    <text class="e grey" x="654" y="395">owns</text>
+
+    <!-- nodes -->
+    <rect x="331" y="14" width="110" height="52" rx="10" fill="#1f1f1f"/>
+    <text class="n" x="386" y="47" text-anchor="middle" fill="#fff" style="fill:#fff">Me</text>
+
+    <rect x="20" y="137" width="280" height="56" rx="10" fill="#fff" stroke="#90a4ae" stroke-width="1.5"/>
+    <text class="n" x="160" y="172" text-anchor="middle">The agent I asked</text>
+
+    <rect x="185" y="280" width="230" height="60" rx="12" fill="#f6effa" stroke="#7b1fa2" stroke-width="2.5"/>
+    <text class="n" x="300" y="318" text-anchor="middle" style="fill:#7b1fa2">Infra Manager</text>
+
+    <rect x="532" y="280" width="220" height="60" rx="12" fill="#f6effa" stroke="#7b1fa2" stroke-width="1.5"/>
+    <text class="n" x="642" y="318" text-anchor="middle">Tolmap PM</text>
+
+    <rect x="20" y="440" width="230" height="80" rx="10" fill="#fff" stroke="#c62828" stroke-width="1.8" stroke-dasharray="7 5"/>
+    <text class="n" x="135" y="472" text-anchor="middle" style="fill:#c62828">Out of bounds</text>
+    <text class="s" x="135" y="502" text-anchor="middle">Broken clone, stale PRs</text>
+
+    <rect x="276" y="440" width="220" height="80" rx="10" fill="#eef2f7" stroke="#90a4ae" stroke-width="1.2"/>
+    <text class="n" x="386" y="472" text-anchor="middle">semon-hub</text>
+    <text class="s" x="386" y="502" text-anchor="middle">PR #386</text>
+
+    <rect x="532" y="440" width="220" height="80" rx="10" fill="#eef2f7" stroke="#90a4ae" stroke-width="1.2"/>
+    <text class="n" x="642" y="472" text-anchor="middle">tolmap-hub</text>
+    <text class="s" x="642" y="502" text-anchor="middle">PR #26</text>
+  </svg>
+
+  <div class="legend">
+    <span><i></i>Dispatch, messages</span>
+    <span><i class="red"></i>Hit a limit</span>
+    <span><i class="grey"></i>Ownership</span>
+  </div>
+
+  <div class="footer">MARVINZHANG.DEV</div>
+</div>
+</body>
+</html>
