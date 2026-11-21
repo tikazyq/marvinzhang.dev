@@ -1,0 +1,114 @@
+---
+slug: introducing-agent-workbench
+title: "Agent Workbench: Run Your Coding Agents as One Team"
+authors: ["marvin"]
+tags: ["ai", "agents", "development-tools", "open-source"]
+date: 2026-11-21
+unlisted: true
+---
+
+{/*
+DRAFT for owner review. Unlisted. Do not publish or export to WeChat/Medium until the owner approves.
+Facts verified 2026-11-21 against onsager-ai/agent-workbench@8d5f6e8 (npm @onsager/awb 0.2.0).
+Date is a placeholder: rename the file and frontmatter together if publication moves.
+The 42-PR Sol replay result (docs/notes.md) is deliberately left out; see the comment in "The Worker ladder".
+*/}
+
+Agent Workbench is now public. It is a set of skills and hooks for Claude Code and Codex that makes the session you talk to act like a team lead: it plans the work, hands pieces to cheaper Worker agents, and checks their results before it tells you anything is done.
+
+It installs with one command and adds no app, server or dashboard:
+
+```sh
+npx @onsager/awb setup
+```
+
+The code is MIT-licensed on GitHub at [onsager-ai/agent-workbench](https://github.com/onsager-ai/agent-workbench).
+
+{/* truncate */}
+
+## Why it exists
+
+A single coding agent left to itself has a few habits that cost money and attention. It runs the most expensive model for a one-line fix. It forgets what you approved two hours ago. It commits straight to `main`, sits in a loop polling CI, and ends its turn with a question buried in the third paragraph of a status report. When the session runs out of context, the next one starts from nothing.
+
+I wrote about the management side of this in [How Do I Stop Babysitting My Agent?](/blog/stop-babysitting-your-agent): an agent keeps turning around to ask when nobody has told it where its authority ends or what "done" looks like. And in the [T3 Code post](/blog/t3-code-the-vs-code-of-the-ai-agent-era) I described running more than a hundred agents through a handful of project-manager sessions. Agent Workbench is the set of rules that made that setup work, packaged so you can install it yourself.
+
+## How it works
+
+![You talk to a Manager session. It sends work to Workers at three levels, checks their results and hands tasks over to other Managers. A policy hook checks every step.](/img/blog/2026-11-21-introducing-agent-workbench/how-it-works-light.svg)
+
+**The session you talk to is the Manager.** It keeps the model you picked. Small questions and routine edits it handles itself. Substantial work it splits into pieces, writes a brief for each, and sends them to Worker subagents. Workers are your harness's own built-in subagents, so they inherit its permissions and sandbox, and independent pieces run in parallel.
+
+**The Manager checks before it reports.** It looks at the real branch, commit and CI result, not just the Worker's summary. After two failed rework rounds it comes back to you instead of trying a third time.
+
+Here is a real Claude Code session after setup. The Manager hands an off-by-one fix to a Worker, then checks the diff, the commit and the tests itself before reporting:
+
+![Claude Code session: asked to have a Worker fix an off-by-one bug, the Manager writes a brief, a Worker commits the fix on a task branch, and the Manager verifies the diff, commit and tests before reporting.](/img/blog/2026-11-21-introducing-agent-workbench/session.gif)
+
+## What you get
+
+### The Worker ladder
+
+Workers are picked from a three-level ladder:
+
+| Level | Model | Used for |
+| --- | --- | --- |
+| **L1** | A fast, low-cost model | Bounded, well-specified work |
+| **L2** | A capable general model | Research, spikes, architecture |
+| **L3** | The strongest model | Only after you approve it for that task |
+
+The Manager starts at the lowest level that fits the kind of task. Moving up needs a recorded reason, and L3 needs your OK every time.
+
+Which model sits at each level is up to you. The mapping lives in one file, `workers.yml`, and any model can go at any level: Claude, Codex, or whatever a gateway such as Magpie or cc-switch routes to. If you switch providers often, an opt-in profile uses plain names (`fast`, `standard`, `expert`) so your config doesn't hard-code a vendor's model names.
+
+{/*
+OPTIONAL EVIDENCE, owner has not decided. If included, place it here, not in the intro:
+
+"In my own replays of 42 merged PRs, GPT-6.2 Sol beat GPT-6.1 Sol 29–7 with 6 ties under blind grading
+(details in docs/notes.md). The source repositories are private, so treat this as one maintainer's data point."
+*/}
+
+### Hooks that enforce the rules
+
+Instructions alone drift. The rules that matter most are backed by a policy hook that runs on subagent dispatch, shell commands and turn end:
+
+- **No commits on local `main`.** Checking out, committing to or pushing a local `main` or `master` is blocked, so every change starts on a task branch.
+- **Ask before expensive Workers.** Dispatching an L3 Worker stops and waits for your approval.
+- **No CI polling.** Commands like `gh pr checks --watch` or `sleep` loops around `gh` are blocked; the agent waits for the harness's own notifications.
+- **Questions you can answer in one click.** If the agent ends a turn with a question written as prose, it gets sent back to ask through the question tool, with its recommended option first.
+- **Hand over before context runs out.** Once a Manager's context passes about 100k tokens (configurable), it gets a reminder to write a handover.
+
+### Handoffs that survive
+
+The Manager records what you asked for, what you approved, and which task owns what. A later session, or a session on another machine, can pick up the task from that handover note without repeating actions or asking you again. With [T3 Code](https://github.com/pingdotgg/t3code), Managers in different threads, harnesses or machines coordinate through T3 threads:
+
+![T3 Code thread: the user asks for a Worker to fix an off-by-one bug. A Worker commits the fix on a task branch, and the Manager reports the commit, the test result and the two changed files.](/img/blog/2026-11-21-introducing-agent-workbench/t3-session.gif)
+
+### Host ops
+
+If you run many agents on one machine, two extras help. `awb ops thermal` is an opt-in CPU temperature gate for Linux machines with a supported sensor: it holds heavy local work until the machine cools down. The `host-ops` skill gives agents rules for CPU-heavy work and for finding and reclaiming disk space.
+
+## How it compares
+
+Most tools in this space run many agents side by side, ship a large catalog of prompts, or teach a development method. Agent Workbench does none of those. One Manager with a few Workers is deliberate: in [Why AI Agent Teams Can't Escape the Mythical Man-Month](/blog/multi-agent-teams-and-the-measurable-coordination-tax) I looked at research showing that adding agents to step-by-step work often makes it worse, because coordination grows faster than output. It is a thin rules layer on top of Claude Code's and Codex's own subagents, covering the parts they leave to you: which model to use, when to ask you, what to block, and how to hand a task over. It runs fine next to a parallel-session app such as Conductor or Claude Squad, since those manage terminals and worktrees, not model choice or approvals.
+
+It is probably not what you want if you're after a step-by-step method like TDD (look at Superpowers), ready-made specialist agents (look at a catalog like wshobson/agents), or if you only use Cursor or Gemini CLI. The [overview](https://github.com/onsager-ai/agent-workbench/blob/main/docs/overview.md) has the full comparison table.
+
+## Get started
+
+1. Install the skills, Worker subagents and policy hook:
+
+   ```sh
+   npx @onsager/awb setup
+   ```
+
+2. If you use Codex, review and trust its hooks once:
+
+   ```sh
+   awb trust
+   ```
+
+3. Start a new session in Claude Code or Codex. That session is now your Manager. Give it a real task and watch what it delegates.
+
+Setup writes only to your home directory and never to your repositories. Your own instructions and hooks stay in place, and `awb uninstall` restores what was there before. Setup doesn't install Claude Code or Codex or log you in; you need at least one of them already working.
+
+The repo is at [github.com/onsager-ai/agent-workbench](https://github.com/onsager-ai/agent-workbench), with a [Chinese README](https://github.com/onsager-ai/agent-workbench/blob/main/README.zh-CN.md). This is the first public release, so issues and pull requests are especially useful right now: tell me where the Manager delegated badly, where a hook got in your way, or which harness you want supported next.

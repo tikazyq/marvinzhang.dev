@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" width="880" height="520" role="img" aria-label="How Agent Workbench works: you talk to a Manager session, which sends work to Haiku, Sonnet or Opus Workers and verifies the results, while a policy hook checks every step.">
+<title>How Agent Workbench works</title>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5B6270"/></marker></defs>
+<rect width="880" height="520" fill="#FFFFFF"/>
+<rect x="215" y="24" width="180" height="48" rx="24" fill="#FFFFFF" stroke="#C9CED6" stroke-width="1.5"/>
+<text x="305" y="54" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#111111" text-anchor="middle">You</text>
+<line x1="305" y1="74" x2="305" y2="126" stroke="#5B6270" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="318" y="104" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="start">ask · approve · answer</text>
+<rect x="155" y="130" width="300" height="92" rx="10" fill="#EEF2F7" stroke="#1E3A5F" stroke-width="1.5"/>
+<rect x="173" y="148" width="22" height="22" fill="#1E3A5F"/>
+<text x="208" y="165" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#111111" text-anchor="start">Manager session</text>
+<text x="173" y="193" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="start">your model · plans · writes briefs</text>
+<text x="173" y="211" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="start">checks branch, commit and CI</text>
+<line x1="305" y1="224" x2="135" y2="296" stroke="#5B6270" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="305" y1="224" x2="345" y2="296" stroke="#5B6270" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="305" y1="224" x2="555" y2="296" stroke="#5B6270" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="470" y="262" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="start">brief ↓  report + evidence ↑</text>
+<rect x="40" y="300" width="190" height="70" rx="10" fill="#FFFFFF" stroke="#C9CED6" stroke-width="1.5"/>
+<rect x="56" y="318" width="10" height="10" fill="#111111"/>
+<text x="74" y="328" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#111111" text-anchor="start">L1 · Haiku</text>
+<text x="56" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="start">starts here</text>
+<rect x="250" y="300" width="190" height="70" rx="10" fill="#FFFFFF" stroke="#C9CED6" stroke-width="1.5"/>
+<rect x="266" y="318" width="10" height="10" fill="#111111"/>
+<text x="284" y="328" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#111111" text-anchor="start">L2 · Sonnet</text>
+<text x="266" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="start">if the task needs it</text>
+<rect x="460" y="300" width="190" height="70" rx="10" fill="#FFF4EC" stroke="#9A3412" stroke-width="1.5"/>
+<rect x="476" y="318" width="10" height="10" fill="#9A3412"/>
+<text x="494" y="328" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#111111" text-anchor="start">L3 · Opus</text>
+<text x="476" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#9A3412" text-anchor="start">after you approve</text>
+<text x="305" y="396" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="middle">Workers are your harness's own subagents</text>
+<rect x="640" y="130" width="210" height="92" rx="10" fill="#FFFFFF" stroke="#C9CED6" stroke-width="1.5"/>
+<text x="745" y="162" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#111111" text-anchor="middle">Other Managers</text>
+<text x="745" y="186" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="middle">later session, other</text>
+<text x="745" y="204" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="middle">harness or machine</text>
+<line x1="460" y1="176" x2="634" y2="176" stroke="#5B6270" stroke-width="1.5" marker-end="url(#a)" marker-start="url(#a)"/>
+<text x="547" y="166" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="middle">handover</text>
+<rect x="40" y="420" width="810" height="84" rx="8" fill="#FFFFFF" stroke="#1E3A5F" stroke-width="1.5"/>
+<text x="60" y="448" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#111111" text-anchor="start">Policy hook checks every dispatch, shell command and turn end</text>
+<text x="60" y="472" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="start">protects main · blocks CI polling · asks before Opus</text>
+<text x="60" y="492" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5B6270" text-anchor="start">sends questions written as prose back to the question tool</text>
+</svg>
