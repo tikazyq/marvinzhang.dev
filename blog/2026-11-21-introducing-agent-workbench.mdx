@@ -66,7 +66,6 @@ Instructions alone drift. The rules that matter most are backed by a policy hook
 - **Ask before expensive Workers.** Dispatching an L3 Worker stops and waits for your approval.
 - **No CI polling.** Commands like `gh pr checks --watch` or `sleep` loops around `gh` are blocked; the agent waits for the harness's own notifications.
 - **Questions you can answer in one click.** If the agent ends a turn with a question written as prose, it gets sent back to ask through the question tool, with its recommended option first.
-- **Hand over before context runs out.** Once a Manager's context passes about 100k tokens (configurable), it gets a reminder to write a handover.
 
 ### Handoffs that survive
 
