@@ -46,7 +46,7 @@ const S = {
   // — mid-token wrapping reads badly on phones. nowrap stops CJK comments
   // from wrapping between characters; the <br/> line breaks baked in by
   // hardenCodeWhitespace still apply.
-  pre: 'background-color:rgb(30,30,30);padding:15px;border-radius:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;',
+  pre: 'display:block;background-color:rgb(30,30,30);padding:15px;border-radius:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;',
   precode: 'background:none;padding:0;border-radius:0;font-size:13px;line-height:1.6;font-family:Operator Mono,Consolas,Monaco,Menlo,monospace;color:#abb2bf;white-space:nowrap;',
   tablewrap: 'overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;',
   table: 'width:100%;min-width:max-content;border-collapse:collapse;margin:0;font-size:14px;',
@@ -245,8 +245,20 @@ function createRenderer() {
       // Use parseInline-like approach: parse block tokens but strip wrapping <p> tags
       // to avoid double spacing (published WeChat articles use <section> inside <li>, not <p>)
       let text = this.parser.parse(tokens);
-      // Remove wrapping <p> tags and their styles, keep inner content
+      // Remove wrapping <p> tags and their styles, keep inner content.
+      // Exception: an item holding a code block keeps its lead text in a block
+      // <section>. A bare text node followed by <pre> inside <li> is rendered by
+      // 公众号 with the dark code box overlapping the text lines above and below
+      // (seen 2026-11 on the Agent Workbench post's install steps).
+      // Tight-list items yield bare text (no <p>), so wrap the text around the
+      // <pre> blocks rather than relying on the <p> replacement.
       text = text.replace(/<p style="[^"]*">([\s\S]*?)<\/p>/g, '$1').trim();
+      if (/<pre[\s>]/.test(text)) {
+        text = text
+          .split(/(<pre[\s\S]*?<\/pre>)/)
+          .map((part) => (part.startsWith('<pre') || !part.trim() ? part : `<section style="margin:0;">${part.trim()}</section>`))
+          .join('');
+      }
       return `<li style="${S.li}">${text}</li>\n`;
     },
     hr() {
