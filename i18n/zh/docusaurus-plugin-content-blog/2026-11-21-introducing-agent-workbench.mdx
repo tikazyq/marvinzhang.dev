@@ -10,9 +10,8 @@ unlisted: true
 {/*
 供项目负责人审阅的草稿，unlisted。负责人批准前不要发布，也不要导出到微信或 Medium。
 事实核对于 2026-11-21，对照 onsager-ai/agent-workbench@8d5f6e8（npm @onsager/awb 0.2.0）。
-日期是占位：发布日期变了，文件名和 frontmatter 一起改。
+日期 2026-11-21 已由负责人确认。
 用词与 README.zh-CN.md 一致：Manager（负责规划和验收的主会话）、Worker、skill、hook、harness 保留英文。
-42 个 PR 的 Sol 回放数据（docs/notes.md）没有放进正文，见「Worker 分级」一节的注释。
 */}
 
 Agent Workbench 正式公开了。它是给 Claude Code 和 Codex 用的一组 skill 和 hook，让你对话的那个会话像组长一样工作：先做计划，把活拆开交给成本更低的 Worker，检查完结果再告诉你做完了。
@@ -60,13 +59,6 @@ Worker 从三个级别里选：
 Manager 按任务类型从最低的合适级别开始。往上升级要写明理由，用 L3 每次都要你点头。
 
 每个级别对应什么模型，由你决定。对应关系都写在 `workers.yml` 一个文件里，任何模型都能放到任何级别：Claude、Codex，或者 Magpie、cc-switch 这类网关转发的模型都行。经常切换服务商的话，可以启用一套用通用名字（`fast`、`standard`、`expert`）的配置，这样配置里就不会写死某家的模型名。
-
-{/*
-可选证据，负责人还没决定要不要放。如果放，放在这里，不要放在开头：
-
-「我用 42 个已合并的 PR 做过回放，盲评下 GPT-6.2 Sol 对 GPT-6.1 Sol 是 29 胜 7 负 6 平（详见 docs/notes.md）。
-源仓库是私有的，所以只能算一位维护者的个人数据。」
-*/}
 
 ### 用 hook 守住规则
 

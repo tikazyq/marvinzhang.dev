@@ -10,8 +10,7 @@ unlisted: true
 {/*
 DRAFT for owner review. Unlisted. Do not publish or export to WeChat/Medium until the owner approves.
 Facts verified 2026-11-21 against onsager-ai/agent-workbench@8d5f6e8 (npm @onsager/awb 0.2.0).
-Date is a placeholder: rename the file and frontmatter together if publication moves.
-The 42-PR Sol replay result (docs/notes.md) is deliberately left out; see the comment in "The Worker ladder".
+Date 2026-11-21 confirmed by the owner.
 */}
 
 Agent Workbench is now public. It is a set of skills and hooks for Claude Code and Codex that makes the session you talk to act like a team lead: it plans the work, hands pieces to cheaper Worker agents, and checks their results before it tells you anything is done.
@@ -59,13 +58,6 @@ Workers are picked from a three-level ladder:
 The Manager starts at the lowest level that fits the kind of task. Moving up needs a recorded reason, and L3 needs your OK every time.
 
 Which model sits at each level is up to you. The mapping lives in one file, `workers.yml`, and any model can go at any level: Claude, Codex, or whatever a gateway such as Magpie or cc-switch routes to. If you switch providers often, an opt-in profile uses plain names (`fast`, `standard`, `expert`) so your config doesn't hard-code a vendor's model names.
-
-{/*
-OPTIONAL EVIDENCE, owner has not decided. If included, place it here, not in the intro:
-
-"In my own replays of 42 merged PRs, GPT-6.2 Sol beat GPT-6.1 Sol 29–7 with 6 ties under blind grading
-(details in docs/notes.md). The source repositories are private, so treat this as one maintainer's data point."
-*/}
 
 ### Hooks that enforce the rules
 
