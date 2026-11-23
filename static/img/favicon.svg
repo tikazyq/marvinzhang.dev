@@ -1,16 +1,1 @@
-<svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background circle -->
-  <circle cx="32" cy="32" r="28" fill="#2563eb"/>
-  
-  <!-- Inner circle for depth -->
-  <circle cx="32" cy="32" r="24" fill="#1d4ed8"/>
-  
-  <!-- Background 'Z' - large and stylish -->
-  <text x="32" y="44" text-anchor="middle" fill="white" opacity="0.12" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" font-weight="700" font-style="italic">Z</text>
-  
-  <!-- Letter 'M' -->
-  <text x="32" y="44" text-anchor="middle" fill="white" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" font-weight="700">M</text>
-  
-  <!-- Subtle border -->
-  <circle cx="32" cy="32" r="30" fill="none" stroke="#1e40af" stroke-width="2"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Marvin Zhang"><title>Marvin Zhang</title><style>g{stroke:#111111}@media(prefers-color-scheme:dark){g{stroke:#FFFFFF}}</style><g fill="none" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 27V5L10.5 15L17.5 5H28.5L17.5 27H28.5"/></g></svg>
