@@ -8,8 +8,8 @@
  * open in a browser, select, copy and paste into the article body.
  *
  * What X's editor can't take, and what this does instead:
- * - Pasted images: each image becomes an "[IMAGE n]" marker paragraph. Upload
- *   the files listed in the checklist at each marker (Insert → Media).
+ * - Images: pasted as <img> with absolute marvinzhang.dev URLs. If X drops
+ *   them, the checklist links each file for Insert → Media.
  * - SVG uploads: SVGs are rendered to PNG at 2x in static/img/blog/{post}/x/.
  * - Code blocks: become blockquotes (X has no code block).
  * - Tables: each row becomes a bullet ("**first cell**: header value; ...").
@@ -121,12 +121,27 @@ function exportPost(locale) {
         local = png;
       }
       images.push({ n: images.length + 1, url: local ? '/' + path.relative('static', local) : href, alt: text });
-      return `</p><p><strong>[IMAGE ${images.length}]</strong></p><p>`;
+      // Absolute URL so the image can travel in the pasted HTML. If X's editor
+      // drops it, upload the file from the checklist at this spot instead.
+      const url = images[images.length - 1].url;
+      const src = url.startsWith('/') ? BASE_URL + url : url;
+      return `</p><img src="${escapeHtml(src)}" alt="${escapeHtml(text || '')}" style="max-width:100%"><p>`;
     },
     code({ text, lang }) {
       if (lang === 'mermaid') warnings.push('Mermaid block found: render it to PNG and upload it as an image.');
       const lines = escapeHtml(text).split('\n').join('<br>');
       return `<blockquote>${lines}</blockquote>\n`;
+    },
+    listitem({ tokens }) {
+      // X's editor splits an item at every inner block, so <p> and the
+      // blockquote a code block becomes show up as gaps in the list. Keep each
+      // item to one block: unwrap <p>, and put code on its own line with <br>.
+      const inner = this.parser.parse(tokens)
+        .replace(/<\/?p>/g, '')
+        .replace(/\s*<blockquote>([\s\S]*?)<\/blockquote>\s*/g, '<br><code>$1</code><br>')
+        .replace(/(<br>)+$/, '')
+        .trim();
+      return `<li>${inner}</li>\n`;
     },
     table({ header, rows }) {
       const heads = header.map((c) => this.parser.parseInline(c.tokens));
@@ -159,7 +174,7 @@ function exportPost(locale) {
   const checklist = [
     `<li>Title: <code>${escapeHtml(data.title)}</code></li>`,
     `<li>Cover (5:2): ${cover ? link('/' + path.relative('static', cover)) : 'none found, add static/img/blog/' + postName + '/x/cover.png'}</li>`,
-    ...images.map((im) => `<li>[IMAGE ${im.n}]: ${link(im.url)}</li>`),
+    ...images.map((im) => `<li>Image ${im.n}: ${link(im.url)}</li>`),
     ...warnings.map((w) => `<li>⚠️ ${escapeHtml(w)}</li>`),
   ].join('\n');
 
@@ -175,7 +190,7 @@ button{font-size:16px;padding:8px 14px}
 </style></head><body>
 <section id="checklist"><strong>X Article checklist</strong>
 <ol>${checklist}</ol>
-<p>Click <em>Copy body</em>, paste into the article body, then upload each image at its marker (Insert → Media) and delete the marker.</p>
+<p>Click <em>Copy body</em>, paste into the article body, then check the images came through; if not, upload them from the links above (Insert → Media).</p>
 <button id="copy">Copy body</button>
 </section>
 <article id="body">
