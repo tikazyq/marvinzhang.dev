@@ -20,7 +20,9 @@
  *   pnpm x <slug> --en     # English only
  *   pnpm x <slug> --zh     # Chinese only
  *
- * Output: .temp/x/{date-slug}-{locale}.html (open it, copy the body, paste).
+ * Output: static/x/{slug}-{locale}.html, served at marvinzhang.dev/x/... after
+ * deploy. Open it in a normal desktop browser (an in-app file viewer may hand
+ * X plain text), click Copy body, paste.
  */
 
 const fs = require('fs');
@@ -31,7 +33,7 @@ const glob = require('glob');
 const { Marked } = require('marked');
 
 const BLOG_DIRS = { en: 'blog', zh: 'i18n/zh/docusaurus-plugin-content-blog' };
-const OUT_DIR = '.temp/x';
+const OUT_DIR = 'static/x';
 const BASE_URL = 'https://marvinzhang.dev';
 
 const args = process.argv.slice(2);
@@ -118,7 +120,7 @@ function exportPost(locale) {
         svgToPng(local, png);
         local = png;
       }
-      images.push({ n: images.length + 1, file: local ? path.resolve(local) : href, alt: text });
+      images.push({ n: images.length + 1, url: local ? '/' + path.relative('static', local) : href, alt: text });
       return `</p><p><strong>[IMAGE ${images.length}]</strong></p><p>`;
     },
     code({ text, lang }) {
@@ -138,7 +140,11 @@ function exportPost(locale) {
   };
 
   const marked = new Marked({ renderer });
-  const body = marked.parse(preprocess(content, locale)).replace(/<p>\s*<\/p>/g, '');
+  // No whitespace between block tags: X's editor turns each stray newline
+  // between blocks into an empty paragraph.
+  const body = marked.parse(preprocess(content, locale))
+    .replace(/<p>\s*<\/p>/g, '')
+    .replace(/>\s*\n\s*</g, '><');
 
   const postUrl = `${locale === 'zh' ? `${BASE_URL}/zh` : BASE_URL}/blog/${data.slug}`;
   const footer = locale === 'zh'
@@ -149,10 +155,11 @@ function exportPost(locale) {
     .map((p) => path.join('static/img/blog', postName, p))
     .find((p) => fs.existsSync(p));
 
+  const link = (u) => `<a href="${escapeHtml(u)}" download>${escapeHtml(path.basename(u))}</a>`;
   const checklist = [
     `<li>Title: <code>${escapeHtml(data.title)}</code></li>`,
-    `<li>Cover (5:2): ${cover ? `<code>${escapeHtml(path.resolve(cover))}</code>` : 'none found, add static/img/blog/' + postName + '/x/cover.png'}</li>`,
-    ...images.map((im) => `<li>[IMAGE ${im.n}]: <code>${escapeHtml(im.file)}</code></li>`),
+    `<li>Cover (5:2): ${cover ? link('/' + path.relative('static', cover)) : 'none found, add static/img/blog/' + postName + '/x/cover.png'}</li>`,
+    ...images.map((im) => `<li>[IMAGE ${im.n}]: ${link(im.url)}</li>`),
     ...warnings.map((w) => `<li>⚠️ ${escapeHtml(w)}</li>`),
   ].join('\n');
 
@@ -169,16 +176,32 @@ button{font-size:16px;padding:8px 14px}
 <section id="checklist"><strong>X Article checklist</strong>
 <ol>${checklist}</ol>
 <p>Click <em>Copy body</em>, paste into the article body, then upload each image at its marker (Insert → Media) and delete the marker.</p>
-<button onclick="const r=document.createRange();r.selectNodeContents(document.getElementById('body'));const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');this.textContent='Copied'">Copy body</button>
+<button id="copy">Copy body</button>
 </section>
 <article id="body">
 ${body}${footer}
 </article>
+<script>
+// Put the article HTML on the clipboard explicitly. Copying a selection
+// carries the page's computed styles, and some viewers hand over plain text
+// only; either way X drops headings, bold and links.
+const html = ${JSON.stringify(body + footer).replace(/</g, '\\u003c')};
+document.getElementById('copy').onclick = (ev) => {
+  const onCopy = (e) => {
+    e.clipboardData.setData('text/html', html);
+    e.clipboardData.setData('text/plain', document.getElementById('body').innerText);
+    e.preventDefault();
+  };
+  document.addEventListener('copy', onCopy, { once: true });
+  document.execCommand('copy');
+  ev.target.textContent = 'Copied';
+};
+</script>
 </body></html>
 `;
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
-  const out = path.join(OUT_DIR, `${postName}-${locale}.html`);
+  const out = path.join(OUT_DIR, `${data.slug}-${locale}.html`);
   fs.writeFileSync(out, page);
   console.log(`✅ ${locale}: ${out} (${images.length} images)`);
   warnings.forEach((w) => console.log(`   ⚠️  ${w}`));
