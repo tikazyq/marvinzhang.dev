@@ -92,6 +92,7 @@ const config: Config = {
       logo: {
         alt: 'Marvin Zhang',
         src: 'img/logo.svg',
+        srcDark: 'img/logo-dark.svg',
       },
       items: [
         {to: '/blog', label: 'Blog', position: 'left'},
