@@ -132,6 +132,17 @@ function exportPost(locale) {
       const lines = escapeHtml(text).split('\n').join('<br>');
       return `<blockquote>${lines}</blockquote>\n`;
     },
+    listitem({ tokens }) {
+      // X's editor splits an item at every inner block, so <p> and the
+      // blockquote a code block becomes show up as gaps in the list. Keep each
+      // item to one block: unwrap <p>, and put code on its own line with <br>.
+      const inner = this.parser.parse(tokens)
+        .replace(/<\/?p>/g, '')
+        .replace(/\s*<blockquote>([\s\S]*?)<\/blockquote>\s*/g, '<br><code>$1</code><br>')
+        .replace(/(<br>)+$/, '')
+        .trim();
+      return `<li>${inner}</li>\n`;
+    },
     table({ header, rows }) {
       const heads = header.map((c) => this.parser.parseInline(c.tokens));
       const items = rows.map((row) => {
