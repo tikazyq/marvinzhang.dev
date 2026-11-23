@@ -9,6 +9,7 @@ This directory contains active utilities for managing blog content.
 | `wechat.js` | Export articles for WeChat | `pnpm wechat <slug> --zh -o` |
 | `generate-wechat-html.js` | Render WeChat markdown to inline-styled HTML | Called by `wechat.js`; standalone via `pnpm wechat:html` |
 | `medium.js` | Export articles for Medium | `pnpm medium <slug>` |
+| `x-article.js` | Export articles as paste-ready X Articles (`static/x/`) | `pnpm x <slug> [--en|--zh]` |
 | `screenshot-jsx-components.js` | Screenshot JSX/React figures for exports | Called by `wechat.js` / `medium.js` |
 | `validate-zh-bold-formatting-source.js` | Validate Chinese formatting | `pnpm run validate:zh-bold-source` |
 | `drafts/scaffold.js` | Scaffold a drafts workspace | `node scripts/drafts/scaffold.js "title" "YYYY-MM-DD"` |

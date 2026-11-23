@@ -28,6 +28,7 @@
     "medium:list": "node scripts/medium.js --list",
     "medium:en": "node scripts/medium.js --en",
     "medium:zh": "node scripts/medium.js --zh",
+    "x": "node scripts/x-article.js",
     "validate:zh-bold-source": "node scripts/validate-zh-bold-formatting-source.js",
     "validate:zh-bold-source:fix": "node scripts/validate-zh-bold-formatting-source.js --fix",
     "validate:zh-bold-source:file": "node scripts/validate-zh-bold-formatting-source.js --file",

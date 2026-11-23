@@ -122,6 +122,7 @@ The three-piece kit is the default path for deep articles, not a hard requiremen
 | Figure type        | `pnpm run validate:figure-type`        | Automatic — fires on commit and in CI (phone floor + desktop ceiling; one PNG serves both) |
 | WeChat export      | `pnpm wechat <slug> --zh -o`           | After Chinese translation complete    |
 | Medium export      | `pnpm medium <slug> --en -o`           | After English article complete        |
+| X Article export   | `pnpm x <slug>`                        | Before posting to X Articles          |
 
 ## Localization Quick Reference
 
