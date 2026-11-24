@@ -151,3 +151,4 @@
 - ZH §3 approved. ZH §4 drafted (tools: thread tools→κ, rules+memory→owner σ, tier ladder→handoff κ).
 - ZH §4 approved. ZH §5 drafted (npm misdiagnosis 12:37:26Z→corrected 12:37:48Z; three ceilings; N* illustration 8 vs 26; four signals).
 - ZH §5 approved. ZH §6 drafted (model = ticket, κ = ceiling; VSM S3/S1/S5). Author asked for numbers on owner's human touches.
+- Figures 1–3 (zh) rendered and embedded; touch table replaced by figure 2. EN figures pending EN draft. Render: CHROMIUM_PATH=~/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell node figures/render.mjs
