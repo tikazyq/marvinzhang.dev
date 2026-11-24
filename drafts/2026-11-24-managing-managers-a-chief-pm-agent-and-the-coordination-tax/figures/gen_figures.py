@@ -54,11 +54,11 @@ def fig1():
     h2 = 330; col = w / 9
     t = [f'<svg width="{w}" height="{h2}" viewBox="0 0 {w} {h2}">']
     t.append(f'<rect x="{w/2-220}" y="6" width="440" height="56" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="2"/>')
-    t.append(f'<text x="{w/2}" y="30" text-anchor="middle" font-size="19" font-weight="700" fill="#c62828">我 · S5</text>')
+    t.append(f'<text x="{w/2}" y="30" text-anchor="middle" font-size="19" font-weight="700" fill="#c62828">我 · 大事</text>')
     t.append(f'<text x="{w/2}" y="53" text-anchor="middle" font-size="16" fill="#525252">花钱、对外发声、凭据、产品方向</text>')
     t.append(f'<line x1="{w/2}" y1="62" x2="{w/2}" y2="98" stroke="#c62828" stroke-width="2.5"/>')
     t.append(f'<rect x="{w/2-220}" y="98" width="440" height="56" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>')
-    t.append(f'<text x="{w/2}" y="122" text-anchor="middle" font-size="19" font-weight="700" fill="#7b1fa2">Chief PM · S3</text>')
+    t.append(f'<text x="{w/2}" y="122" text-anchor="middle" font-size="19" font-weight="700" fill="#7b1fa2">Chief PM · 管日常</text>')
     t.append(f'<text x="{w/2}" y="145" text-anchor="middle" font-size="16" fill="#525252">合并、发版、技术选型、巡检</text>')
     for i, p in enumerate(PROJ):
         x = col * i + col / 2
@@ -69,7 +69,7 @@ def fig1():
             wx = x - 18 + k * 18
             t.append(f'<line x1="{x:.1f}" y1="234" x2="{wx:.1f}" y2="262" stroke="#9e9e9e" stroke-width="1"/>')
             t.append(f'<circle cx="{wx:.1f}" cy="268" r="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.2"/>')
-    t.append(f'<text x="{w/2}" y="306" text-anchor="middle" font-size="16" fill="#2e7d32">9 个经理（S1），下面挂着约 300 个 Worker 对话</text>')
+    t.append(f'<text x="{w/2}" y="306" text-anchor="middle" font-size="16" fill="#2e7d32">9 个经理各管一个项目，下面挂着约 300 个 Worker 对话</text>')
     t.append('</svg>')
     tree = "".join(t)
 
@@ -77,9 +77,8 @@ def fig1():
 <div class="sub">同样 9 个经理，同样是 Opus 5.5。变的是谁站在中心。</div>
 <div class="panel"><h2 style="color:var(--red)">之前：9 条辐条都通向我</h2>{star}
 <div class="note">每一个要拍板的事，都等我回消息。</div></div>
-<div class="panel"><h2 style="color:var(--purple)">之后：我只管 S5，日常由 Chief PM 拍板</h2>{tree}
-<div class="note">我直接找经理的次数几乎归零，剩下的消息大多发给 Chief PM。</div></div>
-<div class="foot">S1 / S3 / S5：Stafford Beer 可生存系统模型的层级 · 北京时间</div>"""
+<div class="panel"><h2 style="color:var(--purple)">之后：我只管大事，日常由 Chief PM 拍板</h2>{tree}
+<div class="note">我直接找经理的次数几乎归零，剩下的消息大多发给 Chief PM。</div></div>"""
     return HEAD.replace("{title}", "图 2").replace("{extra}", "") + body + TAIL
 
 
@@ -153,13 +152,13 @@ EN = [
     ("之前：9 条辐条都通向我", "Before: all nine spokes run to me"),
     (">博客<", ">Blog<"), (">我<", ">Me<"),
     ("每一个要拍板的事，都等我回消息。", "Every decision waited for my reply."),
-    ("之后：我只管 S5，日常由 Chief PM 拍板", "After: I keep S5, the Chief PM makes routine calls"),
-    ("我 · S5", "Me · S5"),
+    ("之后：我只管大事，日常由 Chief PM 拍板", "After: I keep the big calls, the Chief PM makes routine calls"),
+    ("我 · 大事", "Me · the big calls"),
+    ("Chief PM · 管日常", "Chief PM · day-to-day"),
     ("花钱、对外发声、凭据、产品方向", "Spending, public posts, credentials, direction"),
     ("合并、发版、技术选型、巡检", "Merges, releases, tech choices, check-ins"),
-    ("9 个经理（S1），下面挂着约 300 个 Worker 对话", "9 managers (S1), with about 300 Worker threads below"),
+    ("9 个经理各管一个项目，下面挂着约 300 个 Worker 对话", "9 managers, one per project, with about 300 Worker threads below"),
     ("我直接找经理的次数几乎归零，剩下的消息大多发给 Chief PM。", "My direct messages to managers dropped to almost none; most of the rest went to the Chief PM."),
-    ("S1 / S3 / S5：Stafford Beer 可生存系统模型的层级 · 北京时间", "S1 / S3 / S5: levels of Beer's Viable System Model · Beijing time"),
     ("我发消息的频率", "How often I sent messages"),
     ("只数我亲手打的字，按每小时折算。条越长，我越像队列。", "Only messages I typed, as a rate per hour. The longer the bar, the more I'm the queue."),
     ("发给 9 个经理", "To the 9 managers"), ("发给 Chief PM", "To the Chief PM"),
