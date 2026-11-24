@@ -45,3 +45,11 @@ Verdict: no single consensus number. Classic theory says 5–6 for managers of i
 - McKinsey, "How to identify the right spans of control": archetypes player/coach 3–5, coach 6–7, supervisor 8–10, facilitator 11–15, coordinator 15+. Right span depends on the work. (Ranges from search summary; page fetch timed out. Re-verify before citing.) https://www.mckinsey.com/capabilities/people-and-organization/our-insights/how-to-identify-the-right-spans-of-control-for-your-organization
 - Gallup healthcare: engagement drops steadily past ~15 reports. https://www.gallup.com/workplace/236024/reduce-spans-control-nursing.aspx
 Implication for post: CPM with 9 peer managers is already above Urwick's 5–6 for interlocking work and in McKinsey's "supervisor" band. It works because the projects barely interlock (low κ), which is exactly Urwick's qualifier.
+
+## Owner touches (Worker tally, 2026-11-24; T3 messages view, user_message createdBy=user, UTC)
+| Window (UTC) | Hours | 9 peers | Chief PM |
+| Nov 20 00:00 – Nov 23 09:20 | 81.3 | ≥135 (lower bound; AWB/Semon/Tolmap/Eval/Infra have pre-launch gaps) | 0 |
+| Nov 23 09:20 – 12:39 | 3.3 | 0 | 3 |
+| Nov 23 12:39 – Nov 24 03:23 | 14.7 | 4 | 9 |
+Per day peers: Nov20 31+, Nov21 24+, Nov22 31+, Nov23 49, Nov24(partial) 4. Kirzner got 18 on Nov 23 (new project); AWB 30+ on Nov 22.
+Caveats: native question-tool answers may be missing; after-window is mostly night in UTC+8; final combined tally not re-run programmatically.
