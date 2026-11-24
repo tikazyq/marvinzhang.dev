@@ -145,4 +145,4 @@
 
 ## 2026-11-24
 - Outline approved (6 sections, ZH primary).
-- ZH §1 drafted: owner as σ hub of 9 managers. Awaiting author feedback.
+- ZH §1 approved. ZH §2 drafted from CPM thread (2026-11-23 09:20–12:41 UTC): one-line charter, two owner instructions, decision-rights table, peers verifying authority.
