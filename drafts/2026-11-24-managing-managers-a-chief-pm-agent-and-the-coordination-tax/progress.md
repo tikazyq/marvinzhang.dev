@@ -153,3 +153,4 @@
 - ZH §5 approved. ZH §6 drafted (model = ticket, κ = ceiling; VSM S3/S1/S5). Author asked for numbers on owner's human touches.
 - Figures 1–3 (zh) rendered and embedded; touch table replaced by figure 2. EN figures pending EN draft. Render: CHROMIUM_PATH=~/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell node figures/render.mjs
 - EN restated from final ZH; EN figures rendered. PR opened for preview review.
+- Figures 4 (sidebar) and 5 (CPM↔Semon) from owner's T3 iOS screenshots: top bar cropped, machine names blurred (sanitize.mjs), annotated; embedded in both locales.
