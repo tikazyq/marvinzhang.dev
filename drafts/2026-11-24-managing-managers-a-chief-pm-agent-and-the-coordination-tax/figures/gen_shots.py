@@ -67,7 +67,7 @@ def fig5():
     b, hb = shot("semon-to-cpm.png", w, 268, 1640,
                  [(272, 358, "#7b1fa2", "3"), (500, 700, "#01579b", "4")])
     body = f"""<div class="figno">图 4</div><h1>Chief PM 和经理直接对话，我在旁边看</h1>
-<div class="sub">11 月 24 日上午的一个来回，两张截图来自两个不同的对话。</div>
+<div class="sub">同一条通道，两个方向：决定往下发，报告往上交。11 月 24 日上午。</div>
 <div class="cols">
 <div class="col"><div class="cap" style="color:#7b1fa2">Chief PM 的对话</div>{a}
 <div class="legend"><div><i style="background:#01579b">1</i>给 Semon PM 发消息：数据格式批了，CI 绿就合并，开始做 11-28 的版本</div>
@@ -94,7 +94,7 @@ EN5 = [
     ("此刻还在跑的两个：Eval、Semon", "the two running right now: Eval and Semon"),
     ("截图：T3 Code iOS · 线程列表按最近活动排序", "Screenshot: T3 Code iOS · threads sorted by recent activity"),
     ("Chief PM 和经理直接对话，我在旁边看", "The Chief PM and a manager talk directly; I watch"),
-    ("11 月 24 日上午的一个来回，两张截图来自两个不同的对话。", "One exchange on the morning of 24 Nov, seen from both threads."),
+    ("同一条通道，两个方向：决定往下发，报告往上交。11 月 24 日上午。", "One channel, both directions: decisions go down, reports come up. 24 Nov, morning."),
     ("Chief PM 的对话", "The Chief PM's thread"), ("Semon PM 的对话", "Semon PM's thread"),
     ("给 Semon PM 发消息：数据格式批了，CI 绿就合并，开始做 11-28 的版本", "Messages Semon PM: format approved, merge while CI is green, start the 11-28 build"),
     ("回头告诉我：「不需要你拍板」", "Then tells me: “Nothing needs your decision”"),

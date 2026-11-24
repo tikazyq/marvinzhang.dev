@@ -18,8 +18,6 @@ I now run nine "manager" sessions at once, one per project: the blog, Agent Work
 
 The trouble was between projects. Every day each manager hits something that needs a call: can this PR merge, which of two technical options, should this site change go live. By default all of those came back to me. Drawn out, the organization was a star with nine spokes and me at the hub.
 
-![T3 Code on my phone: the Chief PM on another machine, and below it nine managers, all Opus 5.5, one per project](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-1-sidebar.en.png)
-
 In USL terms, I had become σ. The July piece noted that a project manager's value is collapsing the n(n−1)/2 channels of "everyone aligns with everyone" into the n channels of "everyone aligns with the PM", at the price of the PM becoming the new queue. My 2021 piece on [why software engineering can't do without project management](/blog/project-management) described the same structure. This time, though, the queue wasn't people. It was nine agents that never go off shift and finish a round of work in minutes. The faster they got, the more visible my waiting became. I'd sleep, and all nine lanes would sit parked on some "awaiting confirmation".
 
 That is where this piece starts. When your reports are themselves managers, and far faster than you, should you still manage them yourself?
@@ -28,7 +26,9 @@ That is where this piece starts. When your reports are themselves managers, and 
 
 At 17:20 Beijing time on 23 November, I opened a new session on a different machine and gave it one sentence: "You are the Chief PM that manages all peer managers to ensure they are working as expected."
 
-Its first sweep looked a lot like a director's first week. It listed the managers it could see, eight at the time, then read each one's conversation. The first pass went wrong: the read tool returned each thread's oldest messages by default. It noticed and re-read from the end. Its verdict: seven of eight on track, plus one item flagged. The blog manager had merged a PR before its preview build finished. That later became a rule: wait for the preview to pass before merging.
+![T3 Code on my phone: the Chief PM on another machine, and below it nine managers, all Opus 5.5, one per project](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-1-sidebar.en.png)
+
+Its first sweep looked a lot like a director's first week. It listed the managers it could see, eight at the time (Ostrom, the ninth, joined later), then read each one's conversation. The first pass went wrong: the read tool returned each thread's oldest messages by default. It noticed and re-read from the end. Its verdict: seven of eight on track, plus one item flagged. The blog manager had merged a PR before its preview build finished. That later became a rule: wait for the preview to pass before merging.
 
 Over the next three hours I said exactly two things to it, and each one drew a line around its job.
 
@@ -57,6 +57,12 @@ One sentence of delegated authority reached eight reports and came out in at lea
 
 ![From a star to two layers: before, all nine managers ran to me; after, I keep spending, public posts, credentials and product direction, and the Chief PM makes the routine calls](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-2-topology.en.png)
 
+Whether the handover worked shows up in my own messages. I lined up every message I typed into the nine manager threads and split them into three windows: before the Chief PM started, its first few hours of sweeps and drawing boundaries, and after decision rights were handed over. Then I turned each window into a rate per hour.
+
+![How often I sent messages: before, all of them went to managers; after the handover the overall rate fell, the share going to managers shrank to a sliver, and most went to the Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-3-touches.en.png)
+
+The trend is clear. After the handover, how often I went to the managers directly dropped close to zero, and most of what I still sent went to the Chief PM instead. I won't put a precise number on the drop, for two reasons. Most of the after-window fell overnight, when I send less anyway. And my clicks answering the agents' multiple-choice questions aren't counted, only what I typed. What's certain is the direction: my attention narrowed from nine lanes to one.
+
 ## Why this layer is cheap
 
 The July piece said adding a management layer is a trade: alignment cost κ goes down, queueing cost σ goes up, because the manager becomes the new queue. By that arithmetic the Chief PM should be a bad idea. I moved a nine-way queue off myself and built a new one from scratch.
@@ -64,12 +70,6 @@ The July piece said adding a management layer is a trade: alignment cost κ goes
 Run the numbers, though, and both sides come out cheaper than in a human organization.
 
 Start with σ. A human director's queue is expensive because their time is finite. They commute, sit in meetings and sleep, so a decision waiting hours or days is normal. The Chief PM doesn't sleep. From taking the job at 17:20 on 23 November to 11:30 the next morning, it ran 102 rounds. Most of the last ten finished in 5 to 25 seconds, and the longest took 3 minutes. The new queue exists, but the wait shrank from "until I wake up" to "until it finishes reading".
-
-Whether my own queue got shorter shows up too. I lined up every message I typed into the nine manager threads and split them into three windows: before the Chief PM started, its first few hours of sweeps and drawing boundaries, and after decision rights were handed over. Then I turned each window into a rate per hour.
-
-![How often I sent messages: before, all of them went to managers; after the handover the overall rate fell, the share going to managers shrank to a sliver, and most went to the Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-3-touches.en.png)
-
-The trend is clear. After the handover, how often I went to the managers directly dropped close to zero, and most of what I still sent went to the Chief PM instead. I won't put a precise number on the drop, for two reasons. Most of the after-window fell overnight, when I send less anyway. And my clicks answering the agents' multiple-choice questions aren't counted, only what I typed. What's certain is the direction: my attention narrowed from nine lanes to one.
 
 Now κ, the more interesting side, which starts with an old piece of management arithmetic.
 
@@ -87,11 +87,15 @@ So the layer is cheap for two reasons: agents make queueing almost free, and the
 
 Opus 5.5 being smart enough is the precondition for the Chief PM, but intelligence alone doesn't get you there. Put the same model somewhere it can't see the others, can't remember rules and can't hand out work, and it becomes an articulate consultant. The clearest thing I saw these two days is that half of a model's management ability comes from its tools.
 
-Three kinds of tool did the work in my setup, and each one maps to a USL cost.
+Three kinds of tool did the work in my setup, and between them they push down USL's κ and σ.
 
 **Cross-session thread tools push κ down.** T3 Code lets one session list other sessions, read their transcripts and message them, across machines too. That is how the Chief PM works from another machine. Its sweeps need no meetings and no weekly reports: it reads the end of each manager's conversation directly.
 
-![The Chief PM and the Semon manager talk directly: the Chief PM approves the data format and tells me nothing needs my decision; Semon receives an Agent-tagged message and sends its research back to the Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-4-peer-talk.en.png) In a human organization a director learns what's happening from reports, and reporting is itself an alignment cost. Here reporting turns into lookup, and the report never has to stop working.
+Below are two exchanges from the morning of 24 November, on the same channel in opposite directions. On the left, the Chief PM approves the data format for Semon's dashboard and tells me nothing needs my decision. On the right, the Semon manager receives a request of mine that the Chief PM relayed, does the research and sends its conclusion straight back to the Chief PM.
+
+![The Chief PM and the Semon manager use one channel in both directions: on the left the Chief PM sends a decision down, approving the data format and telling me nothing needs my decision; on the right Semon sends a report up, returning its research to the Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-4-peer-talk.en.png)
+
+In a human organization a director learns what's happening from reports, and reporting is itself an alignment cost. Here reporting turns into lookup, and the report never has to stop working.
 
 The shape of a tool also sets the quality of management. The Chief PM tripped on its first task: the thread-read tool returns from the start by default, so it got each project's opening messages from days earlier and nearly judged the present on them. It caught the mistake and switched to reading from the end. Had it not, every later judgment would have rested on stale information. The Infra manager not finding my "merge now" was the same kind of problem: the message existed, just not where it could read it.
 
@@ -105,7 +109,7 @@ The three kinds of tool do one job together. Human organizations spent a century
 
 ## Where's the limit? Not hit yet
 
-So far the Chief PM has been a director for one day, with nine reports, and shows no sign of being overloaded. So this section has no conclusion, only a plan for finding the limit.
+So far the Chief PM has been a director for less than a day, with nine reports, and shows no sign of being overloaded. So this section has no conclusion, only a plan for finding the limit.
 
 One early warning has already appeared. At 20:37 on 23 November, the AWB manager reported a new version merged and its publish job successful, yet npm still listed 0.2.7 as the latest version. The Chief PM read that and decided the release pipeline was broken: 0.2.8 through 0.2.11 must also have failed to publish, with the job "succeeding" falsely all along. It sent that diagnosis to the AWB manager and asked for a root cause and a fix. Twenty-two seconds later it corrected itself. Those versions had never been tagged, this project publishes only on a tag, and they were never meant to reach npm. A few minutes later 0.2.12 showed up on npm as normal; the delay was just npm still processing.
 
@@ -134,7 +138,7 @@ The experiment itself is simple: add one manager at a time and watch for the poi
 
 ## Closing: the model is the ticket, κ is the ceiling
 
-Back to the opening question: when your reports are managers, should you still manage them yourself? One day of watching gives me a provisional answer. Routine management can be handed off, and it can be handed off now.
+Back to the opening question: when your reports are managers, should you still manage them yourself? Less than a day of watching gives me a provisional answer. Routine management can be handed off, and it can be handed off now.
 
 Frontier models are already fit for middle management. A one-line appointment became a clear decision-rights list within three hours. Every decision came with a reason. When it got one wrong, it corrected itself in 22 seconds. In a human director, that would count as competent.
 
