@@ -36,3 +36,12 @@ Sequel to `blog/2026-07-13-multi-agent-teams-and-the-measurable-coordination-tax
 - /blog/stop-babysitting-your-agent (2026-08-10)
 - /blog/project-management (2021; PM collapses n² channels to n)
 - VSM cybernetics post (2026-05-12; System 3/5 = management layers)
+
+## Human span of control: is it 7–12? (checked 2026-11-24)
+Verdict: no single consensus number. Classic theory says 5–6 for managers of interlocking work; observed median is 5–6; observed average ~12; consultancies give a range by role.
+- Graicunas (1933), "Relationship in Organization": relationships = n(2^(n−1) + n − 1); 5 reports → 100, 6 → 222. Grows exponentially (unlike Brooks's quadratic). https://en.wikipedia.org/wiki/Span_of_control , https://www.nickols.us/graicunas.htm
+- Urwick: no superior should directly supervise more than 5, at most 6, subordinates whose work interlocks (restated HBR 1956). Applies most to managing managers, i.e. the CPM case.
+- Gallup, Jim Harter, 2026-01-13: average direct reports 10.9 (2024) → 12.1 (2025), ~+50% since 2013; median 5–6; 37% of managers <5 reports, 13% ≥25. "Manager talent trumps span of control." Remote/hybrid managers lose engagement as span grows; on-site barely. https://www.gallup.com/workplace/700718/span-control-optimal-team-size-managers.aspx
+- McKinsey, "How to identify the right spans of control": archetypes player/coach 3–5, coach 6–7, supervisor 8–10, facilitator 11–15, coordinator 15+. Right span depends on the work. (Ranges from search summary; page fetch timed out. Re-verify before citing.) https://www.mckinsey.com/capabilities/people-and-organization/our-insights/how-to-identify-the-right-spans-of-control-for-your-organization
+- Gallup healthcare: engagement drops steadily past ~15 reports. https://www.gallup.com/workplace/236024/reduce-spans-control-nursing.aspx
+Implication for post: CPM with 9 peer managers is already above Urwick's 5–6 for interlocking work and in McKinsey's "supervisor" band. It works because the projects barely interlock (low κ), which is exactly Urwick's qualifier.
