@@ -76,32 +76,32 @@ def fig1():
     body = f"""<div class="figno">图 1</div><h1>从星形到两层：日常决策交给 Chief PM</h1>
 <div class="sub">同样 9 个经理，同样是 Opus 5.5。变的是谁站在中心。</div>
 <div class="panel"><h2 style="color:var(--red)">之前：9 条辐条都通向我</h2>{star}
-<div class="note">11 月 20 日至 23 日 17:20，81 小时里我给经理们发了<b>至少 135 条</b>消息。</div></div>
+<div class="note">每一个要拍板的事，都等我回消息。</div></div>
 <div class="panel"><h2 style="color:var(--purple)">之后：我只管 S5，日常由 Chief PM 拍板</h2>{tree}
-<div class="note">交接后的 14.7 小时里，我给 9 个经理发了 <b>4 条</b>，给 Chief PM 发了 <b>9 条</b>。</div></div>
+<div class="note">我直接找经理的次数几乎归零，剩下的消息大多发给 Chief PM。</div></div>
 <div class="foot">S1 / S3 / S5：Stafford Beer 可生存系统模型的层级 · 北京时间</div>"""
     return HEAD.replace("{title}", "图 1").replace("{extra}", "") + body + TAIL
 
 
 def fig2():
     rows = [
-        ("上任前", "81 小时", 135 / 81.33, 0.0, "≥135 条 · 每小时 ≥1.66 条"),
-        ("巡检、划权责", "3.3 小时", 0.0, 3 / 3.32, "3 条 · 全部发给 Chief PM"),
-        ("交接之后", "14.7 小时", 4 / 14.73, 9 / 14.73, "13 条 · 4 条给经理，9 条给 Chief PM"),
+        ("上任前", "", 135 / 81.33, 0.0, "全部发给经理"),
+        ("巡检、划权责", "", 0.0, 3 / 3.32, "只跟 Chief PM 说话"),
+        ("交接之后", "", 4 / 14.73, 9 / 14.73, "总量下降，发给经理的只剩一小截"),
     ]
     w = INNER - 36; lab = 0; barw = w; scale = barw / 1.8
     s = []
     for name, dur, peers, cpm, txt in rows:
         a, b = peers * scale, cpm * scale
-        s.append(f"""<div class="row"><div class="rl"><b>{name}</b><span>{dur}</span></div>
+        s.append(f"""<div class="row"><div class="rl"><b>{name}</b></div>
 <svg width="{w}" height="34" viewBox="0 0 {w} 34"><rect x="0" y="4" width="{w}" height="26" rx="5" fill="#f1f1f1"/>
 <rect x="0" y="4" width="{a:.1f}" height="26" fill="#c62828"/><rect x="{a:.1f}" y="4" width="{b:.1f}" height="26" fill="#7b1fa2"/></svg>
 <div class="rv">{txt}</div></div>""")
     extra = """.row{margin-top:16px}.rl{display:flex;justify-content:space-between;font-size:18px;margin-bottom:4px}
 .rl span{color:var(--soft);font-size:16px}.rv{font-size:16px;color:var(--soft);margin-top:4px}
 .leg{display:flex;gap:22px;font-size:16px;margin-top:6px}.sw{display:inline-block;width:16px;height:16px;border-radius:3px;vertical-align:-2px;margin-right:6px}"""
-    body = f"""<div class="figno">图 2</div><h1>我每小时发出的消息</h1>
-<div class="sub">只数我亲手打的字，按北京时间分三段。条越长，我越像队列。</div>
+    body = f"""<div class="figno">图 2</div><h1>我发消息的频率</h1>
+<div class="sub">只数我亲手打的字，按每小时折算。条越长，我越像队列。</div>
 <div class="panel"><div class="leg"><span><i class="sw" style="background:#c62828"></i>发给 9 个经理</span><span><i class="sw" style="background:#7b1fa2"></i>发给 Chief PM</span></div>
 {''.join(s)}</div>
 <div class="take">注意力从 9 条线收到了 1 条线上。两点折扣：交接后的窗口大半在夜里；回答选择题的点击没有计入。</div>
@@ -151,23 +151,25 @@ EN = [
     ("同样 9 个经理，同样是 Opus 5.5。变的是谁站在中心。", "Same nine managers, same Opus 5.5. What changed is who sits at the center."),
     ("之前：9 条辐条都通向我", "Before: all nine spokes run to me"),
     (">博客<", ">Blog<"), (">我<", ">Me<"),
-    ("11 月 20 日至 23 日 17:20，81 小时里我给经理们发了<b>至少 135 条</b>消息。", "20 Nov to 23 Nov 17:20: I sent the managers <b>at least 135</b> messages in 81 hours."),
+    ("每一个要拍板的事，都等我回消息。", "Every decision waited for my reply."),
     ("之后：我只管 S5，日常由 Chief PM 拍板", "After: I keep S5, the Chief PM makes routine calls"),
     ("我 · S5", "Me · S5"),
     ("花钱、对外发声、凭据、产品方向", "Spending, public posts, credentials, direction"),
     ("合并、发版、技术选型、巡检", "Merges, releases, tech choices, check-ins"),
     ("9 个经理（S1），下面挂着约 300 个 Worker 对话", "9 managers (S1), with about 300 Worker threads below"),
-    ("交接后的 14.7 小时里，我给 9 个经理发了 <b>4 条</b>，给 Chief PM 发了 <b>9 条</b>。", "In the 14.7 hours after the handover: <b>4</b> messages to the managers, <b>9</b> to the Chief PM."),
+    ("我直接找经理的次数几乎归零，剩下的消息大多发给 Chief PM。", "My direct messages to managers dropped to almost none; most of the rest went to the Chief PM."),
     ("S1 / S3 / S5：Stafford Beer 可生存系统模型的层级 · 北京时间", "S1 / S3 / S5: levels of Beer's Viable System Model · Beijing time"),
-    ("我每小时发出的消息", "Messages I sent per hour"),
-    ("只数我亲手打的字，按北京时间分三段。条越长，我越像队列。", "Only messages I typed, in three windows (Beijing time). The longer the bar, the more I'm the queue."),
+    ("我发消息的频率", "How often I sent messages"),
+    ("只数我亲手打的字，按每小时折算。条越长，我越像队列。", "Only messages I typed, as a rate per hour. The longer the bar, the more I'm the queue."),
     ("发给 9 个经理", "To the 9 managers"), ("发给 Chief PM", "To the Chief PM"),
-    ("<b>上任前</b><span>81 小时", "<b>Before the Chief PM</b><span>81 h"),
-    ("<b>巡检、划权责</b><span>3.3 小时", "<b>First sweeps, setting rights</b><span>3.3 h"),
-    ("<b>交接之后</b><span>14.7 小时", "<b>After the handover</b><span>14.7 h"),
-    ("≥135 条 · 每小时 ≥1.66 条", "≥135 messages · ≥1.66 per hour"),
-    ("3 条 · 全部发给 Chief PM", "3 messages · all to the Chief PM"),
-    ("13 条 · 4 条给经理，9 条给 Chief PM", "13 messages · 4 to managers, 9 to the Chief PM"),
+    
+    
+    ("<b>上任前</b>", "<b>Before the Chief PM</b>"),
+    ("<b>巡检、划权责</b>", "<b>First sweeps, setting rights</b>"),
+    ("<b>交接之后</b>", "<b>After the handover</b>"),
+    ("全部发给经理", "All to managers"),
+    ("只跟 Chief PM 说话", "Only talking to the Chief PM"),
+    ("总量下降，发给经理的只剩一小截", "Lower overall; only a sliver to managers"),
     ("注意力从 9 条线收到了 1 条线上。两点折扣：交接后的窗口大半在夜里；回答选择题的点击没有计入。", "My attention narrowed from nine lanes to one. Two discounts: the after-window is mostly overnight, and clicks answering agents' questions aren't counted."),
     ("数据：T3 Code 对话记录 · 2026-11-20 至 11-24", "Data: T3 Code transcripts · 2026-11-20 to 11-24"),
     ("σ 接近零时，管理上限只看 κ", "With σ near zero, κ sets the ceiling"),
