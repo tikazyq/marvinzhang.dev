@@ -53,11 +53,11 @@ def fig1():
     # Panel B: hierarchy
     h2 = 330; col = w / 9
     t = [f'<svg width="{w}" height="{h2}" viewBox="0 0 {w} {h2}">']
-    t.append(f'<rect x="{w/2-150}" y="6" width="300" height="56" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="2"/>')
+    t.append(f'<rect x="{w/2-220}" y="6" width="440" height="56" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="2"/>')
     t.append(f'<text x="{w/2}" y="30" text-anchor="middle" font-size="19" font-weight="700" fill="#c62828">我 · S5</text>')
     t.append(f'<text x="{w/2}" y="53" text-anchor="middle" font-size="16" fill="#525252">花钱、对外发声、凭据、产品方向</text>')
     t.append(f'<line x1="{w/2}" y1="62" x2="{w/2}" y2="98" stroke="#c62828" stroke-width="2.5"/>')
-    t.append(f'<rect x="{w/2-150}" y="98" width="300" height="56" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>')
+    t.append(f'<rect x="{w/2-220}" y="98" width="440" height="56" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>')
     t.append(f'<text x="{w/2}" y="122" text-anchor="middle" font-size="19" font-weight="700" fill="#7b1fa2">Chief PM · S3</text>')
     t.append(f'<text x="{w/2}" y="145" text-anchor="middle" font-size="16" fill="#525252">合并、发版、技术选型、巡检</text>')
     for i, p in enumerate(PROJ):
@@ -142,3 +142,46 @@ def fig3():
 for name, fn in (("figure-1-topology.zh.html", fig1), ("figure-2-touches.zh.html", fig2), ("figure-3-ceiling.zh.html", fig3)):
     (HERE / name).write_text(fn(), encoding="utf-8")
     print("wrote", name)
+
+# English variants: same layout, strings swapped.
+EN = [
+    ('lang="zh"', 'lang="en"'),
+    ("图 1", "FIGURE 1"), ("图 2", "FIGURE 2"), ("图 3", "FIGURE 3"),
+    ("从星形到两层：日常决策交给 Chief PM", "From a star to two layers"),
+    ("同样 9 个经理，同样是 Opus 5.5。变的是谁站在中心。", "Same nine managers, same Opus 5.5. What changed is who sits at the center."),
+    ("之前：9 条辐条都通向我", "Before: all nine spokes run to me"),
+    (">博客<", ">Blog<"), (">我<", ">Me<"),
+    ("11 月 20 日至 23 日 17:20，81 小时里我给经理们发了<b>至少 135 条</b>消息。", "20 Nov to 23 Nov 17:20: I sent the managers <b>at least 135</b> messages in 81 hours."),
+    ("之后：我只管 S5，日常由 Chief PM 拍板", "After: I keep S5, the Chief PM makes routine calls"),
+    ("我 · S5", "Me · S5"),
+    ("花钱、对外发声、凭据、产品方向", "Spending, public posts, credentials, direction"),
+    ("合并、发版、技术选型、巡检", "Merges, releases, tech choices, check-ins"),
+    ("9 个经理（S1），下面挂着约 300 个 Worker 对话", "9 managers (S1), with about 300 Worker threads below"),
+    ("交接后的 14.7 小时里，我给 9 个经理发了 <b>4 条</b>，给 Chief PM 发了 <b>9 条</b>。", "In the 14.7 hours after the handover: <b>4</b> messages to the managers, <b>9</b> to the Chief PM."),
+    ("S1 / S3 / S5：Stafford Beer 可生存系统模型的层级 · 北京时间", "S1 / S3 / S5: levels of Beer's Viable System Model · Beijing time"),
+    ("我每小时发出的消息", "Messages I sent per hour"),
+    ("只数我亲手打的字，按北京时间分三段。条越长，我越像队列。", "Only messages I typed, in three windows (Beijing time). The longer the bar, the more I'm the queue."),
+    ("发给 9 个经理", "To the 9 managers"), ("发给 Chief PM", "To the Chief PM"),
+    ("<b>上任前</b><span>81 小时", "<b>Before the Chief PM</b><span>81 h"),
+    ("<b>巡检、划权责</b><span>3.3 小时", "<b>First sweeps, setting rights</b><span>3.3 h"),
+    ("<b>交接之后</b><span>14.7 小时", "<b>After the handover</b><span>14.7 h"),
+    ("≥135 条 · 每小时 ≥1.66 条", "≥135 messages · ≥1.66 per hour"),
+    ("3 条 · 全部发给 Chief PM", "3 messages · all to the Chief PM"),
+    ("13 条 · 4 条给经理，9 条给 Chief PM", "13 messages · 4 to managers, 9 to the Chief PM"),
+    ("注意力从 9 条线收到了 1 条线上。两点折扣：交接后的窗口大半在夜里；回答选择题的点击没有计入。", "My attention narrowed from nine lanes to one. Two discounts: the after-window is mostly overnight, and clicks answering agents' questions aren't counted."),
+    ("数据：T3 Code 对话记录 · 2026-11-20 至 11-24", "Data: T3 Code transcripts · 2026-11-20 to 11-24"),
+    ("σ 接近零时，管理上限只看 κ", "With σ near zero, κ sets the ceiling"),
+    ("USL 有效产出 X(N)/λ = N / (1 + κN(N−1))，取 σ = 0。", "USL effective output X(N)/λ = N / (1 + κN(N−1)), with σ = 0."),
+    ("直接下属数 N", "Direct reports N"),
+    ("κ = 0.0146，N* ≈ 8", "κ = 0.0146, N* ≈ 8"),
+    ("κ 降到十分之一，N* ≈ 26", "κ cut to a tenth, N* ≈ 26"),
+    ("示意参数，算出来的，没有测过。κ 由项目之间的依赖决定，跟模型多聪明关系不大。", "Illustrative, computed, not measured. κ comes from dependencies between projects, not from how smart the model is."),
+    ("N* = √((1−σ)/κ) · κ = 0.0146 沿用 7 月文章的示意参数", "N* = √((1−σ)/κ) · κ = 0.0146 from the July post"),
+]
+EN.sort(key=lambda p: -len(p[0]))
+for name in ("figure-1-topology", "figure-2-touches", "figure-3-ceiling"):
+    s = (HERE / f"{name}.zh.html").read_text(encoding="utf-8")
+    for a, b in EN:
+        s = s.replace(a, b)
+    (HERE / f"{name}.en.html").write_text(s, encoding="utf-8")
+    print("wrote", f"{name}.en.html")
