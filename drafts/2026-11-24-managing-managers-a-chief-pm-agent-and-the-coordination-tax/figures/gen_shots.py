@@ -53,11 +53,11 @@ def fig4():
 <div class="tag" style="top:{y(1150):.0f}px;border-color:#2e7d32"><b style="color:#2e7d32">右侧的 +11、+53……</b><br/>各自开过的 PR 数，加起来 293 个</div>
 <div class="tag" style="top:{y(1530):.0f}px;border-color:#01579b"><b style="color:#01579b">「Working」</b><br/>此刻还在跑的两个：Eval、Semon</div>
 </div>"""
-    body = f"""<div class="figno">图 4</div><h1>我手机上的 T3 Code：一个总监，九个经理</h1>
+    body = f"""<div class="figno">图 1</div><h1>我手机上的 T3 Code：一个总监，九个经理</h1>
 <div class="sub">2026 年 11 月 24 日 12:26 的真实截图。裁掉了顶栏，机器名已模糊，其余未改。</div>
 <div class="cols">{img}{side}</div>
 <div class="foot">截图：T3 Code iOS · 线程列表按最近活动排序</div>"""
-    return HEAD.replace("{title}", "图 4").replace("{extra}", EXTRA) + body + TAIL
+    return HEAD.replace("{title}", "图 1").replace("{extra}", EXTRA) + body + TAIL
 
 
 def fig5():
@@ -66,7 +66,7 @@ def fig5():
                  [(420, 940, "#01579b", "1"), (1515, 1585, "#2e7d32", "2")])
     b, hb = shot("semon-to-cpm.png", w, 268, 1640,
                  [(272, 358, "#7b1fa2", "3"), (500, 700, "#01579b", "4")])
-    body = f"""<div class="figno">图 5</div><h1>Chief PM 和经理直接对话，我在旁边看</h1>
+    body = f"""<div class="figno">图 4</div><h1>Chief PM 和经理直接对话，我在旁边看</h1>
 <div class="sub">11 月 24 日上午的一个来回，两张截图来自两个不同的对话。</div>
 <div class="cols">
 <div class="col"><div class="cap" style="color:#7b1fa2">Chief PM 的对话</div>{a}
@@ -77,11 +77,12 @@ def fig5():
 <div><i style="background:#01579b">4</i>调研做完，结论直接发回 Chief PM</div></div></div>
 </div>
 <div class="foot">截图：T3 Code iOS · 12:27 / 12:28</div>"""
-    return HEAD.replace("{title}", "图 5").replace("{extra}", EXTRA) + body + TAIL
+    return HEAD.replace("{title}", "图 4").replace("{extra}", EXTRA) + body + TAIL
 
 
 EN5 = [
-    ('lang="zh"', 'lang="en"'), ("图 4", "FIGURE 4"), ("图 5", "FIGURE 5"),
+    ('lang="zh"', 'lang="en"'),
+    ("图 1", "FIGURE 1"), ("图 2", "FIGURE 2"), ("图 3", "FIGURE 3"), ("图 4", "FIGURE 4"), ("图 5", "FIGURE 5"), 
     ("我手机上的 T3 Code：一个总监，九个经理", "T3 Code on my phone: one director, nine managers"),
     ("2026 年 11 月 24 日 12:26 的真实截图。裁掉了顶栏，机器名已模糊，其余未改。", "A real screenshot from 12:26 on 24 Nov 2026. Top bar cropped and machine names blurred; nothing else changed."),
     ("跑在另一台机器上", "runs on another machine"),
@@ -102,7 +103,7 @@ EN5 = [
     ("截图：T3 Code iOS · 12:27 / 12:28", "Screenshots: T3 Code iOS · 12:27 / 12:28"),
 ]
 EN5.sort(key=lambda p: -len(p[0]))
-for name, fn in (("figure-4-sidebar", fig4), ("figure-5-peer-talk", fig5)):
+for name, fn in (("figure-1-sidebar", fig4), ("figure-4-peer-talk", fig5)):
     zh = fn()
     (HERE / f"{name}.zh.html").write_text(zh, encoding="utf-8")
     en = zh
