@@ -142,3 +142,7 @@
 
 ---
 **Last Update**: [YYYY-MM-DD HH:MM] by Scaffold Generator
+
+## 2026-11-24
+- Outline approved (6 sections, ZH primary).
+- ZH §1 drafted: owner as σ hub of 9 managers. Awaiting author feedback.

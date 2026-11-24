@@ -1,0 +1,23 @@
+---
+slug: managing-managers-a-chief-pm-agent-and-the-coordination-tax
+title: "管理经理：当 AI 开始管 AI 经理"
+authors: ["marvin"]
+tags: ["ai", "agents", "management", "systems-design"]
+date: 2026-11-24
+unlisted: true
+---
+
+{/* 中文为初稿语言，本文是权威版本；英文版由本文重述而来。 */}
+{/* 文件名日期（2026-11-24）与前置数据日期必须一致。 */}
+
+今年 7 月，笔者写过一篇[《为什么 AI Agent 团队逃不出人月神话》](/blog/multi-agent-teams-and-the-measurable-coordination-tax)，用通用可扩展性定律（Universal Scalability Law，USL）算了一笔账：团队变大以后，拖慢它的主要是两项成本。一项是排队成本 σ，大家抢同一个资源、等同一个人；另一项是对齐成本 κ，让每个人对同一件事理解一致的代价，它随人数的平方增长。那篇文章的结论是，下一个时代稀缺的能力，是把 κ 压下来。
+
+写完那篇文章四个月，这笔账算到了我自己头上。
+
+现在我手上同时跑着 9 个"经理"会话：博客、Agent Workbench、Semon、Ostrom、Tolmap、Eval、Infra、Duhem、Kirzner，每个项目一个。它们都是 Opus 5.5，各自负责一个项目，把具体活儿拆给下面的 Worker（便宜一些的模型）去做，自己做规划、验收和合并。这套分工我在[《Agent Workbench 发布》](/blog/introducing-agent-workbench)里写过，在 [T3 Code](/blog/t3-code-the-vs-code-of-the-ai-agent-era) 里跑起来。单看每个项目，效果不错：经理不需要我盯着写代码，这正是[《别再当 agent 的保姆》](/blog/stop-babysitting-your-agent)想要的状态。
+
+问题出在项目之间。9 个经理每天都会遇到要拍板的事：这个 PR 能不能合，两种技术方案选哪个，站点上这个改动要不要上。按默认规则，这些都回到我这里。于是整个组织画出来是一个星形：9 条辐条，中心是我。
+
+用 USL 的话说，我成了 σ。7 月那篇文章提过，项目经理的价值是把"人人互相对齐"的 n(n−1)/2 条通道，收成"人人只跟 PM 对齐"的 n 条，代价是 PM 自己变成新的队列。2021 年我在[《为什么现代软件工程离不开项目管理》](/blog/project-management)里讲的，也是同一个结构。只是这一次，队列里排队的不是人，是 9 个随时待命、几分钟就能干完一轮活的 agent。它们的速度越快，等我的时间就越显眼。我睡一觉，9 条线都停在某个"等确认"上。
+
+这就是本文的起点：当下属本身就是经理，而且比你快得多，你还该不该亲自管？
