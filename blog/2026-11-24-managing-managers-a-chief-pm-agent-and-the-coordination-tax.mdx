@@ -18,7 +18,7 @@ I now run nine "manager" sessions at once, one per project: the blog, Agent Work
 
 The trouble was between projects. Every day each manager hits something that needs a call: can this PR merge, which of two technical options, should this site change go live. By default all of those came back to me. Drawn out, the organization was a star with nine spokes and me at the hub.
 
-![T3 Code on my phone: the Chief PM on another machine, and below it nine managers, all Opus 5.5, one per project](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-4-sidebar.en.png)
+![T3 Code on my phone: the Chief PM on another machine, and below it nine managers, all Opus 5.5, one per project](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-1-sidebar.en.png)
 
 In USL terms, I had become σ. The July piece noted that a project manager's value is collapsing the n(n−1)/2 channels of "everyone aligns with everyone" into the n channels of "everyone aligns with the PM", at the price of the PM becoming the new queue. My 2021 piece on [why software engineering can't do without project management](/blog/project-management) described the same structure. This time, though, the queue wasn't people. It was nine agents that never go off shift and finish a round of work in minutes. The faster they got, the more visible my waiting became. I'd sleep, and all nine lanes would sit parked on some "awaiting confirmation".
 
@@ -55,7 +55,7 @@ The managers' reactions were more telling. None of them simply took the new rule
 
 One sentence of delegated authority reached eight reports and came out in at least four versions. All of them were doing the same thing: working out where the authority came from before deciding whom to obey. That is what alignment cost κ looks like inside an organization. When a new director joins a human company, people also check whether the boss told them in person.
 
-![From a star to two layers: before, all nine managers ran to me; after, I keep spending, public posts, credentials and product direction, and the Chief PM makes the routine calls](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-1-topology.en.png)
+![From a star to two layers: before, all nine managers ran to me; after, I keep spending, public posts, credentials and product direction, and the Chief PM makes the routine calls](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-2-topology.en.png)
 
 ## Why this layer is cheap
 
@@ -67,7 +67,7 @@ Start with σ. A human director's queue is expensive because their time is finit
 
 Whether my own queue got shorter shows up too. I lined up every message I typed into the nine manager threads and split them into three windows: before the Chief PM started, its first few hours of sweeps and drawing boundaries, and after decision rights were handed over. Then I turned each window into a rate per hour.
 
-![How often I sent messages: before, all of them went to managers; after the handover the overall rate fell, the share going to managers shrank to a sliver, and most went to the Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-2-touches.en.png)
+![How often I sent messages: before, all of them went to managers; after the handover the overall rate fell, the share going to managers shrank to a sliver, and most went to the Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-3-touches.en.png)
 
 The trend is clear. After the handover, how often I went to the managers directly dropped close to zero, and most of what I still sent went to the Chief PM instead. I won't put a precise number on the drop, for two reasons. Most of the after-window fell overnight, when I send less anyway. And my clicks answering the agents' multiple-choice questions aren't counted, only what I typed. What's certain is the direction: my attention narrowed from nine lanes to one.
 
@@ -91,7 +91,7 @@ Three kinds of tool did the work in my setup, and each one maps to a USL cost.
 
 **Cross-session thread tools push κ down.** T3 Code lets one session list other sessions, read their transcripts and message them, across machines too. That is how the Chief PM works from another machine. Its sweeps need no meetings and no weekly reports: it reads the end of each manager's conversation directly.
 
-![The Chief PM and the Semon manager talk directly: the Chief PM approves the data format and tells me nothing needs my decision; Semon receives an Agent-tagged message and sends its research back to the Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-5-peer-talk.en.png) In a human organization a director learns what's happening from reports, and reporting is itself an alignment cost. Here reporting turns into lookup, and the report never has to stop working.
+![The Chief PM and the Semon manager talk directly: the Chief PM approves the data format and tells me nothing needs my decision; Semon receives an Agent-tagged message and sends its research back to the Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-4-peer-talk.en.png) In a human organization a director learns what's happening from reports, and reporting is itself an alignment cost. Here reporting turns into lookup, and the report never has to stop working.
 
 The shape of a tool also sets the quality of management. The Chief PM tripped on its first task: the thread-read tool returns from the start by default, so it got each project's opening messages from days earlier and nearly judged the present on them. It caught the mistake and switched to reading from the end. Had it not, every later judgment would have rested on stale information. The Infra manager not finding my "merge now" was the same kind of problem: the message existed, just not where it could read it.
 
@@ -119,7 +119,7 @@ A human manager's limit comes from time and energy. An agent manager doesn't tir
 
 USL gives a formula for the best size: N\* = √((1−σ)/κ). With the Chief PM's σ near zero, κ alone decides it. The July piece used an illustrative κ of 0.0146, which puts N\* at about 8, right inside human experience. If good project splits cut κ to a tenth of that, N\* is about 26. Both numbers are computed illustrations, not measurements. What they show is that how many reports an agent manager can handle depends mainly on how much the projects depend on each other, and much less on how smart the model is.
 
-![With σ near zero, κ alone sets the ceiling: N* is about 8 at κ = 0.0146, and about 26 when κ drops to a tenth](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-3-ceiling.en.png)
+![With σ near zero, κ alone sets the ceiling: N* is about 8 at κ = 0.0146, and about 26 when κ drops to a tenth](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-5-ceiling.en.png)
 
 The good news is that agent organizations can be measured. The July piece ended by saying a human team's bill can only be computed, while an agent team's can be measured. Every judgment and every correction the Chief PM makes stays in its transcript. I plan to watch four signals:
 

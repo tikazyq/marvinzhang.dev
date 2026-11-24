@@ -73,14 +73,14 @@ def fig1():
     t.append('</svg>')
     tree = "".join(t)
 
-    body = f"""<div class="figno">图 1</div><h1>从星形到两层：日常决策交给 Chief PM</h1>
+    body = f"""<div class="figno">图 2</div><h1>从星形到两层：日常决策交给 Chief PM</h1>
 <div class="sub">同样 9 个经理，同样是 Opus 5.5。变的是谁站在中心。</div>
 <div class="panel"><h2 style="color:var(--red)">之前：9 条辐条都通向我</h2>{star}
 <div class="note">每一个要拍板的事，都等我回消息。</div></div>
 <div class="panel"><h2 style="color:var(--purple)">之后：我只管 S5，日常由 Chief PM 拍板</h2>{tree}
 <div class="note">我直接找经理的次数几乎归零，剩下的消息大多发给 Chief PM。</div></div>
 <div class="foot">S1 / S3 / S5：Stafford Beer 可生存系统模型的层级 · 北京时间</div>"""
-    return HEAD.replace("{title}", "图 1").replace("{extra}", "") + body + TAIL
+    return HEAD.replace("{title}", "图 2").replace("{extra}", "") + body + TAIL
 
 
 def fig2():
@@ -100,13 +100,13 @@ def fig2():
     extra = """.row{margin-top:16px}.rl{display:flex;justify-content:space-between;font-size:18px;margin-bottom:4px}
 .rl span{color:var(--soft);font-size:16px}.rv{font-size:16px;color:var(--soft);margin-top:4px}
 .leg{display:flex;gap:22px;font-size:16px;margin-top:6px}.sw{display:inline-block;width:16px;height:16px;border-radius:3px;vertical-align:-2px;margin-right:6px}"""
-    body = f"""<div class="figno">图 2</div><h1>我发消息的频率</h1>
+    body = f"""<div class="figno">图 3</div><h1>我发消息的频率</h1>
 <div class="sub">只数我亲手打的字，按每小时折算。条越长，我越像队列。</div>
 <div class="panel"><div class="leg"><span><i class="sw" style="background:#c62828"></i>发给 9 个经理</span><span><i class="sw" style="background:#7b1fa2"></i>发给 Chief PM</span></div>
 {''.join(s)}</div>
 <div class="take">注意力从 9 条线收到了 1 条线上。两点折扣：交接后的窗口大半在夜里；回答选择题的点击没有计入。</div>
 <div class="foot">数据：T3 Code 对话记录 · 2026-11-20 至 11-24</div>"""
-    return HEAD.replace("{title}", "图 2").replace("{extra}", extra) + body + TAIL
+    return HEAD.replace("{title}", "图 3").replace("{extra}", extra) + body + TAIL
 
 
 def fig3():
@@ -132,21 +132,22 @@ def fig3():
     s.append(f'<text x="{X(8.3)+8:.1f}" y="{Y(4.3)-10:.1f}" font-size="16" fill="#c62828">κ = 0.0146，N* ≈ 8</text>')
     s.append(f'<text x="{X(26.2)-6:.1f}" y="{Y(13.3)-8:.1f}" text-anchor="end" font-size="16" fill="#2e7d32">κ 降到十分之一，N* ≈ 26</text>')
     s.append('</svg>')
-    body = f"""<div class="figno">图 3</div><h1>σ 接近零时，管理上限只看 κ</h1>
+    body = f"""<div class="figno">图 5</div><h1>σ 接近零时，管理上限只看 κ</h1>
 <div class="sub">USL 有效产出 X(N)/λ = N / (1 + κN(N−1))，取 σ = 0。</div>
 <div class="panel">{''.join(s)}<div class="note">示意参数，算出来的，没有测过。κ 由项目之间的依赖决定，跟模型多聪明关系不大。</div></div>
 <div class="foot">N* = √((1−σ)/κ) · κ = 0.0146 沿用 7 月文章的示意参数</div>"""
-    return HEAD.replace("{title}", "图 3").replace("{extra}", "") + body + TAIL
+    return HEAD.replace("{title}", "图 5").replace("{extra}", "") + body + TAIL
 
 
-for name, fn in (("figure-1-topology.zh.html", fig1), ("figure-2-touches.zh.html", fig2), ("figure-3-ceiling.zh.html", fig3)):
+for name, fn in (("figure-2-topology.zh.html", fig1), ("figure-3-touches.zh.html", fig2), ("figure-5-ceiling.zh.html", fig3)):
     (HERE / name).write_text(fn(), encoding="utf-8")
     print("wrote", name)
 
 # English variants: same layout, strings swapped.
 EN = [
     ('lang="zh"', 'lang="en"'),
-    ("图 1", "FIGURE 1"), ("图 2", "FIGURE 2"), ("图 3", "FIGURE 3"),
+    ("图 1", "FIGURE 1"), ("图 2", "FIGURE 2"), ("图 3", "FIGURE 3"), ("图 4", "FIGURE 4"), ("图 5", "FIGURE 5"),
+    
     ("从星形到两层：日常决策交给 Chief PM", "From a star to two layers"),
     ("同样 9 个经理，同样是 Opus 5.5。变的是谁站在中心。", "Same nine managers, same Opus 5.5. What changed is who sits at the center."),
     ("之前：9 条辐条都通向我", "Before: all nine spokes run to me"),
@@ -181,7 +182,7 @@ EN = [
     ("N* = √((1−σ)/κ) · κ = 0.0146 沿用 7 月文章的示意参数", "N* = √((1−σ)/κ) · κ = 0.0146 from the July post"),
 ]
 EN.sort(key=lambda p: -len(p[0]))
-for name in ("figure-1-topology", "figure-2-touches", "figure-3-ceiling"):
+for name in ("figure-2-topology", "figure-3-touches", "figure-5-ceiling"):
     s = (HERE / f"{name}.zh.html").read_text(encoding="utf-8")
     for a, b in EN:
         s = s.replace(a, b)

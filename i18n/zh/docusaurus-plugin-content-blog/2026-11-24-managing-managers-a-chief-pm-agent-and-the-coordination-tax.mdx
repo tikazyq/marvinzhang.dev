@@ -18,7 +18,7 @@ unlisted: true
 
 问题出在项目之间。9 个经理每天都会遇到要拍板的事：这个 PR 能不能合，两种技术方案选哪个，站点上这个改动要不要上。按默认规则，这些都回到我这里。于是整个组织画出来是一个星形：9 条辐条，中心是我。
 
-![我手机上的 T3 Code：Chief PM 在另一台机器上，下面是 9 个经理，都是 Opus 5.5，一个项目一个](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-4-sidebar.zh.png)
+![我手机上的 T3 Code：Chief PM 在另一台机器上，下面是 9 个经理，都是 Opus 5.5，一个项目一个](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-1-sidebar.zh.png)
 
 用 USL 的话说，我成了 σ。7 月那篇文章提过，项目经理的价值是把"人人互相对齐"的 n(n−1)/2 条通道，收成"人人只跟 PM 对齐"的 n 条，代价是 PM 自己变成新的队列。2021 年我在[《为什么现代软件工程离不开项目管理》](/blog/project-management)里讲的，也是同一个结构。只是这一次，队列里排队的不是人，是 9 个随时待命、几分钟就能干完一轮活的 agent。它们的速度越快，等我的时间就越显眼。我睡一觉，9 条线都停在某个"等确认"上。
 
@@ -55,7 +55,7 @@ unlisted: true
 
 一句话下达的授权，传到 8 个下属那里，至少被理解出了 4 个版本。它们都在做同一件事：确认权限来自哪里，再决定听谁的。这正是对齐成本 κ 在组织里的样子。人类公司里，新任总监到岗，大家也会先看老板有没有当面交代过。
 
-![从星形到两层：之前 9 个经理都通向我；之后我只管花钱、对外发声、凭据和产品方向，日常决策由 Chief PM 拍板](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-1-topology.zh.png)
+![从星形到两层：之前 9 个经理都通向我；之后我只管花钱、对外发声、凭据和产品方向，日常决策由 Chief PM 拍板](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-2-topology.zh.png)
 
 ## 为什么这一层不贵
 
@@ -67,7 +67,7 @@ unlisted: true
 
 我自己身上的队列有没有变短，也能看出来。我把 9 个经理对话里我亲手发的消息按时间排了一遍，分成三段：Chief PM 上任前、它上任后巡检和划权责的头几个小时、以及决策权交接之后，再折算成每小时的频率。
 
-![我发消息的频率：上任前全部发给经理；交接后总频率下降，发给经理的部分只剩很小一截，大部分改发给 Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-2-touches.zh.png)
+![我发消息的频率：上任前全部发给经理；交接后总频率下降，发给经理的部分只剩很小一截，大部分改发给 Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-3-touches.zh.png)
 
 趋势很清楚：交接之后，我直接找经理的频率几乎降到了底，剩下的消息大多改发给 Chief PM。具体降了多少，我不想给一个精确的数，原因有两个。一是交接后的时段大半落在夜里，我本来就发得少；二是我回答 agent 选择题的点击没有计入，只算了亲手打的字。能确定的只有方向：我的注意力从 9 条线收到了 1 条线上。
 
@@ -91,7 +91,7 @@ Chief PM 能当总监，Opus 5.5 够聪明是前提，但光有聪明不够。�
 
 **第一类，跨会话的线程工具，压的是 κ。** T3 Code 让一个会话能列出其他会话、读它们的记录、给它们发消息，跨机器也行。Chief PM 跑在另一台机器上，靠的就是这个。它的巡检不用开会，也不用让每个经理写周报，直接去读对方的对话末尾。
 
-![Chief PM 和 Semon 经理直接对话：Chief PM 发消息批准数据格式并告诉我不需要我拍板；Semon 经理收到标着 Agent 的消息，做完调研把结论发回 Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-5-peer-talk.zh.png)人类组织里，总监了解情况要靠下属汇报，汇报本身就是对齐成本；这里汇报变成了查阅，对方不用停下手里的活。
+![Chief PM 和 Semon 经理直接对话：Chief PM 发消息批准数据格式并告诉我不需要我拍板；Semon 经理收到标着 Agent 的消息，做完调研把结论发回 Chief PM](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-4-peer-talk.zh.png)人类组织里，总监了解情况要靠下属汇报，汇报本身就是对齐成本；这里汇报变成了查阅，对方不用停下手里的活。
 
 工具的形状也直接决定管理质量。Chief PM 上任第一件事就踩了坑：读线程的工具默认从头返回，它拿到的是每个项目几天前的开场白，差点据此判断现状。它自己发现了，换成从末尾读。如果它没发现，后面的判断全会建立在旧信息上。Infra 经理找不到我那句"现在合并"，也是同一类问题：消息在，但不在它读得到的地方。
 
@@ -119,7 +119,7 @@ Chief PM 能当总监，Opus 5.5 够聪明是前提，但光有聪明不够。�
 
 USL 给过一个算最优规模的公式：N\* = √((1−σ)/κ)。Chief PM 的 σ 几乎为零，这个公式就只剩 κ 说了算。7 月那篇文章用过一组示意参数，κ = 0.0146 时 N\* 约为 8，恰好落在人类经验的范围里。如果项目拆得好，让 κ 降到它的十分之一，N\* 就是 26 左右。这两个数都是算出来的示意，没有测过。它们说明的是，agent 经理能管多少人，主要取决于项目之间有多少依赖，跟模型多聪明关系不大。
 
-![σ 接近零时管理上限只看 κ：κ = 0.0146 时 N* 约为 8，κ 降到十分之一时 N* 约为 26](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-3-ceiling.zh.png)
+![σ 接近零时管理上限只看 κ：κ = 0.0146 时 N* 约为 8，κ 降到十分之一时 N* 约为 26](/img/blog/2026-11-24-managing-managers-a-chief-pm-agent-and-the-coordination-tax/figure-5-ceiling.zh.png)
 
 好在 agent 组织可以测。7 月那篇文章的结尾说，人类团队的这笔账只能算，agent 团队可以量。Chief PM 的每一次判断、每一次纠正都留在对话记录里。我打算盯四个信号：
 
