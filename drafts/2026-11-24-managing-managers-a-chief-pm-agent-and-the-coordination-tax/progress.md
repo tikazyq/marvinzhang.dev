@@ -146,3 +146,5 @@
 ## 2026-11-24
 - Outline approved (6 sections, ZH primary).
 - ZH §1 approved. ZH §2 drafted from CPM thread (2026-11-23 09:20–12:41 UTC): one-line charter, two owner instructions, decision-rights table, peers verifying authority.
+- ZH §2 approved. ZH §3 drafted (σ cheap: 102 runs, most 5–25 s; κ low: Graicunas/Urwick qualifier, Gallup, McKinsey).
+- Before publish: verify McKinsey per-archetype ranges on the original page (only endpoints 3–5 and 15+ used in text).
