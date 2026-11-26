@@ -1,3 +1,4 @@
+import {appendFileSync} from 'node:fs';
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
@@ -74,11 +75,17 @@ const config: Config = {
                 !(typeof metadata.frontMatter.description === 'string' &&
                   metadata.frontMatter.description.trim()),
               );
-              if (missingAnyDate.length) {
-                process.stdout.write(
-                  `Missing descriptions (${missingAnyDate.length}):\n${missingAnyDate
-                    .map(({metadata}) => `- ${metadata.source}`)
-                    .join('\n')}\n`,
+              const inventoryFile = process.env.POST_DESCRIPTION_INVENTORY_FILE;
+              if (inventoryFile && missingAnyDate.length) {
+                const locale = missingAnyDate[0].metadata.source.startsWith(
+                  '@site/i18n/zh/',
+                ) ? 'zh' : 'en';
+                appendFileSync(
+                  inventoryFile,
+                  `${JSON.stringify({
+                    locale,
+                    sources: missingAnyDate.map(({metadata}) => metadata.source),
+                  })}\n`,
                 );
               }
               return;

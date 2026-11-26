@@ -21,7 +21,24 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Inventory all existing missing descriptions through the blog hook
-        run: POST_DESCRIPTION_INVENTORY=1 pnpm run build
+        run: |
+          rm -f /tmp/post-description-inventory.jsonl
+          POST_DESCRIPTION_INVENTORY=1 POST_DESCRIPTION_INVENTORY_FILE=/tmp/post-description-inventory.jsonl pnpm run build
+          node <<'NODE'
+          const fs = require('node:fs');
+          const records = fs.readFileSync('/tmp/post-description-inventory.jsonl', 'utf8')
+            .trim().split('\n').filter(Boolean).map((line) => JSON.parse(line));
+          const inventory = new Map([['en', new Set()], ['zh', new Set()]]);
+          for (const record of records) {
+            for (const source of record.sources) {
+              inventory.get(record.locale).add(source.replace(/^@site\//, ''));
+            }
+          }
+          for (const [locale, paths] of inventory) {
+            console.log(`### ${locale === 'en' ? 'English' : 'Chinese'} (${paths.size})`);
+            for (const source of [...paths].sort()) console.log(`- ${source}`);
+          }
+          NODE
       - name: Add real dated-filename fixtures in both locales
         run: |
           node <<'NODE'
@@ -40,23 +57,31 @@ jobs:
             fs.writeFileSync(`${directory}/${filename}`, `---\ntitle: Description fixture\n${extra}---\nFixture body.\n`);
           }
           NODE
-      - name: Confirm normal build rejects later missing and blank descriptions
+      - name: Confirm English dated filename rules in normal build
         run: |
-          if pnpm run build > /tmp/description-build-failure.log 2>&1; then
-            echo 'Build unexpectedly accepted later missing descriptions.'
+          if pnpm run build -- --locale en > /tmp/description-en-failure.log 2>&1; then
+            echo 'English build unexpectedly accepted later missing descriptions.'
             exit 1
           fi
-          for fixture in \
-            'blog/2026-11-27-missing-description-fixture.mdx' \
-            'blog/2026-11-27-blank-description-fixture.mdx' \
-            'i18n/zh/docusaurus-plugin-content-blog/2026-11-27-missing-description-fixture.mdx' \
-            'i18n/zh/docusaurus-plugin-content-blog/2026-11-27-blank-description-fixture.mdx'; do
-            if ! rg -F "$fixture" /tmp/description-build-failure.log; then
-              echo "Build error did not identify $fixture"
+          for fixture in 'blog/2026-11-27-missing-description-fixture.mdx' 'blog/2026-11-27-blank-description-fixture.mdx'; do
+            if ! grep -F -- "$fixture" /tmp/description-en-failure.log > /dev/null; then
+              echo "English build error did not identify $fixture"
               exit 1
             fi
           done
-      - name: Confirm cutoff and valid descriptions pass the normal build
+      - name: Confirm Chinese dated filename rules in normal build
+        run: |
+          if pnpm run build -- --locale zh > /tmp/description-zh-failure.log 2>&1; then
+            echo 'Chinese build unexpectedly accepted later missing descriptions.'
+            exit 1
+          fi
+          for fixture in 'i18n/zh/docusaurus-plugin-content-blog/2026-11-27-missing-description-fixture.mdx' 'i18n/zh/docusaurus-plugin-content-blog/2026-11-27-blank-description-fixture.mdx'; do
+            if ! grep -F -- "$fixture" /tmp/description-zh-failure.log > /dev/null; then
+              echo "Chinese build error did not identify $fixture"
+              exit 1
+            fi
+          done
+      - name: Confirm cutoff and valid descriptions pass in both normal builds
         run: |
           node <<'NODE'
           const fs = require('node:fs');
@@ -67,4 +92,5 @@ jobs:
             }
           }
           NODE
-          pnpm run build
+          pnpm run build -- --locale en
+          pnpm run build -- --locale zh
