@@ -1,0 +1,70 @@
+name: Post description inventory and hook fixtures
+
+on:
+  pull_request:
+    paths:
+      - 'docusaurus.config.ts'
+      - '.github/workflows/post-description-inventory.yml'
+  workflow_dispatch:
+
+jobs:
+  inventory-and-build-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Inventory all existing missing descriptions through the blog hook
+        run: POST_DESCRIPTION_INVENTORY=1 pnpm run build
+      - name: Add real dated-filename fixtures in both locales
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const fixtures = [
+            ['blog', '2026-11-26-cutoff-description-fixture.mdx', ''],
+            ['blog', '2026-11-27-missing-description-fixture.mdx', ''],
+            ['blog', '2026-11-27-blank-description-fixture.mdx', 'description: "   "\n'],
+            ['blog', '2026-11-27-valid-description-fixture.mdx', 'description: "Valid fixture description"\n'],
+            ['i18n/zh/docusaurus-plugin-content-blog', '2026-11-26-cutoff-description-fixture.mdx', ''],
+            ['i18n/zh/docusaurus-plugin-content-blog', '2026-11-27-missing-description-fixture.mdx', ''],
+            ['i18n/zh/docusaurus-plugin-content-blog', '2026-11-27-blank-description-fixture.mdx', 'description: "   "\n'],
+            ['i18n/zh/docusaurus-plugin-content-blog', '2026-11-27-valid-description-fixture.mdx', 'description: "Valid fixture description"\n'],
+          ];
+          for (const [directory, filename, extra] of fixtures) {
+            fs.writeFileSync(`${directory}/${filename}`, `---\ntitle: Description fixture\n${extra}---\nFixture body.\n`);
+          }
+          NODE
+      - name: Confirm normal build rejects later missing and blank descriptions
+        run: |
+          if pnpm run build > /tmp/description-build-failure.log 2>&1; then
+            echo 'Build unexpectedly accepted later missing descriptions.'
+            exit 1
+          fi
+          for fixture in \
+            'blog/2026-11-27-missing-description-fixture.mdx' \
+            'blog/2026-11-27-blank-description-fixture.mdx' \
+            'i18n/zh/docusaurus-plugin-content-blog/2026-11-27-missing-description-fixture.mdx' \
+            'i18n/zh/docusaurus-plugin-content-blog/2026-11-27-blank-description-fixture.mdx'; do
+            if ! rg -F "$fixture" /tmp/description-build-failure.log; then
+              echo "Build error did not identify $fixture"
+              exit 1
+            fi
+          done
+      - name: Confirm cutoff and valid descriptions pass the normal build
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          for (const directory of ['blog', 'i18n/zh/docusaurus-plugin-content-blog']) {
+            for (const slug of ['2026-11-27-missing-description-fixture', '2026-11-27-blank-description-fixture']) {
+              const file = `${directory}/${slug}.mdx`;
+              fs.writeFileSync(file, `---\ntitle: Description fixture\ndescription: "Now valid"\n---\nFixture body.\n`);
+            }
+          }
+          NODE
+          pnpm run build

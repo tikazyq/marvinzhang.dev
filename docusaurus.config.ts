@@ -61,6 +61,37 @@ const config: Config = {
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn', // Enable truncation warnings to encourage use of {/* truncate */}
+          processBlogPosts: ({blogPosts}) => {
+            const missingDescriptions = blogPosts.filter(({metadata}) => {
+              const date = new Date(metadata.date).toISOString().slice(0, 10);
+              const description = metadata.frontMatter.description;
+              return !(typeof description === 'string' && description.trim()) &&
+                date > '2026-11-26';
+            });
+
+            if (process.env.POST_DESCRIPTION_INVENTORY === '1') {
+              const missingAnyDate = blogPosts.filter(({metadata}) =>
+                !(typeof metadata.frontMatter.description === 'string' &&
+                  metadata.frontMatter.description.trim()),
+              );
+              if (missingAnyDate.length) {
+                process.stdout.write(
+                  `Missing descriptions (${missingAnyDate.length}):\n${missingAnyDate
+                    .map(({metadata}) => `- ${metadata.source}`)
+                    .join('\n')}\n`,
+                );
+              }
+              return;
+            }
+
+            if (missingDescriptions.length) {
+              throw new Error(
+                `Posts dated after 2026-11-26 must have a non-empty description:\n${missingDescriptions
+                  .map(({metadata}) => `- ${metadata.source}`)
+                  .join('\n')}`,
+              );
+            }
+          },
           routeBasePath: '/blog', // Serve the blog at the site's root
           include: ['**/*.{md,mdx}'],
           exclude: [
@@ -77,7 +108,6 @@ const config: Config = {
     ],
   ],
 
-  plugins: ['./plugins/require-post-description'],
   themes: ['@docusaurus/theme-mermaid'],
   markdown: {
     mermaid: true,
