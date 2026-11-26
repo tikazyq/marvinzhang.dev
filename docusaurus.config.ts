@@ -54,7 +54,6 @@ const config: Config = {
         blog: {
           blogSidebarCount: 'ALL',
           showReadingTime: true,
-          processBlogPosts: require('./plugins/process-blog-posts.cjs'),
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
