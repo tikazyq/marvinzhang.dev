@@ -11,6 +11,8 @@ on:
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
       - 'blog/**/*.mdx'
       - 'scripts/validate-*.js'
+      - 'scripts/process-blog-posts.test.cjs'
+      - 'plugins/process-blog-posts.cjs'
       - 'scripts/*-baseline.json'
       - 'drafts/**/figures/*.html'
       - '.github/workflows/validate-zh-formatting.yml'
@@ -22,6 +24,8 @@ on:
       - 'i18n/zh/docusaurus-plugin-content-blog/**/*.md'
       - 'blog/**/*.mdx'
       - 'scripts/validate-*.js'
+      - 'scripts/process-blog-posts.test.cjs'
+      - 'plugins/process-blog-posts.cjs'
       - 'scripts/*-baseline.json'
       - 'drafts/**/figures/*.html'
       - '.github/workflows/validate-zh-formatting.yml'
@@ -62,6 +66,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Test generated blog descriptions
+        run: pnpm run test:blog-description
 
       - name: Validate Chinese blog formatting
         run: pnpm run validate:zh-bold-source

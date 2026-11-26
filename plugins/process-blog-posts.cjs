@@ -1,54 +1,44 @@
-const COMMENT_ONLY_LINE = /^\s*(?:\{\/\*[\s\S]*?\*\/\}|<!--[\s\S]*?-->)\s*$/;
-const LEADING_COMMENT = /^\s*(?:\{\/\*[\s\S]*?\*\/\}|<!--[\s\S]*?-->)\s*/;
+const {createExcerpt} = require('@docusaurus/utils');
 
-function removeLeadingComments(content) {
-  let result = content;
-  let previous;
+function stripCommentsOutsideCode(content) {
+  const lines = content.split(/(?<=\n)/);
+  const output = [];
+  let outsideCode = '';
+  let fence;
 
-  do {
-    previous = result;
-    result = result.replace(LEADING_COMMENT, '');
-  } while (result !== previous);
-
-  return result;
-}
-
-function firstParagraph(content) {
-  const lines = removeLeadingComments(content).split(/\r?\n/);
-  const paragraph = [];
-  let inCodeFence = false;
-
-  for (const line of lines) {
-    if (/^\s*(```|~~~)/.test(line)) {
-      inCodeFence = !inCodeFence;
-      continue;
-    }
-    if (inCodeFence) continue;
-    if (!line.trim()) {
-      if (paragraph.length) break;
-      continue;
-    }
-    if (/^\s*(?:import|export)\s/.test(line) || /^\s*#/.test(line)) continue;
-    paragraph.push(line.trim());
+  function flushOutsideCode() {
+    output.push(outsideCode
+      .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
+      .replace(/<!--[\s\S]*?-->/g, ''));
+    outsideCode = '';
   }
 
-  return paragraph
-    .join(' ')
-    .replace(/<!--([\s\S]*?)-->/g, '')
-    .replace(/\{\/\*([\s\S]*?)\*\/\}/g, '')
-    .replace(/<[^>]*>/g, '')
-    .trim();
+  for (const line of lines) {
+    const marker = line.match(/^\s*(`{3,}|~{3,})/);
+    if (!fence && marker) {
+      flushOutsideCode();
+      fence = {character: marker[1][0], length: marker[1].length};
+      output.push(line);
+    } else if (fence) {
+      output.push(line);
+      const closing = line.match(/^\s*(`+|~+)\s*$/);
+      if (closing && closing[1][0] === fence.character && closing[1].length >= fence.length) {
+        fence = undefined;
+      }
+    } else {
+      outsideCode += line;
+    }
+  }
+
+  flushOutsideCode();
+  return output.join('');
 }
 
-module.exports = function processBlogPosts({blogPosts}) {
+function processBlogPosts({blogPosts}) {
   return blogPosts.map((post) => {
     if (post.metadata.frontMatter.description != null) return post;
 
-    const cleanedExcerpt = removeLeadingComments(post.metadata.description ?? '').trim();
-    const description = cleanedExcerpt && !COMMENT_ONLY_LINE.test(cleanedExcerpt)
-      ? cleanedExcerpt
-      : firstParagraph(post.content);
-
+    const description = createExcerpt(stripCommentsOutsideCode(post.content)) ?? '';
     return {
       ...post,
       metadata: {
@@ -57,4 +47,7 @@ module.exports = function processBlogPosts({blogPosts}) {
       },
     };
   });
-};
+}
+
+module.exports = processBlogPosts;
+module.exports.stripCommentsOutsideCode = stripCommentsOutsideCode;
