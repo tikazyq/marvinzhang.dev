@@ -53,6 +53,7 @@ const config: Config = {
         docs: false, // Disable docs completely
         blog: {
           blogSidebarCount: 'ALL',
+          processBlogPosts: require('./plugins/process-blog-posts.cjs'),
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],
