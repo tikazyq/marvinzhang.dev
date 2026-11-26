@@ -80,6 +80,7 @@ const config: Config = {
   themes: ['@docusaurus/theme-mermaid'],
   markdown: {
     mermaid: true,
+    remarkPlugins: [require.resolve('./plugins/remark-strip-comments.js')],
   },
   themeConfig: {
     colorMode: {
