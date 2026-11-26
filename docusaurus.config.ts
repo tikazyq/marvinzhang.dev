@@ -54,6 +54,7 @@ const config: Config = {
         blog: {
           blogSidebarCount: 'ALL',
           showReadingTime: true,
+          processBlogPosts: require('./plugins/process-blog-posts.cjs'),
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
@@ -80,7 +81,6 @@ const config: Config = {
   themes: ['@docusaurus/theme-mermaid'],
   markdown: {
     mermaid: true,
-    remarkPlugins: [require.resolve('./plugins/remark-strip-comments.js')],
   },
   themeConfig: {
     colorMode: {
