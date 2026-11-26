@@ -14,7 +14,9 @@ function visitMarkdownFiles(directory) {
     if (entry.isDirectory()) {
       return entry.name.startsWith('_') ? [] : visitMarkdownFiles(fullPath);
     }
-    return /\.mdx?$/.test(entry.name) && !/\.(test|spec)\.[^.]+$/.test(entry.name)
+    return /^\.(?:md|mdx)$/.test(path.extname(entry.name)) &&
+      !entry.name.startsWith('_') &&
+      !/\.(test|spec)\.(?:md|mdx)$/.test(entry.name)
       ? [fullPath]
       : [];
   });
@@ -38,15 +40,11 @@ function findMissingDescriptions(rootDir) {
   );
 }
 
-module.exports = function requirePostDescriptionPlugin(_context, options = {}) {
+module.exports = function requirePostDescriptionPlugin() {
   return {
     name: 'require-post-description',
     loadContent() {
       const missing = findMissingDescriptions(process.cwd());
-      if (options.report) {
-        process.stdout.write(`${JSON.stringify(missing, null, 2)}\n`);
-        return;
-      }
       if (missing.length) {
         throw new Error(
           `Posts dated after ${CUTOFF} must have a non-empty description:\n${missing
@@ -57,10 +55,3 @@ module.exports = function requirePostDescriptionPlugin(_context, options = {}) {
     },
   };
 };
-
-module.exports.findMissingDescriptions = findMissingDescriptions;
-module.exports.CUTOFF = CUTOFF;
-
-if (require.main === module && process.argv.includes('--report')) {
-  process.stdout.write(`${JSON.stringify(findMissingDescriptions(process.cwd()), null, 2)}\n`);
-}
