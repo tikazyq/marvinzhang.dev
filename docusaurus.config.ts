@@ -77,6 +77,7 @@ const config: Config = {
     ],
   ],
 
+  plugins: ['./plugins/require-post-description'],
   themes: ['@docusaurus/theme-mermaid'],
   markdown: {
     mermaid: true,
