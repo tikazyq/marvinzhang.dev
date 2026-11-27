@@ -1,0 +1,75 @@
+---
+slug: from-five-ai-managers-to-twelve
+title: "From Five AI Managers to Twelve: What Still Needs My Call?"
+description: "As my AI management team grew from five agents to twelve project managers, which decisions still need me to step in?"
+authors: ["marvin"]
+tags: ["ai", "agents", "management", "systems-design"]
+date: 2026-11-30
+unlisted: true
+---
+
+Back when I only had [five AI managers](/blog/t3-code-the-vs-code-of-the-ai-agent-era), I could still follow updates one by one. By November 26, I was up to twelve managers, and any minor change in a project triggered another report. That day I fell completely behind. Even after reading through all of them, I still couldn't tell what had actually moved forward, what was stuck, or how much we had spent.
+
+Reporting like that wasn't going to work. I stepped in and asked for a different setup, and we settled on two digests a day, with urgent issues sent separately. Spending was just as hard to read. Managers were waking up frequently and carrying long contexts every time, and one Worker kept re-reading the same large chunk of context over and over. On top of that, spend alerts didn't cover every model yet.
+
+That evening, while I was waiting on a login link, the [Chief PM](/blog/managing-managers-a-chief-pm-agent-and-the-coordination-tax) coordinating these managers noticed that one manager's queue had backed up. That was when I realized the monitor meant to alert on this kind of backlog wasn't even running; its own setup had stalled at a similar gate. If the Chief PM hadn't caught it that night, would that queue have shown up in the next digest?
+
+## From Five Agents to Twelve Project Managers
+
+To answer that, it helps to trace how the team grew into its current shape. When I wrote the T3 Code post on November 17, I had only five standing agents: four project managers and one infrastructure manager. With a footprint that small, a quick glance at the threads told me who was doing what and where anything was stuck.
+
+As the project list grew, having every lane report directly to me stopped scaling. In the November 24 post, I described adding a Chief PM layer to pull cross-project coordination off my plate. Within a few days, the roster underneath had expanded from those earlier five standing agents to its current structure: one Chief PM overseeing twelve project managers across three areas—product, the agent platform, and shared support.
+
+At that size, keeping track by feel no longer works. Authority, division of labor, and reporting cadence all have to be written down.
+
+## How the Work Splits, and What the Chief PM Decides
+
+The routing is straightforward: [project managers decide, delegate, and review](/blog/introducing-agent-workbench), while Workers carry out the hands-on tasks. Reminding managers not to write code themselves isn't enough on its own, so our rules also put a per-turn tool-call cap on managers to limit how much direct work they do and push execution out to Workers.
+
+Routine cross-project coordination goes through the Chief PM, so managers no longer ping me directly. Each lane's weekly plan comes to me once a week as a batch approval, and the Chief PM decides whether to take on unplanned work. Routine calls like publishing posts on an approved schedule, standard upgrades with a rollback path ready, and shifting a manager's model within the approved allocation also sit with the Chief PM.
+
+Reporting tightened up alongside that. Minor updates no longer arrive one by one; they roll into two daily digests from the Chief PM covering progress, blockers, and pending items.
+
+There is one clear exception. Whenever work is blocked on something only I can do in person—signing in, confirming permissions, or making a decision that stops progress today—it does not get buried in the next digest. The team prepares everything up front, and the Chief PM notifies me right away so I can step in and clear it immediately.
+
+That leaves a short list on my desk: spending and budget cap increases, credentials and permissions, irreversible deletions, product direction and model allocation, starting new external publishing series under my account, and policy exceptions.
+
+## Even With Boundaries, Work Still Comes Back to Me
+
+Writing the rules down doesn't make everything run on autopilot. Once the team was running, several issues showed up outside the happy path.
+
+Hardware delivered one reminder: a machine overheated and shut down. No matter how cleanly software authority is divided, it cannot override physical limits. The operating rule that goes with this is simple: check thermal headroom before heavy local work, and stop at the thermal threshold.
+
+External dependencies wobble too—model providers have been unstable. To keep agents from burning time and spend on repeated retries when a provider acts up, we set two rules: cap retries, and after two failures on the same task, stop, simplify the approach, and escalate instead of trying a third time.
+
+Two other snags came from the workflow and checks themselves. In one case, a task needed an approval mid-turn; the Chief PM sent an approval, and it did not count. In another, a health check misread a CDN redirect and returned the wrong status.
+
+Put together, those cases point to an important distinction: what actually happened and what the rules say are two different things. The overheating shutdown, provider instability, the mid-turn approval that didn't count, and the misread CDN redirect were real events. Stopping at the thermal gate, capping retries, and escalating after two failures are operating rules added to handle those risks. How well those rules hold up in practice is still something later runs have to prove.
+
+## What the First Week Can and Cannot Show
+
+How well is the new structure working? As of November 27, the first full week isn't finished yet, so there are no complete results to report. Before that week wraps up, it helps to be clear about what I plan to watch—and what I won't over-interpret.
+
+The main signal for the first week is the trend in how often I have to step in each day. Two ground rules apply. First, watch the direction of the trend, never treat raw daily counts as a scorecard. Workload fluctuates from day to day, so a single day's count doesn't tell you whether the setup is getting steadier or noisier. Second, separate two very different kinds of intervention: decisions that are supposed to come to me (raising budget caps, handling credentials, setting direction) versus rescue work for tasks that were already delegated and went sideways.
+
+Lumping those two together distorts the picture. Owner-only decisions should keep showing up whenever projects are moving; driving them to zero would be the wrong goal. What should trend down is rescue work.
+
+Alongside that, we run a daily feedback loop: corrections, repeated asks, gate stalls, and policy breaks get logged as friction. When new friction shows up, the Chief PM picks the top item in one of the daily digests and makes a single change—to a rule, a tool, or a brief template—then checks the next day whether the issue recurs, keeping what works and reverting what doesn't. If there is no new friction, nothing changes. Once the first week is complete, it should show whether rescue interventions are trending down, whether those small daily fixes stick, and whether owner-only calls are being delayed by the digest cadence. Whether the setup holds up over the long run is not a question one week can answer.
+
+## How the Three Models Split, and Why There Is No Ranking
+
+On November 26, the twelve subordinate managers started split evenly across three models: four on Opus, four on Astra, and four on Neon.
+
+That split didn't stay static for long. To give a few concrete examples: cost prompted moving three managers (one infrastructure manager and two project managers) from Opus to Astra, while behavior prompted moving one platform manager from Astra back to Opus after it repeatedly refused to carry out a change I had already approved while running on Astra. Those are representative examples, not an exhaustive log of every switch.
+
+As of November 27, among the twelve subordinate managers, the configuration stood at one on Opus, six on Astra, and five on Neon. Counting the Chief PM as well, all thirteen management sessions broke down to two on Opus (the Chief PM and one platform manager), six on Astra, and five on Neon.
+
+That history alone rules out treating this as a controlled comparison. For one thing, assignments shift dynamically in response to cost and behavior rather than staying fixed. For another, the workload and text output across managers are uneven: some lanes ship code and open pull requests every day, generating heavy handoffs and judgment calls, while others move more slowly or spend most of their time waiting on external conditions and produce far less text.
+
+We do plan to run a stylometry readout. Put plainly, instead of guessing from impressions which model feels like a better manager, stylometry measures the text they actually write on the job—word choice, sentence length, and how they structure reports. That readout is expected on December 3; there are no numbers yet, and no ranking of the three models. Even when the readout arrives, it measures writing and reporting style rather than job performance, and with shifting assignments and uneven samples it will not support a leaderboard.
+
+Back to the question in the title: going from five AI managers to twelve, what still needs my call?
+
+The answer turns out to be simple. Day-to-day execution, task delegation and review, and routine cross-project coordination belong with the team. Anything that spends money, touches credentials, changes direction, or cannot be undone stays with me. And when a task hits a gate that truly requires me in person, prepare the work first and ping me right away instead of waiting for a digest.
+
+Getting twelve AI managers moving isn't the hard part. Drawing that line clearly is: routine updates should stop interrupting me, and high-stakes decisions should never slip past me quietly.
