@@ -26,6 +26,12 @@ At that size, keeping track by feel no longer works. Authority, division of labo
 
 The routing is straightforward: [project managers decide, delegate, and review](/blog/introducing-agent-workbench), while Workers carry out the hands-on tasks. Reminding managers not to write code themselves isn't enough on its own, so our rules also put a per-turn tool-call cap on managers to limit how much direct work they do and push execution out to Workers.
 
+In practice, a gate enforces that split directly: when a manager tried to inspect failed CI logs itself, the gate blocked the attempt and directed the manager to hand log inspection off to the Worker owning the branch or dispatch a level-one Worker instead.
+
+![Gate blocking a manager from inspecting failed CI logs directly and directing it to delegate the task to the branch Worker or a level-one Worker](/img/blog/2026-11-30-from-five-ai-managers-to-twelve/gate-denial-ci-logs.png)
+
+*Rendered from a real log excerpt, not a UI screenshot.*
+
 Routine cross-project coordination goes through the Chief PM, so managers no longer ping me directly. Each lane's weekly plan comes to me once a week as a batch approval, and the Chief PM decides whether to take on unplanned work. Routine calls like publishing posts on an approved schedule, standard upgrades with a rollback path ready, and shifting a manager's model within the approved allocation also sit with the Chief PM.
 
 Reporting tightened up alongside that. Minor updates no longer arrive one by one; they roll into two daily digests from the Chief PM covering progress, blockers, and pending items.
