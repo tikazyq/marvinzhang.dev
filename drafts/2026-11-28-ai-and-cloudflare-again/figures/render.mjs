@@ -14,6 +14,8 @@ const files = [
   'figure-1-then-vs-now.en.html',
   'figure-2-fit-vs-stuck.zh.html',
   'figure-2-fit-vs-stuck.en.html',
+  'figure-3-providers-comparison.zh.html',
+  'figure-3-providers-comparison.en.html',
 ];
 
 mkdirSync(outDir, { recursive: true });

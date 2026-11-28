@@ -1,7 +1,7 @@
 ---
 slug: ai-and-cloudflare-again
 title: "AI 让 Cloudflare 再次伟大？"
-description: "当你用 AI 做出一个小网站或小工具，放到 Cloudflare 上到底省不省心、花多少钱、哪里还会卡壳？从体验变化、0 到 5 美元账单、收购 VoidZero，到锁定与国内访问限制，给个人开发者和非技术创作者一份实话实说的判断。"
+description: "当你用 AI 做出一个小网站或小工具，放到 Cloudflare 上到底省不省心、花多少钱、哪里还会卡壳？从体验变化、0 到 5 美元账单、收购 VoidZero、锁定与国内限制，到横向对比 Vercel、Netlify、Supabase 和 AWS，给个人创作者一份实话实说的判断。"
 authors: ["marvin"]
 tags: ["ai", "devops", "frontend", "development-tools", "productivity"]
 date: 2026-11-28
@@ -18,7 +18,7 @@ unlisted: true
 
 {/* truncate */}
 
-我在 [《AI 的最后一公里，不是智能，是基础设施》](/blog/ai-last-mile-infrastructure) 里写过，AI 把写代码的门槛打下来之后，真正卡住大多数人的，其实是把作品安全稳定地放到网上的这最后一步。这篇文章不谈宏大的企业架构，咱们只回答一个很实际的问题：**对个人开发者，以及不会写代码、靠 AI 做东西的普通创作者来说，Cloudflare 现在真的更好用、更值得选了吗？**
+我在 [《AI 的最后一公里，不是智能，是基础设施》](/blog/ai-last-mile-infrastructure) 里写过，AI 把写代码的门槛打下来之后，真正卡住大多数人的，其实是把作品安全稳定地放到网上的这最后一步。这篇文章不谈宏大的企业架构，咱们只回答一个很实际的问题：**对个人开发者，以及不会写代码、靠 AI 做东西的普通创作者来说，Cloudflare 现在真的更好用、更值得选了吗？跟大家常听说的 Vercel、Netlify、Supabase 和 AWS 比，它到底处在什么位置？**
 
 先把结论放在前面：**如果你的目标是把一个小网站、个人工具或早期产品快速放到网上，Cloudflare 确实比两年前顺手得多，也便宜得多；但“容易上手”不代表“全程无痛”，域名配置、平台绑定和面向中国大陆用户访问这几道坎，现在依然摆在那儿。**
 
@@ -97,9 +97,32 @@ VoidZero 并入 Cloudflare 之后，最直接的变化就是“从生成网页�
 
 Cloudflare 确实和京东云合作推出了[中国大陆合规接入方案](https://developers.cloudflare.com/china-network/)，但它**只卖给企业版客户**，要求每个域名完成工信部备案和内容审核，而且在[国内可用功能清单](https://developers.cloudflare.com/china-network/reference/available-products/)里，还明确禁止在中国大陆境内创建它的文件存储桶或绑定自定义域名。所以对个人创作者来说，如果核心用户在中国大陆，直接选国内云厂商的轻量服务会省心很多。
 
+## 放到主流平台里看：Cloudflare 跟 Vercel、Netlify、Supabase、AWS 怎么选
+
+看完 Cloudflare 自己的账单和坑，普通创作者最容易冒出下一个问题：网上经常听人提 **Vercel**、 **Netlify**、 **Supabase**，还有大名鼎鼎的 **AWS**，它们和 Cloudflare 到底有什么区别？选谁才不会绕弯路？
+
+其实这五家盯着的侧重点不太一样。对不折腾复杂架构的个人创作者来说，挑平台主要就看四件事：它是干嘛的、免费档够不够用以及火了之后怎么涨价、新手好不好上手，还有什么时候选它比选 Cloudflare 更合适。截至 2026 年 11 月 28 日，把五家主流服务的入门门槛摊在同一张表里看，差别一目了然：
+
+| 平台 | 主要用来干嘛 | 免费档与起步付费价 | 项目长大后的账单特点 | 什么时候选它更好 |
+| :--- | :--- | :--- | :--- | :--- |
+| **Cloudflare**（[Workers 定价](https://developers.cloudflare.com/workers/platform/pricing/) · [支出上限](https://developers.cloudflare.com/workers/platform/spend-management/)） | 静态网页、小后端、图片存储与轻量数据库一站打包 | 免费档 0 美元；付费档 5 美元/月起，含 1000 万次请求 | 下载不收流量费，可设支出上限防刷爆，单人扩展成本极低 | 个人工具、海外轻量应用、图片多且特别怕意外流量费 |
+| **Vercel**（[定价页](https://vercel.com/pricing) · [Pro 说明](https://vercel.com/docs/plans/pro-plan) · [Hobby 条款](https://vercel.com/legal/terms)） | 现代前端与全栈网页托管，尤其是 Next.js 和常见 AI 前端项目 | Hobby 免费档 0 美元（含 100 GB 流量，限个人非商用）；Pro 档 20 美元/月起 | Pro 含 1 个发布席位、20 美元用量抵扣与 1 TB 流量，多加一个能发布的成员另收 20 美元/月 | 重度用 Next.js、看重最干净的新手后台和预览体验，或小团队做商业前端 |
+| **Netlify**（[定价页](https://www.netlify.com/pricing/) · [积分规则](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/)） | 对新手很友好的网页与轻量站点托管，自带表单和预览链接 | Free 永久免费（每月 300 积分）；Personal 9 美元/月（1000 积分）；Pro 20 美元/月起（3000 积分起） | 统一按积分扣除发布、流量和计算用量；免费档用完自动暂停不乱扣费，Pro 档 **不按人头收费** | 想要简单直观的网页托管与免费表单，或多人协作不想交席位费 |
+| **Supabase**（[定价页](https://supabase.com/pricing) · [费用上限](https://supabase.com/docs/guides/platform/cost-control)） | 给应用配齐完整关系型数据库（PostgreSQL）、用户注册登录与文件存储 | Free 免费档 0 美元（最多 2 个活跃项目、500 MB 库、5 万月活）；Pro 25 美元/月起 | 免费项目连续 7 天无访问会自动休眠；Pro 永不休眠、含 8 GB 磁盘与 250 GB 流量，每多跑一个项目另加 10 美元/月起 | 应用核心是用户账号、复杂表格数据与权限控制，Cloudflare 轻量数据库扛不住时 |
+| **AWS**（[免费计划](https://aws.amazon.com/free/) · [Lightsail](https://aws.amazon.com/lightsail/pricing/) · [Amplify](https://aws.amazon.com/amplify/pricing/)） | 什么都能跑的全能大云：固定月租小主机、前端托管、大数据库与传统后端 | 新账号免费计划含 6 个月最高 200 美元抵扣与 30 多项常驻免费；Lightsail 固定月租 5 美元/月起（纯 IPv6 为 3.50 美元） | Lightsail 价格固定像买套餐；Amplify 等常规服务按量计费（超出后流量 0.15 美元/GB），配不好容易花超 | 需要跑常规 Linux 开源软件、大型数据库、重计算，或项目长大后不想再搬家 |
+
+![五家主流平台横向对比：Cloudflare 适合 0 到 5 美元轻量一站式托管，Vercel 擅长 Next.js 与最干净的前端预览，Netlify 按积分计费且 Pro 不按人头收费，Supabase 补齐完整关系型数据库与用户登录，AWS 负责重型传统后端与长期扩展](/img/blog/2026-11-28-ai-and-cloudflare-again/figure-3-providers-comparison.zh.png)
+
+如果只看表格还不够具体，咱们按普通人真实碰到的场景，把另外四家比 Cloudflare 更顺手的地方直接摊开说清楚：
+
+- **想少看运维菜单、把前端网站做漂亮：Vercel 依然更顺手。** 如果你用 AI 生成的是 Next.js 或常规 React 网页，Vercel 的控制台比 Cloudflare 干净得多，几乎看不到那些让人发怵的企业安全选项，每次改代码的预览体验也一直是行业标杆。但要提前留意两条门槛：它的免费 Hobby 档按[服务条款](https://vercel.com/legal/terms)只给个人非商业项目用；一旦接商单、挂广告或者拉同事一起发布，就得升到每月 20 美元起的 Pro 档，每多加一个能发布的成员还得再加 20 美元。
+- **想让小团队一起改网站，又不想按人头交席位费：Netlify 更灵活。** Netlify 现在改成了统一的积分池计费，发布次数、流量和计算全从每个月的积分里扣。它的免费档每月给 300 积分，自带表单和预览链接，用完了站点自动暂停，不会莫名其妙扣钱；个人项目稍微大一点，每月 9 美元的 Personal 档就能顺滑接上。到了每月 20 美元起的 Pro 档，最大卖点是团队成员不限人数、不按席位加钱，对几个人一起维护网站的小团队很友好。不过如果网站图片视频多、访问流量涨得快，每 GB 流量要扣 20 积分，花销会比 Cloudflare 的免流量费模式涨得明显。
+- **应用一旦绕不开“用户注册 + 正式数据库”：直接看 Supabase，而且它能跟 Cloudflare 搭着用。** Cloudflare 自带的轻量数据库适合存点小配置、打卡记录，但真要做带账号体系、订单、多表查询的正式应用，很快会觉得施展不开。Supabase 给你的是完整的开源关系型数据库 PostgreSQL，后台自带像电子表格一样直观的数据查看器，还白送每月 5 万活跃用户的登录系统。免费档唯一的硬伤是连续 7 天没人访问就会自动休眠，得手动点醒；真要长期稳定跑，升到每月 25 美元起的 Pro 档就不会再休眠，而且也能打开[费用上限](https://supabase.com/docs/guides/platform/cost-control)防止用量失控。现实里很多个人开发者根本不用在它和 Cloudflare 之间二选一，最常见的组合反而是：网页放到 Cloudflare 或 Vercel 上，用户登录和核心数据交给 Supabase。
+- **项目真做大了，或者要跑现成的传统服务端软件：最终多半会走到 AWS。** 对刚入门的人来说，AWS 确实是最劝退的那一个：几百个产品名字、权限配置和按量计费规则，刚打开控制台就能让人头大。不过 AWS 这两年也降低了试错门槛，新账号现在有 6 个月、最高 200 美元抵扣额度的[免费计划](https://aws.amazon.com/free/)，额度用完前不会主动扣费；如果你只是想租一台能跑任何常规 Linux 软件、账单又固定的小服务器，直接选它旗下的 [Lightsail](https://aws.amazon.com/lightsail/pricing/)，每月 5 美元就能拿到带公网 IPv4 地址的套餐，比折腾传统云服务器简单得多。AWS 赢的地方很简单：天花板高得几乎看不见，等一个小工具真长成正经业务时，你不用再经历一次伤筋动骨的大搬家。
+
 ## 回到最初的问题：现在该选 Cloudflare 吗？
 
-把优点和坑都摊开之后，开头那个问题的答案其实很清楚。
+把优点、坑和主流替代方案都摊开之后，开头那个问题的答案其实很清楚。
 
 **如果你符合下面这几种情况，Cloudflare 现在确实是一个很划算、很顺手的起点：**
 
@@ -113,6 +136,8 @@ Cloudflare 确实和京东云合作推出了[中国大陆合规接入方案](htt
 - 你的主要用户在中国大陆，又没有企业级预算和备案条件。
 - 你的应用离不开重型传统数据库、长时间后台重计算，或者现成的常规 Linux 服务端软件。
 - 你非常在意随时能无痛迁去别的云，不愿意把后端数据逻辑绑在某一家平台的专属接口上。
+
+换句话说，不用把 Cloudflare 当成唯一解：看重最干净的前端和 Next.js 体验选 Vercel，小团队想避开按人头交席位费看 Netlify，应用离不开用户账号和正式数据库直接配 Supabase，要跑传统 Linux 后端或长远扩容则交给 AWS。
 
 再回头看标题里的问号：**AI 让 Cloudflare 再次伟大了吗？**
 

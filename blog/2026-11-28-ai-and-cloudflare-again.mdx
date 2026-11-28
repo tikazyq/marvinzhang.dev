@@ -1,7 +1,7 @@
 ---
 slug: ai-and-cloudflare-again
 title: "Can AI Make Cloudflare Great Again?"
-description: "When you ask AI to build a small website or tool, is Cloudflare actually easier to use, cheaper to run, and worth the tradeoffs? A plain-English look at recent UX upgrades, the $0-$5 pricing ladder, the VoidZero acquisition, and where beginners still get stuck."
+description: "When you ask AI to build a small website or tool, is Cloudflare actually easier to use, cheaper to run, and worth the tradeoffs? A plain-English look at recent UX upgrades, the $0-$5 pricing ladder, VoidZero, real limits, and how it compares to Vercel, Netlify, Supabase, and AWS."
 authors: ["marvin"]
 tags: ["ai", "devops", "frontend", "development-tools", "productivity"]
 date: 2026-11-28
@@ -18,7 +18,7 @@ I hit a version of this myself this week when I wanted to open one of my local t
 
 {/* truncate */}
 
-In [*The Last Mile of AI Is Infrastructure, Not Intelligence*](/blog/ai-last-mile-infrastructure), I wrote that as AI makes generating code cheap, the hard part shifts to getting that code safely in front of real users. This post skips enterprise architecture jargon and asks a single practical question: **is Cloudflare actually becoming easier to use—and a better choice—for solo developers and non-technical people who use AI to build things?**
+In [*The Last Mile of AI Is Infrastructure, Not Intelligence*](/blog/ai-last-mile-infrastructure), I wrote that as AI makes generating code cheap, the hard part shifts to getting that code safely in front of real users. This post skips enterprise architecture jargon and asks a practical question: **is Cloudflare actually becoming easier to use—and a better choice—for solo developers and non-technical people who use AI to build things, and where does it sit next to mainstream options like Vercel, Netlify, Supabase, and AWS?**
 
 Here is the short answer up front: **for small websites, personal tools, and early prototypes, Cloudflare is noticeably easier and cheaper to start on than it was two years ago. Still, easy to start does not mean effortless forever—domain setup, platform lock-in, and serving users in mainland China remain real hurdles.**
 
@@ -97,9 +97,32 @@ Putting your domain, hosting, and data on one provider also means one outage sha
 
 Cloudflare does offer a compliant mainland China option operated with JD Cloud ([Cloudflare China Network](https://developers.cloudflare.com/china-network/)), **but it is only sold to Enterprise customers**, requires government ICP website registration and content review for each domain, and [explicitly prohibits creating local file-storage buckets or binding custom domains for them inside mainland China](https://developers.cloudflare.com/china-network/reference/available-products/). For an individual building for users inside mainland China, a domestic cloud host will save you far more headache.
 
+## How Cloudflare compares to Vercel, Netlify, Supabase, and AWS
+
+Once you see Cloudflare's pricing and ceilings, the next question is obvious: **where does Cloudflare sit next to Vercel, Netlify, Supabase, and AWS—the mainstream names almost every builder hears about?**
+
+Each of these five services solves a slightly different job. For a regular person putting an AI-built app online, four things matter most: what the service is actually for, what it costs now and when traffic grows, how approachable the dashboard is, and when picking it over Cloudflare makes more sense. Here is how they line up as of November 28, 2026:
+
+| Provider | What it is built for | Free tier & first paid step | How bills grow with traction | When it beats Cloudflare |
+| :--- | :--- | :--- | :--- | :--- |
+| **Cloudflare** ([Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/) · [Spend limits](https://developers.cloudflare.com/workers/platform/spend-management/)) | All-in-one hosting for static sites, small backends, file storage, and light databases | $0 free; $5/mo paid tier (includes 10M requests/mo) | Zero download bandwidth fees and hard spend limits keep solo scaling very cheap | Solo tools, global lightweight apps, and image-heavy sites where surprise traffic bills worry you |
+| **Vercel** ([Pricing](https://vercel.com/pricing) · [Pro plan](https://vercel.com/docs/plans/pro-plan) · [Hobby terms](https://vercel.com/legal/terms)) | Modern frontend and full-stack web hosting, especially Next.js and AI-generated front ends | $0 Hobby (100 GB transfer, personal/non-commercial only); $20/mo Pro | Pro includes 1 deploying seat, $20 usage credit, and 1 TB transfer; each extra deploying teammate adds $20/mo | Next.js apps, the cleanest beginner dashboard and preview flow, or commercial frontend teams |
+| **Netlify** ([Pricing](https://www.netlify.com/pricing/) · [Credit rules](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/)) | Beginner-friendly web hosting with built-in forms and instant deploy previews | $0 Free forever (300 credits/mo); $9/mo Personal (1,000 credits); $20/mo Pro (3,000+ credits) | Single monthly credit pool covers deploys, bandwidth, and compute; Free pauses cleanly at 0, and **Pro has unlimited team seats** | Straightforward sites with built-in forms, or small teams wanting to avoid per-seat fees |
+| **Supabase** ([Pricing](https://supabase.com/pricing) · [Spend cap](https://supabase.com/docs/guides/platform/cost-control)) | Full relational database (PostgreSQL), user sign-up/login, and file storage | $0 Free (up to 2 active projects, 500 MB DB, 50,000 monthly active users); $25/mo Pro | Free projects pause after 7 idle days; Pro never pauses (8 GB disk, 250 GB data transfer), with extra running projects from $10/mo | Apps centered on real user accounts, relational data, and permissions where Cloudflare's light DB hits limits |
+| **AWS** ([Free plan](https://aws.amazon.com/free/) · [Lightsail](https://aws.amazon.com/lightsail/pricing/) · [Amplify](https://aws.amazon.com/amplify/pricing/)) | Full-scale big cloud: fixed-price Linux servers, web hosting, heavy databases, and enterprise backends | Up to $200 credits on a 6-month Free plan + 30+ always-free quotas; Lightsail flat-rate servers from $5/mo ($3.50 IPv6-only) | Lightsail stays flat-rate like a phone plan; metered services like Amplify ($0.15/GB transfer after free tier) can spike if misconfigured | Off-the-shelf Linux software, heavy databases, long background jobs, or growing without ever migrating again |
+
+![Side-by-side comparison of five mainstream providers: Cloudflare for $0-$5 lightweight all-in-one hosting, Vercel for Next.js and the cleanest frontend workflow, Netlify for credit-based web hosting with unlimited Pro seats, Supabase for full PostgreSQL databases and user logins, and AWS for standard Linux backends and ceiling-free scale](/img/blog/2026-11-28-ai-and-cloudflare-again/figure-3-providers-comparison.en.png)
+
+In everyday terms, here is where each alternative genuinely beats Cloudflare:
+
+- **For the cleanest beginner dashboard and Next.js apps, Vercel is still smoother.** If your AI tool generates a Next.js or standard React web app, Vercel feels noticeably less intimidating than Cloudflare—you rarely stumble into corporate security menus, and its preview workflow remains the gold standard. Just watch two pricing edges: under Vercel's [Terms of Service](https://vercel.com/legal/terms), the free Hobby tier is strictly for personal, non-commercial projects. The moment your project takes revenue, runs ads, or adds a collaborator who deploys, you move to Pro at $20/month—plus another $20/month for each extra deploying teammate.
+- **For small teams that hate per-seat fees, Netlify is more flexible.** Netlify runs on a shared monthly credit pool that covers production deploys, bandwidth, and compute together. Its Free plan gives 300 credits every month with built-in form handling and pauses cleanly instead of surprise-charging when you run out; solo builders who outgrow Free can step up to the $9/month Personal tier. On the $20/month Pro tier, the standout perk is unlimited team members at no extra per-seat cost. The tradeoff is media-heavy traffic: at 20 credits per GB of bandwidth, popular image or download sites burn through credits much faster than on Cloudflare's zero-bandwidth-fee model.
+- **Whenever real user accounts and a full database sit at the center, pick Supabase—and note that it pairs well with Cloudflare.** Cloudflare's lightweight database is great for simple trackers or settings, not for an app with customer accounts, orders, and multi-table queries. Supabase gives you a full open-source PostgreSQL database, a spreadsheet-like table viewer anyone can understand, and free built-in authentication for up to 50,000 monthly active users. The main free-tier catch is that projects automatically pause after 7 days of inactivity until you wake them manually. Upgrading to the $25/month Pro tier removes pausing and includes a toggleable [Spend Cap](https://supabase.com/docs/guides/platform/cost-control) on usage overages. In practice, many solo builders do not choose between Cloudflare and Supabase at all—they host the website on Cloudflare or Vercel and let Supabase handle logins and core data.
+- **When a project outgrows lightweight platforms or needs standard Linux software, AWS is the grown-up destination.** AWS is still the hardest console for a newcomer to walk into, packed with hundreds of services, permission rules, and metered pricing terms. Even so, AWS has softened the landing: new accounts now get a 6-month [Free plan](https://aws.amazon.com/free/) with up to $200 in credits and no charges unless you switch to paid. If you just want a standard Linux box that runs any open-source server app on a fixed monthly bill, [Amazon Lightsail](https://aws.amazon.com/lightsail/pricing/) starts at $5/month with a public IPv4 address—far simpler than raw EC2. AWS wins on headroom: if a weekend tool turns into a real business, you will not hit a platform ceiling and face a painful rewrite.
+
 ## So, should you pick Cloudflare?
 
-Put the wins and the caveats side by side, and the answer to our opening question is straightforward.
+Put the wins, the caveats, and the mainstream alternatives side by side, and the answer to our opening question is straightforward.
 
 **Cloudflare is a genuinely strong starting point today if:**
 
@@ -113,6 +136,8 @@ Put the wins and the caveats side by side, and the answer to our opening questio
 - Your core audience is in mainland China and you do not have an enterprise budget and ICP filings.
 - Your app needs a heavy traditional database, long-running background processing, or off-the-shelf Linux server software.
 - Easy portability matters more to you than one-stop convenience, and you do not want backend data code tied to one vendor's interface.
+
+In short, Cloudflare does not have to be your only tool: pick Vercel for the cleanest Next.js and frontend workflow, Netlify for small-team sites without per-seat fees, Supabase whenever real user accounts and a full database sit at the core (often paired with Cloudflare or Vercel on the front end), and AWS when you need standard Linux servers or room to grow without ceilings.
 
 Back to the question mark in the title: **can AI make Cloudflare great again?**
 
