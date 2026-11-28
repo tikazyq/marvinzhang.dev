@@ -19,7 +19,7 @@ const PROTECTED = [
   /\{\/\*[\s\S]*?\*\/\}/g,
   /<!--[\s\S]*?-->/g,
   /<[^>]*>/g,
-  /\$[^$]*\$/g,
+  /\$\$[\s\S]*?\$\$|\$(?![\d\s])[^$\n]+\$/g,
 ];
 
 function spaceText(value) {
@@ -46,14 +46,10 @@ function transformProse(line) {
 
 function report(value, file, line, label = '') {
   ADJACENCY.lastIndex = 0;
-  let match;
-  let failed = false;
-  while ((match = ADJACENCY.exec(value)) !== null) {
-    if (!failed) console.error(`${path.relative(process.cwd(), file)}:${line}${label}: missing space between Chinese and Latin text/digits`);
-    console.error(`  ${value.trim()}`);
-    failed = true;
-  }
-  return failed;
+  if (!ADJACENCY.test(value)) return false;
+  console.error(`${path.relative(process.cwd(), file)}:${line}${label}: missing space between Chinese and Latin text/digits`);
+  console.error(`  ${value.trim()}`);
+  return true;
 }
 
 function mask(text, pattern) {
@@ -62,6 +58,68 @@ function mask(text, pattern) {
 
 function prose(line) {
   return PROTECTED.reduce((text, pattern) => mask(text, pattern), line);
+}
+
+function frontmatterValue(line) {
+  const quoted = line.match(/^(title|description):(\s*)(["'])((?:\\.|(?!\3)[\s\S])*)\3([ \t]*(?:#.*)?)$/);
+  if (quoted) return { key: quoted[1], value: quoted[4] };
+  const unquoted = line.match(/^(title|description):(\s*)(.*)$/);
+  if (!unquoted) return null;
+  const comment = unquoted[3].match(/([ \t]+#.*)$/);
+  return {
+    key: unquoted[1],
+    value: comment ? unquoted[3].slice(0, -comment[1].length) : unquoted[3],
+  };
+}
+
+function fixFrontmatter(line) {
+  const quoted = line.match(/^(title|description):(\s*)(["'])((?:\\.|(?!\3)[\s\S])*)\3([ \t]*(?:#.*)?)$/);
+  if (quoted) {
+    const fixed = spaceText(quoted[4]);
+    return fixed === quoted[4] ? line : `${quoted[1]}:${quoted[2]}${quoted[3]}${fixed}${quoted[3]}${quoted[5]}`;
+  }
+  const unquoted = line.match(/^(title|description):(\s*)(.*)$/);
+  if (!unquoted) return line;
+  const comment = unquoted[3].match(/([ \t]+#.*)$/);
+  const value = comment ? unquoted[3].slice(0, -comment[1].length) : unquoted[3];
+  const fixed = spaceText(value);
+  return fixed === value ? line : `${unquoted[1]}:${unquoted[2]}${fixed}${comment ? comment[1] : ''}`;
+}
+
+function transformWithComments(line, state) {
+  let result = '';
+  let offset = 0;
+  let inComment = state.inComment;
+  while (offset < line.length) {
+    if (inComment) {
+      const end = inComment === 'jsx' ? line.indexOf('*/}', offset) : line.indexOf('-->', offset);
+      if (end < 0) return { line: result + line.slice(offset), inComment };
+      result += line.slice(offset, end + 3);
+      offset = end + 3;
+      inComment = null;
+      continue;
+    }
+    const jsxStart = line.indexOf('{/*', offset);
+    const htmlStart = line.indexOf('<!--', offset);
+    const starts = [jsxStart, htmlStart].filter((index) => index >= 0);
+    if (starts.length === 0) {
+      result += transformProse(line.slice(offset));
+      break;
+    }
+    const start = Math.min(...starts);
+    result += transformProse(line.slice(offset, start));
+    const kind = start === jsxStart ? 'jsx' : 'html';
+    const close = kind === 'jsx' ? '*/}' : '-->';
+    const end = line.indexOf(close, start + 3);
+    if (end < 0) {
+      result += line.slice(start);
+      inComment = kind;
+      break;
+    }
+    result += line.slice(start, end + 3);
+    offset = end + 3;
+  }
+  return { line: result, inComment };
 }
 
 function fixFile(file) {
@@ -77,18 +135,8 @@ function fixFile(file) {
     if (i === 0 && inFrontmatter) return;
     if (inFrontmatter) {
       if (trimmed === '---') { inFrontmatter = false; return; }
-      const field = raw.match(/^(title|description):(\s*)(.*)$/);
-      if (field) {
-        const scalar = field[3];
-        const quote = scalar[0] === '"' || scalar[0] === "'" ? scalar[0] : '';
-        const quoted = quote && scalar.endsWith(quote);
-        const value = quoted ? scalar.slice(1, -1) : scalar;
-        const fixed = spaceText(value);
-        if (fixed !== value) {
-          lines[i] = `${field[1]}:${field[2]}${quote}${fixed}${quoted ? quote : ''}`;
-          changed = true;
-        }
-      }
+      const fixed = fixFrontmatter(raw);
+      if (fixed !== raw) { lines[i] = fixed; changed = true; }
       return;
     }
     const fenceMatch = trimmed.match(/^(```+|~~~+)/);
@@ -100,22 +148,9 @@ function fixFile(file) {
     }
     if (inFence || /^\s*(?:import|export)\b/.test(raw)) return;
 
-    let line = raw;
-    if (blockComment) {
-      const end = blockComment === 'jsx' ? line.indexOf('*/}') : line.indexOf('-->');
-      if (end < 0) return;
-      line = line.slice(end + 3);
-      blockComment = null;
-    }
-    const commentStart = line.search(/\{\/\*|<!--/);
-    if (commentStart >= 0) {
-      const marker = line.slice(commentStart).startsWith('{/*') ? 'jsx' : 'html';
-      const close = marker === 'jsx' ? '*/}' : '-->';
-      if (!line.slice(commentStart).includes(close)) blockComment = marker;
-      line = line.slice(0, commentStart);
-    }
-    const fixed = transformProse(line);
-    if (fixed !== line) { lines[i] = fixed; changed = true; }
+    const transformed = transformWithComments(raw, { inComment: blockComment });
+    blockComment = transformed.inComment;
+    if (transformed.line !== raw) { lines[i] = transformed.line; changed = true; }
   });
 
   if (changed) fs.writeFileSync(file, lines.join('\n'));
@@ -134,10 +169,9 @@ function scan(file) {
     if (i === 0 && inFrontmatter) return;
     if (inFrontmatter) {
       if (trimmed === '---') { inFrontmatter = false; return; }
-      const field = raw.match(/^(title|description):\s*(.*)$/);
+      const field = frontmatterValue(raw);
       if (field) {
-        const scalar = field[2].replace(/^(?:"([^"]*)"|'([^']*)').*$/, (_, a, b) => a ?? b);
-        failed = report(scalar, file, i + 1, ` (${field[1]})`) || failed;
+        failed = report(field.value, file, i + 1, ` (${field.key})`) || failed;
       }
       return;
     }
