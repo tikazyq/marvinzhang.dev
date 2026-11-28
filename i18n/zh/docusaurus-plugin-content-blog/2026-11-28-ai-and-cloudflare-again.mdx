@@ -5,6 +5,7 @@ description: "从一次折腾内网看板的经历出发，顺着开发者入口
 authors: ["marvin"]
 tags: ["ai", "architecture", "devops", "agents", "systems-design", "economics"]
 date: 2026-11-28
+image: /img/blog/2026-11-28-ai-and-cloudflare-again/cover.zh.png
 unlisted: true
 ---
 
@@ -57,6 +58,8 @@ Cloudflare 这两年在控制台和开发体验（DX）上补了不少短板。2
 1. 直接调用 [Workers AI](https://developers.cloudflare.com/workers-ai/)，在 Cloudflare 全球边缘网络的无服务器 GPU 上跑开源权重模型，省掉自己租卡和管扩缩容的功夫。按 [Workers AI 官方定价](https://developers.cloudflare.com/workers-ai/platform/pricing/)，所有档位每天含 10000 Neurons 免费额度，付费档超出后按每千 Neurons 0.011 美元计费（部分较新的大模型要求绑定付费方式或预付 AI Gateway 额度）。
 2. 更常见的业务场景是手里同时握着 OpenAI、Anthropic、Google、Bedrock 和开源模型好几家接口。这时请求先过一层 [AI Gateway](https://developers.cloudflare.com/ai-gateway/)，由它充当统一代理，再转发给下游不同厂商，必要时也能切到 Workers AI。
 
+![一条推理请求进入 Cloudflare 边缘节点后的两条路径：Workers AI 在边缘无服务器 GPU 上跑开源模型直接卖算力，AI Gateway 代理多家模型厂商并提供缓存、限流、故障切换、基础 DLP、统一账单与 Auto Router 占领流量控制面](/img/blog/2026-11-28-ai-and-cloudflare-again/figure-1-inference-paths.zh.png)
+
 这两层在商业定位上的差别非常关键。Workers AI 卖的是边缘算力，直接和各家模型托管商、公有云 GPU 竞争，拼的是价格、吞吐和模型覆盖，天然是一场重资本的苦仗。AI Gateway 占的是流量入口和控制面：缓存重复请求、做限流防 Agent 死循环刷爆账单、做多厂商重试与故障切换，还能直接接入基础数据防泄漏（DLP）扫描。按 [AI Gateway 定价文档](https://developers.cloudflare.com/ai-gateway/reference/pricing/)，分析、缓存、限流和基础 DLP 等核心能力目前在所有档位上都免费提供（2026 年 9 月 24 日起新建账号的网关日志按 Workers Logs 规则计费与留存）。
 
 2026 年的几次更新把这两层拧得更紧了。8 月 7 日，Cloudflare 把 Workers AI 和 AI Gateway 的调用绑定与额度计费[打通到了一处](https://blog.cloudflare.com/workers-ai-gateway-unification/)；通过 [Unified Billing](https://developers.cloudflare.com/ai-gateway/features/unified-billing/)，团队可以用一套 Cloudflare 预付额度结算多家上游模型（在上游原价之外加收 5% 额度购买费）；9 月 30 日又推出 [Auto Router 公测](https://blog.cloudflare.com/auto-router/)，按任务类型和难度评估候选模型，再在质量与价格之间自动权衡分流。再往数据层看一步，[R2 零出站流量费](https://developers.cloudflare.com/r2/pricing/) 配合 10 月 1 日正式上线的 [Basin](https://developers.cloudflare.com/changelog/post/2026-10-01-basin-ga/)（Iceberg 目录加数据管道），还构成了一个很实际的跨云切入口：AI 团队可以把语料和中间结果放在 R2 里，去任何一家云上租 GPU 跑任务，不用反复交 S3 出站税。
@@ -90,6 +93,8 @@ Cloudflare 还有一个其他纯计算云厂商很难复制的筹码：全球大
 ## 拿财报和公开披露来检验：到底有多少变成了收入
 
 产品线铺得再热闹，最后都要回财报上对账。下面是 Cloudflare 从 2025 财年到 2026 年 Q3 的公开财务数据：
+
+![Cloudflare 单季同比收入增速从 2024 年 Q4 的 27% 提速至 2026 年 Q3 的 39%（7.825 亿美元），同期 GAAP 毛利率从 74.0% 回落至 71.2%，SEC 财报按单一分部合并披露未单列 AI 收入](/img/blog/2026-11-28-ai-and-cloudflare-again/figure-2-earnings.zh.png)
 
 | 报告期 | 总收入与同比增速 | 毛利率（GAAP / Non-GAAP） | 营业利润率（GAAP / Non-GAAP） | 自由现金流（占收入比） | 净留存率（DNR）与年消费超 10 万美元客户 | 剩余履约义务（RPO）与同比 | 一手来源 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
