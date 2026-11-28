@@ -10,10 +10,10 @@ const outDir = resolve(here, '../../../static/img/blog/', slug);
 const files = [
   'cover.zh.html',
   'cover.en.html',
-  'figure-1-inference-paths.zh.html',
-  'figure-1-inference-paths.en.html',
-  'figure-2-earnings.zh.html',
-  'figure-2-earnings.en.html',
+  'figure-1-then-vs-now.zh.html',
+  'figure-1-then-vs-now.en.html',
+  'figure-2-fit-vs-stuck.zh.html',
+  'figure-2-fit-vs-stuck.en.html',
 ];
 
 mkdirSync(outDir, { recursive: true });
