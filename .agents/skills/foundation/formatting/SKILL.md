@@ -63,6 +63,12 @@ Bold with quotes — add spaces inside bold markers:
 
 Validation: `pnpm run validate:zh-bold-source` before committing.
 
+## Chinese–English Spacing
+
+Put a space between CJK characters and Latin letters or digits, including in
+frontmatter `title` and `description` values (中英文、中文与数字之间加空格).
+Run `pnpm run validate:zh-spacing` to check Chinese posts.
+
 ## Visual-First Approach
 
 - **Mermaid diagrams**: For processes, flows, architectures

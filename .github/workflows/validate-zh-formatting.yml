@@ -80,6 +80,10 @@ jobs:
         if: '!cancelled()'
         run: pnpm run validate:figure-type
 
+      - name: Validate Chinese–English spacing
+        if: '!cancelled()'
+        run: pnpm run validate:zh-spacing
+
       - name: Comment on PR with results
         if: failure() && github.event_name == 'pull_request'
         uses: actions/github-script@v9
@@ -88,7 +92,7 @@ jobs:
             const issue_number = context.issue.number;
             const message = `## ⚠️ Blog Checks Failed
 
-            Four checks run here. The job log says which one failed and points at the
+            Five checks run here. The job log says which one failed and points at the
             exact lines — start there.
 
             **Bold formatting**
@@ -96,6 +100,13 @@ jobs:
             \`\`\`bash
             pnpm run validate:zh-bold-source        # report
             pnpm run validate:zh-bold-source:fix    # auto-fix
+            \`\`\`
+
+            **Chinese–English spacing** — add spaces between Chinese characters and
+            Latin letters or digits, including frontmatter titles and descriptions.
+
+            \`\`\`bash
+            pnpm run validate:zh-spacing
             \`\`\`
 
             **Voice (AI sentence-rhythm drift)** — em dashes, 恰恰, overuse of 不是……而是.

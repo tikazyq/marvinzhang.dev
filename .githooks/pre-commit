@@ -21,6 +21,11 @@ for f in $staged_zh; do
   node scripts/validate-zh-voice.js --file "$f" || failed=1
 done
 
+# --- Chinese–English spacing (titles, descriptions and prose) -------------
+for f in $staged_zh; do
+  node scripts/validate-zh-spacing.js --file "$f" || failed=1
+done
+
 # --- Internal cross-links (both locales) ---------------------------------
 # Checked at commit time rather than on every edit: a post being drafted
 # section by section legitimately has no links yet.

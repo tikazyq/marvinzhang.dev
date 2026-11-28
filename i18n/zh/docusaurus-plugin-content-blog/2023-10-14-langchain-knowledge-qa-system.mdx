@@ -1,6 +1,6 @@
 ---
 slug: langchain-knowledge-qa-system
-title: 实战 AI：使用Langchain构建高效的知识问答系统
+title 实战 AI：使用 Langchain 构建高效的知识问答系统
 authors: [marvin]
 tags: ["ai"]
 date: 2023-10-14
@@ -8,22 +8,22 @@ wechat_url: https://mp.weixin.qq.com/s/eByYBclwblacdYUI0VrOdA
 ---
 
 
-# 实战 AI：使用Langchain构建高效的知识问答系统
+# 实战 AI：使用 Langchain 构建高效的知识问答系统
 
 ## 引言
 
 知识问答系统（KQA）是自然语言处理领域的核心技术之一，它能够帮助用户从大量数据中快速准确地检索到所需信息。知识问答系统成为了帮助个人和企业快速获取、筛选和处理信息的重要工具。它们在很多领域都发挥着重要作用，例如在线客服、智能助手、数据分析和决策支持等。
 
-Langchain不仅提供了构建基本问答系统的必要模块，还支持更为复杂和高级的问答场景。例如，它可以处理结构化数据和代码，使得我们能够针对数据库或代码库进行问答。这极大地扩展了知识问答系统的应用范围，使其能够适应更多复杂的实际需求。本篇文章将通过一个简单的实战例子，介绍如何使用Langchain构建基本的知识问答系统。
+Langchain 不仅提供了构建基本问答系统的必要模块，还支持更为复杂和高级的问答场景。例如，它可以处理结构化数据和代码，使得我们能够针对数据库或代码库进行问答。这极大地扩展了知识问答系统的应用范围，使其能够适应更多复杂的实际需求。本篇文章将通过一个简单的实战例子，介绍如何使用 Langchain 构建基本的知识问答系统。
 
 ![flow.jpeg](https://python.langchain.com/assets/images/qa_flow-9fbd91de9282eb806bda1c6db501ecec.jpeg)
 
 ## 实战
 
-下面，我们将通过实战例子手把手介绍如何使用Langchain搭建知识问答系统。
+下面，我们将通过实战例子手把手介绍如何使用 Langchain 搭建知识问答系统。
 
 ### 1. 文档加载和预处理
-构建知识问答系统的第一步是加载和预处理文档。Langchain提供了`WebBaseLoader`模块，可以帮助我们轻松加载文档：
+构建知识问答系统的第一步是加载和预处理文档。Langchain 提供了`WebBaseLoader`模块，可以帮助我们轻松加载文档：
 {/* truncate */}
 ```python
 from langchain.document_loaders import WebBaseLoader
@@ -42,7 +42,7 @@ texts = text_splitter.split_documents(documents)
 ```
 
 ### 2. 文本嵌入
-文本嵌入是将文本转换为向量的过程，它是自然语言处理的基础。Langchain提供了`OpenAIEmbeddings`模块，可以帮助我们快速实现文本嵌入：
+文本嵌入是将文本转换为向量的过程，它是自然语言处理的基础。Langchain 提供了`OpenAIEmbeddings`模块，可以帮助我们快速实现文本嵌入：
 ```python
 from langchain.embeddings import OpenAIEmbeddings
 
@@ -59,8 +59,8 @@ from langchain.vectorstores import Chroma
 docsearch = Chroma.from_documents(texts, embeddings)
 ```
 
-### 4. 构建检索QA链
-检索QA链是知识问答系统的核心，它负责处理用户的查询，并从向量存储库中检索相关文档：
+### 4. 构建检索 QA 链
+检索 QA 链是知识问答系统的核心，它负责处理用户的查询，并从向量存储库中检索相关文档：
 ```python
 from langchain.chains import RetrievalQA
 from langchain.llms import OpenAI
@@ -79,7 +79,7 @@ answer = qa.run(query)
 
 ## 总结
 
-通过Langchain库，我们快速搭建出了一个基础的知识问答系统。不仅如此，Langchain还提供了丰富的模块和功能，使得开发者可以根据项目的需求定制问答系统。例如，我们可以使用不同的文档加载器、文本切割器和向量存储库，来适应不同类型和规模的数据。此外，Langchain还支持多种检索和问答模式，如Retrieval-augmented Generation (RAG)模式，使得我们能够构建出更为高级和复杂的知识问答系统。
+通过 Langchain 库，我们快速搭建出了一个基础的知识问答系统。不仅如此，Langchain 还提供了丰富的模块和功能，使得开发者可以根据项目的需求定制问答系统。例如，我们可以使用不同的文档加载器、文本切割器和向量存储库，来适应不同类型和规模的数据。此外，Langchain 还支持多种检索和问答模式，如 Retrieval-augmented Generation (RAG)模式，使得我们能够构建出更为高级和复杂的知识问答系统。
 
 ## 社区
 
