@@ -48,8 +48,8 @@ Cloudflare 这几年吸引个人创作者，很关键的一张牌就是把入门
 
 | 你想做的事 | 免费档（0 美元/月） | 5 美元/月付费档 | 要提前留意的细则 |
 | :--- | :--- | :--- | :--- |
-| **托管网页与小后端**（[Workers 定价](https://developers.cloudflare.com/workers/platform/pricing/)） | 静态页面不限流量；账号每天 10 万次动态请求 | 含每月 1000 万次请求，超出每百万次 0.30 美元，** 不收额外流量费** | 免费档超限会直接报错；付费档可设[支出上限](https://developers.cloudflare.com/workers/platform/spend-management/)，到顶自动停掉新调用，静态页面仍可打开 |
-| **存图片和文件**（[存储定价](https://developers.cloudflare.com/r2/pricing/)） | 每月 10 GB 存储、100 万次写入、1000 万次读取 | 超出按 0.015 美元/GB-月计费，** 下载不收流量费** | 计费次数按整档向上取整，比如 100 万零 1 次会按 200 万次算 |
+| **托管网页与小后端**（[Workers 定价](https://developers.cloudflare.com/workers/platform/pricing/)） | 静态页面不限流量；账号每天 10 万次动态请求 | 含每月 1000 万次请求，超出每百万次 0.30 美元， **不收额外流量费** | 免费档超限会直接报错；付费档可设[支出上限](https://developers.cloudflare.com/workers/platform/spend-management/)，到顶自动停掉新调用，静态页面仍可打开 |
+| **存图片和文件**（[存储定价](https://developers.cloudflare.com/r2/pricing/)） | 每月 10 GB 存储、100 万次写入、1000 万次读取 | 超出按 0.015 美元/GB-月计费， **下载不收流量费** | 计费次数按整档向上取整，比如 100 万零 1 次会按 200 万次算 |
 | **存应用数据**（[数据库定价](https://developers.cloudflare.com/d1/platform/pricing/)） | 每天 500 万行读取、10 万行写入，总计 5 GB（[单库上限 500 MB](https://developers.cloudflare.com/d1/platform/limits/)） | 打包在 5 美元档内：每月 250 亿行读取、5000 万行写入、5 GB | 读取行数按“扫描了多少行”算，AI 写的查询如果没建索引，额度掉得会很快 |
 | **远程访问本地工具与加登录锁**（[Tunnel](https://blog.cloudflare.com/tunnel-for-everyone/) · [访问控制](https://www.cloudflare.com/plans/zero-trust-services/)） | 固定加密通道免费；最多 50 人以内加登录保护免费 | 超过 50 人或需更长日志留存时，7 美元/人/月起 | 免费登录保护只保留 24 小时日志，但对个人和亲友小圈子绰绰有余 |
 
